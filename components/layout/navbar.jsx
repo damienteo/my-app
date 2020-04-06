@@ -39,7 +39,11 @@ export default function NavBar() {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography variant="h6" className={classes.title}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            style={{ flexGrow: 1 }}
+          >
             Damien Teo's Site
           </Typography>
           <Hidden smDown>
