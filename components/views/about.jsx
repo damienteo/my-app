@@ -1,16 +1,16 @@
 import React from "react";
 import Layout from "../layout/layout";
 
-const HomePage = () => {
+const AboutPage = () => {
   return (
     <>
       <Layout>
         <main>
-          <h1>Welcome to my site!</h1>
+          <h1>About Page</h1>
         </main>
       </Layout>
     </>
   );
 };
 
-export default HomePage;
+export default AboutPage;
