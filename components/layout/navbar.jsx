@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import { renderButton } from "../common/buttonLink";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
+
+const navLinks = [
+  { url: "about", text: "about" },
+  { url: "blog", text: "blog" },
+  { url: "portfolio", text: "portfolio" },
+  { url: "resume", text: "resume" },
+  { url: "others", text: "others" },
+];
 
 export default function NavBar() {
   const classes = useStyles();
@@ -47,11 +56,7 @@ export default function NavBar() {
             Damien Teo's Site
           </Typography>
           <Hidden smDown>
-            <Button color="inherit">About</Button>
-            <Button color="inherit">Blog</Button>
-            <Button color="inherit">Portfolio</Button>
-            <Button color="inherit">Resume</Button>
-            <Button color="inherit">Others</Button>
+            {navLinks.map(({ url, text }) => renderButton(url, text))}
           </Hidden>
         </Toolbar>
       </AppBar>
