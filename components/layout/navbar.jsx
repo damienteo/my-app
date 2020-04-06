@@ -4,7 +4,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Hidden,
   IconButton,
 } from "@material-ui/core";
@@ -18,8 +17,15 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
+  titleWrapper: {
     flexGrow: 1,
+  },
+  title: {
+    display: "inline",
+    padding: "5px 15px",
+    borderRadius: 5,
+    color: "#ffffff",
+    background: "#000000",
   },
 }));
 
@@ -48,13 +54,9 @@ export default function NavBar() {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography
-            variant="h6"
-            className={classes.title}
-            style={{ flexGrow: 1 }}
-          >
-            Damien Teo's Site
-          </Typography>
+          <div className={classes.titleWrapper} style={{ flexGrow: 1 }}>
+            <Typography variant="h6">Damien Teo's Site</Typography>
+          </div>
           <Hidden smDown>
             {navLinks.map(({ url, text }) => renderButton(url, text))}
           </Hidden>
