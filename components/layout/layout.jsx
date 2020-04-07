@@ -9,7 +9,7 @@ import NavBar from "./navbar";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#FFFFFF",
+      main: blue[50],
     },
     secondary: {
       main: blue[800],
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
       <style jsx global>{`
         body {
           margin: 0;
-          background: #000000;
+          background: #282c35;
           color: #ffffff;
         }
       `}</style>

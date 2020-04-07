@@ -20,20 +20,18 @@ const useStyles = makeStyles((theme) => ({
   titleWrapper: {
     flexGrow: 1,
   },
-  title: {
-    display: "inline",
-    padding: "5px 15px",
-    borderRadius: 5,
-    color: "#ffffff",
-    background: "#000000",
-  },
+  // title: {
+  //   display: "inline",
+  //   padding: "5px 15px",
+  //   borderRadius: 5,
+  //   color: "#ffffff",
+  //   background: "#282c35",
+  // },
 }));
 
 const navLinks = [
   { url: "about", text: "about" },
-  { url: "blog", text: "blog" },
   { url: "portfolio", text: "portfolio" },
-  { url: "resume", text: "resume" },
   { url: "others", text: "others" },
 ];
 
