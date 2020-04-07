@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core/";
+import { Paper, Grid } from "@material-ui/core/";
 import { blue } from "@material-ui/core/colors/";
 import Layout from "../layout/layout";
 import Header from "../common/header";
@@ -8,20 +8,23 @@ import Paragraph from "../common/paragraph";
 import ExternalLink from "../common/externalLink";
 
 const useStyles = makeStyles((theme) => ({
-  link: {
-    color: blue[200],
+  image: {
+    width: "95%",
+    objectFit: "cover",
+  },
+  imageWrapper: {
+    textAlign: "center",
+  },
+  sectionWrapper: {
+    margin: "30px 0",
+  },
+  textWrapper: {
+    paddingLeft: 20,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+    },
   },
 }));
-
-const portfolioLinks = [
-  {
-    label: "Budget Planner",
-    description:
-      "Developed a budget-and-expense tracking solution with JavaScript and HTML, using React for the front-end, PostgreSQL and Express for the back-end, and Node.js as the server environment/n",
-    url: "https://my-budget-planner.herokuapp.com",
-    image: "/budget-planner.png",
-  },
-];
 
 const PortfolioPage = () => {
   const classes = useStyles();
@@ -39,7 +42,37 @@ const PortfolioPage = () => {
             />{" "}
             profile
           </Paragraph>
-          <img src="/budget-planner.png" alt="my image" />
+          <Grid container className={classes.sectionWrapper}>
+            <Grid item sm={6} className={classes.imageWrapper}>
+              <Paper>
+                <img
+                  src="/budget-planner.png"
+                  alt="my image"
+                  className={classes.image}
+                />
+              </Paper>
+            </Grid>
+            <Grid item sm={6} className={classes.textWrapper}>
+              <Paragraph>
+                One of my major side-projects is the{" "}
+                <ExternalLink
+                  url="https://my-budget-planner.herokuapp.com/"
+                  label="Budget Planner"
+                />{" "}
+                (March 2019).
+              </Paragraph>
+              <Paragraph>
+                This was my Capstone Project during my participation in General
+                Assembly's Web Development Immersive, now known as the{" "}
+                <ExternalLink
+                  url="https://generalassemb.ly/education/software-engineering-immersive/singapore"
+                  label="Software Engineering
+              Immersive"
+                />
+                .
+              </Paragraph>
+            </Grid>
+          </Grid>
         </main>
       </Layout>
     </>
