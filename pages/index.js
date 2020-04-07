@@ -1,6 +1,5 @@
-import Head from "next/head";
-import HomePage from "../components/views/home";
+import HomePage from '../components/views/home'
 
-const Home = () => <HomePage />;
+const Home = () => <HomePage />
 
-export default Home;
+export default Home
