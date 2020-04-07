@@ -45,11 +45,11 @@ const PortfolioPage = () => {
           <Grid container className={classes.sectionWrapper}>
             <Grid item sm={6} className={classes.imageWrapper}>
               <Paper>
-                {/* <img
+                <img
                   src="/budget-planner.png"
                   alt="my image"
                   className={classes.image}
-                /> */}
+                />
               </Paper>
             </Grid>
             <Grid item sm={6} className={classes.textWrapper}>
