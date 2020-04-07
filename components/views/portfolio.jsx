@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
     margin: '30px 0',
   },
   textWrapper: {
-    paddingLeft: 20,
-    [theme.breakpoints.down('xm')]: {
-      paddingLeft: 0,
+    paddingLeft: 0,
+    [theme.breakpoints.up('xs')]: {
+      paddingLeft: 20,
     },
   },
 }))

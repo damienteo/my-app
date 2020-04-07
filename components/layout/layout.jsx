@@ -36,9 +36,6 @@ const Layout = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Head>
-        <title>Damien Teo</title>
-      </Head>
       <NavBar setDrawerOpen={setDrawerOpen} />
       <Container maxWidth="lg">{children}</Container>
       <Drawer open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -46,13 +43,6 @@ const Layout = ({ children }) => {
           {navLinks.map(({ url, text }) => renderButton(url, text))}
         </div>
       </Drawer>
-      <style jsx global>{`
-        body {
-          margin: 0;
-          background: #282c35;
-          color: #ffffff;
-        }
-      `}</style>
     </ThemeProvider>
   )
 }
