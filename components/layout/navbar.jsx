@@ -1,14 +1,15 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
   Typography,
   Hidden,
   IconButton,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import { renderButton } from "../common/buttonLink";
+} from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
+import { renderButton } from '../common/buttonLink'
+import { navLinks } from '../constants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,23 +21,10 @@ const useStyles = makeStyles((theme) => ({
   titleWrapper: {
     flexGrow: 1,
   },
-  // title: {
-  //   display: "inline",
-  //   padding: "5px 15px",
-  //   borderRadius: 5,
-  //   color: "#ffffff",
-  //   background: "#282c35",
-  // },
-}));
+}))
 
-const navLinks = [
-  { url: "about", text: "about" },
-  { url: "portfolio", text: "portfolio" },
-  { url: "others", text: "others" },
-];
-
-export default function NavBar() {
-  const classes = useStyles();
+export default function NavBar(props) {
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
@@ -48,6 +36,7 @@ export default function NavBar() {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
+              onClick={props.setDrawerOpen}
             >
               <MenuIcon />
             </IconButton>
@@ -61,5 +50,5 @@ export default function NavBar() {
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }

@@ -1,33 +1,33 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid } from "@material-ui/core/";
-import { blue } from "@material-ui/core/colors/";
-import Layout from "../layout/layout";
-import Header from "../common/header";
-import Paragraph from "../common/paragraph";
-import ExternalLink from "../common/externalLink";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Paper, Grid } from '@material-ui/core/'
+import { blue } from '@material-ui/core/colors/'
+import Layout from '../layout/layout'
+import Header from '../common/header'
+import Paragraph from '../common/paragraph'
+import ExternalLink from '../common/externalLink'
 
 const useStyles = makeStyles((theme) => ({
   image: {
-    width: "95%",
-    objectFit: "cover",
+    width: '95%',
+    objectFit: 'cover',
   },
   imageWrapper: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   sectionWrapper: {
-    margin: "30px 0",
+    margin: '30px 0',
   },
   textWrapper: {
     paddingLeft: 20,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('xm')]: {
       paddingLeft: 0,
     },
   },
-}));
+}))
 
 const PortfolioPage = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <>
@@ -35,11 +35,11 @@ const PortfolioPage = () => {
         <main>
           <Header text="Portfolio" />
           <Paragraph>
-            For my resume, you may refer to my{" "}
+            For my resume, you may refer to my{' '}
             <ExternalLink
               url="https://www.linkedin.com/in/damien-teo/"
               label="LinkedIn"
-            />{" "}
+            />{' '}
             profile
           </Paragraph>
           <Grid container className={classes.sectionWrapper}>
@@ -54,16 +54,16 @@ const PortfolioPage = () => {
             </Grid>
             <Grid item sm={6} className={classes.textWrapper}>
               <Paragraph>
-                One of my major side-projects is the{" "}
+                One of my major side-projects is the{' '}
                 <ExternalLink
                   url="https://my-budget-planner.herokuapp.com/"
                   label="Budget Planner"
-                />{" "}
+                />{' '}
                 (March 2019).
               </Paragraph>
               <Paragraph>
                 This was my Capstone Project during my participation in General
-                Assembly's Web Development Immersive, now known as the{" "}
+                Assembly's Web Development Immersive, now known as the{' '}
                 <ExternalLink
                   url="https://generalassemb.ly/education/software-engineering-immersive/singapore"
                   label="Software Engineering
@@ -76,7 +76,7 @@ const PortfolioPage = () => {
         </main>
       </Layout>
     </>
-  );
-};
+  )
+}
 
-export default PortfolioPage;
+export default PortfolioPage
