@@ -4,11 +4,9 @@ import Header from '../common/header'
 
 const HomePage = () => {
   return (
-    <>
-      <Layout>
-        <Header text="Welcome to my site!" />
-      </Layout>
-    </>
+    <Layout>
+      <Header text="Welcome to my site!" />
+    </Layout>
   )
 }
 

@@ -12,10 +12,10 @@ import { navLinks } from '../constants'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: blue[50],
+      main: blue[800],
     },
     secondary: {
-      main: blue[800],
+      main: blue[50],
     },
   },
 })

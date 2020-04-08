@@ -1,29 +1,116 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Button, Grid } from '@material-ui/core/'
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
 import Layout from '../layout/layout'
 import Header from '../common/header'
 import Paragraph from '../common/paragraph'
 import ExternalLink from '../common/externalLink'
+import CurrencyInput from '../common/currencyInput'
+import Section from '../common/section'
+import { cyan, teal } from '@material-ui/core/colors/'
+
+const useStyles = makeStyles((theme) => ({
+  paragraph: {
+    margin: `0 0 ${theme.spacing(1.5)}px`,
+    color: '#282c35',
+  },
+  inputWrapper: {
+    padding: 10,
+  },
+  buttonWrapper: {
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: teal[200],
+    '&:hover': {
+      backgroundColor: cyan[200],
+    },
+  },
+}))
+
+const cpfAccounts = [
+  {
+    label: 'Ordinary Account',
+    field: 'ordinaryAccount',
+  },
+  {
+    label: 'Special Account',
+    field: 'specialAccount',
+  },
+]
 
 const CPFCalculatorPage = () => {
+  const classes = useStyles()
+
+  const [values, setValues] = useState({
+    ordinaryAccount: '',
+    specialAccount: '',
+  })
+  const [selectedDate, handleDateChange] = useState(new Date())
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+  console.log('selectedDate', selectedDate)
   return (
-    <>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Layout>
         <Header text="CPF Calculator" />
-        <Paragraph>
-          This page will allow people to calculate CPF during 55 an 65, and
-          checkhow much they can withdraw
+
+        {/* Disclaimer */}
+        <Paragraph variant="subtitle2">
+          * This page is not meant to be for financial advice. I am neither an
+          employee of CPF, nor am I a representative of the government. The
+          calculations here are based on research I have done, and I have listed
+          my sources as far as possible. If there are any corrections or
+          enhancements to be made, please let me know.
         </Paragraph>
-        <Paragraph>
-          The user should be able to input current amounts in their CPF OA and
-          SA
-        </Paragraph>
-        <Paragraph>
-          The user should be able to input the date at which they turn 55 and 65
-        </Paragraph>
-        <Paragraph>
-          The user should be able to input their current monthly contributions
-          to OA and SA
-        </Paragraph>
+
+        {/* User Input */}
+        <Section>
+          <Paragraph className={classes.paragraph}>
+            First, type in an amount for the CPF Ordinary and Special Account.
+          </Paragraph>
+          <Grid container>
+            {cpfAccounts.map((account) => (
+              <Grid item sm={6} className={classes.inputWrapper}>
+                <CurrencyInput
+                  value={values[account.field]}
+                  label={account.label}
+                  field={account.field}
+                  handleChange={handleChange}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Section>
+        <Section>
+          <Paragraph className={classes.paragraph}>
+            Next, type in a future date (typically, this would be when you turn
+            55)
+          </Paragraph>
+          <Grid container>
+            <Grid item sm={6} className={classes.inputWrapper}>
+              <KeyboardDatePicker
+                value={selectedDate}
+                onChange={(date) => handleDateChange(date)}
+                format="dd/MM/yyyy"
+                minDate={new Date()}
+              />
+            </Grid>
+          </Grid>
+        </Section>
+        <div className={classes.buttonWrapper}>
+          <Button variant="contained" className={classes.button}>
+            Calculate my CPF!
+          </Button>
+        </div>
+
         <Paragraph>
           The FE will calculate for them how much is in their SA and OA at the
           age of 55.
@@ -40,6 +127,11 @@ const CPFCalculatorPage = () => {
           The FE will calculate for them how much they can withdraw at the age
           of 65.
         </Paragraph>
+        <Paragraph>
+          The user should be able to input their current monthly contributions
+          to OA and SA.
+        </Paragraph>
+
         <Paragraph>
           The user can press a button, whcih will show a new panel below. This
           new panel will show how much more they can get if they transfer all
@@ -71,7 +163,7 @@ const CPFCalculatorPage = () => {
           Essentially, it's just Javascript, HTML, and CSS.
         </Paragraph>
       </Layout>
-    </>
+    </MuiPickersUtilsProvider>
   )
 }
 

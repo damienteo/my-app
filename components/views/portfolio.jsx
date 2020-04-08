@@ -29,50 +29,48 @@ const PortfolioPage = () => {
   const classes = useStyles()
 
   return (
-    <>
-      <Layout>
-        <Header text="Portfolio" />
-        <Paragraph>
-          For my resume, you may refer to my{' '}
-          <ExternalLink
-            url="https://www.linkedin.com/in/damien-teo/"
-            label="LinkedIn"
-          />{' '}
-          profile
-        </Paragraph>
-        <Grid container className={classes.sectionWrapper}>
-          <Grid item sm={6} className={classes.imageWrapper}>
-            <Paper>
-              <img
-                src="/budget-planner.png"
-                alt="my image"
-                className={classes.image}
-              />
-            </Paper>
-          </Grid>
-          <Grid item sm={6} className={classes.textWrapper}>
-            <Paragraph>
-              One of my major side-projects is the{' '}
-              <ExternalLink
-                url="https://my-budget-planner.herokuapp.com/"
-                label="Budget Planner"
-              />{' '}
-              (March 2019).
-            </Paragraph>
-            <Paragraph>
-              This was my Capstone Project during my participation in General
-              Assembly's Web Development Immersive, now known as the{' '}
-              <ExternalLink
-                url="https://generalassemb.ly/education/software-engineering-immersive/singapore"
-                label="Software Engineering
-              Immersive"
-              />
-              .
-            </Paragraph>
-          </Grid>
+    <Layout>
+      <Header text="Portfolio" />
+      <Paragraph>
+        For my resume, you may refer to my{' '}
+        <ExternalLink
+          url="https://www.linkedin.com/in/damien-teo/"
+          label="LinkedIn"
+        />{' '}
+        profile
+      </Paragraph>
+      <Grid container className={classes.sectionWrapper}>
+        <Grid item sm={6} className={classes.imageWrapper}>
+          <Paper>
+            <img
+              src="/budget-planner.png"
+              alt="my image"
+              className={classes.image}
+            />
+          </Paper>
         </Grid>
-      </Layout>
-    </>
+        <Grid item sm={6} className={classes.textWrapper}>
+          <Paragraph>
+            One of my major side-projects is the{' '}
+            <ExternalLink
+              url="https://my-budget-planner.herokuapp.com/"
+              label="Budget Planner"
+            />{' '}
+            (March 2019).
+          </Paragraph>
+          <Paragraph>
+            This was my Capstone Project during my participation in General
+            Assembly's Web Development Immersive, now known as the{' '}
+            <ExternalLink
+              url="https://generalassemb.ly/education/software-engineering-immersive/singapore"
+              label="Software Engineering
+              Immersive"
+            />
+            .
+          </Paragraph>
+        </Grid>
+      </Grid>
+    </Layout>
   )
 }
 
