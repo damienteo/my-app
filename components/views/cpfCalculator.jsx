@@ -13,6 +13,7 @@ import ExternalLink from '../common/externalLink'
 import CurrencyInput from '../common/currencyInput'
 import Section from '../common/section'
 import { cyan, teal } from '@material-ui/core/colors/'
+import { calculateFutureValues } from '../../utils/cpfCalculator'
 
 const useStyles = makeStyles((theme) => ({
   paragraph: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonWrapper: {
     textAlign: 'center',
+    marginBottom: `${theme.spacing(1.5)}px`,
   },
   button: {
     backgroundColor: teal[200],
@@ -48,15 +50,55 @@ const CPFCalculatorPage = () => {
   const classes = useStyles()
 
   const [values, setValues] = useState({
-    ordinaryAccount: '',
-    specialAccount: '',
+    ordinaryAccount: 1,
+    specialAccount: 1,
   })
   const [selectedDate, handleDateChange] = useState(new Date())
+
+  const [errors, setErrors] = useState({})
+  const [isCalculating, setCalculating] = useState(false)
+
+  const [futureValues, setFutureValues] = useState({
+    yearsTill55: undefined,
+    ordinaryAccount: undefined,
+    specialAccount: undefined,
+  })
+
+  const validateValues = () => {
+    const nextErrors = {}
+
+    Object.keys(values).map((field) => {
+      if (values[field] < 1) {
+        nextErrors[field] = 'Please enter a value larger than 0'
+      } else {
+        nextErrors[field] = undefined
+      }
+    })
+
+    setErrors({ ...nextErrors })
+
+    return nextErrors
+  }
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value })
   }
-  console.log('selectedDate', selectedDate)
+
+  const handleSubmit = () => {
+    const nextErrors = validateValues()
+
+    const isCorrectInput = Object.values(nextErrors).every(
+      (el) => el === undefined
+    )
+
+    if (isCorrectInput) {
+      const nextFutureValues = calculateFutureValues(values, selectedDate)
+      setFutureValues(nextFutureValues)
+      console.log('futureValues', futureValues)
+      setCalculating(true)
+    }
+  }
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Layout>
@@ -78,11 +120,18 @@ const CPFCalculatorPage = () => {
           </Paragraph>
           <Grid container>
             {cpfAccounts.map((account) => (
-              <Grid item sm={6} className={classes.inputWrapper}>
+              <Grid
+                item
+                sm={6}
+                className={classes.inputWrapper}
+                key={account.field}
+              >
                 <CurrencyInput
                   value={values[account.field]}
                   label={account.label}
                   field={account.field}
+                  error={errors && errors[account.field]}
+                  helperText={errors && errors[account.field]}
                   handleChange={handleChange}
                 />
               </Grid>
@@ -106,27 +155,40 @@ const CPFCalculatorPage = () => {
           </Grid>
         </Section>
         <div className={classes.buttonWrapper}>
-          <Button variant="contained" className={classes.button}>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={handleSubmit}
+          >
             Calculate my CPF!
           </Button>
         </div>
 
-        <Paragraph>
-          The FE will calculate for them how much is in their SA and OA at the
-          age of 55.
-        </Paragraph>
-        <Paragraph>
-          The FE will calculate for them how much is in their RA at the age of
-          65.
-        </Paragraph>
-        <Paragraph>
-          The FE will calculate for them how much they can withdraw at the age
-          of 55.
-        </Paragraph>
-        <Paragraph>
-          The FE will calculate for them how much they can withdraw at the age
-          of 65.
-        </Paragraph>
+        {/* Calculation*/}
+        {isCalculating && (
+          <Section>
+            <Paragraph className={classes.paragraph}>
+              The FE will calculate for them how much is in their SA and OA at
+              the age of 55.
+            </Paragraph>
+            {futureValues.ordinaryAccount}
+            {futureValues.specialAccount}
+            {futureValues.yearsTill55}
+            <Paragraph className={classes.paragraph}>
+              The FE will calculate for them how much is in their RA at the age
+              of 65.
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              The FE will calculate for them how much they can withdraw at the
+              age of 55.
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              The FE will calculate for them how much they can withdraw at the
+              age of 65.
+            </Paragraph>
+          </Section>
+        )}
+
         <Paragraph>
           The user should be able to input their current monthly contributions
           to OA and SA.
