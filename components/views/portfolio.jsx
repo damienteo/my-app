@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid } from '@material-ui/core/'
-import { blue } from '@material-ui/core/colors/'
 import Layout from '../layout/layout'
 import Header from '../common/header'
 import Paragraph from '../common/paragraph'
