@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
       margin: '10px 0',
     },
   },
+  drawerWrapper: {
+    backgroundColor: blue[50],
+  },
 }))
 
 const Layout = ({ children }) => {
@@ -38,7 +41,11 @@ const Layout = ({ children }) => {
     <ThemeProvider theme={theme}>
       <NavBar setDrawerOpen={setDrawerOpen} />
       <Container maxWidth="lg">{children}</Container>
-      <Drawer open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer
+        open={isDrawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        classes={{ paper: classes.drawerWrapper }}
+      >
         <div className={classes.drawer}>
           {navLinks.map(({ url, text }) => renderButton(url, text))}
         </div>
