@@ -13,7 +13,7 @@ import ExternalLink from '../common/externalLink'
 import CurrencyInput from '../common/currencyInput'
 import Section from '../common/section'
 import { cyan, teal } from '@material-ui/core/colors/'
-import { calculateFutureValues } from '../../utils/cpfCalculator'
+import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
 
 const useStyles = makeStyles((theme) => ({
   paragraph: {
@@ -81,7 +81,8 @@ const CPFCalculatorPage = () => {
   }
 
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value })
+    const nextValue = roundTo2Dec(event.target.value)
+    setValues({ ...values, [prop]: nextValue })
   }
 
   const handleSubmit = () => {
@@ -168,12 +169,12 @@ const CPFCalculatorPage = () => {
         {isCalculating && (
           <Section>
             <Paragraph className={classes.paragraph}>
-              The FE will calculate for them how much is in their SA and OA at
-              the age of 55.
+              In {futureValues.yearsTill55} years, when you are 55 years old,
+              you will have ${futureValues.ordinaryAccount.toLocaleString()} in
+              your ordinary account, and $
+              {futureValues.specialAccount.toLocaleString()} in your special
+              account.
             </Paragraph>
-            {futureValues.ordinaryAccount}
-            {futureValues.specialAccount}
-            {futureValues.yearsTill55}
             <Paragraph className={classes.paragraph}>
               The FE will calculate for them how much is in their RA at the age
               of 65.
@@ -184,7 +185,10 @@ const CPFCalculatorPage = () => {
             </Paragraph>
             <Paragraph className={classes.paragraph}>
               The FE will calculate for them how much they can withdraw at the
-              age of 65.
+              age of 65. (either with withdrawal or without withdrawal)
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              show impact on CPF life
             </Paragraph>
           </Section>
         )}

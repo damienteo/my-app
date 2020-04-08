@@ -9,6 +9,22 @@ const cpfValues = {
   ordinaryAmtCap: 20000,
 }
 
+export const roundTo2Dec = (value) => {
+  let decimalPlace = value.indexOf('.')
+  let isTooLong = value.length > decimalPlace + 3
+  let invalidNum = isNaN(parseFloat(value))
+
+  if ((decimalPlace >= 0 && isTooLong) || invalidNum) {
+    value = value.slice(0, -1)
+  }
+
+  return value
+}
+
+const normalRound = (value) => {
+  return Math.floor(value * 100) / 100
+}
+
 const getDuration = (selectedDate) => {
   const current = moment()
   const endDate = moment(selectedDate)
@@ -33,11 +49,14 @@ export const calculateFutureValues = (values, selectedDate) => {
   const ordinaryInterestRate = baseRate + ordinaryIR
   const specialInterestRate = baseRate + specialIR
 
-  const nextOrdinaryAccount =
+  const nextOrdinaryAccount = normalRound(
     ordinaryAccount * Math.pow(ordinaryInterestRate, duration)
-  const nextSpecialAccount =
+  )
+  const nextSpecialAccount = normalRound(
     specialAccount * Math.pow(specialInterestRate, duration)
+  )
 
+  console.log(nextSpecialAccount)
   return {
     ordinaryAccount: nextOrdinaryAccount,
     specialAccount: nextSpecialAccount,
