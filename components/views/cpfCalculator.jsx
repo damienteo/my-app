@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
@@ -64,6 +65,9 @@ const cpfAccounts = [
   },
 ]
 
+const minDate = moment().subtract(55, 'y')
+const maxDate = moment().subtract(16, 'y')
+
 const CPFCalculatorPage = () => {
   const classes = useStyles()
 
@@ -71,7 +75,7 @@ const CPFCalculatorPage = () => {
     ordinaryAccount: 1,
     specialAccount: 1,
   })
-  const [selectedDate, handleDateChange] = useState(new Date())
+  const [selectedDate, handleDateChange] = useState(maxDate)
 
   const [errors, setErrors] = useState({})
 
@@ -252,7 +256,10 @@ const CPFCalculatorPage = () => {
                 value={selectedDate}
                 onChange={(date) => handleDateChange(date)}
                 format="dd/MM/yyyy"
-                minDate={new Date()}
+                minDate={minDate}
+                maxDate={maxDate}
+                minDateMessage="This date means that you are already 55 years old"
+                maxDateMessage="You need to be 16 years old and above to contribute to CPF"
               />
             </Grid>
           </Grid>
