@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Grid, Tooltip } from '@material-ui/core/'
+import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
+import CloseIcon from '@material-ui/icons/Close'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -73,7 +74,9 @@ const CPFCalculatorPage = () => {
   const [selectedDate, handleDateChange] = useState(new Date())
 
   const [errors, setErrors] = useState({})
+
   const [isCalculating, setCalculating] = useState(false)
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
 
   const [futureValues, setFutureValues] = useState({
     yearsTill55: undefined,
@@ -112,9 +115,17 @@ const CPFCalculatorPage = () => {
     if (isCorrectInput) {
       const nextFutureValues = calculateFutureValues(values, selectedDate)
       setFutureValues(nextFutureValues)
-      console.log('futureValues', futureValues)
       setCalculating(true)
+      setSnackbarOpen(true)
     }
+  }
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackbarOpen(false)
   }
 
   return (
@@ -148,7 +159,7 @@ const CPFCalculatorPage = () => {
         {/* Aim */}
         <Paragraph className={classes.introduction}>
           This page is a result of my personal research into how CPF works. I
-          was interested in knowing what was the impact of:
+          wanted to know:
           <ol>
             <li>
               What happens if I{' '}
@@ -176,7 +187,10 @@ const CPFCalculatorPage = () => {
             </li>
           </ol>
           This page also does not save any data, and purely calculates values
-          based on your input.
+          based on your input.{' '}
+          <span>
+            (hint: Click on the <InfoIcon /> for more info)
+          </span>
         </Paragraph>
 
         {/* User Input */}
@@ -306,6 +320,27 @@ const CPFCalculatorPage = () => {
         <Paragraph>
           The user can upload an excel sheet to read previous data.
         </Paragraph>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={snackbarOpen}
+          autoHideDuration={2000}
+          onClose={handleSnackbarClose}
+          message="Calculated!"
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleSnackbarClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        />
       </Layout>
     </MuiPickersUtilsProvider>
   )
