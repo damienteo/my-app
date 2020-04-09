@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Grid } from '@material-ui/core/'
+import { Button, Grid, Tooltip } from '@material-ui/core/'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -11,11 +11,28 @@ import Header from '../common/header'
 import Paragraph from '../common/paragraph'
 import ExternalLink from '../common/externalLink'
 import CurrencyInput from '../common/currencyInput'
+import InfoPopup from '../common/infoPopup'
 import Section from '../common/section'
 import { cyan, teal } from '@material-ui/core/colors/'
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
+import InfoIcon from '@material-ui/icons/Info'
 
 const useStyles = makeStyles((theme) => ({
+  headerWrapper: {
+    display: 'flex',
+    alignItems: 'baseline',
+    '& h3': {
+      display: 'inline',
+      marginRight: 10,
+      marginBottom: 0,
+    },
+  },
+  introduction: {
+    margin: `${theme.spacing(2)}px 0`,
+    '& ol': {
+      margin: `${theme.spacing(1)}px 0`,
+    },
+  },
   paragraph: {
     margin: `0 0 ${theme.spacing(1.5)}px`,
     color: '#282c35',
@@ -103,21 +120,80 @@ const CPFCalculatorPage = () => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Layout>
-        <Header text="CPF Calculator" />
+        {/* Header with Disclaimer */}
+        <div className={classes.headerWrapper}>
+          <Header text="CPF Calculator" />
+          <InfoPopup iconColor="secondary" title="Disclaimer">
+            <Paragraph variant="subtitle2" className={classes.paragraph}>
+              This page is not meant to be for financial advice.
+            </Paragraph>
+            <Paragraph variant="subtitle2" className={classes.paragraph}>
+              I am neither an employee of CPF, nor am I a representative of the
+              government.
+            </Paragraph>
+            <Paragraph variant="subtitle2" className={classes.paragraph}>
+              The calculations here are based on research I have done, and I
+              have listed my sources as far as possible.
+            </Paragraph>{' '}
+            <Paragraph variant="subtitle2" className={classes.paragraph}>
+              If there are any corrections or enhancements to be made, please
+              let me know.
+            </Paragraph>
+            <Paragraph variant="subtitle2" className={classes.paragraph}>
+              Thank you.
+            </Paragraph>
+          </InfoPopup>
+        </div>
 
-        {/* Disclaimer */}
-        <Paragraph variant="subtitle2">
-          * This page is not meant to be for financial advice. I am neither an
-          employee of CPF, nor am I a representative of the government. The
-          calculations here are based on research I have done, and I have listed
-          my sources as far as possible. If there are any corrections or
-          enhancements to be made, please let me know.
+        {/* Aim */}
+        <Paragraph className={classes.introduction}>
+          This page is a result of my personal research into how CPF works. I
+          was interested in knowing what was the impact of:
+          <ol>
+            <li>
+              What happens if I{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="transfer"
+              />{' '}
+              all my money from the Ordinary Account to the Special Account?
+            </li>
+            <li>
+              What happens if I use my CPF OA Account for{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="housing"
+              />
+              ?
+            </li>
+            <li>
+              Will I be able to meet the{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="Retirement Sum"
+              />
+              ?
+            </li>
+          </ol>
+          This page also does not save any data, and purely calculates values
+          based on your input.
         </Paragraph>
 
         {/* User Input */}
         <Section>
           <Paragraph className={classes.paragraph}>
-            First, type in an amount for the CPF Ordinary and Special Account.
+            First, type in the current amounts in your CPF Ordinary and Special
+            Accounts.{' '}
+            <InfoPopup title="Info on CPF OA and SA">
+              <Paragraph className={classes.paragraph}>
+                Information on what CPF is about can be found here:{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                  label="CPF"
+                />
+                .
+              </Paragraph>
+            </InfoPopup>
           </Paragraph>
           <Grid container>
             {cpfAccounts.map((account) => (
@@ -141,8 +217,20 @@ const CPFCalculatorPage = () => {
         </Section>
         <Section>
           <Paragraph className={classes.paragraph}>
-            Next, type in a future date (typically, this would be when you turn
-            55)
+            Next, type in your date of birth. We will use this to calculate the
+            date when you can start withdrawing it.{' '}
+            <InfoPopup title="Withdrawal of CPF Savings">
+              <Paragraph className={classes.paragraph}>
+                Members can withdraw their CPF retirement savings any time from
+                55 years old. The withdrawal of your CPF retirement savings is
+                optional. More info can be found can be found here{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/Members/FAQ/schemes/retirement/withdrawals-of-cpf-savings-from-55"
+                  label="here"
+                />
+                .
+              </Paragraph>
+            </InfoPopup>
           </Paragraph>
           <Grid container>
             <Grid item sm={6} className={classes.inputWrapper}>
@@ -176,6 +264,9 @@ const CPFCalculatorPage = () => {
               account.
             </Paragraph>
             <Paragraph className={classes.paragraph}>
+              Take into account bonus interest
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
               The FE will calculate for them how much is in their RA at the age
               of 65.
             </Paragraph>
@@ -192,11 +283,6 @@ const CPFCalculatorPage = () => {
             </Paragraph>
           </Section>
         )}
-
-        <Paragraph>
-          The user should be able to input their current monthly contributions
-          to OA and SA.
-        </Paragraph>
 
         <Paragraph>
           The user can press a button, whcih will show a new panel below. This
@@ -219,14 +305,6 @@ const CPFCalculatorPage = () => {
         </Paragraph>
         <Paragraph>
           The user can upload an excel sheet to read previous data.
-        </Paragraph>
-
-        <Paragraph>
-          This site was created with a mixture of:{' '}
-          <ExternalLink url="https://reactjs.org/" label="React.js" />
-          , <ExternalLink url="https://nextjs.org/" label="Next.js" />, and{' '}
-          <ExternalLink url="https://material-ui.com/" label="Material UI" />.
-          Essentially, it's just Javascript, HTML, and CSS.
         </Paragraph>
       </Layout>
     </MuiPickersUtilsProvider>
