@@ -27,8 +27,8 @@ const normalRound = (value) => {
 
 const getDuration = (selectedDate) => {
   const current = moment()
-  const endDate = moment(selectedDate)
-  const duration = endDate.diff(current, 'years')
+  const birthday = moment(selectedDate)
+  const duration = current.diff(birthday, 'years')
   return duration
 }
 
@@ -44,22 +44,22 @@ export const calculateFutureValues = (values, selectedDate) => {
     ordinaryAmtCap,
   } = cpfValues
 
-  const duration = getDuration(selectedDate)
+  const age = getDuration(selectedDate)
+  const yearsTill55 = 55 - age
 
   const ordinaryInterestRate = baseRate + ordinaryIR
   const specialInterestRate = baseRate + specialIR
 
   const nextOrdinaryAccount = normalRound(
-    ordinaryAccount * Math.pow(ordinaryInterestRate, duration)
+    ordinaryAccount * Math.pow(ordinaryInterestRate, yearsTill55)
   )
   const nextSpecialAccount = normalRound(
-    specialAccount * Math.pow(specialInterestRate, duration)
+    specialAccount * Math.pow(specialInterestRate, yearsTill55)
   )
 
-  console.log(nextSpecialAccount)
   return {
     ordinaryAccount: nextOrdinaryAccount,
     specialAccount: nextSpecialAccount,
-    yearsTill55: duration,
+    yearsTill55,
   }
 }
