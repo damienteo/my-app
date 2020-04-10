@@ -1,5 +1,5 @@
 import { cpfValues, withdrawalAge, payoutAge } from '../constants'
-import { getAgeInMonths } from './cpfCalculator'
+import { getAgeInMonths, roundTo2Dec } from './cpfCalculator'
 
 const {
   baseRate,
@@ -24,8 +24,9 @@ export class CPFAccount {
 
   constructor(values, selectedDate) {
     const { ordinaryAccount, specialAccount } = values
-    this.#ordinaryAccount = ordinaryAccount
-    this.#specialAccount = specialAccount
+    // roundTo2Dec function converts values into string
+    this.#ordinaryAccount = parseFloat(ordinaryAccount)
+    this.#specialAccount = parseFloat(specialAccount)
 
     const currentAgeInMonths = getAgeInMonths(selectedDate)
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
@@ -36,7 +37,8 @@ export class CPFAccount {
     this.#accruedOrdinaryInterest =
       this.#accruedOrdinaryInterest +
       this.#ordinaryAccount * ordinaryInterestRate
-    this.#accruedSpecialInterest += this.#specialAccount * specialInterestRate
+    this.#accruedSpecialInterest =
+      this.#accruedSpecialInterest + this.#specialAccount * specialInterestRate
   }
 
   addInterestToAccounts() {

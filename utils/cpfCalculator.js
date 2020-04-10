@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { cpfValues, withdrawalAge, payoutAge } from '../constants'
 import { CPFAccount } from './cpfAccount'
 
 export const roundTo2Dec = (value) => {
@@ -53,6 +52,6 @@ export const calculateFutureValues = (values, selectedDate) => {
   newAccount.addInterestOverTime(remainingMonths)
 
   const data = newAccount.accountValues
-
+  console.log('data', data)
   return data
 }

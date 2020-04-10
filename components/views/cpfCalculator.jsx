@@ -91,8 +91,8 @@ const CPFCalculatorPage = () => {
   const classes = useStyles()
 
   const [values, setValues] = useState({
-    ordinaryAccount: 1,
-    specialAccount: 1,
+    ordinaryAccount: 0,
+    specialAccount: 0,
   })
   const [selectedDate, handleDateChange] = useState(maxDate)
 
@@ -111,8 +111,8 @@ const CPFCalculatorPage = () => {
     const nextErrors = {}
 
     Object.keys(values).map((field) => {
-      if (values[field] < 1) {
-        nextErrors[field] = 'Please enter a value larger than 0'
+      if (values[field] < 0) {
+        nextErrors[field] = 'Please enter a value which is 0 or larger'
       } else {
         nextErrors[field] = undefined
       }
