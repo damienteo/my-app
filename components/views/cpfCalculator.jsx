@@ -136,7 +136,7 @@ const CPFCalculatorPage = () => {
       <Layout>
         {/* Header with Disclaimer */}
         <div className={classes.headerWrapper}>
-          <Header text="CPF Calculator" />
+          <Header text="CPF Forecaster" />
           <InfoPopup iconColor="secondary" title="Disclaimer">
             <Paragraph variant="subtitle2" className={classes.paragraph}>
               This page is not meant to be for financial advice.
@@ -160,7 +160,7 @@ const CPFCalculatorPage = () => {
         </div>
 
         {/* Aim */}
-        <Paragraph className={classes.introduction}>
+        {/* <Paragraph className={classes.introduction}>
           This page is a result of my personal research into how CPF works. I
           wanted to know:
         </Paragraph>
@@ -191,10 +191,10 @@ const CPFCalculatorPage = () => {
               ?
             </li>
           </ol>
-        </div>
-        <Paragraph className={classes.introduction}>
-          This page also does not save any data, and purely calculates values
-          based on your input.
+        </div> */}
+        <Paragraph variant="subtitle2" className={classes.introduction}>
+          This page does not save any data, and purely calculates values based
+          on your input.
         </Paragraph>
 
         {/* User Input */}
