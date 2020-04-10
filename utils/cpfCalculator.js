@@ -1,13 +1,6 @@
 import moment from 'moment'
-
-const cpfValues = {
-  baseRate: 1,
-  ordinaryIR: 0.025,
-  specialIR: 0.04,
-  bonusIR: 0.01,
-  bonusAmtCap: 60000,
-  ordinaryAmtCap: 20000,
-}
+import { cpfValues, withdrawalAge, payoutAge } from '../constants'
+import { CPFAccount } from './cpfAccount'
 
 export const roundTo2Dec = (value) => {
   let decimalPlace = value.indexOf('.')
@@ -21,47 +14,45 @@ export const roundTo2Dec = (value) => {
   return value
 }
 
-const normalRound = (value) => {
-  return Math.floor(value * 100) / 100
-}
-
-const getDuration = (selectedDate) => {
+export const getAgeInMonths = (selectedDate) => {
   const current = moment()
   const birthday = moment(selectedDate)
-  const duration = current.diff(birthday, 'years')
+  const duration = current.diff(birthday, 'months')
   return duration
 }
 
+const getMonthsTillEOY = () => {
+  const currentYear = moment().year()
+  const startOfNextYear = moment(`01/01/${currentYear + 1}`, 'DD/MM/YYYY')
+  const monthsTillInterest = startOfNextYear.diff(moment(), 'months')
+  return monthsTillInterest
+}
+
 export const calculateFutureValues = (values, selectedDate) => {
-  const { ordinaryAccount, specialAccount } = values
+  const newAccount = new CPFAccount(values, selectedDate)
 
-  const {
-    baseRate,
-    ordinaryIR,
-    specialIR,
-    bonusIR,
-    bonusAmtCap,
-    ordinaryAmtCap,
-  } = cpfValues
+  // CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually. CPF interest earned in 2019 will be credited to members’ CPF accounts by the end of 1 January 2020(https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726).
 
-  const age = getDuration(selectedDate)
-  const yearsTill55 = 55 - age
+  // Add simple interest based on months, and add interest to sum annually every 1st Jan
 
-  //  TODO: Take into account that interest is paid on a monthly basis
+  let monthsTillEOY = getMonthsTillEOY()
 
-  const ordinaryInterestRate = baseRate + ordinaryIR
-  const specialInterestRate = baseRate + specialIR
+  // Calculate interest until the end of the year
+  newAccount.addInterestOverTime(monthsTillEOY)
 
-  const nextOrdinaryAccount = normalRound(
-    ordinaryAccount * Math.pow(ordinaryInterestRate, yearsTill55)
-  )
-  const nextSpecialAccount = normalRound(
-    specialAccount * Math.pow(specialInterestRate, yearsTill55)
-  )
+  // Calculate number of years left in which interest is added to account at end of the year
+  const monthsOfInterestAfterThisYear =
+    newAccount.monthsTillWithdrawal - monthsTillEOY
+  let remainingMonths = monthsOfInterestAfterThisYear % 12
+  let monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
 
-  return {
-    ordinaryAccount: nextOrdinaryAccount,
-    specialAccount: nextSpecialAccount,
-    yearsTill55,
-  }
+  // Calculate interests for the remaining full years
+  newAccount.addInterestOverTime(monthsOfFullYears)
+
+  // Calculate interest for the remaining months until 55
+  newAccount.addInterestOverTime(remainingMonths)
+
+  const data = newAccount.accountValues
+
+  return data
 }

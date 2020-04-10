@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { renderButtonLink } from '../common/links'
-import { navLinks } from '../constants'
+import { navLinks } from '../../constants'
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -23,6 +23,7 @@ import {
 } from '../common'
 
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
+import { withdrawalAge, payoutAge } from '../../constants'
 
 const useStyles = makeStyles((theme) => ({
   headerWrapper: {
@@ -70,8 +71,21 @@ const cpfAccounts = [
   },
 ]
 
-const minDate = moment().subtract(55, 'y')
+const minDate = moment().subtract(withdrawalAge, 'y')
 const maxDate = moment().subtract(16, 'y')
+
+const getYearsAndMonths = (value) => {
+  const months = value % 12
+  const years = (value - months) / 12
+
+  if (years === 0 && months === 1) return `${months} month`
+
+  if (years === 0) return `${months} months`
+
+  if (months === 1) return `${years} years and ${months} month`
+
+  return `${years} years and ${months} months`
+}
 
 const CPFCalculatorPage = () => {
   const classes = useStyles()
@@ -88,7 +102,7 @@ const CPFCalculatorPage = () => {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
 
   const [futureValues, setFutureValues] = useState({
-    yearsTill55: undefined,
+    monthsTillWithdrawal: undefined,
     ordinaryAccount: undefined,
     specialAccount: undefined,
   })
@@ -169,32 +183,34 @@ const CPFCalculatorPage = () => {
         <Paragraph className={classes.introduction}>
           This page is a result of my personal research into how CPF works. I
           wanted to know:
-          <ol>
-            <li>
-              What happens if I{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="transfer"
-              />{' '}
-              all my money from the Ordinary Account to the Special Account?
-            </li>
-            <li>
-              What happens if I use my CPF OA Account for{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="housing"
-              />
-              ?
-            </li>
-            <li>
-              Will I be able to meet the{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="Retirement Sum"
-              />
-              ?
-            </li>
-          </ol>
+        </Paragraph>
+        <ol>
+          <li>
+            What happens if I{' '}
+            <ExternalLink
+              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+              label="transfer"
+            />{' '}
+            all my money from the Ordinary Account to the Special Account?
+          </li>
+          <li>
+            What happens if I use my CPF OA Account for{' '}
+            <ExternalLink
+              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+              label="housing"
+            />
+            ?
+          </li>
+          <li>
+            Will I be able to meet the{' '}
+            <ExternalLink
+              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+              label="Retirement Sum"
+            />
+            ?
+          </li>
+        </ol>
+        <Paragraph className={classes.introduction}>
           This page also does not save any data, and purely calculates values
           based on your input.{' '}
           <span>
@@ -245,8 +261,8 @@ const CPFCalculatorPage = () => {
             <InfoPopup title="Withdrawal of CPF Savings">
               <Paragraph className={classes.paragraph}>
                 Members can withdraw their CPF retirement savings any time from
-                55 years old. The withdrawal of your CPF retirement savings is
-                optional. More info can be found can be found here{' '}
+                {withdrawalAge} years old. The withdrawal of your CPF retirement
+                savings is optional. More info can be found can be found here{' '}
                 <ExternalLink
                   url="https://www.cpf.gov.sg/Members/FAQ/schemes/retirement/withdrawals-of-cpf-savings-from-55"
                   label="here"
@@ -263,7 +279,7 @@ const CPFCalculatorPage = () => {
                 format="dd/MM/yyyy"
                 minDate={minDate}
                 maxDate={maxDate}
-                minDateMessage="This date means that you are already 55 years old"
+                minDateMessage={`This date means that you are already ${withdrawalAge} years old`}
                 maxDateMessage="You need to be 16 years old and above to contribute to CPF"
               />
             </Grid>
@@ -283,11 +299,26 @@ const CPFCalculatorPage = () => {
         {isCalculating && (
           <Section>
             <Paragraph className={classes.paragraph}>
-              In {futureValues.yearsTill55} years, when you are 55 years old,
-              you will have ${futureValues.ordinaryAccount.toLocaleString()} in
-              your ordinary account, and $
-              {futureValues.specialAccount.toLocaleString()} in your special
-              account.
+              In {getYearsAndMonths(futureValues.monthsTillWithdrawal)}, when
+              you are {withdrawalAge} years old, you will have $
+              {futureValues.ordinaryAccount.toLocaleString()} in your ordinary
+              account, and ${futureValues.specialAccount.toLocaleString()} in
+              your special account.
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              CPF interest is computed monthly. It is then credited to your
+              respective accounts and compounded annually. CPF interest earned
+              in 2019 will be credited to members’ CPF accounts by the end of 1
+              January 2020.
+              <InfoPopup title="How interest is paid">
+                <Paragraph className={classes.paragraph}>
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
+                    label="How"
+                  />{' '}
+                  is my CPF interest computed and credited into my accounts?
+                </Paragraph>
+              </InfoPopup>
             </Paragraph>
             <Paragraph className={classes.paragraph}>
               Take into account bonus interest

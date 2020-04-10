@@ -7,7 +7,7 @@ import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
 import NavBar from './navbar'
 import { renderButtonLink } from '../common/links/buttonLink'
-import { navLinks } from '../constants'
+import { navLinks } from '../../constants'
 
 const theme = createMuiTheme({
   palette: {
