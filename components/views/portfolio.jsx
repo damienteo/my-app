@@ -2,9 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid } from '@material-ui/core/'
 import Layout from '../layout/layout'
-import Header from '../common/header'
-import Paragraph from '../common/paragraph'
-import ExternalLink from '../common/externalLink'
+import { ExternalLink, Header, Paragraph } from '../common'
 
 const useStyles = makeStyles((theme) => ({
   image: {

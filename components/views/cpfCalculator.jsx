@@ -1,23 +1,28 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
-import CloseIcon from '@material-ui/icons/Close'
+import DateFnsUtils from '@date-io/date-fns'
+
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
-import Layout from '../layout/layout'
-import Header from '../common/header'
-import Paragraph from '../common/paragraph'
-import ExternalLink from '../common/externalLink'
-import CurrencyInput from '../common/currencyInput'
-import InfoPopup from '../common/infoPopup'
-import Section from '../common/section'
-import { cyan, teal } from '@material-ui/core/colors/'
-import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
+import { makeStyles } from '@material-ui/core/styles'
+import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
+import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
+import { cyan, teal } from '@material-ui/core/colors/'
+
+import Layout from '../layout/layout'
+import {
+  CurrencyInput,
+  ExternalLink,
+  Header,
+  InfoPopup,
+  Paragraph,
+  Section,
+} from '../common'
+
+import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
 
 const useStyles = makeStyles((theme) => ({
   headerWrapper: {

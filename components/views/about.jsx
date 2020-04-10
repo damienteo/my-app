@@ -1,8 +1,6 @@
 import React from 'react'
 import Layout from '../layout/layout'
-import Header from '../common/header'
-import Paragraph from '../common/paragraph'
-import ExternalLink from '../common/externalLink'
+import { ExternalLink, Header, Paragraph } from '../common'
 
 const AboutPage = () => {
   return (

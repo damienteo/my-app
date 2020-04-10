@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
 import NavBar from './navbar'
-import { renderButton } from '../common/buttonLink'
+import { renderButtonLink } from '../common/links/buttonLink'
 import { navLinks } from '../constants'
 
 const theme = createMuiTheme({
@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
         classes={{ paper: classes.drawerWrapper }}
       >
         <div className={classes.drawer}>
-          {navLinks.map(({ url, text }) => renderButton(url, text))}
+          {navLinks.map(({ url, text }) => renderButtonLink(url, text))}
         </div>
       </Drawer>
     </ThemeProvider>

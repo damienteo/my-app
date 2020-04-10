@@ -47,6 +47,8 @@ export const calculateFutureValues = (values, selectedDate) => {
   const age = getDuration(selectedDate)
   const yearsTill55 = 55 - age
 
+  //  TODO: Take into account that interest is paid on a monthly basis
+
   const ordinaryInterestRate = baseRate + ordinaryIR
   const specialInterestRate = baseRate + specialIR
 

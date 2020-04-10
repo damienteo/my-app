@@ -8,7 +8,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { renderButton } from '../common/buttonLink'
+import { renderButtonLink } from '../common/links'
 import { navLinks } from '../constants'
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,7 @@ export default function NavBar(props) {
             <Typography variant="h6">Damien Teo's Site</Typography>
           </div>
           <Hidden smDown>
-            {navLinks.map(({ url, text }) => renderButton(url, text))}
+            {navLinks.map(({ url, text }) => renderButtonLink(url, text))}
           </Hidden>
         </Toolbar>
       </AppBar>

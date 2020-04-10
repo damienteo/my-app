@@ -18,7 +18,7 @@ export const ButtonLink = ({ className, href, hrefAs, children }) => (
   </Link>
 )
 
-export const renderButton = (url, text) => {
+export const renderButtonLink = (url, text) => {
   const classes = useStyles()
   return (
     <Button
