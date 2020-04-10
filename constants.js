@@ -4,6 +4,17 @@ export const navLinks = [
   { url: 'cpf-calculator', text: 'cpf calculator' },
 ]
 
+export const cpfAccounts = [
+  {
+    label: 'Ordinary Account',
+    field: 'ordinaryAccount',
+  },
+  {
+    label: 'Special Account',
+    field: 'specialAccount',
+  },
+]
+
 export const cpfValues = {
   baseRate: 1,
   ordinaryIR: 0.025,

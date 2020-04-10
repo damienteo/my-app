@@ -9,7 +9,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
-import InfoIcon from '@material-ui/icons/Info'
 import { cyan, teal } from '@material-ui/core/colors/'
 
 import Layout from '../layout/layout'
@@ -23,7 +22,8 @@ import {
 } from '../common'
 
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
-import { withdrawalAge, payoutAge } from '../../constants'
+import { getYearsAndMonths } from '../../utils/utils'
+import { cpfAccounts, withdrawalAge, payoutAge } from '../../constants'
 
 const useStyles = makeStyles((theme) => ({
   headerWrapper: {
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
       margin: `${theme.spacing(1)}px 0`,
     },
   },
+  listWrapper: { fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif' },
   paragraph: {
     margin: `0 0 ${theme.spacing(1.5)}px`,
     color: '#282c35',
@@ -58,34 +59,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: cyan[200],
     },
   },
+  bottomPlaceholder: {
+    height: `${theme.spacing(5)}px`,
+  },
 }))
-
-const cpfAccounts = [
-  {
-    label: 'Ordinary Account',
-    field: 'ordinaryAccount',
-  },
-  {
-    label: 'Special Account',
-    field: 'specialAccount',
-  },
-]
 
 const minDate = moment().subtract(withdrawalAge, 'y')
 const maxDate = moment().subtract(16, 'y')
-
-const getYearsAndMonths = (value) => {
-  const months = value % 12
-  const years = (value - months) / 12
-
-  if (years === 0 && months === 1) return `${months} month`
-
-  if (years === 0) return `${months} months`
-
-  if (months === 1) return `${years} years and ${months} month`
-
-  return `${years} years and ${months} months`
-}
 
 const CPFCalculatorPage = () => {
   const classes = useStyles()
@@ -184,38 +164,37 @@ const CPFCalculatorPage = () => {
           This page is a result of my personal research into how CPF works. I
           wanted to know:
         </Paragraph>
-        <ol>
-          <li>
-            What happens if I{' '}
-            <ExternalLink
-              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-              label="transfer"
-            />{' '}
-            all my money from the Ordinary Account to the Special Account?
-          </li>
-          <li>
-            What happens if I use my CPF OA Account for{' '}
-            <ExternalLink
-              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-              label="housing"
-            />
-            ?
-          </li>
-          <li>
-            Will I be able to meet the{' '}
-            <ExternalLink
-              url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-              label="Retirement Sum"
-            />
-            ?
-          </li>
-        </ol>
+        <div className={classes.listWrapper}>
+          <ol>
+            <li>
+              What happens if I{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="transfer"
+              />{' '}
+              all my money from the Ordinary Account to the Special Account?
+            </li>
+            <li>
+              What happens if I use my CPF OA Account for{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="housing"
+              />
+              ?
+            </li>
+            <li>
+              Will I be able to meet the{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                label="Retirement Sum"
+              />
+              ?
+            </li>
+          </ol>
+        </div>
         <Paragraph className={classes.introduction}>
           This page also does not save any data, and purely calculates values
-          based on your input.{' '}
-          <span>
-            (hint: Click on the <InfoIcon /> for more info)
-          </span>
+          based on your input.
         </Paragraph>
 
         {/* User Input */}
@@ -307,9 +286,7 @@ const CPFCalculatorPage = () => {
             </Paragraph>
             <Paragraph className={classes.paragraph}>
               CPF interest is computed monthly. It is then credited to your
-              respective accounts and compounded annually. CPF interest earned
-              in 2019 will be credited to members’ CPF accounts by the end of 1
-              January 2020.
+              respective accounts and compounded annually.
               <InfoPopup title="How interest is paid">
                 <Paragraph className={classes.paragraph}>
                   <ExternalLink
@@ -320,59 +297,59 @@ const CPFCalculatorPage = () => {
                 </Paragraph>
               </InfoPopup>
             </Paragraph>
-            <Paragraph className={classes.paragraph}>
-              Take into account bonus interest
+            {/* <Paragraph className={classes.paragraph}>
+              TODO: Take into account bonus interest
             </Paragraph>
             <Paragraph className={classes.paragraph}>
-              The FE will calculate for them how much is in their RA at the age
-              of 65.
+              TODO: Take into account monthly Contribution
             </Paragraph>
             <Paragraph className={classes.paragraph}>
-              The FE will calculate for them how much they can withdraw at the
-              age of 55.
+              TODO: The FE will calculate for them how much is in their RA at
+              the age of 65.
             </Paragraph>
             <Paragraph className={classes.paragraph}>
-              The FE will calculate for them how much they can withdraw at the
-              age of 65. (either with withdrawal or without withdrawal)
+              Possible: The FE will calculate for them how much they can
+              withdraw at the age of 55.
             </Paragraph>
             <Paragraph className={classes.paragraph}>
-              show impact on CPF life
-            </Paragraph>
+              Possible: The FE will calculate for them how much they can
+              withdraw at the age of 65. (either with withdrawal or without
+              withdrawal at 55)
+            </Paragraph> */}
           </Section>
         )}
 
-        <Paragraph>
+        {/* <Paragraph>
           The user can press a button, whcih will show a new panel below. This
           new panel will show how much more they can get if they transfer all
           sums to SA.
+        </Paragraph>
+        <Paragraph>
+          The user can see a breakdown of values month-on-month
+        </Paragraph>
+        <Paragraph>
+          The user can add in the pledging of their HDB value.
         </Paragraph>
         <Paragraph>
           The user can account for usage of OA sums to a HDB flat at a certain
           future date.
         </Paragraph>
         <Paragraph>
-          The user can add in the pledging of their HDB value.
-        </Paragraph>
-        <Paragraph>
           The user can check how much they will need to pay back to CPF when
           they sell the HDB flat.
-        </Paragraph>
-        <Paragraph>
-          The user can download an excel sheet to store all data.
-        </Paragraph>
-        <Paragraph>
-          The user can upload an excel sheet to read previous data.
-        </Paragraph>
+        </Paragraph> */}
+
+        <div className={classes.bottomPlaceholder} />
 
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           open={snackbarOpen}
-          autoHideDuration={2000}
+          autoHideDuration={1000}
           onClose={handleSnackbarClose}
-          message="Calculated!"
+          message="Success!"
           action={
             <IconButton
               size="small"

@@ -1,5 +1,5 @@
 import { cpfValues, withdrawalAge, payoutAge } from '../constants'
-import { getAgeInMonths, roundTo2Dec } from './cpfCalculator'
+import { getAgeInMonths } from './cpfCalculator'
 
 const {
   baseRate,
@@ -12,6 +12,10 @@ const {
 
 const ordinaryInterestRate = ordinaryIR / 12
 const specialInterestRate = specialIR / 12
+
+const normalRound = (value) => {
+  return Math.floor(value * 100) / 100
+}
 
 export class CPFAccount {
   #ordinaryAccount
@@ -71,8 +75,8 @@ export class CPFAccount {
 
   get accountValues() {
     return {
-      ordinaryAccount: this.#ordinaryAccount,
-      specialAccount: this.#specialAccount,
+      ordinaryAccount: normalRound(this.#ordinaryAccount),
+      specialAccount: normalRound(this.#specialAccount),
       monthsTillWithdrawal: this.#monthsTillWithdrawal,
     }
   }

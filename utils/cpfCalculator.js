@@ -52,6 +52,6 @@ export const calculateFutureValues = (values, selectedDate) => {
   newAccount.addInterestOverTime(remainingMonths)
 
   const data = newAccount.accountValues
-  console.log('data', data)
+
   return data
 }
