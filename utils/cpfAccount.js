@@ -6,7 +6,7 @@ import {
   ordinaryWageCeiling,
   withdrawalAge,
 } from '../constants'
-import { getAge } from './cpfCalculator'
+import { getAge } from './cpfForecast'
 
 const {
   ordinaryIR,
@@ -178,7 +178,7 @@ export class CPFAccount {
     this.#specialAccount = normalRound(
       this.#specialAccount + this.#accruedSpecialInterest
     )
-
+    console.log('adding interest')
     this.#accruedOrdinaryInterest = 0
     this.#accruedSpecialInterest = 0
 
@@ -189,12 +189,8 @@ export class CPFAccount {
     let period = months
 
     while (period > 0) {
-      // Calculate and add Accrued Interest for the end of the previous year
-      if (
-        period % 12 === 0 &&
-        this.#accruedOrdinaryInterest > 0 &&
-        this.#accruedSpecialInterest > 0
-      ) {
+      // Calculate and add Accrued Interest for the end of the previous year. Ignore for the previous full year as that has been accounted for.
+      if (period % 12 === 0 && period !== months) {
         this.addInterestToAccounts()
       }
 

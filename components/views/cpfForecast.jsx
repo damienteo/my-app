@@ -20,9 +20,9 @@ import {
   Paragraph,
   Section,
 } from '../common'
-import HistoryTable from './cpfCalculator/historyTable'
+import HistoryTable from './cpfForecast/historyTable'
 
-import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
+import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfForecast'
 import { getYearsAndMonths } from '../../utils/utils'
 import { cpfAccounts, withdrawalAge, payoutAge } from '../../constants'
 
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 const minDate = moment().subtract(withdrawalAge, 'y')
 const maxDate = moment().subtract(16, 'y')
 
-const CPFCalculatorPage = () => {
+const CPFForecastPage = () => {
   const classes = useStyles()
 
   const [values, setValues] = useState({
@@ -397,4 +397,4 @@ const CPFCalculatorPage = () => {
   )
 }
 
-export default CPFCalculatorPage
+export default CPFForecastPage
