@@ -2,15 +2,17 @@ import moment from 'moment'
 import { CPFAccount } from './cpfAccount'
 
 export const roundTo2Dec = (value) => {
-  let decimalPlace = value.indexOf('.')
-  let isTooLong = value.length > decimalPlace + 3
-  let invalidNum = isNaN(parseFloat(value))
+  let nextValue = value === '0' ? '0' : value.replace(/^0+/, '')
+
+  const decimalPlace = nextValue.indexOf('.')
+  const isTooLong = nextValue.length > decimalPlace + 3
+  const invalidNum = isNaN(parseFloat(nextValue))
 
   if ((decimalPlace >= 0 && isTooLong) || invalidNum) {
-    value = value.slice(0, -1)
+    nextValue = nextValue.slice(0, -1)
   }
 
-  return value
+  return nextValue
 }
 
 export const getAge = (selectedDate, timePeriod) => {
