@@ -6,7 +6,7 @@ import {
   withdrawalAge,
   payoutAge,
 } from '../constants'
-import { getAgeInMonths } from './cpfCalculator'
+import { getAge } from './cpfCalculator'
 
 const {
   baseRate,
@@ -31,11 +31,29 @@ const getAdditionalWageCeiling = (ordinaryWage) => {
   return additionalWageCeiling - ordinaryWage * 12
 }
 
+const getCPFAllocation = (age) => {
+  if (age <= 35) return cpfAllocation['35AndBelow']
+
+  if (age >= 36 && age <= 45) return cpfAllocation['36to45']
+
+  if (age >= 46 && age <= 50) return cpfAllocation['46to50']
+
+  if (age >= 51 && age <= 55) return cpfAllocation['51to55']
+
+  if (age >= 56 && age <= 60) return cpfAllocation['56to60']
+
+  if (age >= 61 && age <= 65) return cpfAllocation['61to65']
+
+  if (age >= 66) return cpfAllocation['66andAbove']
+}
+
 export class CPFAccount {
   #ordinaryAccount
   #specialAccount
   #monthlySalary
 
+  #currentAge
+  #monthProgression
   #monthsTillWithdrawal
 
   #accruedOrdinaryInterest = 0
@@ -48,9 +66,38 @@ export class CPFAccount {
     this.#specialAccount = parseFloat(specialAccount)
     this.#monthlySalary = parseFloat(monthlySalary)
 
-    const currentAgeInMonths = getAgeInMonths(selectedDate)
+    const currentAgeInMonths = getAge(selectedDate, 'months')
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
     this.#monthsTillWithdrawal = monthsTillWithdrawal
+
+    this.#currentAge = getAge(selectedDate, 'years')
+    this.#monthProgression = 0
+  }
+
+  addMonthlySalary() {
+    // Track progression of time
+    this.#monthProgression++
+
+    // Update Age as years pass
+    if (this.#monthProgression % 12 === 0) {
+      this.#currentAge++
+    }
+
+    // If monthly salary exceeds wage ceiling, take only wage ceiling as eligible for CPF contribution
+    const eligibleSalary =
+      this.#monthlySalary > ordinaryWageCeiling
+        ? ordinaryWageCeiling
+        : this.#monthlySalary
+
+    // Get CPF Allocation rates based on current age
+    const currentCPFAllocation = getCPFAllocation(this.#currentAge)
+
+    // Calculate CPF Allocation amounts and add accordingly
+    const OAContribution = eligibleSalary * currentCPFAllocation.OA
+    this.#ordinaryAccount = this.#ordinaryAccount + OAContribution
+
+    const SAContribution = eligibleSalary * currentCPFAllocation.SA
+    this.#specialAccount = this.#specialAccount + SAContribution
   }
 
   addMonthlyInterest() {
@@ -111,18 +158,23 @@ export class CPFAccount {
     this.#accruedSpecialInterest = 0
   }
 
-  addInterestOverTime(months) {
+  addSalaryAndInterestOverTime(months) {
     let period = months
 
     while (period > 0) {
-      // Calculate and Add Accrued Interest at the End of Every year
+      // Calculate and add Accrued Interest for the end of the previous year
       if (period % 12 === 0) {
         this.addInterestToAccounts()
       }
 
-      // Update Accrued Interest amount
+      // Update period for the start of the month
       period -= 1
+
+      // Update Accrued Interest amount
       this.addMonthlyInterest()
+
+      // Add salary at the end of the month, as interest is based on the lowest amount in the account at any time in the month
+      this.addMonthlySalary()
 
       // Add interest at the end of the period
       if (period === 0) {

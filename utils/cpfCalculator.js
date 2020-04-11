@@ -13,10 +13,10 @@ export const roundTo2Dec = (value) => {
   return value
 }
 
-export const getAgeInMonths = (selectedDate) => {
+export const getAge = (selectedDate, timePeriod) => {
   const current = moment()
   const birthday = moment(selectedDate)
-  const duration = current.diff(birthday, 'months')
+  const duration = current.diff(birthday, timePeriod)
   return duration
 }
 
@@ -36,7 +36,7 @@ export const calculateFutureValues = (values, selectedDate) => {
 
   // Calculate interest until the end of the year
   const monthsTillEOY = getMonthsTillEOY()
-  newAccount.addInterestOverTime(monthsTillEOY)
+  newAccount.addSalaryAndInterestOverTime(monthsTillEOY)
 
   // Calculate number of years left in which interest is added to account at end of the year
   const monthsOfInterestAfterThisYear =
@@ -44,10 +44,10 @@ export const calculateFutureValues = (values, selectedDate) => {
   const remainingMonths = monthsOfInterestAfterThisYear % 12
   const monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
   // Calculate interests for the remaining full years
-  newAccount.addInterestOverTime(monthsOfFullYears)
+  newAccount.addSalaryAndInterestOverTime(monthsOfFullYears)
 
   // Calculate interest for the remaining months until 55
-  newAccount.addInterestOverTime(remainingMonths)
+  newAccount.addSalaryAndInterestOverTime(remainingMonths)
 
   return newAccount.accountValues
 }

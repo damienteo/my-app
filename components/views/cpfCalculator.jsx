@@ -256,7 +256,7 @@ const CPFCalculatorPage = () => {
             <Grid item sm={6} className={classes.inputWrapper}>
               <CurrencyInput
                 value={values.monthlySalary}
-                label="Monthly Salary"
+                label="Monthly Salary (Optional)"
                 field="monthlySalary"
                 error={errors && errors.monthlySalary}
                 helperText={errors && errors.monthlySalary}
