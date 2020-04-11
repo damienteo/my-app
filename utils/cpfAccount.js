@@ -1,4 +1,11 @@
-import { cpfValues, withdrawalAge, payoutAge } from '../constants'
+import {
+  cpfAllocation,
+  cpfValues,
+  additionalWageCeiling,
+  ordinaryWageCeiling,
+  withdrawalAge,
+  payoutAge,
+} from '../constants'
 import { getAgeInMonths } from './cpfCalculator'
 
 const {
@@ -20,9 +27,14 @@ const normalRound = (value) => {
   return Math.floor(value * 100) / 100
 }
 
+const getAdditionalWageCeiling = (ordinaryWage) => {
+  return additionalWageCeiling - ordinaryWage * 12
+}
+
 export class CPFAccount {
   #ordinaryAccount
   #specialAccount
+  #monthlySalary
 
   #monthsTillWithdrawal
 
@@ -30,10 +42,11 @@ export class CPFAccount {
   #accruedSpecialInterest = 0
 
   constructor(values, selectedDate) {
-    const { ordinaryAccount, specialAccount } = values
+    const { ordinaryAccount, specialAccount, monthlySalary } = values
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
     this.#specialAccount = parseFloat(specialAccount)
+    this.#monthlySalary = parseFloat(monthlySalary)
 
     const currentAgeInMonths = getAgeInMonths(selectedDate)
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths

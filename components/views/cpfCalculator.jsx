@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
   inputWrapper: {
     padding: 10,
+    '& .MuiFormControl-root': {
+      width: '100%',
+    },
   },
   buttonWrapper: {
     textAlign: 'center',
@@ -70,6 +73,7 @@ const CPFCalculatorPage = () => {
   const [values, setValues] = useState({
     ordinaryAccount: 0,
     specialAccount: 0,
+    monthlySalary: 0,
   })
   const [selectedDate, handleDateChange] = useState(maxDate)
 
@@ -218,12 +222,45 @@ const CPFCalculatorPage = () => {
             <Grid item sm={6} className={classes.inputWrapper}>
               <KeyboardDatePicker
                 value={selectedDate}
+                label="Date of Birth"
                 onChange={(date) => handleDateChange(date)}
                 format="dd/MM/yyyy"
                 minDate={minDate}
                 maxDate={maxDate}
                 minDateMessage={`This date means that you are already ${withdrawalAge} years old`}
                 maxDateMessage="You need to be 16 years old and above to contribute to CPF"
+              />
+            </Grid>
+          </Grid>
+        </Section>
+        <Section>
+          <Paragraph className={classes.paragraph}>
+            Finally, you may add in your month salary (before taxes and CPF
+            contribution).{' '}
+            <InfoPopup title="Info on Employer / Employee CPF Contribution">
+              <Paragraph className={classes.paragraph}>
+                When{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
+                  label="55 and below"
+                />
+                , the employer contributes 17% of the monthly salary, while the
+                employee contributes 20%.
+              </Paragraph>
+              <Paragraph className={classes.paragraph}>
+                Show table with SA and OA percentage contributions over time
+              </Paragraph>
+            </InfoPopup>
+          </Paragraph>
+          <Grid container>
+            <Grid item sm={6} className={classes.inputWrapper}>
+              <CurrencyInput
+                value={values.monthlySalary}
+                label="Monthly Salary"
+                field="monthlySalary"
+                error={errors && errors.monthlySalary}
+                helperText={errors && errors.monthlySalary}
+                handleChange={handleChange}
               />
             </Grid>
           </Grid>
@@ -279,10 +316,8 @@ const CPFCalculatorPage = () => {
                 </Paragraph>
               </InfoPopup>
             </Paragraph>
-            <Paragraph className={classes.paragraph}>
-              TODO: Take into account monthly Contribution
-            </Paragraph>
-            <Paragraph className={classes.paragraph}>
+
+            {/* <Paragraph className={classes.paragraph}>
               TODO: The FE will calculate for them how much is in their RA at
               the age of 65.
             </Paragraph>
@@ -294,8 +329,7 @@ const CPFCalculatorPage = () => {
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 65. (either with withdrawal or without
               withdrawal at 55)
-            </Paragraph>{' '}
-            */}
+            </Paragraph> */}
           </Section>
         )}
 
