@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonWrapper: {
     textAlign: 'center',
-    marginBottom: `${theme.spacing(1.5)}px`,
+    margin: `${theme.spacing(1.5)}px 0`,
   },
   button: {
     backgroundColor: teal[200],
@@ -294,16 +294,31 @@ const CPFForecastPage = () => {
               account, and ${futureValues.specialAccount.toLocaleString()} in
               your special account.
             </Paragraph>
-            <div className={classes.buttonWrapper}>
-              <Button
-                variant="contained"
-                className={classes.button}
-                onClick={() => setHistoryOpen(!historyOpen)}
-              >
-                {historyOpen ? 'Hide' : 'Show'} Breakdown!
-              </Button>
-            </div>
-            {historyOpen && <HistoryTable data={futureValues.history} />}
+            {futureValues.history.length > 0 && (
+              <div className={classes.buttonWrapper}>
+                <Button
+                  variant="contained"
+                  className={classes.button}
+                  onClick={() => setHistoryOpen(!historyOpen)}
+                >
+                  {historyOpen ? 'Hide' : 'Show'} Breakdown!
+                </Button>
+              </div>
+            )}
+            {historyOpen && (
+              <>
+                <HistoryTable data={futureValues.history} />
+                <div className={classes.buttonWrapper}>
+                  <Button
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() => setHistoryOpen(!historyOpen)}
+                  >
+                    {historyOpen ? 'Hide' : 'Show'} Breakdown!
+                  </Button>
+                </div>
+              </>
+            )}
             {/* <Paragraph className={classes.paragraph}>
               CPF interest is computed monthly. It is then credited to your
               respective accounts and compounded annually.

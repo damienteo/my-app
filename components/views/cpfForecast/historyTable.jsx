@@ -9,10 +9,13 @@ import {
   TableRow,
   Paper,
 } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
+  buttonsWrapper: {
+    textAlign: 'center',
   },
 })
 
@@ -31,42 +34,74 @@ const chunkArray = (myArray, chunk_size) => {
 }
 
 const HistoryTable = (props) => {
+  const classes = useStyles()
   const { data = [] } = props
   const [page, setPage] = useState(0)
 
   const history = chunkArray(data, 15)
-  // TODO: Add method for navigating between history chunks
+
+  const seePrevHistory = () => {
+    setPage(page - 1)
+  }
+
+  const seeNextHistory = () => {
+    setPage(page + 1)
+  }
+
+  const renderButtons = () => {
+    return (
+      <div className={classes.buttonsWrapper}>
+        <IconButton
+          aria-label={`Prev Button`}
+          onClick={seePrevHistory}
+          disabled={page === 0}
+        >
+          <ChevronLeftIcon />
+        </IconButton>
+        <IconButton
+          aria-label={`Forward Button`}
+          onClick={seeNextHistory}
+          disabled={page === history.length - 1}
+        >
+          <ChevronRightIcon />
+        </IconButton>
+      </div>
+    )
+  }
+
   return (
     <>
+      {renderButtons()}
       <TableContainer component={Paper}>
         <Table aria-label="CPF Forecast History">
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
+              <TableCell>Category</TableCell>
               <TableCell align="right">Ordinary Account</TableCell>
               <TableCell align="right">Special Account</TableCell>
-              <TableCell>Category</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {history[page] &&
-              data.map((row, index) => (
+              history[page].map((row, index) => (
                 <TableRow key={index + row.date}>
                   <TableCell component="th" scope="row">
                     {row.date}
                   </TableCell>
+                  <TableCell>{row.category}</TableCell>
                   <TableCell align="right">
                     ${row.ordinaryAccount.toLocaleString()}
                   </TableCell>
                   <TableCell align="right">
                     ${row.specialAccount.toLocaleString()}
                   </TableCell>
-                  <TableCell>{row.category}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {renderButtons()}
     </>
   )
 }

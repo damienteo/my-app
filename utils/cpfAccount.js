@@ -111,7 +111,10 @@ export class CPFAccount {
     const SAContribution = normalRound(eligibleSalary * currentCPFAllocation.SA)
     this.#specialAccount = this.#specialAccount + SAContribution
 
-    this.updateHistory('Contribution')
+    // Update history  and accrued amounts only if there is an addition of interest to the balance
+    if (OAContribution > 0 || SAContribution > 0) {
+      this.updateHistory('Contribution')
+    }
   }
 
   addMonthlyInterest() {
@@ -178,11 +181,13 @@ export class CPFAccount {
     this.#specialAccount = normalRound(
       this.#specialAccount + this.#accruedSpecialInterest
     )
-    console.log('adding interest')
-    this.#accruedOrdinaryInterest = 0
-    this.#accruedSpecialInterest = 0
 
-    this.updateHistory('Interest')
+    // Update history  and accrued amounts only if there is an addition of interest to the balance
+    if (this.#accruedOrdinaryInterest > 0 || this.#accruedSpecialInterest > 0) {
+      this.updateHistory('Interest')
+      this.#accruedOrdinaryInterest = 0
+      this.#accruedSpecialInterest = 0
+    }
   }
 
   addSalaryAndInterestOverTime(months) {
