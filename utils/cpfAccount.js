@@ -78,8 +78,6 @@ export class CPFAccount {
       this.#accruedSpecialInterest +
       bonusSpecialInterest +
       nonBonusSpecialInterest
-
-    console.log(this.#accruedSpecialInterest)
   }
 
   addInterestToAccounts() {
