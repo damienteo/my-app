@@ -159,42 +159,9 @@ const CPFCalculatorPage = () => {
           </InfoPopup>
         </div>
 
-        {/* Aim */}
-        {/* <Paragraph className={classes.introduction}>
-          This page is a result of my personal research into how CPF works. I
-          wanted to know:
-        </Paragraph>
-        <div className={classes.listWrapper}>
-          <ol>
-            <li>
-              What happens if I{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="transfer"
-              />{' '}
-              all my money from the Ordinary Account to the Special Account?
-            </li>
-            <li>
-              What happens if I use my CPF OA Account for{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="housing"
-              />
-              ?
-            </li>
-            <li>
-              Will I be able to meet the{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
-                label="Retirement Sum"
-              />
-              ?
-            </li>
-          </ol>
-        </div> */}
         <Paragraph variant="subtitle2" className={classes.introduction}>
           This page does not save any data, and purely calculates values based
-          on your input.
+          on your input. Interest Rates, etc, were last checked in April 2020.
         </Paragraph>
 
         {/* User Input */}
@@ -239,7 +206,7 @@ const CPFCalculatorPage = () => {
             date when you can start withdrawing it.{' '}
             <InfoPopup title="Withdrawal of CPF Savings">
               <Paragraph className={classes.paragraph}>
-                Members can withdraw their CPF retirement savings any time from
+                Members can withdraw their CPF retirement savings any time from{' '}
                 {withdrawalAge} years old. The withdrawal of your CPF retirement
                 savings is optional. More info can be found can be found here{' '}
                 <ExternalLink
@@ -270,7 +237,7 @@ const CPFCalculatorPage = () => {
             className={classes.button}
             onClick={handleSubmit}
           >
-            Calculate my CPF!
+            Forecast my CPF!
           </Button>
         </div>
 
@@ -294,6 +261,24 @@ const CPFCalculatorPage = () => {
                     label="How"
                   />{' '}
                   is my CPF interest computed and credited into my accounts?
+                </Paragraph>
+              </InfoPopup>
+            </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              Central Provident Fund (CPF) members currently earn interest rates
+              of up to 3.5% per annum on their Ordinary Account (OA) monies, and
+              up to 5% per annum on their Special and MediSave Account (SMA)
+              monies. Retirement Account (RA) monies currently earn up to 5% per
+              annum. The above interest rates include an extra 1% interest paid
+              on the first $60,000 of a member's combined balances (with up to
+              $20,000 from the OA).
+              <InfoPopup title="Info on bonus Interest">
+                <Paragraph className={classes.paragraph}>
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
+                    label="What"
+                  />{' '}
+                  is my bonus interest?
                 </Paragraph>
               </InfoPopup>
             </Paragraph>

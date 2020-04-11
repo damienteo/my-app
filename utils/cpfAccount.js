@@ -13,6 +13,9 @@ const {
 const ordinaryInterestRate = ordinaryIR / 12
 const specialInterestRate = specialIR / 12
 
+const bonusOrdinaryInterestRate = (ordinaryIR + bonusIR) / 12
+const bonusSpecialInterestRate = (specialIR + bonusIR) / 12
+
 const normalRound = (value) => {
   return Math.floor(value * 100) / 100
 }
@@ -38,11 +41,45 @@ export class CPFAccount {
   }
 
   addMonthlyInterest() {
-    this.#accruedOrdinaryInterest =
-      this.#accruedOrdinaryInterest +
-      this.#ordinaryAccount * ordinaryInterestRate
+    // Take note of Bonus Ordinary Account Cap
+    const eligibleOrdinaryAmount =
+      this.#ordinaryAccount > ordinaryAmtCap
+        ? ordinaryAmtCap
+        : this.#ordinaryAccount
+
+    // Settle Additional Interest for Ordinary Account
+    if (eligibleOrdinaryAmount === ordinaryAmtCap) {
+      // Take out amount in OA that is not eligible for bonus interest rate
+      const nonBonusOrdinaryAmount = this.#ordinaryAccount - ordinaryAmtCap
+
+      const bonusInterest = ordinaryAmtCap * bonusOrdinaryInterestRate
+      const nonBonusInterest = nonBonusOrdinaryAmount * ordinaryInterestRate
+
+      this.#accruedOrdinaryInterest =
+        this.#accruedOrdinaryInterest + bonusInterest + nonBonusInterest
+    } else {
+      // If Ordinary Account is below the cap, entire Ordinary Account is eligible for bonus interest
+      this.#accruedOrdinaryInterest =
+        this.#accruedOrdinaryInterest +
+        this.#ordinaryAccount * bonusOrdinaryInterestRate
+    }
+
+    // Take note of Special Account eligible for Bonus Rate, by taking out Ordinary Account from Bonus Account Cap
+    const eligibleSpecialAmount = bonusAmtCap - eligibleOrdinaryAmount
+    const nonBonusSpecialAmount = this.#specialAccount - eligibleSpecialAmount
+
+    // Settle Additional Interest for Special Account
+    const bonusSpecialInterest =
+      eligibleSpecialAmount * bonusSpecialInterestRate
+    const nonBonusSpecialInterest = nonBonusSpecialAmount * specialInterestRate
+
+    // Add bonus SA interest
     this.#accruedSpecialInterest =
-      this.#accruedSpecialInterest + this.#specialAccount * specialInterestRate
+      this.#accruedSpecialInterest +
+      bonusSpecialInterest +
+      nonBonusSpecialInterest
+
+    console.log(this.#accruedSpecialInterest)
   }
 
   addInterestToAccounts() {
@@ -63,6 +100,7 @@ export class CPFAccount {
         this.addInterestToAccounts()
       }
 
+      // Update Accrued Interest amount
       period -= 1
       this.addMonthlyInterest()
 

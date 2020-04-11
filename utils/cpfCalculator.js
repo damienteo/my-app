@@ -34,24 +34,20 @@ export const calculateFutureValues = (values, selectedDate) => {
 
   // Add simple interest based on months, and add interest to sum annually every 1st Jan
 
-  let monthsTillEOY = getMonthsTillEOY()
-
   // Calculate interest until the end of the year
+  const monthsTillEOY = getMonthsTillEOY()
   newAccount.addInterestOverTime(monthsTillEOY)
 
   // Calculate number of years left in which interest is added to account at end of the year
   const monthsOfInterestAfterThisYear =
     newAccount.monthsTillWithdrawal - monthsTillEOY
-  let remainingMonths = monthsOfInterestAfterThisYear % 12
-  let monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
-
+  const remainingMonths = monthsOfInterestAfterThisYear % 12
+  const monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
   // Calculate interests for the remaining full years
   newAccount.addInterestOverTime(monthsOfFullYears)
 
   // Calculate interest for the remaining months until 55
   newAccount.addInterestOverTime(remainingMonths)
 
-  const data = newAccount.accountValues
-
-  return data
+  return newAccount.accountValues
 }
