@@ -37,6 +37,7 @@ export const calculateFutureValues = (values, selectedDate) => {
   // Add simple interest based on months, and add interest to sum annually every 1st Jan
 
   // Calculate interest until the end of the year
+  // FIXME: Should not get months till EOY if subject is already 55 years old
   const monthsTillEOY = getMonthsTillEOY()
   newAccount.addSalaryAndInterestOverTime(monthsTillEOY)
 
