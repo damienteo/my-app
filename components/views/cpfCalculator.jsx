@@ -20,6 +20,7 @@ import {
   Paragraph,
   Section,
 } from '../common'
+import HistoryTable from './cpfCalculator/historyTable'
 
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfCalculator'
 import { getYearsAndMonths } from '../../utils/utils'
@@ -81,11 +82,13 @@ const CPFCalculatorPage = () => {
 
   const [isCalculating, setCalculating] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [historyOpen, setHistoryOpen] = React.useState(false)
 
   const [futureValues, setFutureValues] = useState({
     monthsTillWithdrawal: undefined,
     ordinaryAccount: undefined,
     specialAccount: undefined,
+    history: [],
   })
 
   const validateValues = () => {
@@ -291,6 +294,16 @@ const CPFCalculatorPage = () => {
               account, and ${futureValues.specialAccount.toLocaleString()} in
               your special account.
             </Paragraph>
+            <div className={classes.buttonWrapper}>
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={() => setHistoryOpen(!historyOpen)}
+              >
+                {historyOpen ? 'Hide' : 'Show'} Breakdown!
+              </Button>
+            </div>
+            {historyOpen && <HistoryTable data={futureValues.history} />}
             {/* <Paragraph className={classes.paragraph}>
               CPF interest is computed monthly. It is then credited to your
               respective accounts and compounded annually.
@@ -344,9 +357,7 @@ const CPFCalculatorPage = () => {
           new panel will show how much more they can get if they transfer all
           sums to SA.
         </Paragraph>
-        <Paragraph>
-          The user can see a breakdown of values month-on-month
-        </Paragraph>
+
         <Paragraph>
           The user can add in the pledging of their HDB value.
         </Paragraph>
