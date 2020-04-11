@@ -55,6 +55,7 @@ export class CPFAccount {
       const bonusInterest = ordinaryAmtCap * bonusOrdinaryInterestRate
       const nonBonusInterest = nonBonusOrdinaryAmount * ordinaryInterestRate
 
+      // Accrue OA interest
       this.#accruedOrdinaryInterest =
         this.#accruedOrdinaryInterest + bonusInterest + nonBonusInterest
     } else {
@@ -65,7 +66,15 @@ export class CPFAccount {
     }
 
     // Take note of Special Account eligible for Bonus Rate, by taking out Ordinary Account from Bonus Account Cap
-    const eligibleSpecialAmount = bonusAmtCap - eligibleOrdinaryAmount
+    const eligibleSpecialAmountCap = bonusAmtCap - eligibleOrdinaryAmount
+
+    // Take note of Amount in Special Account eligible for Bonus Interest
+    const eligibleSpecialAmount =
+      this.#specialAccount > eligibleSpecialAmountCap
+        ? eligibleSpecialAmountCap
+        : this.#specialAccount
+
+    // Take note of Amount in Special Account NOT eligible for Bonus Interest
     const nonBonusSpecialAmount = this.#specialAccount - eligibleSpecialAmount
 
     // Settle Additional Interest for Special Account
@@ -73,7 +82,7 @@ export class CPFAccount {
       eligibleSpecialAmount * bonusSpecialInterestRate
     const nonBonusSpecialInterest = nonBonusSpecialAmount * specialInterestRate
 
-    // Add bonus SA interest
+    // Accrue SA interest
     this.#accruedSpecialInterest =
       this.#accruedSpecialInterest +
       bonusSpecialInterest +

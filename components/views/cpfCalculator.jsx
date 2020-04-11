@@ -37,9 +37,6 @@ const useStyles = makeStyles((theme) => ({
   },
   introduction: {
     margin: `${theme.spacing(2)}px 0`,
-    '& ol': {
-      margin: `${theme.spacing(1)}px 0`,
-    },
   },
   listWrapper: { fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif' },
   paragraph: {
@@ -160,8 +157,8 @@ const CPFCalculatorPage = () => {
         </div>
 
         <Paragraph variant="subtitle2" className={classes.introduction}>
-          This page does not save any data, and purely calculates values based
-          on your input. Interest Rates, etc, were last checked in April 2020.
+          Interest Rates, etc, were last checked in April 2020. This page does
+          not save any data, and calculates values based on your input.
         </Paragraph>
 
         {/* User Input */}
@@ -282,9 +279,6 @@ const CPFCalculatorPage = () => {
                 </Paragraph>
               </InfoPopup>
             </Paragraph>
-            {/* <Paragraph className={classes.paragraph}>
-              TODO: Take into account bonus interest
-            </Paragraph>
             <Paragraph className={classes.paragraph}>
               TODO: Take into account monthly Contribution
             </Paragraph>
@@ -300,7 +294,8 @@ const CPFCalculatorPage = () => {
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 65. (either with withdrawal or without
               withdrawal at 55)
-            </Paragraph> */}
+            </Paragraph>{' '}
+            */}
           </Section>
         )}
 
