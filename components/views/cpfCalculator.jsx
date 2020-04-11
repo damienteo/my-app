@@ -116,8 +116,14 @@ const CPFCalculatorPage = () => {
       (el) => el === undefined
     )
 
+    // Replace empty strings with 0
+    const nextValues = {}
+    Object.keys(values).map((key) => {
+      return (nextValues[key] = values[key] === '' ? 0 : values[key])
+    })
+
     if (isCorrectInput) {
-      const nextFutureValues = calculateFutureValues(values, selectedDate)
+      const nextFutureValues = calculateFutureValues(nextValues, selectedDate)
       setFutureValues(nextFutureValues)
       setCalculating(true)
       setSnackbarOpen(true)
@@ -285,7 +291,7 @@ const CPFCalculatorPage = () => {
               account, and ${futureValues.specialAccount.toLocaleString()} in
               your special account.
             </Paragraph>
-            <Paragraph className={classes.paragraph}>
+            {/* <Paragraph className={classes.paragraph}>
               CPF interest is computed monthly. It is then credited to your
               respective accounts and compounded annually.
               <InfoPopup title="How interest is paid">
@@ -297,8 +303,8 @@ const CPFCalculatorPage = () => {
                   is my CPF interest computed and credited into my accounts?
                 </Paragraph>
               </InfoPopup>
-            </Paragraph>
-            <Paragraph className={classes.paragraph}>
+            </Paragraph> */}
+            {/* <Paragraph className={classes.paragraph}>
               Central Provident Fund (CPF) members currently earn interest rates
               of up to 3.5% per annum on their Ordinary Account (OA) monies, and
               up to 5% per annum on their Special and MediSave Account (SMA)
@@ -315,7 +321,7 @@ const CPFCalculatorPage = () => {
                   is my bonus interest?
                 </Paragraph>
               </InfoPopup>
-            </Paragraph>
+            </Paragraph> */}
 
             {/* <Paragraph className={classes.paragraph}>
               TODO: The FE will calculate for them how much is in their RA at
