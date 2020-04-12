@@ -67,6 +67,11 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     width: '100%',
   },
+  highlightText: {
+    backgroundColor: '#282c35',
+    color: '#e3f2fd',
+    padding: '2px 5px',
+  },
 }))
 
 const minDate = moment().subtract(withdrawalAge, 'y')
@@ -291,10 +296,21 @@ const CPFForecastPage = () => {
           <Section>
             <Paragraph className={classes.paragraph}>
               In {getYearsAndMonths(futureValues.monthsTillWithdrawal)}, when
-              you are {withdrawalAge} years old, you will have $
-              {futureValues.ordinaryAccount.toLocaleString()} in your ordinary
-              account, and ${futureValues.specialAccount.toLocaleString()} in
-              your special account.
+              you are{' '}
+              <span className={classes.highlightText}>
+                {withdrawalAge} years old
+              </span>
+              , you will have{' '}
+              <span className={classes.highlightText}>
+                ${futureValues.ordinaryAccount.toLocaleString()} in your
+                ordinary account
+              </span>
+              , and{' '}
+              <span className={classes.highlightText}>
+                ${futureValues.specialAccount.toLocaleString()} in your special
+                account
+              </span>
+              .
               <InfoPopup title="How calculations are made">
                 <Paragraph className={classes.paragraph}>
                   With regards to{' '}
