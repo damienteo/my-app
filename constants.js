@@ -19,6 +19,7 @@ export const cpfValues = {
   baseRate: 1,
   ordinaryIR: 0.025,
   specialIR: 0.04,
+  retirementIR: 0.04,
   bonusIR: 0.01,
   bonusAmtCap: 60000,
   ordinaryAmtCap: 20000,
@@ -60,3 +61,6 @@ export const additionalWageCeiling = 102000
 
 export const withdrawalAge = 55
 export const payoutAge = 65
+
+export const fullRetirementSum = 181000
+export const retirementSumIncrease = 5000

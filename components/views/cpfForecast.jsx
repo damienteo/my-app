@@ -97,7 +97,11 @@ const CPFForecastPage = () => {
     monthsTillWithdrawal: undefined,
     ordinaryAccount: undefined,
     specialAccount: undefined,
+    retirementAccount: undefined,
+    ordinaryAccountAtWithdrawalAge: undefined,
+    specialAccountAtWithdrawalAge: undefined,
     history: [],
+    historyAfter55: [],
     monthlySalary: 0,
   })
 
@@ -293,79 +297,66 @@ const CPFForecastPage = () => {
 
         {/* Calculation*/}
         {isCalculating && (
-          <Section>
-            <Paragraph className={classes.paragraph}>
-              In {getYearsAndMonths(futureValues.monthsTillWithdrawal)}, when
-              you are{' '}
-              <span className={classes.highlightText}>
-                {withdrawalAge} years old
-              </span>
-              , you will have{' '}
-              <span className={classes.highlightText}>
-                ${futureValues.ordinaryAccount.toLocaleString()} in your
-                ordinary account
-              </span>
-              , and{' '}
-              <span className={classes.highlightText}>
-                ${futureValues.specialAccount.toLocaleString()} in your special
-                account
-              </span>
-              .
-              <InfoPopup title="How calculations are made">
-                <Paragraph className={classes.paragraph}>
-                  With regards to{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
-                    label="interest"
+          <>
+            {/* OA and SA during Withdrawal Age (55)*/}
+            <Section>
+              <Paragraph className={classes.paragraph}>
+                {/* TODO: Update values here */}
+                In {getYearsAndMonths(futureValues.monthsTillWithdrawal)}, when
+                you are{' '}
+                <span className={classes.highlightText}>
+                  {withdrawalAge} years old
+                </span>
+                , you will have{' '}
+                <span className={classes.highlightText}>
+                  $
+                  {futureValues.ordinaryAccountAtWithdrawalAge.toLocaleString()}
+                </span>{' '}
+                in your Ordinary Account , and{' '}
+                <span className={classes.highlightText}>
+                  ${futureValues.specialAccountAtWithdrawalAge.toLocaleString()}
+                </span>{' '}
+                in your Special Account.
+                <InfoPopup title="How calculations are made">
+                  <Paragraph className={classes.paragraph}>
+                    With regards to{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
+                      label="interest"
+                    />
+                    , CPF interest is computed monthly. It is then credited to
+                    your respective accounts and compounded annually.
+                  </Paragraph>
+                  <Paragraph className={classes.paragraph}>
+                    Central Provident Fund (CPF) members currently earn interest
+                    rates of up to 3.5% per annum on their Ordinary Account (OA)
+                    monies, and up to 5% per annum on their Special and MediSave
+                    Account (SMA) monies. Retirement Account (RA) monies
+                    currently earn up to 5% per annum. The above{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
+                      label="interest rates"
+                    />{' '}
+                    include an extra 1% interest paid on the first $60,000 of a
+                    member's combined balances (with up to $20,000 from the OA).
+                  </Paragraph>
+                  <img
+                    src="/TableC1_AllocationRates.png"
+                    alt="CPF Allocation Table"
+                    className={classes.image}
                   />
-                  , CPF interest is computed monthly. It is then credited to
-                  your respective accounts and compounded annually.
-                </Paragraph>
-                <Paragraph className={classes.paragraph}>
-                  Central Provident Fund (CPF) members currently earn interest
-                  rates of up to 3.5% per annum on their Ordinary Account (OA)
-                  monies, and up to 5% per annum on their Special and MediSave
-                  Account (SMA) monies. Retirement Account (RA) monies currently
-                  earn up to 5% per annum. The above{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
-                    label="interest rates"
-                  />{' '}
-                  include an extra 1% interest paid on the first $60,000 of a
-                  member's combined balances (with up to $20,000 from the OA).
-                </Paragraph>
-                <img
-                  src="/TableC1_AllocationRates.png"
-                  alt="CPF Allocation Table"
-                  className={classes.image}
-                />
-                <Paragraph className={classes.paragraph}>
-                  The image above for CPF Allocation rates was sourced from{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
-                    label="here"
-                  />
-                  .
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph>
-            {futureValues.history.length > 0 && (
-              <div className={classes.buttonWrapper}>
-                <Button
-                  variant="contained"
-                  className={classes.button}
-                  onClick={() => setHistoryOpen(!historyOpen)}
-                >
-                  {historyOpen ? 'Hide' : 'Show'} Breakdown!
-                </Button>
-              </div>
-            )}
-            {historyOpen && (
-              <>
-                <HistoryTable
-                  data={futureValues.history}
-                  groupByYear={futureValues.monthlySalary > 0}
-                />
+                  <Paragraph className={classes.paragraph}>
+                    The image above for CPF Allocation rates was sourced from{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
+                      label="here"
+                    />
+                    .
+                  </Paragraph>
+                </InfoPopup>
+              </Paragraph>
+              {/* History Table for Transactions up to 55 years old */}
+              {futureValues.history.length > 0 && (
                 <div className={classes.buttonWrapper}>
                   <Button
                     variant="contained"
@@ -375,14 +366,86 @@ const CPFForecastPage = () => {
                     {historyOpen ? 'Hide' : 'Show'} Breakdown!
                   </Button>
                 </div>
-              </>
-            )}
+              )}
+              {historyOpen && (
+                <>
+                  <HistoryTable
+                    data={futureValues.history}
+                    groupByYear={futureValues.monthlySalary > 0}
+                  />
+                  <div className={classes.buttonWrapper}>
+                    <Button
+                      variant="contained"
+                      className={classes.button}
+                      onClick={() => setHistoryOpen(!historyOpen)}
+                    >
+                      {historyOpen ? 'Hide' : 'Show'} Breakdown!
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Section>
 
-            {/* <Paragraph className={classes.paragraph}>
-              TODO: The FE will calculate for them how much is in their RA at
-              the age of 65.
-            </Paragraph>
-            <Paragraph className={classes.paragraph}>
+            {/* OA and SA during Retirement Age (65)*/}
+            <Section>
+              <Paragraph className={classes.paragraph}>
+                In {getYearsAndMonths(futureValues.monthsTillWithdrawal + 120)},
+                when you are{' '}
+                <span className={classes.highlightText}>
+                  {payoutAge} years old
+                </span>
+                , you will have{' '}
+                <span className={classes.highlightText}>
+                  ${futureValues.ordinaryAccount.toLocaleString()}
+                </span>{' '}
+                in your Ordinary Account ,{' '}
+                <span className={classes.highlightText}>
+                  ${futureValues.specialAccount.toLocaleString()}
+                </span>{' '}
+                in your Special Account, and{' '}
+                <span className={classes.highlightText}>
+                  ${futureValues.retirementAccount.toLocaleString()}
+                </span>{' '}
+                in your Retirement Account.
+                <InfoPopup title="What is a Retirement Account?">
+                  <Paragraph className={classes.paragraph}>
+                    On your 55th birthday, CPF will create a{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=retirement&group=Retirement+Sum+Scheme&ajfaqid=2190582&folderid=18088"
+                      label="Retirement Account"
+                    />{' '}
+                    (RA) for you. Savings from your Special Account and Ordinary
+                    Account, up to the Full Retirement Sum (FRS), will be{' '}
+                    <ExternalLink
+                      url="https://www.areyouready.sg/YourInfoHub/Pages/News-3-questions-about-CPF-withdrawals-from-age-55.aspx"
+                      label="transferred"
+                    />{' '}
+                    to your RA to form your retirement sum which will provide
+                    you with{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/retirement/cpf-life"
+                      label="monthly payouts"
+                    />{' '}
+                    from the age of 65.
+                  </Paragraph>
+                  <Paragraph className={classes.paragraph}>
+                    * We have also made an assumption for the Full Retirement
+                    Sum based on{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Scheme&ajfaqid=2190584&folderid=18088"
+                      label="historical trends"
+                    />
+                    . The FRS has increased by $5,000 per year from 2017 till
+                    2021, and we have adjusted the FRS accordingly for when you
+                    turn 55. Please note that, this is purely an assumption made
+                    by me, who do not represent the government or CPF in any
+                    shape or form. It is just a forecast.
+                  </Paragraph>
+                </InfoPopup>
+                {/* TODO: Add history table */}
+              </Paragraph>
+
+              {/* <Paragraph className={classes.paragraph}>
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 55.
             </Paragraph>
@@ -390,8 +453,9 @@ const CPFForecastPage = () => {
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 65. (either with withdrawal or without
               withdrawal at 55)
-            </Paragraph> */}
-          </Section>
+            </Paragraph>{' '} */}
+            </Section>
+          </>
         )}
 
         {/* <Paragraph>

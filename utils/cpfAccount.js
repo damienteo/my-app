@@ -2,7 +2,8 @@ import moment from 'moment'
 import {
   cpfAllocation,
   cpfValues,
-  additionalWageCeiling,
+  fullRetirementSum,
+  retirementSumIncrease,
   ordinaryWageCeiling,
   withdrawalAge,
 } from '../constants'
@@ -11,6 +12,7 @@ import { getAge } from './cpfForecast'
 const {
   ordinaryIR,
   specialIR,
+  retirementIR,
   bonusIR,
   bonusAmtCap,
   ordinaryAmtCap,
@@ -18,16 +20,14 @@ const {
 
 const ordinaryInterestRate = ordinaryIR / 12
 const specialInterestRate = specialIR / 12
+const retirementInterestRate = retirementIR / 12
 
 const bonusOrdinaryInterestRate = (ordinaryIR + bonusIR) / 12
 const bonusSpecialInterestRate = (specialIR + bonusIR) / 12
+const bonusRetirementInterestRate = (retirementIR + bonusIR) / 12
 
 const normalRound = (value) => {
   return Math.round((value + Number.EPSILON) * 100) / 100
-}
-
-const getAdditionalWageCeiling = (ordinaryWage) => {
-  return additionalWageCeiling - ordinaryWage * 12
 }
 
 const getCPFAllocation = (age) => {
@@ -49,16 +49,22 @@ const getCPFAllocation = (age) => {
 export class CPFAccount {
   #ordinaryAccount
   #specialAccount
+  #retirementAccount = 0
+  #ordinaryAccountAtWithdrawalAge = 0
+  #specialAccountAtWithdrawalAge = 0
   #monthlySalary
 
   #currentAge
-  #monthProgression = 0
-  #monthsTillWithdrawal
   #currentDate = moment()
+  #monthProgression = 0
+  #reachedWithdrawalAge = false
   #history = []
+  #historyAfterWithdrawalAge = []
+  #monthsTillWithdrawal
 
   #accruedOrdinaryInterest = 0
   #accruedSpecialInterest = 0
+  #accruedRetirementInterest = 0
 
   constructor(values, selectedDate) {
     const { ordinaryAccount, specialAccount, monthlySalary } = values
@@ -95,6 +101,55 @@ export class CPFAccount {
     })
   }
 
+  updateHistoryAfterWithdrawalAge(category, rest) {
+    this.#historyAfterWithdrawalAge.push({
+      date: this.#currentDate.format('MMM YYYY'),
+      category,
+      ordinaryAccount: normalRound(this.#ordinaryAccount),
+      specialAccount: normalRound(this.#specialAccount),
+      retirementAccount: normalRound(this.#retirementAccount),
+      ...rest,
+    })
+  }
+
+  updateAccountsAtWithdrawalAge() {
+    this.#ordinaryAccountAtWithdrawalAge = this.#ordinaryAccount
+    this.#specialAccountAtWithdrawalAge = this.#specialAccount
+    this.#reachedWithdrawalAge = true
+
+    const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
+    const yearOfWithdrawalAge = dateOfWithdrawalAge.split(' ')[1]
+    const currentYear = moment().year()
+    const yearsFromPresent = yearOfWithdrawalAge - currentYear
+
+    const nextCPFFullRetirementSum =
+      fullRetirementSum + retirementSumIncrease * yearsFromPresent
+
+    // Transfer from Special Account to Retirement Account first
+    const isSpecialEnoughForRetirement =
+      this.#specialAccount > fullRetirementSum
+
+    // Calculate amounts to be transferred from SA / OA to RA
+    const specialToRetirementAmount = isSpecialEnoughForRetirement
+      ? fullRetirementSum
+      : this.#specialAccount
+
+    const retirementSumShortfall = fullRetirementSum - specialToRetirementAmount
+    const ordinaryToRetirementAmount =
+      this.#ordinaryAccount > retirementSumShortfall
+        ? retirementSumShortfall
+        : this.#ordinaryAccount
+
+    //  Remove SA and OA Amounts to be transferred
+    this.#specialAccount = this.#specialAccount - specialToRetirementAmount
+    this.#ordinaryAccount = this.#ordinaryAccount - ordinaryToRetirementAmount
+
+    this.#retirementAccount =
+      specialToRetirementAmount + ordinaryToRetirementAmount
+
+    this.updateHistoryAfterWithdrawalAge('Transfer')
+  }
+
   addMonthlySalary() {
     // If monthly salary exceeds wage ceiling, take only wage ceiling as eligible for CPF contribution
     const eligibleSalary =
@@ -114,10 +169,18 @@ export class CPFAccount {
 
     // Update history  and accrued amounts only if there is an addition of interest to the balance
     if (OAContribution > 0 || SAContribution > 0) {
-      this.updateHistory('Contribution', {
-        ordinaryAccount: OAContribution,
-        specialAccount: SAContribution,
-      })
+      if (!this.#reachedWithdrawalAge) {
+        this.updateHistory('Contribution', {
+          ordinaryAccount: OAContribution,
+          specialAccount: SAContribution,
+        })
+      } else {
+        this.updateHistoryAfterWithdrawalAge('Contribution', {
+          ordinaryAccount: OAContribution,
+          specialAccount: SAContribution,
+          retirementAccount: 0,
+        })
+      }
     }
   }
 
@@ -176,6 +239,38 @@ export class CPFAccount {
         bonusSpecialInterest +
         nonBonusSpecialInterest
     )
+
+    // If Withdrawal Age reached, calculate Retirement Account interest adn Accrue:
+    if (this.#reachedWithdrawalAge) {
+      // Take note of Retirement Account eligible for Bonus Rate, by taking out eligibleSpecialAmount from eligibleSpecialAmountCap
+      const eligibleRetirementAmountCap =
+        eligibleSpecialAmountCap - eligibleSpecialAmount
+
+      // Take note of Amount in Special Account eligible for Bonus Interest
+      const eligibleRetirementAmount =
+        this.#retirementAccount > eligibleRetirementAmountCap
+          ? eligibleRetirementAmountCap
+          : this.#retirementAccount
+
+      // Take note of Amount in Special Account NOT eligible for Bonus Interest
+      const nonBonusRetirementAmount =
+        this.#retirementAccount - eligibleRetirementAmount
+
+      // Settle Additional Interest for Retirement Account
+      const bonusRetirementInterest = normalRound(
+        eligibleRetirementAmount * bonusRetirementInterestRate
+      )
+      const nonBonusRetirementInterest = normalRound(
+        nonBonusRetirementAmount * retirementInterestRate
+      )
+
+      // Accrue RA interest
+      this.#accruedRetirementInterest = normalRound(
+        this.#accruedRetirementInterest +
+          bonusRetirementInterest +
+          nonBonusRetirementInterest
+      )
+    }
   }
 
   addInterestToAccounts() {
@@ -185,13 +280,33 @@ export class CPFAccount {
     this.#specialAccount = normalRound(
       this.#specialAccount + this.#accruedSpecialInterest
     )
+    if (this.#reachedWithdrawalAge) {
+      this.#retirementAccount = normalRound(
+        this.#retirementAccount + this.#accruedRetirementInterest
+      )
+    }
 
     // Update history  and accrued amounts only if there is an addition of interest to the balance
-    if (this.#accruedOrdinaryInterest > 0 || this.#accruedSpecialInterest > 0) {
-      this.updateHistory('Interest', {
-        ordinaryAccount: this.#accruedOrdinaryInterest,
-        specialAccount: this.#accruedSpecialInterest,
-      })
+    if (
+      this.#accruedOrdinaryInterest > 0 ||
+      this.#accruedSpecialInterest > 0 ||
+      this.#accruedRetirementInterest > 0
+    ) {
+      if (!this.#reachedWithdrawalAge) {
+        this.updateHistory('Interest', {
+          ordinaryAccount: this.#accruedOrdinaryInterest,
+          specialAccount: this.#accruedSpecialInterest,
+        })
+      } else {
+        this.updateHistoryAfterWithdrawalAge('Interest', {
+          ordinaryAccount: this.#accruedOrdinaryInterest,
+          specialAccount: this.#accruedSpecialInterest,
+          retirementAccount: this.#accruedRetirementInterest,
+        })
+
+        this.#accruedRetirementInterest = 0
+      }
+
       this.#accruedOrdinaryInterest = 0
       this.#accruedSpecialInterest = 0
     }
@@ -204,7 +319,12 @@ export class CPFAccount {
       // Calculate and add Accrued Interest for the end of the previous year. Ignore for the previous full year as that has been accounted for.
       if (period % 12 === 0 && period !== months) {
         this.addInterestToAccounts()
-        this.updateHistory('Balance')
+
+        if (!this.#reachedWithdrawalAge) {
+          this.updateHistory('Balance')
+        } else {
+          this.updateHistoryAfterWithdrawalAge('Balance')
+        }
       }
 
       // Update period for the start of the month
@@ -220,7 +340,12 @@ export class CPFAccount {
       // Add interest at the end of the period
       if (period === 0) {
         this.addInterestToAccounts()
-        this.updateHistory('Balance')
+
+        if (!this.#reachedWithdrawalAge) {
+          this.updateHistory('Balance')
+        } else {
+          this.updateHistoryAfterWithdrawalAge('Balance')
+        }
       }
     }
   }
@@ -229,8 +354,12 @@ export class CPFAccount {
     return {
       ordinaryAccount: this.#ordinaryAccount,
       specialAccount: this.#specialAccount,
+      retirementAccount: this.#retirementAccount,
+      ordinaryAccountAtWithdrawalAge: this.#ordinaryAccountAtWithdrawalAge,
+      specialAccountAtWithdrawalAge: this.#specialAccountAtWithdrawalAge,
       monthsTillWithdrawal: this.#monthsTillWithdrawal,
       history: this.#history,
+      historyAfterWithdrawalAge: this.#historyAfterWithdrawalAge,
       monthlySalary: this.#monthlySalary,
     }
   }

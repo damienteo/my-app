@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { CPFAccount } from './cpfAccount'
+import { withdrawalAge, payoutAge } from '../constants'
 
 export const roundTo2Dec = (value) => {
   let nextValue = value === '0' ? '0' : value.replace(/^0+/, '')
@@ -36,21 +37,26 @@ export const calculateFutureValues = (values, selectedDate) => {
 
   // Add simple interest based on months, and add interest to sum annually every 1st Jan
 
-  // Calculate interest until the end of the year
+  // Calculate salary contributions and interest until the end of the year
   // FIXME: Should not get months till EOY if subject is already 55 years old
   const monthsTillEOY = getMonthsTillEOY()
   newAccount.addSalaryAndInterestOverTime(monthsTillEOY)
 
-  // Calculate number of years left in which interest is added to account at end of the year
+  // Calculate number of years left in which salary contributions and interest is added to account at end of the year
   const monthsOfInterestAfterThisYear =
     newAccount.monthsTillWithdrawal - monthsTillEOY
   const remainingMonths = monthsOfInterestAfterThisYear % 12
   const monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
-  // Calculate interests for the remaining full years
+  // Calculate salary contributions and interests for the remaining full years
   newAccount.addSalaryAndInterestOverTime(monthsOfFullYears)
 
-  // Calculate interest for the remaining months until 55
+  // Calculate salary contributions and interest for the remaining months until 55
   newAccount.addSalaryAndInterestOverTime(remainingMonths)
 
+  newAccount.updateAccountsAtWithdrawalAge()
+
+  // Calculate numnber of months from withdrawal age (currently 55) till payoutAge (currently 65), which is when CPF LIFE starts
+  const periodTillPayout = (payoutAge - withdrawalAge) * 12
+  newAccount.addSalaryAndInterestOverTime(periodTillPayout)
   return newAccount.accountValues
 }
