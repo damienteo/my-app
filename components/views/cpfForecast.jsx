@@ -307,7 +307,10 @@ const CPFForecastPage = () => {
             )}
             {historyOpen && (
               <>
-                <HistoryTable data={futureValues.history} />
+                <HistoryTable
+                  data={futureValues.history}
+                  groupByYear={values.monthlySalary > 0}
+                />
                 <div className={classes.buttonWrapper}>
                   <Button
                     variant="contained"

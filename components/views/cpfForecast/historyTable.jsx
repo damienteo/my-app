@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Table,
@@ -19,15 +20,38 @@ const useStyles = makeStyles({
   },
 })
 
-const chunkArray = (myArray, chunk_size) => {
+const sortEntryByYear = (myArray) => {
+  const entriesSortedByYear = myArray.reduce((groups, entry) => {
+    const splitString = entry.date.split(' ')
+    const year = splitString[1]
+
+    if (!groups[year]) groups[year] = []
+
+    groups[year].push(entry)
+
+    return groups
+  }, {})
+
+  return entriesSortedByYear
+}
+
+const chunkArray = (myArray, groupByYear, chunk_size = 15) => {
   let index = 0
   const arrayLength = myArray.length
   const tempArray = []
 
-  for (index = 0; index < arrayLength; index += chunk_size) {
-    const myChunk = myArray.slice(index, index + chunk_size)
-    // Do something if you want with the group
-    tempArray.push(myChunk)
+  if (groupByYear) {
+    // Group entries by year
+
+    const entriesSortedByYear = sortEntryByYear(myArray)
+    Object.values(entriesSortedByYear).map((entry) => tempArray.push(entry))
+  } else {
+    // Default Page Grouping
+
+    for (index = 0; index < arrayLength; index += chunk_size) {
+      const myChunk = myArray.slice(index, index + chunk_size)
+      tempArray.push(myChunk)
+    }
   }
 
   return tempArray
@@ -35,10 +59,10 @@ const chunkArray = (myArray, chunk_size) => {
 
 const HistoryTable = (props) => {
   const classes = useStyles()
-  const { data = [] } = props
+  const { data = [], groupByYear = false } = props
   const [page, setPage] = useState(0)
-
-  const history = chunkArray(data, 15)
+  console.log('groupByYear', groupByYear)
+  const history = chunkArray(data, groupByYear)
 
   const seePrevHistory = () => {
     setPage(page - 1)
