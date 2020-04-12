@@ -146,7 +146,7 @@ const CPFForecastPage = () => {
       <Layout>
         {/* Header with Disclaimer */}
         <div className={classes.headerWrapper}>
-          <Header text="CPF Forecaster" />
+          <Header text="CPF Forecast" />
           <InfoPopup iconColor="secondary" title="Disclaimer">
             <Paragraph variant="subtitle2" className={classes.paragraph}>
               This page is not meant to be for financial advice.
@@ -213,7 +213,7 @@ const CPFForecastPage = () => {
         <Section>
           <Paragraph className={classes.paragraph}>
             Next, type in your date of birth. We will use this to calculate the
-            date when you can start withdrawing it.{' '}
+            date when you can start withdrawals.{' '}
             <InfoPopup title="Withdrawal of CPF Savings">
               <Paragraph className={classes.paragraph}>
                 Members can withdraw their CPF retirement savings any time from{' '}
@@ -244,7 +244,7 @@ const CPFForecastPage = () => {
         </Section>
         <Section>
           <Paragraph className={classes.paragraph}>
-            Finally, you may add in your month salary (before taxes and CPF
+            Finally, you may add in your monthly salary (before taxes and CPF
             contribution).{' '}
             <InfoPopup title="Info on Employer / Employee CPF Contribution">
               <Paragraph className={classes.paragraph}>

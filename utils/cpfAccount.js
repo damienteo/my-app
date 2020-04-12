@@ -85,12 +85,13 @@ export class CPFAccount {
     }
   }
 
-  updateHistory(category) {
+  updateHistory(category, rest) {
     this.#history.push({
       date: this.#currentDate.format('MMM YYYY'),
       category,
       ordinaryAccount: normalRound(this.#ordinaryAccount),
       specialAccount: normalRound(this.#specialAccount),
+      ...rest,
     })
   }
 
@@ -113,7 +114,10 @@ export class CPFAccount {
 
     // Update history  and accrued amounts only if there is an addition of interest to the balance
     if (OAContribution > 0 || SAContribution > 0) {
-      this.updateHistory('Contribution')
+      this.updateHistory('Contribution', {
+        ordinaryAccount: OAContribution,
+        specialAccount: SAContribution,
+      })
     }
   }
 
@@ -184,7 +188,10 @@ export class CPFAccount {
 
     // Update history  and accrued amounts only if there is an addition of interest to the balance
     if (this.#accruedOrdinaryInterest > 0 || this.#accruedSpecialInterest > 0) {
-      this.updateHistory('Interest')
+      this.updateHistory('Interest', {
+        ordinaryAccount: this.#accruedOrdinaryInterest,
+        specialAccount: this.#accruedSpecialInterest,
+      })
       this.#accruedOrdinaryInterest = 0
       this.#accruedSpecialInterest = 0
     }
@@ -197,6 +204,7 @@ export class CPFAccount {
       // Calculate and add Accrued Interest for the end of the previous year. Ignore for the previous full year as that has been accounted for.
       if (period % 12 === 0 && period !== months) {
         this.addInterestToAccounts()
+        this.updateHistory('Balance')
       }
 
       // Update period for the start of the month
@@ -212,6 +220,7 @@ export class CPFAccount {
       // Add interest at the end of the period
       if (period === 0) {
         this.addInterestToAccounts()
+        this.updateHistory('Balance')
       }
     }
   }
