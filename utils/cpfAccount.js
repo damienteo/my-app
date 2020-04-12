@@ -231,6 +231,7 @@ export class CPFAccount {
       specialAccount: this.#specialAccount,
       monthsTillWithdrawal: this.#monthsTillWithdrawal,
       history: this.#history,
+      monthlySalary: this.#monthlySalary,
     }
   }
 

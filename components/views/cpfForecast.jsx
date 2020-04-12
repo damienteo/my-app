@@ -89,6 +89,7 @@ const CPFForecastPage = () => {
     ordinaryAccount: undefined,
     specialAccount: undefined,
     history: [],
+    monthlySalary: 0,
   })
 
   const validateValues = () => {
@@ -309,7 +310,7 @@ const CPFForecastPage = () => {
               <>
                 <HistoryTable
                   data={futureValues.history}
-                  groupByYear={values.monthlySalary > 0}
+                  groupByYear={futureValues.monthlySalary > 0}
                 />
                 <div className={classes.buttonWrapper}>
                   <Button

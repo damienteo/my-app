@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
 import {
+  Button,
+  Hidden,
   Table,
   TableBody,
   TableCell,
@@ -14,11 +15,20 @@ import IconButton from '@material-ui/core/IconButton'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   buttonsWrapper: {
     textAlign: 'center',
   },
-})
+  groupButtonsWrapper: {
+    textAlign: 'center',
+  },
+  groupButton: {
+    margin: theme.spacing(0.5),
+  },
+  table: {
+    margin: `${theme.spacing(1.5)}px 0`,
+  },
+}))
 
 const sortEntryByYear = (myArray) => {
   const entriesSortedByYear = myArray.reduce((groups, entry) => {
@@ -36,33 +46,35 @@ const sortEntryByYear = (myArray) => {
 }
 
 const chunkArray = (myArray, groupByYear, chunk_size = 15) => {
-  let index = 0
-  const arrayLength = myArray.length
-  const tempArray = []
-
   if (groupByYear) {
     // Group entries by year
 
     const entriesSortedByYear = sortEntryByYear(myArray)
-    Object.values(entriesSortedByYear).map((entry) => tempArray.push(entry))
+    const history = Object.values(entriesSortedByYear)
+    const groups = Object.keys(entriesSortedByYear)
+
+    return { history, groups }
   } else {
     // Default Page Grouping
 
-    for (index = 0; index < arrayLength; index += chunk_size) {
+    const arrayLength = myArray.length
+    const tempArray = []
+
+    for (let index = 0; index < arrayLength; index += chunk_size) {
       const myChunk = myArray.slice(index, index + chunk_size)
       tempArray.push(myChunk)
     }
-  }
 
-  return tempArray
+    return { history: tempArray, groups: undefined }
+  }
 }
 
 const HistoryTable = (props) => {
   const classes = useStyles()
   const { data = [], groupByYear = false } = props
   const [page, setPage] = useState(0)
-  console.log('groupByYear', groupByYear)
-  const history = chunkArray(data, groupByYear)
+
+  const { history, groups } = chunkArray(data, groupByYear)
 
   const seePrevHistory = () => {
     setPage(page - 1)
@@ -93,10 +105,36 @@ const HistoryTable = (props) => {
     )
   }
 
+  const renderGroupButtons = () => {
+    return groups.map((group, index) => {
+      return (
+        <Button
+          key={group}
+          variant="outlined"
+          size="small"
+          onClick={() => setPage(index)}
+          className={classes.groupButton}
+          variant={page === index ? 'contained' : undefined}
+        >
+          {group}
+        </Button>
+      )
+    })
+  }
+
   return (
     <>
       {renderButtons()}
-      <TableContainer component={Paper}>
+
+      {groups && (
+        <Hidden xsDown>
+          <div className={classes.groupButtonsWrapper}>
+            {renderGroupButtons()}
+          </div>
+        </Hidden>
+      )}
+
+      <TableContainer component={Paper} className={classes.table}>
         <Table aria-label="CPF Forecast History">
           <TableHead>
             <TableRow>
@@ -125,6 +163,13 @@ const HistoryTable = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {groups && (
+        <div className={classes.groupButtonsWrapper}>
+          {renderGroupButtons()}
+        </div>
+      )}
+
       {renderButtons()}
     </>
   )
