@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
   bottomPlaceholder: {
     height: `${theme.spacing(5)}px`,
   },
+  image: {
+    height: 'auto',
+    width: '100%',
+  },
 }))
 
 const minDate = moment().subtract(withdrawalAge, 'y')
@@ -219,7 +223,7 @@ const CPFForecastPage = () => {
               <Paragraph className={classes.paragraph}>
                 Members can withdraw their CPF retirement savings any time from{' '}
                 {withdrawalAge} years old. The withdrawal of your CPF retirement
-                savings is optional. More info can be found can be found here{' '}
+                savings is optional. More info can be found can be found{' '}
                 <ExternalLink
                   url="https://www.cpf.gov.sg/Members/FAQ/schemes/retirement/withdrawals-of-cpf-savings-from-55"
                   label="here"
@@ -257,9 +261,6 @@ const CPFForecastPage = () => {
                 , the employer contributes 17% of the monthly salary, while the
                 employee contributes 20%.
               </Paragraph>
-              <Paragraph className={classes.paragraph}>
-                Show table with SA and OA percentage contributions over time
-              </Paragraph>
             </InfoPopup>
           </Paragraph>
           <Grid container>
@@ -294,6 +295,43 @@ const CPFForecastPage = () => {
               {futureValues.ordinaryAccount.toLocaleString()} in your ordinary
               account, and ${futureValues.specialAccount.toLocaleString()} in
               your special account.
+              <InfoPopup title="How calculations are made">
+                <Paragraph className={classes.paragraph}>
+                  With regards to{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
+                    label="interest"
+                  />
+                  , CPF interest is computed monthly. It is then credited to
+                  your respective accounts and compounded annually.
+                </Paragraph>
+                <Paragraph className={classes.paragraph}>
+                  Central Provident Fund (CPF) members currently earn interest
+                  rates of up to 3.5% per annum on their Ordinary Account (OA)
+                  monies, and up to 5% per annum on their Special and MediSave
+                  Account (SMA) monies. Retirement Account (RA) monies currently
+                  earn up to 5% per annum. The above{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
+                    label="interest rates"
+                  />{' '}
+                  include an extra 1% interest paid on the first $60,000 of a
+                  member's combined balances (with up to $20,000 from the OA).
+                </Paragraph>
+                <img
+                  src="/TableC1_AllocationRates.png"
+                  alt="CPF Allocation Table"
+                  className={classes.image}
+                />
+                <Paragraph className={classes.paragraph}>
+                  The image above for CPF Allocation rates was sourced from{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
+                    label="here"
+                  />
+                  .
+                </Paragraph>
+              </InfoPopup>
             </Paragraph>
             {futureValues.history.length > 0 && (
               <div className={classes.buttonWrapper}>
@@ -323,37 +361,6 @@ const CPFForecastPage = () => {
                 </div>
               </>
             )}
-            {/* <Paragraph className={classes.paragraph}>
-              CPF interest is computed monthly. It is then credited to your
-              respective accounts and compounded annually.
-              <InfoPopup title="How interest is paid">
-                <Paragraph className={classes.paragraph}>
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
-                    label="How"
-                  />{' '}
-                  is my CPF interest computed and credited into my accounts?
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph> */}
-            {/* <Paragraph className={classes.paragraph}>
-              Central Provident Fund (CPF) members currently earn interest rates
-              of up to 3.5% per annum on their Ordinary Account (OA) monies, and
-              up to 5% per annum on their Special and MediSave Account (SMA)
-              monies. Retirement Account (RA) monies currently earn up to 5% per
-              annum. The above interest rates include an extra 1% interest paid
-              on the first $60,000 of a member's combined balances (with up to
-              $20,000 from the OA).
-              <InfoPopup title="Info on bonus Interest">
-                <Paragraph className={classes.paragraph}>
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
-                    label="What"
-                  />{' '}
-                  is my bonus interest?
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph> */}
 
             {/* <Paragraph className={classes.paragraph}>
               TODO: The FE will calculate for them how much is in their RA at
@@ -377,17 +384,17 @@ const CPFForecastPage = () => {
           sums to SA.
         </Paragraph>
 
-        <Paragraph>
-          The user can add in the pledging of their HDB value.
-        </Paragraph>
+
+
         <Paragraph>
           The user can account for usage of OA sums to a HDB flat at a certain
           future date.
         </Paragraph>
-        <Paragraph>
-          The user can check how much they will need to pay back to CPF when
-          they sell the HDB flat.
-        </Paragraph> */}
+
+        
+                <Paragraph>
+          The user can add in the pledging of their HDB value.
+        </Paragraph>*/}
 
         <div className={classes.bottomPlaceholder} />
 
