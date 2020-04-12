@@ -52,7 +52,7 @@ export class CPFAccount {
   #monthlySalary
 
   #currentAge
-  #monthProgression
+  #monthProgression = 0
   #monthsTillWithdrawal
   #currentDate = moment()
   #history = []
