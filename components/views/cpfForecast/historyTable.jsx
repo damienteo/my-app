@@ -73,7 +73,7 @@ const HistoryTable = (props) => {
   const classes = useStyles()
   const { data = [], groupByYear = false } = props
   const [page, setPage] = useState(0)
-
+  console.log('data', data)
   const { history, groups } = chunkArray(data, groupByYear)
 
   const seePrevHistory = () => {
@@ -142,6 +142,9 @@ const HistoryTable = (props) => {
               <TableCell>Category</TableCell>
               <TableCell align="right">Ordinary Account</TableCell>
               <TableCell align="right">Special Account</TableCell>
+              {data[1].retirementAccount !== undefined && (
+                <TableCell align="right">Retirement Account</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -158,6 +161,11 @@ const HistoryTable = (props) => {
                   <TableCell align="right">
                     ${row.specialAccount.toLocaleString()}
                   </TableCell>
+                  {row.retirementAccount !== undefined && (
+                    <TableCell align="right">
+                      ${row.retirementAccount.toLocaleString()}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

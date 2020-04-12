@@ -23,10 +23,12 @@ export const getAge = (selectedDate, timePeriod) => {
   return duration
 }
 
-const getMonthsTillEOY = () => {
+const getMonthsTillEOY = (date = moment()) => {
   const currentYear = moment().year()
   const startOfNextYear = moment(`01/01/${currentYear + 1}`, 'DD/MM/YYYY')
-  const monthsTillInterest = startOfNextYear.diff(moment(), 'months')
+  console.log('startOfNextYear', startOfNextYear)
+  console.log('date', date)
+  const monthsTillInterest = startOfNextYear.diff(date, 'months')
   return monthsTillInterest
 }
 
@@ -55,8 +57,23 @@ export const calculateFutureValues = (values, selectedDate) => {
 
   newAccount.updateAccountsAtWithdrawalAge()
 
-  // Calculate numnber of months from withdrawal age (currently 55) till payoutAge (currently 65), which is when CPF LIFE starts
+  // Calculate number of months from withdrawal age (currently 55) till payoutAge (currently 65), which is when CPF LIFE starts
+  // Update balance till EOY of withdrawal year
+  const monthsTillEndOfWithdrawalYear = getMonthsTillEOY(selectedDate) % 12
+  newAccount.addSalaryAndInterestOverTime(monthsTillEndOfWithdrawalYear)
+
+  // Update balance for remaining full years
   const periodTillPayout = (payoutAge - withdrawalAge) * 12
-  newAccount.addSalaryAndInterestOverTime(periodTillPayout)
+  const monthsAfterWithdrawalYear =
+    periodTillPayout - monthsTillEndOfWithdrawalYear
+  const remainingMonthsOfWithDrawalPeriod = monthsAfterWithdrawalYear % 12
+  const monthsOfFullYearsAfterWithdrawalYear =
+    monthsAfterWithdrawalYear - remainingMonthsOfWithDrawalPeriod
+
+  newAccount.addSalaryAndInterestOverTime(monthsOfFullYearsAfterWithdrawalYear)
+
+  // Update balance for remaining months
+  newAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
+
   return newAccount.accountValues
 }

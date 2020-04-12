@@ -92,6 +92,10 @@ const CPFForecastPage = () => {
   const [isCalculating, setCalculating] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [historyOpen, setHistoryOpen] = React.useState(false)
+  const [
+    historyAfterWithdrawalAgeOpen,
+    setHistoryAfterWithdrawalAgeOpen,
+  ] = React.useState(false)
 
   const [futureValues, setFutureValues] = useState({
     monthsTillWithdrawal: undefined,
@@ -445,7 +449,46 @@ const CPFForecastPage = () => {
                 {/* TODO: Add history table */}
               </Paragraph>
 
-              {/* <Paragraph className={classes.paragraph}>
+              {/* History Table for Transactions from 55 to 65 years old */}
+              {futureValues.historyAfterWithdrawalAge.length > 0 && (
+                <div className={classes.buttonWrapper}>
+                  <Button
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() =>
+                      setHistoryAfterWithdrawalAgeOpen(
+                        !historyAfterWithdrawalAgeOpen
+                      )
+                    }
+                  >
+                    {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Breakdown!
+                  </Button>
+                </div>
+              )}
+              {historyAfterWithdrawalAgeOpen && (
+                <>
+                  <HistoryTable
+                    data={futureValues.historyAfterWithdrawalAge}
+                    groupByYear={futureValues.monthlySalary > 0}
+                  />
+                  <div className={classes.buttonWrapper}>
+                    <Button
+                      variant="contained"
+                      className={classes.button}
+                      onClick={() =>
+                        setHistoryAfterWithdrawalAgeOpen(
+                          !historyAfterWithdrawalAgeOpen
+                        )
+                      }
+                    >
+                      {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'}{' '}
+                      Breakdown!
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Section>
+            {/* <Paragraph className={classes.paragraph}>
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 55.
             </Paragraph>
@@ -454,7 +497,6 @@ const CPFForecastPage = () => {
               withdraw at the age of 65. (either with withdrawal or without
               withdrawal at 55)
             </Paragraph>{' '} */}
-            </Section>
           </>
         )}
 
