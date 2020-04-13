@@ -127,14 +127,15 @@ export class CPFAccount {
 
     // Transfer from Special Account to Retirement Account first
     const isSpecialEnoughForRetirement =
-      this.#specialAccount > fullRetirementSum
+      this.#specialAccount > nextCPFFullRetirementSum
 
     // Calculate amounts to be transferred from SA / OA to RA
     const specialToRetirementAmount = isSpecialEnoughForRetirement
-      ? fullRetirementSum
+      ? nextCPFFullRetirementSum
       : this.#specialAccount
 
-    const retirementSumShortfall = fullRetirementSum - specialToRetirementAmount
+    const retirementSumShortfall =
+      nextCPFFullRetirementSum - specialToRetirementAmount
     const ordinaryToRetirementAmount =
       this.#ordinaryAccount > retirementSumShortfall
         ? retirementSumShortfall

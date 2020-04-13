@@ -274,6 +274,16 @@ const CPFForecastPage = () => {
                 , the employer contributes 17% of the monthly salary, while the
                 employee contributes 20%.
               </Paragraph>
+              <Paragraph className={classes.paragraph}>
+                Do also take note that the{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/hiring-employees/cpf-contributions-for-your-employees/FAQDetails?category=Hiring+Employees&group=CPF+Contributions+for+your+Employees&ajfaqid=2195045&folderid=14019"
+                  label="Ordinary Wage (OW) Ceiling"
+                />{' '}
+                sets the maximum amount of OWs on which CPF contributions are
+                payable per month. The prevailing OW Ceiling is $6,000 per
+                month.
+              </Paragraph>
             </InfoPopup>
           </Paragraph>
           <Grid container>
@@ -491,17 +501,8 @@ const CPFForecastPage = () => {
           </>
         )}
 
-        {/* <Paragraph className={classes.paragraph}>
-              Possible: The FE will calculate for them how much they can
-              withdraw at the age of 55.
-            </Paragraph>
-            <Paragraph className={classes.paragraph}>
-              Possible: The FE will calculate for them how much they can
-              withdraw at the age of 65. (either with withdrawal or without
-              withdrawal at 55)
-            </Paragraph>{' '} */}
-
-        {/* <Paragraph>
+        {/* 
+        <Paragraph>
           The user can press a button, whcih will show a new panel below. This
           new panel will show how much more they can get if they transfer all
           sums to SA.
@@ -513,11 +514,7 @@ const CPFForecastPage = () => {
           The user can account for usage of OA sums to a HDB flat at a certain
           future date.
         </Paragraph>
-
-        
-                <Paragraph>
-          The user can add in the pledging of their HDB value.
-        </Paragraph>*/}
+        */}
 
         <div className={classes.bottomPlaceholder} />
 
