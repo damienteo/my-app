@@ -21,7 +21,9 @@ export const cpfValues = {
   specialIR: 0.04,
   retirementIR: 0.04,
   bonusIR: 0.01,
+  bonusIRAfter55: 0.02,
   bonusAmtCap: 60000,
+  extraBonusAmtCap: 30000,
   ordinaryAmtCap: 20000,
 }
 

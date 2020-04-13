@@ -347,7 +347,7 @@ const CPFForecastPage = () => {
                     Account (SMA) monies. Retirement Account (RA) monies
                     currently earn up to 5% per annum. The above{' '}
                     <ExternalLink
-                      url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=Other+Matters&group=Others&ajfaqid=2192024&folderid=13726"
+                      url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-interest-rates"
                       label="interest rates"
                     />{' '}
                     include an extra 1% interest paid on the first $60,000 of a
@@ -506,13 +506,18 @@ const CPFForecastPage = () => {
           The user can press a button, whcih will show a new panel below. This
           new panel will show how much more they can get if they transfer all
           sums to SA.
+          'What happens if I transfer all the money to SA for better interest?'
         </Paragraph>
-
-
 
         <Paragraph>
           The user can account for usage of OA sums to a HDB flat at a certain
           future date.
+          'What happens if I use {sum of money} from OA for Housing at age {}?'
+          Account for pledging of house value
+        </Paragraph>
+
+        <Paragraph>
+          What happens if i want to do additional cash topup per month?
         </Paragraph>
         */}
 
