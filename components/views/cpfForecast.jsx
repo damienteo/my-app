@@ -23,7 +23,7 @@ import {
 import HistoryTable from './cpfForecast/historyTable'
 
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfForecast'
-import { getYearsAndMonths } from '../../utils/utils'
+import { getYearsAndMonths, formatCurrency } from '../../utils/utils'
 import { cpfAccounts, withdrawalAge, payoutAge } from '../../constants'
 
 const useStyles = makeStyles((theme) => ({
@@ -313,12 +313,11 @@ const CPFForecastPage = () => {
                 </span>
                 , you will have{' '}
                 <span className={classes.highlightText}>
-                  $
-                  {futureValues.ordinaryAccountAtWithdrawalAge.toLocaleString()}
+                  {formatCurrency(futureValues.ordinaryAccountAtWithdrawalAge)}
                 </span>{' '}
                 in your Ordinary Account , and{' '}
                 <span className={classes.highlightText}>
-                  ${futureValues.specialAccountAtWithdrawalAge.toLocaleString()}
+                  {formatCurrency(futureValues.specialAccountAtWithdrawalAge)}
                 </span>{' '}
                 in your Special Account.
                 <InfoPopup title="How calculations are made">
@@ -400,15 +399,15 @@ const CPFForecastPage = () => {
                 </span>
                 , you will have{' '}
                 <span className={classes.highlightText}>
-                  ${futureValues.ordinaryAccount.toLocaleString()}
+                  {formatCurrency(futureValues.ordinaryAccount)}
                 </span>{' '}
                 in your Ordinary Account ,{' '}
                 <span className={classes.highlightText}>
-                  ${futureValues.specialAccount.toLocaleString()}
+                  {formatCurrency(futureValues.specialAccount)}
                 </span>{' '}
                 in your Special Account, and{' '}
                 <span className={classes.highlightText}>
-                  ${futureValues.retirementAccount.toLocaleString()}
+                  {formatCurrency(futureValues.retirementAccount)}
                 </span>{' '}
                 in your Retirement Account.
                 <InfoPopup title="What is a Retirement Account?">
@@ -488,7 +487,10 @@ const CPFForecastPage = () => {
                 </>
               )}
             </Section>
-            {/* <Paragraph className={classes.paragraph}>
+          </>
+        )}
+
+        {/* <Paragraph className={classes.paragraph}>
               Possible: The FE will calculate for them how much they can
               withdraw at the age of 55.
             </Paragraph>
@@ -497,8 +499,6 @@ const CPFForecastPage = () => {
               withdraw at the age of 65. (either with withdrawal or without
               withdrawal at 55)
             </Paragraph>{' '} */}
-          </>
-        )}
 
         {/* <Paragraph>
           The user can press a button, whcih will show a new panel below. This

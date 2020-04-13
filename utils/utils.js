@@ -10,3 +10,10 @@ export const getYearsAndMonths = (value) => {
 
   return `${years} years and ${months} months`
 }
+
+const currencyOptions = { style: 'currency', currency: 'USD' }
+const currencyFormat = new Intl.NumberFormat('en-US', currencyOptions)
+
+export const formatCurrency = (value) => {
+  return currencyFormat.format(value)
+}

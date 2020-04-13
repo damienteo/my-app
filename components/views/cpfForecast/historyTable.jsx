@@ -14,6 +14,7 @@ import {
 import IconButton from '@material-ui/core/IconButton'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import { formatCurrency } from '../../../utils/utils'
 
 const useStyles = makeStyles((theme) => ({
   buttonsWrapper: {
@@ -156,14 +157,14 @@ const HistoryTable = (props) => {
                   </TableCell>
                   <TableCell>{row.category}</TableCell>
                   <TableCell align="right">
-                    ${row.ordinaryAccount.toLocaleString()}
+                    {formatCurrency(row.ordinaryAccount)}
                   </TableCell>
                   <TableCell align="right">
-                    ${row.specialAccount.toLocaleString()}
+                    {formatCurrency(row.specialAccount)}
                   </TableCell>
                   {row.retirementAccount !== undefined && (
                     <TableCell align="right">
-                      ${row.retirementAccount.toLocaleString()}
+                      {formatCurrency(row.retirementAccount)}
                     </TableCell>
                   )}
                 </TableRow>
