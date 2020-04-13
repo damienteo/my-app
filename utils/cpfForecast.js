@@ -26,9 +26,8 @@ export const getAge = (selectedDate, timePeriod) => {
 const getMonthsTillEOY = (date = moment()) => {
   const currentYear = moment().year()
   const startOfNextYear = moment(`01/01/${currentYear + 1}`, 'DD/MM/YYYY')
-  console.log('startOfNextYear', startOfNextYear)
-  console.log('date', date)
   const monthsTillInterest = startOfNextYear.diff(date, 'months')
+
   return monthsTillInterest
 }
 

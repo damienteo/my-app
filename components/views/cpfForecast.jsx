@@ -366,7 +366,7 @@ const CPFForecastPage = () => {
                     className={classes.button}
                     onClick={() => setHistoryOpen(!historyOpen)}
                   >
-                    {historyOpen ? 'Hide' : 'Show'} Breakdown!
+                    {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
                   </Button>
                 </div>
               )}
@@ -382,7 +382,7 @@ const CPFForecastPage = () => {
                       className={classes.button}
                       onClick={() => setHistoryOpen(!historyOpen)}
                     >
-                      {historyOpen ? 'Hide' : 'Show'} Breakdown!
+                      {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
                     </Button>
                   </div>
                 </>
@@ -460,7 +460,8 @@ const CPFForecastPage = () => {
                       )
                     }
                   >
-                    {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Breakdown!
+                    {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'}{' '}
+                    Calculations After 55!
                   </Button>
                 </div>
               )}
@@ -481,7 +482,7 @@ const CPFForecastPage = () => {
                       }
                     >
                       {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'}{' '}
-                      Breakdown!
+                      Calculations After 55!
                     </Button>
                   </div>
                 </>
