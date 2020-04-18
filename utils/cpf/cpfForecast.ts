@@ -1,12 +1,7 @@
 import moment from 'moment'
 import { CPFAccount } from './cpfAccount'
-import { withdrawalAge, payoutAge } from '../constants'
-
-export interface Values {
-  ordinaryAccount: string
-  specialAccount: string
-  monthlySalary: string
-}
+import { withdrawalAge, payoutAge } from '../../constants'
+import { Values } from './types'
 
 export const roundTo2Dec = (value: string) => {
   let nextValue = value === '0' ? '0' : value.replace(/^0+/, '')

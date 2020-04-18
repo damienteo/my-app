@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Theme } from '@material-ui/core/'
+import { Typography, Theme, TypographyProps } from '@material-ui/core/'
 import { blue } from '@material-ui/core/colors/'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const Paragraph: React.FunctionComponent = (props) => {
+const Paragraph: React.FunctionComponent<TypographyProps> = (props) => {
   const classes = useStyles()
   return (
     <Typography variant="body1" className={classes.paragraph} {...props}>

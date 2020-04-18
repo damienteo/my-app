@@ -27,6 +27,11 @@ interface DialogTitleProps extends MUIDialogTitleProps {
   children: React.ReactNode
 }
 
+interface InfoPopupProps {
+  title: string
+  iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
+}
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -83,7 +88,7 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent)
 
-const InfoPopup: React.FunctionComponent<{ title: string }> = (props) => {
+const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
   const { title, children } = props
   const [open, setOpen] = React.useState(false)
 

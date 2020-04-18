@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react'
+import React from 'react'
 import {
   FormControl,
   FormHelperText,
@@ -9,11 +9,13 @@ import {
 
 type CurrencyInputProps = {
   label: string
-  value: number
+  value: string
   field: string
-  handleChange: (field: string) => (event: SyntheticEvent) => void
   error: boolean
-  helperText: string
+  helperText?: string
+  handleChange: (
+    field: string
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const CurrencyInput: React.FunctionComponent<CurrencyInputProps> = (props) => {

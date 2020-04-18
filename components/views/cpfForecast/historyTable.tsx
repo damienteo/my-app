@@ -15,22 +15,10 @@ import IconButton from '@material-ui/core/IconButton'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { formatCurrency } from '../../../utils/utils'
-
-type entry = {
-  date: string
-  category: string
-  ordinaryAccount: number
-  specialAccount: number
-  retirementAccount?: number
-}
-
-type groupsType = {
-  // Each key (going by year) has an array of entries
-  [key: string]: entry[]
-}
+import { Entry, GroupsType } from '../../../utils/cpf/types'
 
 interface HistoryTableProps {
-  data: entry[]
+  data: Entry[]
   groupByYear: boolean
 }
 
@@ -49,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const sortEntryByYear = (myArray: entry[]) => {
+const sortEntryByYear = (myArray: Entry[]) => {
   const entriesSortedByYear = myArray.reduce((groups, entry) => {
     const splitString = entry.date.split(' ')
     const year = splitString[1]
@@ -59,12 +47,12 @@ const sortEntryByYear = (myArray: entry[]) => {
     groups[year].push(entry)
 
     return groups
-  }, {} as groupsType)
+  }, {} as GroupsType)
 
   return entriesSortedByYear
 }
 
-const chunkArray = (myArray: entry[], groupByYear: boolean, chunkSize = 15) => {
+const chunkArray = (myArray: Entry[], groupByYear: boolean, chunkSize = 15) => {
   if (groupByYear) {
     // Group entries by year
 

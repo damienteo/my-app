@@ -22,7 +22,8 @@ import {
 } from '../common'
 import HistoryTable from './cpfForecast/historyTable'
 
-import { calculateFutureValues, roundTo2Dec } from '../../utils/cpfForecast'
+import { calculateFutureValues, roundTo2Dec } from '../../utils/cpf/cpfForecast'
+import { ErrorValues, Values, FutureValues } from '../../utils/cpf/types'
 import { getYearsAndMonths, formatCurrency } from '../../utils/utils'
 import { cpfAccounts, withdrawalAge, payoutAge } from '../../constants'
 
@@ -80,40 +81,40 @@ const maxDate = moment().subtract(16, 'y')
 const CPFForecastPage = () => {
   const classes = useStyles()
 
-  const [values, setValues] = useState({
-    ordinaryAccount: 0,
-    specialAccount: 0,
-    monthlySalary: 0,
+  const [values, setValues] = useState<Values>({
+    ordinaryAccount: '0',
+    specialAccount: '0',
+    monthlySalary: '0',
   })
-  const [selectedDate, handleDateChange] = useState(maxDate)
+  const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<ErrorValues>({})
 
-  const [isCalculating, setCalculating] = useState(false)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [historyOpen, setHistoryOpen] = React.useState(false)
+  const [isCalculating, setCalculating] = useState<boolean>(false)
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [historyOpen, setHistoryOpen] = useState<boolean>(false)
   const [
     historyAfterWithdrawalAgeOpen,
     setHistoryAfterWithdrawalAgeOpen,
-  ] = React.useState(false)
+  ] = useState<boolean>(false)
 
-  const [futureValues, setFutureValues] = useState({
-    monthsTillWithdrawal: undefined,
-    ordinaryAccount: undefined,
-    specialAccount: undefined,
-    retirementAccount: undefined,
-    ordinaryAccountAtWithdrawalAge: undefined,
-    specialAccountAtWithdrawalAge: undefined,
+  const [futureValues, setFutureValues] = useState<FutureValues>({
+    monthsTillWithdrawal: 0,
+    ordinaryAccount: 0,
+    specialAccount: 0,
+    retirementAccount: 0,
+    ordinaryAccountAtWithdrawalAge: 0,
+    specialAccountAtWithdrawalAge: 0,
     history: [],
-    historyAfter55: [],
+    historyAfterWithdrawalAge: [],
     monthlySalary: 0,
   })
 
   const validateValues = () => {
-    const nextErrors = {}
+    const nextErrors = {} as ErrorValues
 
-    Object.keys(values).map((field) => {
-      if (values[field] < 0) {
+    Object.keys(values).map((field: string) => {
+      if (parseFloat(values[field]) < 0) {
         nextErrors[field] = 'Please enter a value which is 0 or larger'
       } else {
         nextErrors[field] = undefined
@@ -125,7 +126,9 @@ const CPFForecastPage = () => {
     return nextErrors
   }
 
-  const handleChange = (prop) => (event) => {
+  const handleChange = (prop: string) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const nextValue = roundTo2Dec(event.target.value)
     setValues({ ...values, [prop]: nextValue })
   }
@@ -138,9 +141,9 @@ const CPFForecastPage = () => {
     )
 
     // Replace empty strings with 0
-    const nextValues = {}
+    const nextValues = {} as Values
     Object.keys(values).map((key) => {
-      return (nextValues[key] = values[key] === '' ? 0 : values[key])
+      return (nextValues[key] = values[key] === '' ? '0' : values[key])
     })
 
     if (isCorrectInput) {
@@ -151,11 +154,7 @@ const CPFForecastPage = () => {
     }
   }
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-
+  const handleSnackbarClose = () => {
     setSnackbarOpen(false)
   }
 
@@ -220,7 +219,7 @@ const CPFForecastPage = () => {
                   value={values[account.field]}
                   label={account.label}
                   field={account.field}
-                  error={errors[account.field]}
+                  error={Boolean(errors[account.field])}
                   helperText={errors[account.field]}
                   handleChange={handleChange}
                 />
@@ -250,7 +249,8 @@ const CPFForecastPage = () => {
               <KeyboardDatePicker
                 value={selectedDate}
                 label="Date of Birth"
-                onChange={(date) => handleDateChange(date)}
+                // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+                onChange={(date: any) => handleDateChange(date)}
                 format="dd/MM/yyyy"
                 minDate={minDate}
                 maxDate={maxDate}
@@ -292,8 +292,8 @@ const CPFForecastPage = () => {
                 value={values.monthlySalary}
                 label="Monthly Salary (Optional)"
                 field="monthlySalary"
-                error={errors && errors.monthlySalary}
-                helperText={errors && errors.monthlySalary}
+                error={Boolean(errors.monthlySalary)}
+                helperText={errors.monthlySalary}
                 handleChange={handleChange}
               />
             </Grid>

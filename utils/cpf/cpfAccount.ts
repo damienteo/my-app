@@ -6,22 +6,9 @@ import {
   retirementSumIncrease,
   ordinaryWageCeiling,
   withdrawalAge,
-} from '../constants'
-import { getAge, Values } from './cpfForecast'
-
-export interface Entry {
-  date: string
-  category: string
-  ordinaryAccount: number
-  specialAccount: number
-  retirementAccount?: number
-}
-
-export interface Accounts {
-  ordinaryAccount?: number
-  specialAccount?: number
-  retirementAccount?: number
-}
+} from '../../constants'
+import { getAge } from './cpfForecast'
+import { Values, Entry, Accounts } from './types'
 
 const {
   ordinaryIR,
