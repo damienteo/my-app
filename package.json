@@ -11,8 +11,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
-    "lint": "eslint . --ext .tsx",
-    "prettier-format": "prettier --config .prettierrc 'components/**/*.tsx' --write"
+    "lint": "tsc --noEmit && eslint '*/**/*.{ts,tsx}' --quiet --fix",
+    "prettier-format": "prettier --config .prettierrc '*/**/*.{ts,tsx}' --write"
   },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
