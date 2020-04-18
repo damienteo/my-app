@@ -4,8 +4,8 @@ import { ThemeProvider } from '@material-ui/styles'
 import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
-import NavBar from './navbar'
-import { ButtonLink } from '../common/links/buttonLink'
+import NavBar from './Navbar'
+import { ButtonLink } from '../common/links/ButtonLink'
 import { navLinks } from '../../constants'
 
 const theme = createMuiTheme({

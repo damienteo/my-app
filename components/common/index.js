@@ -1,4 +1,4 @@
-import InfoPopup from './infoPopup'
+import InfoPopup from './InfoPopup'
 
 export { InfoPopup }
 export * from './format'

@@ -1,5 +1,5 @@
-import Header from './header'
-import Paragraph from './paragraph'
-import Section from './section'
+import Header from './Header'
+import Paragraph from './Paragraph'
+import Section from './Section'
 
 export { Header, Paragraph, Section }

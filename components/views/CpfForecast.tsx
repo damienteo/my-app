@@ -11,7 +11,7 @@ import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
 import { cyan, teal } from '@material-ui/core/colors/'
 
-import Layout from '../layout/layout'
+import Layout from '../layout/Layout'
 import {
   CurrencyInput,
   ExternalLink,
@@ -20,7 +20,7 @@ import {
   Paragraph,
   Section,
 } from '../common'
-import HistoryTable from './cpfForecast/historyTable'
+import HistoryTable from './cpfForecast/HistoryTable'
 
 import { calculateFutureValues, roundTo2Dec } from '../../utils/cpf/cpfForecast'
 import { ErrorValues, Values, FutureValues } from '../../utils/cpf/types'

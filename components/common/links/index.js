@@ -1,4 +1,4 @@
-import { ButtonLink } from './buttonLink'
-import ExternalLink from './externalLink'
+import { ButtonLink } from './ButtonLink'
+import ExternalLink from './ExternalLink'
 
 export { ButtonLink, ExternalLink }

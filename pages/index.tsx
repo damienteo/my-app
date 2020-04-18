@@ -1,3 +1,3 @@
-import AboutPage from '../components/views/about'
+import AboutPage from '../components/views/About'
 
 export default AboutPage

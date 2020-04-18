@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid } from '@material-ui/core/'
-import Layout from '../layout/layout'
+import Layout from '../layout/Layout'
 import { ExternalLink, Header, Paragraph } from '../common'
 
 const useStyles = makeStyles((theme) => ({

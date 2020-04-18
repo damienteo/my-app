@@ -1,3 +1,3 @@
-import CurrencyInput from './currencyInput'
+import CurrencyInput from './CurrencyInput'
 
 export { CurrencyInput }
