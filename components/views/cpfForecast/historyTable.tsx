@@ -16,6 +16,24 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { formatCurrency } from '../../../utils/utils'
 
+type entry = {
+  date: string
+  category: string
+  ordinaryAccount: number
+  specialAccount: number
+  retirementAccount?: number
+}
+
+type groupsType = {
+  // Each key (going by year) has an array of entries
+  [key: string]: entry[]
+}
+
+interface HistoryTableProps {
+  data: entry[]
+  groupByYear: boolean
+}
+
 const useStyles = makeStyles((theme) => ({
   buttonsWrapper: {
     textAlign: 'center',
@@ -31,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const sortEntryByYear = (myArray) => {
+const sortEntryByYear = (myArray: entry[]) => {
   const entriesSortedByYear = myArray.reduce((groups, entry) => {
     const splitString = entry.date.split(' ')
     const year = splitString[1]
@@ -41,12 +59,12 @@ const sortEntryByYear = (myArray) => {
     groups[year].push(entry)
 
     return groups
-  }, {})
+  }, {} as groupsType)
 
   return entriesSortedByYear
 }
 
-const chunkArray = (myArray, groupByYear, chunk_size = 15) => {
+const chunkArray = (myArray: entry[], groupByYear: boolean, chunkSize = 15) => {
   if (groupByYear) {
     // Group entries by year
 
@@ -61,8 +79,8 @@ const chunkArray = (myArray, groupByYear, chunk_size = 15) => {
     const arrayLength = myArray.length
     const tempArray = []
 
-    for (let index = 0; index < arrayLength; index += chunk_size) {
-      const myChunk = myArray.slice(index, index + chunk_size)
+    for (let index = 0; index < arrayLength; index += chunkSize) {
+      const myChunk = myArray.slice(index, index + chunkSize)
       tempArray.push(myChunk)
     }
 
@@ -70,12 +88,12 @@ const chunkArray = (myArray, groupByYear, chunk_size = 15) => {
   }
 }
 
-const HistoryTable = (props) => {
+const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const classes = useStyles()
   const { data = [], groupByYear = false } = props
   const [page, setPage] = useState(0)
-  console.log('data', data)
-  const { history, groups } = chunkArray(data, groupByYear)
+
+  const { history, groups = [] } = chunkArray(data, groupByYear)
 
   const seePrevHistory = () => {
     setPage(page - 1)
@@ -111,7 +129,6 @@ const HistoryTable = (props) => {
       return (
         <Button
           key={group}
-          variant="outlined"
           size="small"
           onClick={() => setPage(index)}
           className={classes.groupButton}
