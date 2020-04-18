@@ -7,7 +7,16 @@ import {
   InputLabel,
 } from '@material-ui/core/'
 
-const CurrencyInput = (props) => {
+type CurrencyInputProps = {
+  label: string
+  value: number
+  field: string
+  handleChange: (field: string) => void
+  error: boolean
+  helperText: string
+}
+
+const CurrencyInput: React.FunctionComponent<CurrencyInputProps> = (props) => {
   const { label, value, field, handleChange, error, helperText } = props
 
   return (
@@ -16,7 +25,7 @@ const CurrencyInput = (props) => {
       <Input
         id="standard-adornment-amount"
         value={value}
-        onChange={handleChange(field)}
+        onChange={() => handleChange(field)}
         type="number"
         error={error}
         startAdornment={<InputAdornment position="start">$</InputAdornment>}

@@ -1,7 +1,19 @@
 import React from 'react'
 import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
+import Button, { ButtonProps as MuiButtonProps } from '@material-ui/core/Button'
+
+type NextLinkProps = {
+  className: string
+  href: string
+  hrefAs: string
+}
+
+interface ButtonLinkProps extends MuiButtonProps {
+  url: string
+  text: string
+  component?: React.ReactNode
+}
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -9,26 +21,33 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#282c35',
       color: '#FFFFFF',
     },
+    '&& a': {
+      margin: 0,
+    },
   },
 }))
 
-export const ButtonLink = ({ className, href, hrefAs, children }) => (
+export const NextLink: React.FunctionComponent<NextLinkProps> = ({
+  className,
+  href,
+  hrefAs,
+  children,
+}) => (
   <Link href={href} as={hrefAs} prefetch>
     <a className={className}>{children}</a>
   </Link>
 )
 
-export const renderButtonLink = (url, text) => {
+export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
+  url,
+  text,
+}) => {
   const classes = useStyles()
   return (
-    <Button
-      component={ButtonLink}
-      href={url}
-      color="inherit"
-      className={classes.button}
-      key={url}
-    >
-      {text}
-    </Button>
+    <Link href={url} as={url} prefetch>
+      <Button href={url} color="inherit" className={classes.button}>
+        <a>{text}</a>
+      </Button>
+    </Link>
   )
 }

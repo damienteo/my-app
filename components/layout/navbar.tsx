@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   AppBar,
@@ -6,12 +6,13 @@ import {
   Typography,
   Hidden,
   IconButton,
+  Theme,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { renderButtonLink } from '../common/links'
+import { ButtonLink } from '../common/links'
 import { navLinks } from '../../constants'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -23,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NavBar(props) {
+const NavBar: React.FunctionComponent<{
+  setDrawerOpen: (event: MouseEvent) => void
+}> = (props) => {
   const classes = useStyles()
 
   return (
@@ -45,10 +48,14 @@ export default function NavBar(props) {
             <Typography variant="h6">Damien Teo's Site</Typography>
           </div>
           <Hidden smDown>
-            {navLinks.map(({ url, text }) => renderButtonLink(url, text))}
+            {navLinks.map(({ url, text }) => (
+              <ButtonLink url={url} text={text} />
+            ))}
           </Hidden>
         </Toolbar>
       </AppBar>
     </div>
   )
 }
+
+export default NavBar

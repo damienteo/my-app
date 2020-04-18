@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import Head from 'next/head'
+import React, { useState, MouseEvent } from 'react'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
 import NavBar from './navbar'
-import { renderButtonLink } from '../common/links/buttonLink'
+import { ButtonLink } from '../common/links/buttonLink'
 import { navLinks } from '../../constants'
 
 const theme = createMuiTheme({
@@ -20,7 +19,7 @@ const theme = createMuiTheme({
   },
 })
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   drawer: {
     padding: 20,
     '& a': {
@@ -33,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Layout = ({ children }) => {
+const Layout: React.FunctionComponent = ({ children }) => {
   const classes = useStyles()
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <ThemeProvider theme={theme}>
-      <NavBar setDrawerOpen={setDrawerOpen} />
+      <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
       <Container maxWidth="lg">{children}</Container>
       <Drawer
         open={isDrawerOpen}
@@ -47,7 +46,9 @@ const Layout = ({ children }) => {
         classes={{ paper: classes.drawerWrapper }}
       >
         <div className={classes.drawer}>
-          {navLinks.map(({ url, text }) => renderButtonLink(url, text))}
+          {navLinks.map(({ url, text }) => (
+            <ButtonLink url={url} text={text} />
+          ))}
         </div>
       </Drawer>
     </ThemeProvider>

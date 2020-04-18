@@ -1,4 +1,4 @@
-import { renderButtonLink } from './buttonLink'
+import { ButtonLink } from './buttonLink'
 import ExternalLink from './externalLink'
 
-export { renderButtonLink, ExternalLink }
+export { ButtonLink, ExternalLink }

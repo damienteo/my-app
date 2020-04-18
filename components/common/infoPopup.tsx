@@ -1,31 +1,51 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Dialog from '@material-ui/core/Dialog'
-import MuiDialogTitle from '@material-ui/core/DialogTitle'
+import { withStyles, createStyles } from '@material-ui/core/styles'
+import {
+  Theme,
+  Typography,
+  Dialog,
+  IconButton,
+  IconButtonProps,
+} from '@material-ui/core'
+import MuiDialogTitle, {
+  DialogTitleProps as MUIDialogTitleProps,
+} from '@material-ui/core/DialogTitle'
 import MuiDialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
 
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  openButton: {
-    padding: 0,
-    marginTop: `-${theme.spacing(1)}px`,
-  },
-})
+interface DialogButtonProps extends IconButtonProps {
+  title: string
+  iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
+  handleClickOpen: () => void
+  classes: any
+}
 
-const DialogButton = withStyles(styles)((props) => {
+interface DialogTitleProps extends MUIDialogTitleProps {
+  onClose: () => void
+  classes: any
+  children: React.ReactNode
+}
+
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      margin: 0,
+      padding: theme.spacing(2),
+    },
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
+    },
+    openButton: {
+      padding: 0,
+      marginTop: `-${theme.spacing(1)}px`,
+    },
+  })
+
+const DialogButton = withStyles(styles)((props: DialogButtonProps) => {
   const { title, handleClickOpen, iconColor = 'primary', classes } = props
   return (
     <IconButton
@@ -39,7 +59,7 @@ const DialogButton = withStyles(styles)((props) => {
   )
 })
 
-const DialogTitle = withStyles(styles)((props) => {
+const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   const { children, classes, onClose, ...other } = props
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -63,7 +83,7 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent)
 
-const InfoPopup = (props) => {
+const InfoPopup: React.FunctionComponent<{ title: string }> = (props) => {
   const { title, children } = props
   const [open, setOpen] = React.useState(false)
 
