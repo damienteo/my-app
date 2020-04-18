@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const PortfolioPage = () => {
+const PortfolioPage: React.FunctionComponent = () => {
   const classes = useStyles()
 
   return (
