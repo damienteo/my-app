@@ -1,4 +1,4 @@
-export const getYearsAndMonths = (value) => {
+export const getYearsAndMonths = (value: number) => {
   const months = value % 12
   const years = (value - months) / 12
 
@@ -14,6 +14,6 @@ export const getYearsAndMonths = (value) => {
 const currencyOptions = { style: 'currency', currency: 'USD' }
 const currencyFormat = new Intl.NumberFormat('en-US', currencyOptions)
 
-export const formatCurrency = (value) => {
+export const formatCurrency = (value: number) => {
   return currencyFormat.format(value)
 }

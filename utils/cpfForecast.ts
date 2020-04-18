@@ -2,7 +2,13 @@ import moment from 'moment'
 import { CPFAccount } from './cpfAccount'
 import { withdrawalAge, payoutAge } from '../constants'
 
-export const roundTo2Dec = (value) => {
+export interface Values {
+  ordinaryAccount: string
+  specialAccount: string
+  monthlySalary: string
+}
+
+export const roundTo2Dec = (value: string) => {
   let nextValue = value === '0' ? '0' : value.replace(/^0+/, '')
 
   const decimalPlace = nextValue.indexOf('.')
@@ -16,7 +22,10 @@ export const roundTo2Dec = (value) => {
   return nextValue
 }
 
-export const getAge = (selectedDate, timePeriod) => {
+export const getAge = (
+  selectedDate: moment.Moment,
+  timePeriod: 'years' | 'months'
+) => {
   const current = moment()
   const birthday = moment(selectedDate)
   const duration = current.diff(birthday, timePeriod)
@@ -31,7 +40,10 @@ const getMonthsTillEOY = (date = moment()) => {
   return monthsTillInterest
 }
 
-export const calculateFutureValues = (values, selectedDate) => {
+export const calculateFutureValues = (
+  values: Values,
+  selectedDate: moment.Moment
+) => {
   const newAccount = new CPFAccount(values, selectedDate)
 
   // CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually. CPF interest earned in 2019 will be credited to members’ CPF accounts by the end of 1 January 2020(https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726).

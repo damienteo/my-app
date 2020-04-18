@@ -220,8 +220,8 @@ const CPFForecastPage = () => {
                   value={values[account.field]}
                   label={account.label}
                   field={account.field}
-                  error={errors && errors[account.field]}
-                  helperText={errors && errors[account.field]}
+                  error={errors[account.field]}
+                  helperText={errors[account.field]}
                   handleChange={handleChange}
                 />
               </Grid>

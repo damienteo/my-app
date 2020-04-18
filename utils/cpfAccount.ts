@@ -7,7 +7,21 @@ import {
   ordinaryWageCeiling,
   withdrawalAge,
 } from '../constants'
-import { getAge } from './cpfForecast'
+import { getAge, Values } from './cpfForecast'
+
+export interface Entry {
+  date: string
+  category: string
+  ordinaryAccount: number
+  specialAccount: number
+  retirementAccount?: number
+}
+
+export interface Accounts {
+  ordinaryAccount?: number
+  specialAccount?: number
+  retirementAccount?: number
+}
 
 const {
   ordinaryIR,
@@ -32,11 +46,11 @@ const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
 const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
 const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
 
-const normalRound = (value) => {
+const normalRound = (value: number) => {
   return Math.round((value + Number.EPSILON) * 100) / 100
 }
 
-const getCPFAllocation = (age) => {
+const getCPFAllocation = (age: number) => {
   if (age <= 35) return cpfAllocation['35AndBelow']
 
   if (age >= 36 && age <= 45) return cpfAllocation['36to45']
@@ -49,30 +63,30 @@ const getCPFAllocation = (age) => {
 
   if (age >= 61 && age <= 65) return cpfAllocation['61to65']
 
-  if (age >= 66) return cpfAllocation['66andAbove']
+  return cpfAllocation['66andAbove']
 }
 
 export class CPFAccount {
-  #ordinaryAccount
-  #specialAccount
+  #ordinaryAccount: number
+  #specialAccount: number
   #retirementAccount = 0
   #ordinaryAccountAtWithdrawalAge = 0
   #specialAccountAtWithdrawalAge = 0
-  #monthlySalary
+  #monthlySalary: number
 
-  #currentAge
+  #currentAge: number
   #currentDate = moment()
   #monthProgression = 0
   #reachedWithdrawalAge = false
-  #history = []
-  #historyAfterWithdrawalAge = []
-  #monthsTillWithdrawal
+  #history: Entry[]
+  #historyAfterWithdrawalAge: Entry[]
+  #monthsTillWithdrawal: number
 
   #accruedOrdinaryInterest = 0
   #accruedSpecialInterest = 0
   #accruedRetirementInterest = 0
 
-  constructor(values, selectedDate) {
+  constructor(values: Values, selectedDate: moment.Moment) {
     const { ordinaryAccount, specialAccount, monthlySalary } = values
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
@@ -84,6 +98,8 @@ export class CPFAccount {
     this.#monthsTillWithdrawal = monthsTillWithdrawal
 
     this.#currentAge = getAge(selectedDate, 'years')
+    this.#history = []
+    this.#historyAfterWithdrawalAge = []
   }
 
   updateTimePeriod() {
@@ -97,7 +113,7 @@ export class CPFAccount {
     }
   }
 
-  updateHistory(category, rest) {
+  updateHistory(category: string, rest = {} as Accounts) {
     this.#history.push({
       date: this.#currentDate.format('MMM YYYY'),
       category,
@@ -107,7 +123,7 @@ export class CPFAccount {
     })
   }
 
-  updateHistoryAfterWithdrawalAge(category, rest) {
+  updateHistoryAfterWithdrawalAge(category: string, rest = {} as Accounts) {
     this.#historyAfterWithdrawalAge.push({
       date: this.#currentDate.format('MMM YYYY'),
       category,
@@ -124,7 +140,7 @@ export class CPFAccount {
     this.#reachedWithdrawalAge = true
 
     const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
-    const yearOfWithdrawalAge = dateOfWithdrawalAge.split(' ')[1]
+    const yearOfWithdrawalAge = parseInt(dateOfWithdrawalAge.split(' ')[1])
     const currentYear = moment().year()
     const yearsFromPresent = yearOfWithdrawalAge - currentYear
 
@@ -440,7 +456,7 @@ export class CPFAccount {
     }
   }
 
-  addSalaryAndInterestOverTime(months) {
+  addSalaryAndInterestOverTime(months: number) {
     let period = months
 
     while (period > 0) {

@@ -49,7 +49,7 @@ const NavBar: React.FunctionComponent<{
           </div>
           <Hidden smDown>
             {navLinks.map(({ url, text }) => (
-              <ButtonLink url={url} text={text} />
+              <ButtonLink key={url} url={url} text={text} />
             ))}
           </Hidden>
         </Toolbar>
