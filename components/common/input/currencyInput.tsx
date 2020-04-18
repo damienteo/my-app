@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import {
   FormControl,
   FormHelperText,
@@ -11,7 +11,7 @@ type CurrencyInputProps = {
   label: string
   value: number
   field: string
-  handleChange: (field: string) => void
+  handleChange: (field: string) => (event: SyntheticEvent) => void
   error: boolean
   helperText: string
 }
@@ -25,7 +25,7 @@ const CurrencyInput: React.FunctionComponent<CurrencyInputProps> = (props) => {
       <Input
         id="standard-adornment-amount"
         value={value}
-        onChange={() => handleChange(field)}
+        onChange={handleChange(field)}
         type="number"
         error={error}
         startAdornment={<InputAdornment position="start">$</InputAdornment>}
