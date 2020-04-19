@@ -20,7 +20,8 @@ const AboutPage = () => {
           url="https://www.typescriptlang.org/"
           label="Typescript"
         />
-        ), HTML, and CSS.
+        ), HTML, and CSS. Testing is done with{' '}
+        <ExternalLink url="https://jestjs.io/" label="Jest" />.
       </Paragraph>
       <Paragraph>
         As of the time of this writing, we are undergoing what is called a CCB (

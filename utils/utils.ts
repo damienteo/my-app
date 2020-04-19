@@ -2,13 +2,11 @@ export const getYearsAndMonths = (value: number) => {
   const months = value % 12
   const years = (value - months) / 12
 
-  if (years === 0 && months === 1) return `${months} month`
+  const yearString = years === 1 ? 'year' : 'years'
+  const monthString = months === 1 ? 'month' : 'months'
 
-  if (years === 0) return `${months} months`
-
-  if (months === 1) return `${years} years and ${months} month`
-
-  return `${years} years and ${months} months`
+  if (years > 0) return `${years} ${yearString} and ${months} ${monthString}`
+  return `${months} ${monthString}`
 }
 
 const currencyOptions = { style: 'currency', currency: 'USD' }
