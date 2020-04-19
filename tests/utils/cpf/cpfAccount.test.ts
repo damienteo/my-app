@@ -110,7 +110,7 @@ describe('CPFAccount should not have contributions in history if monthly salary 
     monthlySalary: '0',
   }
 
-  beforeEach(() => {
+  beforeAll(() => {
     instance = new CPFAccount(values, date16YearsAgo)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
@@ -145,7 +145,7 @@ const normalValues = {
 }
 
 describe('CPFAccount should have contributions and interest in histories if there is at least a monthly salary', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     instance = new CPFAccount(normalValues, date16YearsAgo)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
@@ -180,7 +180,7 @@ describe('CPFAccount should have contributions and interest in histories if ther
 })
 
 describe('CPFAccount should not have contributions in history after withdrawal age if updateAccountsAtWithdrawalAge method not called', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     instance = new CPFAccount(normalValues, date16YearsAgo)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)

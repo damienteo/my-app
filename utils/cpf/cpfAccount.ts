@@ -170,10 +170,10 @@ export class CPFAccount {
 
     // Calculate CPF Allocation amounts and add accordingly
     const OAContribution = normalRound(eligibleSalary * currentCPFAllocation.OA)
-    this.#ordinaryAccount = this.#ordinaryAccount + OAContribution
+    this.#ordinaryAccount += OAContribution
 
     const SAContribution = normalRound(eligibleSalary * currentCPFAllocation.SA)
-    this.#specialAccount = this.#specialAccount + SAContribution
+    this.#specialAccount += SAContribution
 
     // Update history  and accrued amounts only if there is an addition of interest to the balance
     if (OAContribution > 0 || SAContribution > 0) {
@@ -238,9 +238,8 @@ export class CPFAccount {
       )
 
       // Accrue RA interest
-      this.#accruedRetirementInterest = normalRound(
-        this.#accruedRetirementInterest +
-          extraBonusRetirementInterest +
+      this.#accruedRetirementInterest += normalRound(
+        extraBonusRetirementInterest +
           bonusRetirementInterest +
           nonBonusRetirementInterest
       )
@@ -299,8 +298,7 @@ export class CPFAccount {
       )
 
       // Accrue RA interest from OA Bonus interest
-      this.#accruedRetirementInterest =
-        this.#accruedRetirementInterest + extraBonusInterest + bonusInterest
+      this.#accruedRetirementInterest += extraBonusInterest + bonusInterest
     } else {
       // Not yet reached 55
       const bonusInterest = normalRound(
@@ -313,9 +311,9 @@ export class CPFAccount {
     }
 
     // Entire Ordinary Account is eligible for normal OA interest, as bonus interest is sent to other accounts
-    this.#accruedOrdinaryInterest =
-      this.#accruedOrdinaryInterest +
-      normalRound(this.#ordinaryAccount * ordinaryInterestRate)
+    this.#accruedOrdinaryInterest += normalRound(
+      this.#ordinaryAccount * ordinaryInterestRate
+    )
 
     // Take note of Special Account eligible for Bonus Rate, by taking out Ordinary Account from Bonus Account Cap
     // Cannot simply compare OA to nextBonusAmountCap, as bonus applied to OA has a lower cap
@@ -369,11 +367,8 @@ export class CPFAccount {
       )
 
       // Accrue SA interest
-      this.#accruedSpecialInterest = normalRound(
-        this.#accruedSpecialInterest +
-          extraBonusInterest +
-          bonusSpecialInterest +
-          nonBonusSpecialInterest
+      this.#accruedSpecialInterest += normalRound(
+        extraBonusInterest + bonusSpecialInterest + nonBonusSpecialInterest
       )
     } else {
       // Take note of Amount in Special Account eligible for Normal Bonus Interest
@@ -403,30 +398,20 @@ export class CPFAccount {
   }
 
   addInterestToAccounts() {
-    this.#ordinaryAccount = normalRound(
-      this.#ordinaryAccount + this.#accruedOrdinaryInterest
-    )
-    this.#specialAccount = normalRound(
-      this.#specialAccount + this.#accruedSpecialInterest
-    )
-    if (this.#reachedWithdrawalAge) {
-      this.#retirementAccount = normalRound(
-        this.#retirementAccount + this.#accruedRetirementInterest
-      )
-    }
-
     // Update history  and accrued amounts only if there is an addition of interest to the balance
     if (
       this.#accruedOrdinaryInterest > 0 ||
       this.#accruedSpecialInterest > 0 ||
       this.#accruedRetirementInterest > 0
     ) {
-      if (!this.#reachedWithdrawalAge) {
-        this.updateHistory('Interest', {
-          ordinaryAccount: this.#accruedOrdinaryInterest,
-          specialAccount: this.#accruedSpecialInterest,
-        })
-      } else {
+      // Add interest to accounts
+      this.#ordinaryAccount += normalRound(this.#accruedOrdinaryInterest)
+      this.#specialAccount += normalRound(this.#accruedSpecialInterest)
+
+      if (this.#reachedWithdrawalAge) {
+        // Account for RA matters if after withdrawal age
+        this.#retirementAccount += normalRound(this.#accruedRetirementInterest)
+
         this.updateHistoryAfterWithdrawalAge('Interest', {
           ordinaryAccount: this.#accruedOrdinaryInterest,
           specialAccount: this.#accruedSpecialInterest,
@@ -434,10 +419,27 @@ export class CPFAccount {
         })
 
         this.#accruedRetirementInterest = 0
+      } else {
+        this.updateHistory('Interest', {
+          ordinaryAccount: this.#accruedOrdinaryInterest,
+          specialAccount: this.#accruedSpecialInterest,
+        })
       }
 
       this.#accruedOrdinaryInterest = 0
       this.#accruedSpecialInterest = 0
+    }
+  }
+
+  addInterestAtEndOfYear(period: number, initialPeriod: number) {
+    if (period % 12 === 0 && period !== initialPeriod) {
+      this.addInterestToAccounts()
+
+      if (!this.#reachedWithdrawalAge) {
+        this.updateHistory('Balance')
+      } else {
+        this.updateHistoryAfterWithdrawalAge('Balance')
+      }
     }
   }
 
@@ -446,15 +448,7 @@ export class CPFAccount {
 
     while (period > 0) {
       // Calculate and add Accrued Interest for the end of the previous year. Ignore for the previous full year as that has been accounted for.
-      if (period % 12 === 0 && period !== months) {
-        this.addInterestToAccounts()
-
-        if (!this.#reachedWithdrawalAge) {
-          this.updateHistory('Balance')
-        } else {
-          this.updateHistoryAfterWithdrawalAge('Balance')
-        }
-      }
+      this.addInterestAtEndOfYear(period, months)
 
       // Update period for the start of the month
       period -= 1
