@@ -34,7 +34,7 @@ const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
 const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
 const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
 
-const getCPFAllocation = (age: number) => {
+export const getCPFAllocation = (age: number) => {
   if (age <= 35) return cpfAllocation['35AndBelow']
 
   if (age >= 36 && age <= 45) return cpfAllocation['36to45']
