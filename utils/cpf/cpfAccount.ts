@@ -149,8 +149,8 @@ export class CPFAccount {
         : this.#ordinaryAccount
 
     //  Remove SA and OA Amounts to be transferred
-    this.#specialAccount = this.#specialAccount - specialToRetirementAmount
-    this.#ordinaryAccount = this.#ordinaryAccount - ordinaryToRetirementAmount
+    this.#specialAccount -= specialToRetirementAmount
+    this.#ordinaryAccount -= ordinaryToRetirementAmount
 
     this.#retirementAccount =
       specialToRetirementAmount + ordinaryToRetirementAmount

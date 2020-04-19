@@ -103,6 +103,47 @@ describe('CPFAccount should not have interest accruement in history if there is 
   })
 })
 
+describe('CPFAccount should not have positive values in their final balance if there is no preceding amount or monthly salary', () => {
+  const values = {
+    ordinaryAccount: '0',
+    specialAccount: '0',
+    monthlySalary: '0',
+  }
+
+  beforeEach(() => {
+    instance = new CPFAccount(values, date16YearsAgo)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+  })
+
+  it('The final values of both Histories should be zero', async () => {
+    const accountValues = instance.accountValues
+
+    const indexOfLastEntry = accountValues.history.length - 1
+    expect(accountValues.history[indexOfLastEntry].ordinaryAccount).toEqual(0)
+    expect(accountValues.history[indexOfLastEntry].specialAccount).toEqual(0)
+
+    const indexOfLastEntryAfterWithdrawalAge =
+      accountValues.historyAfterWithdrawalAge.length - 1
+    expect(
+      accountValues.historyAfterWithdrawalAge[
+        indexOfLastEntryAfterWithdrawalAge
+      ].ordinaryAccount
+    ).toEqual(0)
+    expect(
+      accountValues.historyAfterWithdrawalAge[
+        indexOfLastEntryAfterWithdrawalAge
+      ].specialAccount
+    ).toEqual(0)
+    expect(
+      accountValues.historyAfterWithdrawalAge[
+        indexOfLastEntryAfterWithdrawalAge
+      ].retirementAccount
+    ).toEqual(0)
+  })
+})
+
 describe('CPFAccount should not have contributions in history if monthly salary is 0', () => {
   const values = {
     ordinaryAccount: '1000',
