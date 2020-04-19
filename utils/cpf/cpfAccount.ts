@@ -8,6 +8,7 @@ import {
   withdrawalAge,
 } from '../../constants'
 import { getAge } from './cpfForecast'
+import { normalRound } from '../utils'
 import { Values, Entry, Accounts } from './types'
 
 const {
@@ -32,10 +33,6 @@ const bonusRetirementInterestRate = (retirementIR + bonusIR) / 12
 const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
 const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
 const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
-
-const normalRound = (value: number) => {
-  return Math.round((value + Number.EPSILON) * 100) / 100
-}
 
 const getCPFAllocation = (age: number) => {
   if (age <= 35) return cpfAllocation['35AndBelow']

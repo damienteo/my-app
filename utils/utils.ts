@@ -15,3 +15,7 @@ const currencyFormat = new Intl.NumberFormat('en-US', currencyOptions)
 export const formatCurrency = (value: number) => {
   return currencyFormat.format(value)
 }
+
+export const normalRound = (value: number) => {
+  return Math.round((value + Number.EPSILON) * 100) / 100
+}

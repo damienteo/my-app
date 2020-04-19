@@ -1,4 +1,8 @@
-import { getYearsAndMonths, formatCurrency } from '../../../utils/utils'
+import {
+  getYearsAndMonths,
+  formatCurrency,
+  normalRound,
+} from '../../../utils/utils'
 
 describe('getYearsAndMonths should return correct strings', () => {
   test('Should return 0 months if period is 0', () => {
@@ -68,5 +72,29 @@ describe('formatCurrency should return strings with commas and two decimal place
   })
   test('Should insert a comma in the millions and thousands place and return $1,999,101.02 if value is 1999101.016', () => {
     expect(formatCurrency(1999101.016)).toBe('$1,999,101.02')
+  })
+})
+
+describe('normalRound should return number values with 2 decimal places', () => {
+  test('Should return 0.00 if value is 0', () => {
+    expect(normalRound(0.0)).toBe(0.0)
+  })
+  test('Should return 0.01 if value is 0.01', () => {
+    expect(normalRound(0.01)).toBe(0.01)
+  })
+  test('Should round down and  return 0.00 if value is 0.004', () => {
+    expect(normalRound(0.004)).toBe(0.0)
+  })
+  test('Should round up and return 0.01 if value is 0.005', () => {
+    expect(normalRound(0.005)).toBe(0.01)
+  })
+  test('Should return 0.05 if value is 0.05', () => {
+    expect(normalRound(0.05)).toBe(0.05)
+  })
+  test('Should round down and return 0.05 if value is 0.054', () => {
+    expect(normalRound(0.054)).toBe(0.05)
+  })
+  test('Should round up and return 0.06 if value is 0.055', () => {
+    expect(normalRound(0.055)).toBe(0.06)
   })
 })
