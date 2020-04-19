@@ -1,4 +1,4 @@
-import { getYearsAndMonths } from '../../../utils/utils'
+import { getYearsAndMonths, formatCurrency } from '../../../utils/utils'
 
 describe('getYearsAndMonths should return correct strings', () => {
   test('Should return 0 months if period is 0', () => {
@@ -35,5 +35,38 @@ describe('getYearsAndMonths should return correct strings', () => {
 
   test('Should return 2 years and 2 months if period is 26', () => {
     expect(getYearsAndMonths(26)).toBe('2 years and 2 months')
+  })
+})
+
+describe('formatCurrency should return strings with commas and two decimal places', () => {
+  test('Should return $0.00 if value is 0', () => {
+    expect(formatCurrency(0)).toBe('$0.00')
+  })
+  test('Should return $0.01 if value is 0.01', () => {
+    expect(formatCurrency(0.01)).toBe('$0.01')
+  })
+  test('Should round down and return $0.01 if value is 0.014', () => {
+    expect(formatCurrency(0.014)).toBe('$0.01')
+  })
+  test('Should round up and return $0.02 if value is 0.015', () => {
+    expect(formatCurrency(0.015)).toBe('$0.02')
+  })
+  test('Should round up and return $0.02 if value is 0.016', () => {
+    expect(formatCurrency(0.016)).toBe('$0.02')
+  })
+  test('Should return $1.02 if value is 1.016', () => {
+    expect(formatCurrency(1.016)).toBe('$1.02')
+  })
+  test('Should return $101.02 if value is 101.016', () => {
+    expect(formatCurrency(101.016)).toBe('$101.02')
+  })
+  test('Should insert a comma in the thousands place and return $1,101.02 if value is 1101.016', () => {
+    expect(formatCurrency(1101.016)).toBe('$1,101.02')
+  })
+  test('Should insert a comma in the thousands place and return $999,101.02 if value is 999101.016', () => {
+    expect(formatCurrency(999101.016)).toBe('$999,101.02')
+  })
+  test('Should insert a comma in the millions and thousands place and return $1,999,101.02 if value is 1999101.016', () => {
+    expect(formatCurrency(1999101.016)).toBe('$1,999,101.02')
   })
 })
