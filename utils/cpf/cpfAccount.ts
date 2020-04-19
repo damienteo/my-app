@@ -30,6 +30,7 @@ const bonusOrdinaryInterestRate = bonusIR / 12
 const bonusSpecialInterestRate = (specialIR + bonusIR) / 12
 const bonusRetirementInterestRate = (retirementIR + bonusIR) / 12
 
+// extraBonusOrdinaryInterest is transferred to Special or Retirement Account instead of Ordinary Account
 const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
 const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
 const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
