@@ -23,8 +23,22 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/zeit/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on ZEIT Now
+## More Info
 
-The easiest way to deploy your Next.js app is to use the [ZEIT Now Platform](https://zeit.co/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This site was created with a mixture of: React.js, Next.js, and Material UI.
+Essentially, it's just Javascript (with Typescript), HTML, and CSS.
+Testing is done with Jest.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+CPF-forecast TODOs:
+
+- Add Tests for cpfForecast.ts
+- Add more tests specifically for calculation in CPFAccount class
+- Simplify methods in CPFAccount class
+- Fix bug found in cpfForecast.ts
+- Add scenario for choosing to move all sums to Special Account
+- Add scenario for using CPF to pay for housing
+
+Other TODOs:
+
+- Improve on styling
+- Add Blog component
