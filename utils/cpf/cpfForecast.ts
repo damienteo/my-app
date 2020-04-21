@@ -4,7 +4,11 @@ import { withdrawalAge, payoutAge } from '../../constants'
 import { Values } from './types'
 
 export const roundTo2Dec = (value: string) => {
-  let nextValue = value === '0' ? '0' : value.replace(/^0+/, '')
+  const isLeadingWithZero = value[0] === '0' && value[1] === '.'
+
+  const isExcludedCondition = value === '0' || isLeadingWithZero
+
+  let nextValue = isExcludedCondition ? value : value.replace(/^0+/, '')
 
   const decimalPlace = nextValue.indexOf('.')
   const isTooLong = nextValue.length > decimalPlace + 3
@@ -27,10 +31,9 @@ export const getAge = (
   return duration
 }
 
-const getMonthsTillEOY = (date = moment()) => {
-  const currentYear = moment().year()
-  const startOfNextYear = moment(`01/01/${currentYear + 1}`, 'DD/MM/YYYY')
-  const monthsTillInterest = startOfNextYear.diff(date, 'months')
+export const getMonthsTillEOY = (date = moment()) => {
+  const endOfYear = moment().endOf('year')
+  const monthsTillInterest = endOfYear.diff(date, 'months')
 
   return monthsTillInterest
 }

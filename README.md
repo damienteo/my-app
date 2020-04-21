@@ -35,10 +35,13 @@ CPF-forecast TODOs:
 - Add more tests specifically for calculation in CPFAccount class
 - Simplify methods in CPFAccount class
 - Fix bug found in cpfForecast.ts
-- Add scenario for choosing to move all sums to Special Account
+- Add option for bonuses (13th month, optional)z
+- Add monthly salary increase
 - Add scenario for using CPF to pay for housing
+- Add scenario for choosing to move all sums to Special Account
 
 Other TODOs:
 
 - Improve on styling
 - Add Blog component
+- Add route.js file
