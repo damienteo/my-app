@@ -31,11 +31,10 @@ Testing is done with Jest.
 
 CPF-forecast TODOs:
 
-- Add Tests for cpfForecast.ts
-- Add more tests specifically for calculation in CPFAccount class
 - Simplify methods in CPFAccount class
+- Add more tests specifically for calculation in CPFAccount class
 - Fix bug found in cpfForecast.ts
-- Add option for bonuses (13th month, optional)z
+- Add option for bonuses (13th month, optional)
 - Add monthly salary increase
 - Add scenario for using CPF to pay for housing
 - Add scenario for choosing to move all sums to Special Account
