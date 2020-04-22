@@ -120,10 +120,12 @@ export class CPFAccount {
   }
 
   updateAccountsAtWithdrawalAge() {
+    // Provides Snapshot of Values at Withdrawal Age
     this.#ordinaryAccountAtWithdrawalAge = this.#ordinaryAccount
     this.#specialAccountAtWithdrawalAge = this.#specialAccount
     this.#reachedWithdrawalAge = true
 
+    // Extrapolate potential future Full Retirement Sum (FRS)
     const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
     const yearOfWithdrawalAge = parseInt(dateOfWithdrawalAge.split(' ')[1])
     const currentYear = moment().year()
@@ -132,15 +134,16 @@ export class CPFAccount {
     const nextCPFFullRetirementSum =
       fullRetirementSum + retirementSumIncrease * yearsFromPresent
 
-    // Transfer from Special Account to Retirement Account first
+    // FRS takes money from Special Account (SA) before Ordinary Account (OA)
     const isSpecialEnoughForRetirement =
       this.#specialAccount > nextCPFFullRetirementSum
 
-    // Calculate amounts to be transferred from SA / OA to RA
+    // Calculate amounts to be transferred from SA to RA
     const specialToRetirementAmount = isSpecialEnoughForRetirement
       ? nextCPFFullRetirementSum
       : this.#specialAccount
 
+    // Calculate amounts to be transferred from OA to RA
     const retirementSumShortfall =
       nextCPFFullRetirementSum - specialToRetirementAmount
     const ordinaryToRetirementAmount =
@@ -148,7 +151,7 @@ export class CPFAccount {
         ? retirementSumShortfall
         : this.#ordinaryAccount
 
-    //  Remove SA and OA Amounts to be transferred
+    //  Remove SA and OA Amounts to be transferred to RA
     this.#specialAccount -= specialToRetirementAmount
     this.#ordinaryAccount -= ordinaryToRetirementAmount
 
@@ -175,20 +178,18 @@ export class CPFAccount {
     const SAContribution = normalRound(eligibleSalary * currentCPFAllocation.SA)
     this.#specialAccount += SAContribution
 
-    // Update history  and accrued amounts only if there is an addition of interest to the balance
-    if (OAContribution > 0 || SAContribution > 0) {
-      if (!this.#reachedWithdrawalAge) {
-        this.updateHistory('Contribution', {
-          ordinaryAccount: OAContribution,
-          specialAccount: SAContribution,
-        })
-      } else {
-        this.updateHistoryAfterWithdrawalAge('Contribution', {
-          ordinaryAccount: OAContribution,
-          specialAccount: SAContribution,
-          retirementAccount: 0,
-        })
-      }
+    // Update History Array
+    if (!this.#reachedWithdrawalAge) {
+      this.updateHistory('Contribution', {
+        ordinaryAccount: OAContribution,
+        specialAccount: SAContribution,
+      })
+    } else {
+      this.updateHistoryAfterWithdrawalAge('Contribution', {
+        ordinaryAccount: OAContribution,
+        specialAccount: SAContribution,
+        retirementAccount: 0,
+      })
     }
   }
 
@@ -398,12 +399,13 @@ export class CPFAccount {
   }
 
   addInterestToAccounts() {
-    // Update history  and accrued amounts only if there is an addition of interest to the balance
-    if (
+    const accruedInterestPresent =
       this.#accruedOrdinaryInterest > 0 ||
       this.#accruedSpecialInterest > 0 ||
       this.#accruedRetirementInterest > 0
-    ) {
+
+    // Update history  and accrued amounts only if there is an addition of interest to the balance
+    if (accruedInterestPresent) {
       // Add interest to accounts
       this.#ordinaryAccount += normalRound(this.#accruedOrdinaryInterest)
       this.#specialAccount += normalRound(this.#accruedSpecialInterest)
@@ -417,8 +419,6 @@ export class CPFAccount {
           specialAccount: this.#accruedSpecialInterest,
           retirementAccount: this.#accruedRetirementInterest,
         })
-
-        this.#accruedRetirementInterest = 0
       } else {
         this.updateHistory('Interest', {
           ordinaryAccount: this.#accruedOrdinaryInterest,
@@ -428,6 +428,7 @@ export class CPFAccount {
 
       this.#accruedOrdinaryInterest = 0
       this.#accruedSpecialInterest = 0
+      this.#accruedRetirementInterest = 0
     }
   }
 
@@ -458,7 +459,7 @@ export class CPFAccount {
       this.addMonthlyInterest()
 
       // Add salary at the end of the month, as interest is based on the lowest amount in the account at any time in the month
-      this.addMonthlySalary()
+      if (this.#monthlySalary > 0) this.addMonthlySalary()
 
       // Add interest at the end of the period
       if (period === 0) {
