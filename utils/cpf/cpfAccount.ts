@@ -193,57 +193,181 @@ export class CPFAccount {
     }
   }
 
+  accrueRAInterest() {
+    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
+
+    // Take note of Retirement Account eligible for Extra Bonus Rate, by taking out extraEligibleRetirementAmount from this.#retirementAccount
+    const extraEligibleRetirementAmount =
+      this.#retirementAccount > extraBonusAmtCap
+        ? extraBonusAmtCap
+        : this.#retirementAccount
+
+    //Calculate Extra-Bonus Interest for Retirement Account
+    const extraBonusRetirementInterest = normalRound(
+      extraEligibleRetirementAmount * extraBonusRetirementInterestRate
+    )
+
+    // Take note of Retirement Account eligible for normal Bonus Rate, by taking out eligibleRetirementAmount from this.#retirementAccount
+    const nonExtraBonusCap = bonusAmtCap - extraBonusAmtCap
+    const excessRetirementAmount =
+      this.#retirementAccount - extraEligibleRetirementAmount
+
+    // Take note of Retirement Account eligible for only the normal Bonus Rate,
+
+    const eligibleRetirementAmount =
+      excessRetirementAmount >= nonExtraBonusCap
+        ? nonExtraBonusCap
+        : excessRetirementAmount
+
+    //Calculate Normal Bonus Interest for Retirement Account
+    const bonusRetirementInterest = normalRound(
+      eligibleRetirementAmount * bonusRetirementInterestRate
+    )
+
+    // Take note of Amount in Special Account NOT eligible for Bonus Interest
+    const nonBonusRetirementAmount =
+      excessRetirementAmount - eligibleRetirementAmount
+
+    //Calculate Normal Interest for Retirement Account
+    const nonBonusRetirementInterest = normalRound(
+      nonBonusRetirementAmount * retirementInterestRate
+    )
+
+    // Accrue RA interest
+    this.#accruedRetirementInterest += normalRound(
+      extraBonusRetirementInterest +
+        bonusRetirementInterest +
+        nonBonusRetirementInterest
+    )
+  }
+
+  accrueBonusOAInterest(eligibleOrdinaryAmount: number) {
+    // Not yet reached 55
+    const bonusInterest = normalRound(
+      eligibleOrdinaryAmount * bonusOrdinaryInterestRate
+    )
+
+    // Accrue SA interest from OA Bonus Interest
+    this.#accruedSpecialInterest = this.#accruedSpecialInterest + bonusInterest
+  }
+
+  accrueBonusOAInterestAfterWithdrawalAge(eligibleOrdinaryAmount: number) {
+    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
+    // extraBonusAmtCap is the cap for extra bonus
+    // nextBonusAmtCap is the amount that can still be applied for bonus interest (need to take RA into account)
+    const nextExtraBonusAmountCap =
+      this.#retirementAccount > extraBonusAmtCap
+        ? 0
+        : extraBonusAmtCap - this.#retirementAccount
+
+    // Check if nextOrdinaryAmountCap falls within the Extra Bonus Amount
+    // Calculate OA eligible for extra bonus interest
+    const extraBonusOrdinaryAmount =
+      eligibleOrdinaryAmount > nextExtraBonusAmountCap
+        ? nextExtraBonusAmountCap
+        : 0
+
+    // Calculate extra bonus interest
+    const extraBonusInterest = normalRound(
+      extraBonusOrdinaryAmount * extraBonusOrdinaryInterestRate
+    )
+
+    //Calculate OA eligible for normal bonus interest
+    const bonusOrdinaryAmount =
+      eligibleOrdinaryAmount - extraBonusOrdinaryAmount
+
+    // Calculate normal bonus interest
+    const bonusInterest = normalRound(
+      bonusOrdinaryAmount * bonusOrdinaryInterestRate
+    )
+
+    // Accrue RA interest from OA Bonus interest
+    // Bonus Interest from the Ordinary Account iRetirement Account (if 55 and above)
+    this.#accruedRetirementInterest += extraBonusInterest + bonusInterest
+  }
+
+  accrueSAInterest(eligibleSpecialAmountCap: number) {
+    // Take note of Amount in Special Account eligible for Normal Bonus Interest
+    const eligibleSpecialAmount =
+      this.#specialAccount >= eligibleSpecialAmountCap
+        ? eligibleSpecialAmountCap
+        : this.#specialAccount
+
+    // Take note of Amount in Special Account NOT eligible for Bonus Interest
+    const nonBonusSpecialAmount = this.#specialAccount - eligibleSpecialAmount
+
+    // Settle Interest for Special Account
+    const bonusSpecialInterest = normalRound(
+      eligibleSpecialAmount * bonusSpecialInterestRate
+    )
+    const nonBonusSpecialInterest = normalRound(
+      nonBonusSpecialAmount * specialInterestRate
+    )
+
+    // Accrue SA interest
+    this.#accruedSpecialInterest = normalRound(
+      this.#accruedSpecialInterest +
+        bonusSpecialInterest +
+        nonBonusSpecialInterest
+    )
+  }
+
+  accrueSAInterestAfterWithdrawalAge(eligibleSpecialAmountCap: number) {
+    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
+    // Take note of Cap for Extra Bonus Interest
+    const totalRAandOA = this.#ordinaryAccount + this.#retirementAccount
+    const specialAccountExtraBonusAmountCap =
+      totalRAandOA > extraBonusAmtCap ? 0 : extraBonusAmtCap - totalRAandOA
+
+    // Take note of Amount in Special Account eligible for Extra Bonus Interest
+    const extraBonusSpecialAmount =
+      this.#specialAccount >= specialAccountExtraBonusAmountCap
+        ? specialAccountExtraBonusAmountCap
+        : this.#specialAccount
+
+    // Take note of Special Amount after removing amount to calculate extra bonus. The lowest value here is 0
+    const specialAmountWithoutExtraBonus =
+      this.#specialAccount - extraBonusSpecialAmount
+
+    // Take note of Amount in Special Account eligible for Normal Bonus Interest
+    const nextEligibleSpecialAmountCap =
+      eligibleSpecialAmountCap - specialAccountExtraBonusAmountCap
+
+    // Both specialAmountWithoutExtraBonus and nextEligibleSpecialAmountCap may be 0 if bonus cap was cleared by OA and RA
+    // If the special amount, after removing the extra bonus is more than or equal to the amount cap for calculating normal bonus interest, the eligible amount is the amount cap.
+    const eligibleSpecialAmount =
+      specialAmountWithoutExtraBonus >= nextEligibleSpecialAmountCap
+        ? nextEligibleSpecialAmountCap
+        : specialAmountWithoutExtraBonus
+
+    // Take note of Amount in Special Account NOT eligible for Bonus Interest
+    const nonBonusSpecialAmount =
+      specialAmountWithoutExtraBonus - eligibleSpecialAmount
+
+    // Settle Interest for Special Account
+    const extraBonusInterest = normalRound(
+      extraBonusSpecialAmount * extraBonusSpecialInterestRate
+    )
+    const bonusSpecialInterest = normalRound(
+      eligibleSpecialAmount * bonusSpecialInterestRate
+    )
+    const nonBonusSpecialInterest = normalRound(
+      nonBonusSpecialAmount * specialInterestRate
+    )
+
+    // Accrue SA interest
+    this.#accruedSpecialInterest += normalRound(
+      extraBonusInterest + bonusSpecialInterest + nonBonusSpecialInterest
+    )
+  }
+
   addMonthlyInterest() {
-    //TODO: Simplify below
     // Amount for Bonus Interest is taken from Retirement Account, then Ordinary Account, then the Special Account
+    // Bonus Interest from the Ordinary Account is passed into the Special Account (if below 55), or Retirement Account (if 55 and above)
 
     // If Withdrawal Age reached, calculate Retirement Account interest and Accrue:
     if (this.#reachedWithdrawalAge) {
-      // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
-
-      // Take note of Retirement Account eligible for Extra Bonus Rate, by taking out extraEligibleRetirementAmount from this.#retirementAccount
-      const extraEligibleRetirementAmount =
-        this.#retirementAccount > extraBonusAmtCap
-          ? extraBonusAmtCap
-          : this.#retirementAccount
-
-      //Calculate Extra-Bonus Interest for Retirement Account
-      const extraBonusRetirementInterest = normalRound(
-        extraEligibleRetirementAmount * extraBonusRetirementInterestRate
-      )
-
-      // Take note of Retirement Account eligible for normal Bonus Rate, by taking out eligibleRetirementAmount from this.#retirementAccount
-      const nonExtraBonusCap = bonusAmtCap - extraBonusAmtCap
-      const excessRetirementAmount =
-        this.#retirementAccount - extraEligibleRetirementAmount
-
-      // Take note of Retirement Account eligible for only the normal Bonus Rate,
-
-      const eligibleRetirementAmount =
-        excessRetirementAmount >= nonExtraBonusCap
-          ? nonExtraBonusCap
-          : excessRetirementAmount
-
-      //Calculate Normal Bonus Interest for Retirement Account
-      const bonusRetirementInterest = normalRound(
-        eligibleRetirementAmount * bonusRetirementInterestRate
-      )
-
-      // Take note of Amount in Special Account NOT eligible for Bonus Interest
-      const nonBonusRetirementAmount =
-        excessRetirementAmount - eligibleRetirementAmount
-
-      //Calculate Normal Interest for Retirement Account
-      const nonBonusRetirementInterest = normalRound(
-        nonBonusRetirementAmount * retirementInterestRate
-      )
-
-      // Accrue RA interest
-      this.#accruedRetirementInterest += normalRound(
-        extraBonusRetirementInterest +
-          bonusRetirementInterest +
-          nonBonusRetirementInterest
-      )
+      this.accrueRAInterest()
     }
 
     // Update Bonus Amount Cap to be applied to OA and SA if there is RA
@@ -264,58 +388,6 @@ export class CPFAccount {
         ? nextOrdinaryAmountCap
         : this.#ordinaryAccount
 
-    // Take note of Different Bonus Ordinary Account Interests before or after 55
-
-    // Settle Additional Interest for Ordinary Account
-    // Bonus Interest from the Ordinary Account is passed into the Special Account (if below 55), or Retirement Account (if 55 and above)
-
-    if (this.#reachedWithdrawalAge) {
-      // extraBonusAmtCap is the cap for extra bonus
-      // nextBonusAmtCap is the amount that can still be applied for bonus interest (need to take RA into account)
-      const nextExtraBonusAmountCap =
-        this.#retirementAccount > extraBonusAmtCap
-          ? 0
-          : extraBonusAmtCap - this.#retirementAccount
-
-      // Check if nextOrdinaryAmountCap falls within the Extra Bonus Amount
-      // Calculate OA eligible for extra bonus interest
-      const extraBonusOrdinaryAmount =
-        eligibleOrdinaryAmount > nextExtraBonusAmountCap
-          ? nextExtraBonusAmountCap
-          : 0
-
-      // Calculate extra bonus interest
-      const extraBonusInterest = normalRound(
-        extraBonusOrdinaryAmount * extraBonusOrdinaryInterestRate
-      )
-
-      //Calculate OA eligible for normal bonus interest
-      const bonusOrdinaryAmount =
-        eligibleOrdinaryAmount - extraBonusOrdinaryAmount
-
-      // Calculate normal bonus interest
-      const bonusInterest = normalRound(
-        bonusOrdinaryAmount * bonusOrdinaryInterestRate
-      )
-
-      // Accrue RA interest from OA Bonus interest
-      this.#accruedRetirementInterest += extraBonusInterest + bonusInterest
-    } else {
-      // Not yet reached 55
-      const bonusInterest = normalRound(
-        eligibleOrdinaryAmount * bonusOrdinaryInterestRate
-      )
-
-      // Accrue SA interest from OA Bonus Interest
-      this.#accruedSpecialInterest =
-        this.#accruedSpecialInterest + bonusInterest
-    }
-
-    // Entire Ordinary Account is eligible for normal OA interest, as bonus interest is sent to other accounts
-    this.#accruedOrdinaryInterest += normalRound(
-      this.#ordinaryAccount * ordinaryInterestRate
-    )
-
     // Take note of Special Account eligible for Bonus Rate, by taking out Ordinary Account from Bonus Account Cap
     // Cannot simply compare OA to nextBonusAmountCap, as bonus applied to OA has a lower cap
     // By here, nextBonusAmountCap may be 0 if retirement age is present
@@ -324,78 +396,20 @@ export class CPFAccount {
         ? nextBonusAmountCap - eligibleOrdinaryAmount
         : 0
 
-    // TODO: Refactor
     if (this.#reachedWithdrawalAge) {
-      // Take note of Cap for Extra Bonus Interest
-      const totalRAandOA = this.#ordinaryAccount + this.#retirementAccount
-      const specialAccountExtraBonusAmountCap =
-        totalRAandOA > extraBonusAmtCap ? 0 : extraBonusAmtCap - totalRAandOA
-
-      // Take note of Amount in Special Account eligible for Extra Bonus Interest
-      const extraBonusSpecialAmount =
-        this.#specialAccount >= specialAccountExtraBonusAmountCap
-          ? specialAccountExtraBonusAmountCap
-          : this.#specialAccount
-
-      // Take note of Special Amount after removing amount to calculate extra bonus. The lowest value here is 0
-      const specialAmountWithoutExtraBonus =
-        this.#specialAccount - extraBonusSpecialAmount
-
-      // Take note of Amount in Special Account eligible for Normal Bonus Interest
-      const nextEligibleSpecialAmountCap =
-        eligibleSpecialAmountCap - specialAccountExtraBonusAmountCap
-
-      // Both specialAmountWithoutExtraBonus and nextEligibleSpecialAmountCap may be 0 if bonus cap was cleared by OA and RA
-      // If the special amount, after removing the extra bonus is more than or equal to the amount cap for calculating normal bonus interest, the eligible amount is the amount cap.
-      const eligibleSpecialAmount =
-        specialAmountWithoutExtraBonus >= nextEligibleSpecialAmountCap
-          ? nextEligibleSpecialAmountCap
-          : specialAmountWithoutExtraBonus
-
-      // Take note of Amount in Special Account NOT eligible for Bonus Interest
-      const nonBonusSpecialAmount =
-        specialAmountWithoutExtraBonus - eligibleSpecialAmount
-
-      // Settle Interest for Special Account
-      const extraBonusInterest = normalRound(
-        extraBonusSpecialAmount * extraBonusSpecialInterestRate
-      )
-      const bonusSpecialInterest = normalRound(
-        eligibleSpecialAmount * bonusSpecialInterestRate
-      )
-      const nonBonusSpecialInterest = normalRound(
-        nonBonusSpecialAmount * specialInterestRate
-      )
-
-      // Accrue SA interest
-      this.#accruedSpecialInterest += normalRound(
-        extraBonusInterest + bonusSpecialInterest + nonBonusSpecialInterest
-      )
+      // Take note of Different Bonus Ordinary Account Interests before or after 55
+      this.accrueBonusOAInterestAfterWithdrawalAge(eligibleOrdinaryAmount)
+      this.accrueSAInterestAfterWithdrawalAge(eligibleSpecialAmountCap)
     } else {
-      // Take note of Amount in Special Account eligible for Normal Bonus Interest
-      const eligibleSpecialAmount =
-        this.#specialAccount >= eligibleSpecialAmountCap
-          ? eligibleSpecialAmountCap
-          : this.#specialAccount
-
-      // Take note of Amount in Special Account NOT eligible for Bonus Interest
-      const nonBonusSpecialAmount = this.#specialAccount - eligibleSpecialAmount
-
-      // Settle Interest for Special Account
-      const bonusSpecialInterest = normalRound(
-        eligibleSpecialAmount * bonusSpecialInterestRate
-      )
-      const nonBonusSpecialInterest = normalRound(
-        nonBonusSpecialAmount * specialInterestRate
-      )
-
-      // Accrue SA interest
-      this.#accruedSpecialInterest = normalRound(
-        this.#accruedSpecialInterest +
-          bonusSpecialInterest +
-          nonBonusSpecialInterest
-      )
+      this.accrueBonusOAInterest(eligibleOrdinaryAmount)
+      this.accrueSAInterest(eligibleSpecialAmountCap)
     }
+
+    // Entire Ordinary Account is eligible for normal OA interest, as bonus interest is sent to other accounts
+    // As Ordinary Account is the only account with this procedure, we can have the accruement for Ordinary Interest to be a separate line without if/else here
+    this.#accruedOrdinaryInterest += normalRound(
+      this.#ordinaryAccount * ordinaryInterestRate
+    )
   }
 
   addInterestToAccounts() {
