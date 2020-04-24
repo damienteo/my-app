@@ -9,7 +9,13 @@ import {
 } from '../../constants'
 import { getAge } from './cpfForecast'
 import { normalRound } from '../utils'
-import { Values, Entry, Accounts, SalaryRecord } from './types'
+import {
+  AccountValues,
+  Entry,
+  Accounts,
+  SalaryRecord,
+  ErrorValues,
+} from './types'
 
 const {
   ordinaryIR,
@@ -61,26 +67,34 @@ export class CPFAccount {
   #salaryIncreaseRate: number
 
   #currentAge: number
+  #birthDate: moment.Moment
   #currentDate = moment()
-  #birthDate = moment()
-  #monthProgression = 0
   #reachedWithdrawalAge = false
+  #monthsTillWithdrawal: number
+
   #history: Entry[] = []
   #historyAfterWithdrawalAge: Entry[] = []
   #salaryHistory: SalaryRecord[] = []
   #salaryHistoryAfterWithdrawalAge: SalaryRecord[] = []
-  #monthsTillWithdrawal: number
 
   #accruedOrdinaryInterest = 0
   #accruedSpecialInterest = 0
   #accruedRetirementInterest = 0
 
-  constructor(values: Values, selectedDate: moment.Moment) {
+  #housingLoan: number
+  #housingLoanDate: string
+
+  #errors: ErrorValues = {}
+
+  constructor(values: AccountValues) {
     const {
       ordinaryAccount,
       specialAccount,
       monthlySalary,
       salaryIncreaseRate,
+      selectedDate,
+      housingLoan,
+      housingLoanDate,
     } = values
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
@@ -94,6 +108,7 @@ export class CPFAccount {
 
     this.#birthDate = moment(selectedDate)
     this.#currentAge = getAge(selectedDate, 'years')
+
     // Add in entry for current year in Salary History
     const shouldInitiateSalaryHistory =
       this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
@@ -104,11 +119,13 @@ export class CPFAccount {
         year: this.#currentDate.year(),
       })
     }
+
+    this.#housingLoan = parseFloat(housingLoan)
+    this.#housingLoanDate = moment(housingLoanDate).format('MMM YYYY')
   }
 
   updateTimePeriod() {
     // Track progression of time
-    this.#monthProgression++
     this.#currentDate.add(1, 'M')
 
     // Update Age if month of current date is same as month of birthdate
@@ -499,6 +516,38 @@ export class CPFAccount {
     }
   }
 
+  processHousingLoan() {
+    // If Ordinary Account is not enough, indicate error and return early
+    if (this.#housingLoan > this.#ordinaryAccount) {
+      return (this.#errors.housingLoan = `There is only ${
+        this.#ordinaryAccount
+      } in your ordinary account, and you need ${
+        this.#housingLoan
+      } for the housing loan on ${this.#currentDate.format('MMM YYYY')}`)
+    }
+
+    // Clear housing loan amount from ordinary account
+    this.#ordinaryAccount -= this.#housingLoan
+
+    if (!this.#reachedWithdrawalAge) {
+      this.updateHistory('Housing', {
+        ordinaryAccount: -this.#housingLoan,
+        specialAccount: 0,
+      })
+      this.updateHistory('Balance')
+    } else {
+      this.updateHistoryAfterWithdrawalAge('Housing', {
+        ordinaryAccount: -this.#housingLoan,
+        specialAccount: 0,
+        retirementAccount: 0,
+      })
+      this.updateHistoryAfterWithdrawalAge('Balance')
+    }
+
+    // Clear amount in housing loan as it is no longer needed
+    this.#housingLoan = 0
+  }
+
   addSalaryAndInterestOverTime(months: number) {
     let period = months
 
@@ -507,6 +556,14 @@ export class CPFAccount {
       const isEndOfYear = this.#currentDate.month() === 11
       if (isEndOfYear && period !== months) {
         this.addInterestAtEndOfPeriod()
+      }
+
+      // Check for usage of housing loan
+      if (
+        this.#housingLoan > 0 &&
+        this.#currentDate.format('MMM YYYY') === this.#housingLoanDate
+      ) {
+        this.processHousingLoan()
       }
 
       // Update period for the start of the month
@@ -547,6 +604,7 @@ export class CPFAccount {
       monthlySalary: this.#monthlySalary,
       salaryHistory: this.#salaryHistory,
       salaryHistoryAfterWithdrawalAge: this.#salaryHistoryAfterWithdrawalAge,
+      errors: this.#errors,
     }
   }
 

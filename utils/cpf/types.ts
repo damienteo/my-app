@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export interface Entry {
   date: string
   category: string
@@ -28,7 +30,18 @@ export interface Values {
   specialAccount: string
   monthlySalary: string
   salaryIncreaseRate: string
+  housingLoan: string
   [key: string]: string
+}
+
+export interface AccountValues {
+  ordinaryAccount: string
+  specialAccount: string
+  monthlySalary: string
+  salaryIncreaseRate: string
+  selectedDate: moment.Moment
+  housingLoan: string
+  housingLoanDate?: moment.Moment
 }
 
 export interface FutureValues {

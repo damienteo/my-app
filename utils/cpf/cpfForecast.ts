@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { CPFAccount } from './cpfAccount'
 import { withdrawalAge, payoutAge } from '../../constants'
-import { Values } from './types'
+import { AccountValues } from './types'
 
 export const roundTo2Dec = (value: string) => {
   const isLeadingWithZero = value[0] === '0' && value[1] === '.'
@@ -38,11 +38,8 @@ export const getMonthsTillEOY = (date = moment()) => {
   return monthsTillInterest
 }
 
-export const calculateFutureValues = (
-  values: Values,
-  selectedDate: moment.Moment
-) => {
-  const newAccount = new CPFAccount(values, selectedDate)
+export const calculateFutureValues = (values: AccountValues) => {
+  const newAccount = new CPFAccount(values)
 
   // CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually. CPF interest earned in 2019 will be credited to members’ CPF accounts by the end of 1 January 2020(https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726).
 
@@ -68,6 +65,7 @@ export const calculateFutureValues = (
 
   // Calculate number of months from withdrawal age (currently 55) till payoutAge (currently 65), which is when CPF LIFE starts
   // Update balance till EOY of withdrawal year
+  const { selectedDate } = values
   const monthsTillEndOfWithdrawalYear = getMonthsTillEOY(selectedDate) % 12
   newAccount.addSalaryAndInterestOverTime(monthsTillEndOfWithdrawalYear)
 
@@ -83,6 +81,9 @@ export const calculateFutureValues = (
 
   // Update balance for remaining months
   newAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
+
+  // eslint-disable-next-line no-console
+  console.log('newAccount.accountValues', newAccount.accountValues)
 
   return newAccount.accountValues
 }

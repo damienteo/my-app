@@ -25,7 +25,12 @@ import {
   calculateFutureValues,
   roundTo2Dec,
 } from '../../../utils/cpf/cpfForecast'
-import { ErrorValues, Values, FutureValues } from '../../../utils/cpf/types'
+import {
+  ErrorValues,
+  Values,
+  AccountValues,
+  FutureValues,
+} from '../../../utils/cpf/types'
 import { cpfAccounts, withdrawalAge } from '../../../constants'
 
 interface UserInputProps {
@@ -54,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: cyan[200],
     },
   },
+  longLabel: {
+    [theme.breakpoints.down('xs')]: {
+      '& .MuiInputBase-input': { padding: '20px 0 7px' },
+      '& .MuiInputAdornment-root ': { marginTop: 15 },
+    },
+  },
 }))
 
 const minDate = moment().subtract(withdrawalAge, 'y')
@@ -68,8 +79,12 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     specialAccount: '0',
     monthlySalary: '0',
     salaryIncreaseRate: '0',
+    housingLoan: '0',
   })
   const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
+  const [housingLoanDate, handleHousingDateChange] = useState<moment.Moment>(
+    moment()
+  )
 
   const [errors, setErrors] = useState<ErrorValues>({})
 
@@ -115,8 +130,14 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       return (nextValues[key] = values[key] === '' ? '0' : values[key])
     })
 
+    const accountValues = {
+      ...nextValues,
+      selectedDate,
+      housingLoanDate,
+    } as AccountValues
+
     if (isCorrectInput) {
-      const nextFutureValues = calculateFutureValues(nextValues, selectedDate)
+      const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
       setCalculating(true)
       setSnackbarOpen(true)
@@ -148,7 +169,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           {cpfAccounts.map((account) => (
             <Grid
               item
-              sm={6}
+              xs={12}
+              md={6}
               className={classes.inputWrapper}
               key={account.field}
             >
@@ -182,7 +204,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           </InfoPopup>
         </Paragraph>
         <Grid container>
-          <Grid item sm={6} className={classes.inputWrapper}>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <KeyboardDatePicker
               value={selectedDate}
               label="Date of Birth"
@@ -224,8 +246,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </Paragraph>
           </InfoPopup>
         </Paragraph>
-        <Grid container>
-          <Grid item sm={6} className={classes.inputWrapper}>
+        <Grid container className={classes.longLabel}>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <CurrencyInput
               value={values.monthlySalary}
               label="Monthly Salary (Optional)"
@@ -235,7 +257,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               handleChange={handleChange}
             />
           </Grid>
-          <Grid item sm={6} className={classes.inputWrapper}>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <TextField
               value={values.salaryIncreaseRate}
               label="Projected % Increase/Year (Optional)"
@@ -245,6 +267,35 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}
+            />
+          </Grid>
+        </Grid>
+      </Section>
+
+      <Section>
+        {/* TODO: Add details on options when CPF site is up */}
+        <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
+        <Grid container className={classes.longLabel}>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <CurrencyInput
+              value={values.housingLoan}
+              label="Use CPF for Housing Loan (Optional)"
+              field="housingLoan"
+              error={Boolean(errors.housingLoan)}
+              helperText={errors.housingLoan}
+              handleChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <KeyboardDatePicker
+              value={housingLoanDate}
+              label="Planned Date for Housing Loan (Optional)"
+              // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+              onChange={(date: any) => handleHousingDateChange(date)}
+              format="dd/MM/yyyy"
+              minDate={moment()}
+              minDateMessage={`This date is before the present`}
+              maxDateMessage="You need to be 16 years old and above to contribute to CPF"
             />
           </Grid>
         </Grid>

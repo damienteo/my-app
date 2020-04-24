@@ -32,16 +32,18 @@ describe('getCPFAllocation should return the right interest rates', () => {
 let instance: CPFAccount
 
 describe('CPFAccount should have methods to return values', () => {
+  const date = moment()
   const values = {
     ordinaryAccount: '',
     specialAccount: '',
     monthlySalary: '',
     salaryIncreaseRate: '0',
+    selectedDate: date,
+    housingLoan: '0',
   }
-  const date = moment()
 
   beforeEach(() => {
-    instance = new CPFAccount(values, date)
+    instance = new CPFAccount(values)
   })
 
   it('should have get methods that return values', async () => {
@@ -75,10 +77,12 @@ describe('CPFAccount should not have interest accruement in history if there is 
     specialAccount: '0',
     monthlySalary: '0',
     salaryIncreaseRate: '0',
+    selectedDate: date16YearsAgo,
+    housingLoan: '0',
   }
 
   beforeEach(() => {
-    instance = new CPFAccount(values, date16YearsAgo)
+    instance = new CPFAccount(values)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -111,10 +115,12 @@ describe('CPFAccount should not have positive values in their final balance if t
     specialAccount: '0',
     monthlySalary: '0',
     salaryIncreaseRate: '0',
+    selectedDate: date16YearsAgo,
+    housingLoan: '0',
   }
 
   beforeEach(() => {
-    instance = new CPFAccount(values, date16YearsAgo)
+    instance = new CPFAccount(values)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -153,10 +159,12 @@ describe('CPFAccount should not have contributions in history if monthly salary 
     specialAccount: '1000',
     monthlySalary: '0',
     salaryIncreaseRate: '0',
+    selectedDate: date16YearsAgo,
+    housingLoan: '0',
   }
 
   beforeAll(() => {
-    instance = new CPFAccount(values, date16YearsAgo)
+    instance = new CPFAccount(values)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -188,11 +196,13 @@ const normalValues = {
   specialAccount: '1000',
   monthlySalary: '1000',
   salaryIncreaseRate: '1',
+  selectedDate: date16YearsAgo,
+  housingLoan: '0',
 }
 
 describe('CPFAccount should have relevant entries in histories if there is at least a monthly salary and salary increase rate', () => {
   beforeAll(() => {
-    instance = new CPFAccount(normalValues, date16YearsAgo)
+    instance = new CPFAccount(normalValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -256,7 +266,7 @@ describe('CPFAccount should have relevant entries in histories if there is at le
 
 describe('CPFAccount should not have contributions in history after withdrawal age if updateAccountsAtWithdrawalAge method not called', () => {
   beforeAll(() => {
-    instance = new CPFAccount(normalValues, date16YearsAgo)
+    instance = new CPFAccount(normalValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
   })
@@ -273,10 +283,12 @@ describe('CPFAccount should not have entries in salaryHistory if salary increase
     specialAccount: '1000',
     monthlySalary: '1000',
     salaryIncreaseRate: '0',
+    selectedDate: date16YearsAgo,
+    housingLoan: '0',
   }
 
   beforeAll(() => {
-    instance = new CPFAccount(values, date16YearsAgo)
+    instance = new CPFAccount(values)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
