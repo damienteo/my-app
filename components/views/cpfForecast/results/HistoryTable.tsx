@@ -14,12 +14,14 @@ import {
 import IconButton from '@material-ui/core/IconButton'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import { Paragraph } from '../../../common'
 import { formatCurrency } from '../../../../utils/utils'
-import { Entry, GroupsType } from '../../../../utils/cpf/types'
+import { Entry, GroupsType, SalaryRecord } from '../../../../utils/cpf/types'
 
 interface HistoryTableProps {
   data: Entry[]
   groupByYear: boolean
+  salaryData: SalaryRecord[]
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +36,16 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     margin: `${theme.spacing(1.5)}px 0`,
+  },
+  paragraph: {
+    color: '#282c35',
+    textAlign: 'center',
+    margin: theme.spacing(5, 0),
+  },
+  highlightText: {
+    backgroundColor: '#282c35',
+    color: '#e3f2fd',
+    padding: '2px 5px',
   },
 }))
 
@@ -78,7 +90,7 @@ const chunkArray = (myArray: Entry[], groupByYear: boolean, chunkSize = 15) => {
 
 const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const classes = useStyles()
-  const { data = [], groupByYear = false } = props
+  const { data = [], groupByYear = false, salaryData = [] } = props
   const [page, setPage] = useState(0)
 
   const { history, groups = [] } = chunkArray(data, groupByYear)
@@ -128,17 +140,28 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
     })
   }
 
+  const renderSalaryInfo = (salaryData: SalaryRecord) => {
+    const { year, amount, age } = salaryData
+    return (
+      <Paragraph className={classes.paragraph}>
+        In the year {year}, your salary is{' '}
+        <span className={classes.highlightText}>{formatCurrency(amount)}</span>{' '}
+        (age: {age}).
+      </Paragraph>
+    )
+  }
+
   return (
     <>
       {renderButtons()}
 
       {groups && (
-        <Hidden xsDown>
-          <div className={classes.groupButtonsWrapper}>
-            {renderGroupButtons()}
-          </div>
-        </Hidden>
+        <div className={classes.groupButtonsWrapper}>
+          {renderGroupButtons()}
+        </div>
       )}
+
+      {Boolean(salaryData[page]) && renderSalaryInfo(salaryData[page])}
 
       <TableContainer component={Paper} className={classes.table}>
         <Table aria-label="CPF Forecast History">
@@ -179,9 +202,11 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       </TableContainer>
 
       {groups && (
-        <div className={classes.groupButtonsWrapper}>
-          {renderGroupButtons()}
-        </div>
+        <Hidden xsDown>
+          <div className={classes.groupButtonsWrapper}>
+            {renderGroupButtons()}
+          </div>
+        </Hidden>
       )}
 
       {renderButtons()}

@@ -27,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Results: React.FunctionComponent<ResultsProps> = (props) => {
   const { futureValues } = props
+  const {
+    history,
+    monthlySalary,
+    historyAfterWithdrawalAge,
+    salaryHistory,
+    salaryHistoryAfterWithdrawalAge,
+  } = futureValues
   const classes = useStyles()
 
   const [historyOpen, setHistoryOpen] = useState<boolean>(false)
@@ -42,7 +49,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         <WithdrawalAgeInfo futureValues={futureValues} />
 
         {/* History Table for Transactions up to 55 years old */}
-        {futureValues.history.length > 0 && (
+        {history.length > 0 && (
           <div className={classes.buttonWrapper}>
             <Button
               variant="contained"
@@ -56,8 +63,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {historyOpen && (
           <>
             <HistoryTable
-              data={futureValues.history}
-              groupByYear={futureValues.monthlySalary > 0}
+              data={history}
+              groupByYear={monthlySalary > 0}
+              salaryData={salaryHistory}
             />
             <div className={classes.buttonWrapper}>
               <Button
@@ -77,7 +85,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         <PayoutAgeInfo futureValues={futureValues} />
 
         {/* History Table for Transactions from 55 to 65 years old */}
-        {futureValues.historyAfterWithdrawalAge.length > 0 && (
+        {historyAfterWithdrawalAge.length > 0 && (
           <div className={classes.buttonWrapper}>
             <Button
               variant="contained"
@@ -94,8 +102,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {historyAfterWithdrawalAgeOpen && (
           <>
             <HistoryTable
-              data={futureValues.historyAfterWithdrawalAge}
-              groupByYear={futureValues.monthlySalary > 0}
+              data={historyAfterWithdrawalAge}
+              groupByYear={monthlySalary > 0}
+              salaryData={salaryHistoryAfterWithdrawalAge}
             />
             <div className={classes.buttonWrapper}>
               <Button

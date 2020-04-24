@@ -35,6 +35,7 @@ const CPFForecastPage = () => {
     historyAfterWithdrawalAge: [],
     monthlySalary: 0,
     salaryHistory: [],
+    salaryHistoryAfterWithdrawalAge: [],
   })
 
   return (

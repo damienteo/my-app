@@ -42,6 +42,7 @@ export interface FutureValues {
   historyAfterWithdrawalAge: Entry[]
   monthlySalary: number
   salaryHistory: SalaryRecord[]
+  salaryHistoryAfterWithdrawalAge: SalaryRecord[]
 }
 
 export interface ErrorValues {
