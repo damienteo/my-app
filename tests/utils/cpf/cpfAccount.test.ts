@@ -36,6 +36,7 @@ describe('CPFAccount should have methods to return values', () => {
     ordinaryAccount: '',
     specialAccount: '',
     monthlySalary: '',
+    salaryIncreaseRate: '0',
   }
   const date = moment()
 
@@ -73,6 +74,7 @@ describe('CPFAccount should not have interest accruement in history if there is 
     ordinaryAccount: '0',
     specialAccount: '0',
     monthlySalary: '0',
+    salaryIncreaseRate: '0',
   }
 
   beforeEach(() => {
@@ -108,6 +110,7 @@ describe('CPFAccount should not have positive values in their final balance if t
     ordinaryAccount: '0',
     specialAccount: '0',
     monthlySalary: '0',
+    salaryIncreaseRate: '0',
   }
 
   beforeEach(() => {
@@ -149,6 +152,7 @@ describe('CPFAccount should not have contributions in history if monthly salary 
     ordinaryAccount: '1000',
     specialAccount: '1000',
     monthlySalary: '0',
+    salaryIncreaseRate: '0',
   }
 
   beforeAll(() => {
@@ -183,9 +187,10 @@ const normalValues = {
   ordinaryAccount: '1000',
   specialAccount: '1000',
   monthlySalary: '1000',
+  salaryIncreaseRate: '1',
 }
 
-describe('CPFAccount should have contributions and interest in histories if there is at least a monthly salary', () => {
+describe('CPFAccount should have relevant entries in histories if there is at least a monthly salary and salary increase rate', () => {
   beforeAll(() => {
     instance = new CPFAccount(normalValues, date16YearsAgo)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
@@ -193,7 +198,7 @@ describe('CPFAccount should have contributions and interest in histories if ther
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
   })
 
-  it('historyAfterWithdrawalAge should not have any entries', async () => {
+  it('Histories should have contributions and interest entries', async () => {
     const accountValues = instance.accountValues
 
     expect(accountValues.history).toEqual(
@@ -218,6 +223,35 @@ describe('CPFAccount should have contributions and interest in histories if ther
       ])
     )
   })
+
+  it('salaryHistory has entries', async () => {
+    const { salaryHistory } = instance.accountValues
+
+    expect(salaryHistory.length).toBeGreaterThan(0)
+  })
+
+  it('salaryHistory has entries', async () => {
+    const { salaryHistory } = instance.accountValues
+
+    expect(salaryHistory.length).toBeGreaterThan(0)
+  })
+
+  it('First entry in salaryHistory is for the current year', async () => {
+    const { salaryHistory } = instance.accountValues
+    const currentYear = moment().year()
+
+    expect(salaryHistory[0].year).toBe(currentYear)
+  })
+  it('salaryHistoryAfterWithdrawalAge has entries', async () => {
+    const { salaryHistoryAfterWithdrawalAge } = instance.accountValues
+
+    expect(salaryHistoryAfterWithdrawalAge.length).toBeGreaterThan(0)
+  })
+
+  it('First entry in salaryHistoryAfterWithdrawalAge should be for when user is one year younger than the Withdrawal Age', async () => {
+    const { salaryHistoryAfterWithdrawalAge } = instance.accountValues
+    expect(salaryHistoryAfterWithdrawalAge[0].age).toBe(withdrawalAge - 1)
+  })
 })
 
 describe('CPFAccount should not have contributions in history after withdrawal age if updateAccountsAtWithdrawalAge method not called', () => {
@@ -230,5 +264,33 @@ describe('CPFAccount should not have contributions in history after withdrawal a
   it('historyAfterWithdrawalAge should not have any entries', async () => {
     const accountValues = instance.accountValues
     expect(accountValues.historyAfterWithdrawalAge.length).toEqual(0)
+  })
+})
+
+describe('CPFAccount should not have entries in salaryHistory if salary increase rate is 0', () => {
+  const values = {
+    ordinaryAccount: '1000',
+    specialAccount: '1000',
+    monthlySalary: '1000',
+    salaryIncreaseRate: '0',
+  }
+
+  beforeAll(() => {
+    instance = new CPFAccount(values, date16YearsAgo)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+  })
+
+  it('salaryHistory does not have entries', async () => {
+    const { salaryHistory } = instance.accountValues
+
+    expect(salaryHistory.length).toEqual(0)
+  })
+
+  it('salaryHistoryAfterWithdrawalAge does not have entries', async () => {
+    const { salaryHistoryAfterWithdrawalAge } = instance.accountValues
+
+    expect(salaryHistoryAfterWithdrawalAge.length).toEqual(0)
   })
 })

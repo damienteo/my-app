@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Grid, Snackbar, IconButton } from '@material-ui/core/'
+import {
+  Button,
+  Grid,
+  Snackbar,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
 import { cyan, teal } from '@material-ui/core/colors/'
 
@@ -60,6 +67,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     ordinaryAccount: '0',
     specialAccount: '0',
     monthlySalary: '0',
+    salaryIncreaseRate: '0',
   })
   const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
 
@@ -83,11 +91,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     return nextErrors
   }
 
-  const handleChange = (prop: string) => (
+  const handleChange = (field: string) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const nextValue = roundTo2Dec(event.target.value)
-    setValues({ ...values, [prop]: nextValue })
+    setValues({ ...values, [field]: nextValue })
+
+    const nextErrors = { ...errors }
+    nextErrors[field] = undefined
+    setErrors({ ...nextErrors })
   }
 
   const handleSubmit = () => {
@@ -188,7 +200,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       <Section>
         <Paragraph className={classes.paragraph}>
           Finally, you may add in your monthly salary (before taxes and CPF
-          contribution).{' '}
+          contribution), as well as expectations on how much it may increase per
+          year. *Increase in monthly salary is calculated at the beginning of
+          each year.{' '}
           <InfoPopup title="Info on Employer / Employee CPF Contribution">
             <Paragraph className={classes.paragraph}>
               When{' '}
@@ -221,8 +235,21 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               handleChange={handleChange}
             />
           </Grid>
+          <Grid item sm={6} className={classes.inputWrapper}>
+            <TextField
+              value={values.salaryIncreaseRate}
+              label="Projected % Increase/Year (Optional)"
+              error={Boolean(errors.salaryIncreaseRate)}
+              helperText={errors.salaryIncreaseRate}
+              onChange={handleChange('salaryIncreaseRate')}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
+            />
+          </Grid>
         </Grid>
       </Section>
+
       <div className={classes.buttonWrapper}>
         <Button
           variant="contained"

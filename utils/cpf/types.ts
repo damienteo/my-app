@@ -11,6 +11,12 @@ export interface GroupsType {
   [key: string]: Entry[]
 }
 
+export interface SalaryRecord {
+  amount: number
+  age: number
+  year: number
+}
+
 export interface Accounts {
   ordinaryAccount?: number
   specialAccount?: number
@@ -21,6 +27,7 @@ export interface Values {
   ordinaryAccount: string
   specialAccount: string
   monthlySalary: string
+  salaryIncreaseRate: string
   [key: string]: string
 }
 
@@ -34,6 +41,7 @@ export interface FutureValues {
   history: Entry[]
   historyAfterWithdrawalAge: Entry[]
   monthlySalary: number
+  salaryHistory: SalaryRecord[]
 }
 
 export interface ErrorValues {

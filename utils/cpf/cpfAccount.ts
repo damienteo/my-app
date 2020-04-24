@@ -9,7 +9,7 @@ import {
 } from '../../constants'
 import { getAge } from './cpfForecast'
 import { normalRound } from '../utils'
-import { Values, Entry, Accounts } from './types'
+import { Values, Entry, Accounts, SalaryRecord } from './types'
 
 const {
   ordinaryIR,
@@ -58,13 +58,17 @@ export class CPFAccount {
   #ordinaryAccountAtWithdrawalAge = 0
   #specialAccountAtWithdrawalAge = 0
   #monthlySalary: number
+  #salaryIncreaseRate: number
 
   #currentAge: number
   #currentDate = moment()
+  #birthDate = moment()
   #monthProgression = 0
   #reachedWithdrawalAge = false
-  #history: Entry[]
-  #historyAfterWithdrawalAge: Entry[]
+  #history: Entry[] = []
+  #historyAfterWithdrawalAge: Entry[] = []
+  #salaryHistory: SalaryRecord[] = []
+  #salaryHistoryAfterWithdrawalAge: SalaryRecord[] = []
   #monthsTillWithdrawal: number
 
   #accruedOrdinaryInterest = 0
@@ -72,19 +76,34 @@ export class CPFAccount {
   #accruedRetirementInterest = 0
 
   constructor(values: Values, selectedDate: moment.Moment) {
-    const { ordinaryAccount, specialAccount, monthlySalary } = values
+    const {
+      ordinaryAccount,
+      specialAccount,
+      monthlySalary,
+      salaryIncreaseRate,
+    } = values
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
     this.#specialAccount = parseFloat(specialAccount)
     this.#monthlySalary = parseFloat(monthlySalary)
+    this.#salaryIncreaseRate = parseFloat(salaryIncreaseRate)
 
     const currentAgeInMonths = getAge(selectedDate, 'months')
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
     this.#monthsTillWithdrawal = monthsTillWithdrawal
 
+    this.#birthDate = moment(selectedDate)
     this.#currentAge = getAge(selectedDate, 'years')
-    this.#history = []
-    this.#historyAfterWithdrawalAge = []
+    // Add in entry for current year in Salary History
+    const shouldInitiateSalaryHistory =
+      this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
+    if (shouldInitiateSalaryHistory) {
+      this.#salaryHistory.push({
+        amount: normalRound(this.#monthlySalary),
+        age: this.#currentAge,
+        year: this.#currentDate.year(),
+      })
+    }
   }
 
   updateTimePeriod() {
@@ -92,8 +111,8 @@ export class CPFAccount {
     this.#monthProgression++
     this.#currentDate.add(1, 'M')
 
-    // Update Age as years pass
-    if (this.#monthProgression % 12 === 0) {
+    // Update Age if month of current date is same as month of birthdate
+    if (this.#birthDate.month() === this.#currentDate.month()) {
       this.#currentAge++
     }
   }
@@ -440,21 +459,43 @@ export class CPFAccount {
         })
       }
 
+      // Revert accrued interest back to 0 for the new year
       this.#accruedOrdinaryInterest = 0
       this.#accruedSpecialInterest = 0
       this.#accruedRetirementInterest = 0
     }
   }
 
-  addInterestAtEndOfYear(period: number, initialPeriod: number) {
-    if (period % 12 === 0 && period !== initialPeriod) {
-      this.addInterestToAccounts()
+  addInterestAtEndOfPeriod() {
+    this.addInterestToAccounts()
 
-      if (!this.#reachedWithdrawalAge) {
-        this.updateHistory('Balance')
-      } else {
-        this.updateHistoryAfterWithdrawalAge('Balance')
-      }
+    if (!this.#reachedWithdrawalAge) {
+      this.updateHistory('Balance')
+    } else {
+      this.updateHistoryAfterWithdrawalAge('Balance')
+    }
+  }
+
+  addMonthlySalaryAtEndOfYear() {
+    this.#monthlySalary += normalRound(
+      this.#monthlySalary * (this.#salaryIncreaseRate / 100)
+    )
+
+    const nextSalaryRecord = {
+      amount: normalRound(this.#monthlySalary),
+      age: this.#currentAge,
+      year: this.#currentDate.year(),
+    }
+
+    // Initiate salaryHistoryAfterWithdrawalAge with the first year's salary, which is still the salary just before the user has reached withdrawal age
+    if (this.#currentAge === withdrawalAge - 1) {
+      this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
+    }
+
+    if (this.#reachedWithdrawalAge) {
+      this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
+    } else {
+      this.#salaryHistory.push(nextSalaryRecord)
     }
   }
 
@@ -462,12 +503,23 @@ export class CPFAccount {
     let period = months
 
     while (period > 0) {
-      // Calculate and add Accrued Interest for the end of the previous year. Ignore for the previous full year as that has been accounted for.
-      this.addInterestAtEndOfYear(period, months)
+      // Calculate and add Accrued Interest for the end of the year. Ignore for the previous full year as that has been accounted for.
+      const isEndOfYear = this.#currentDate.month() === 11
+      if (isEndOfYear && period !== months) {
+        this.addInterestAtEndOfPeriod()
+      }
 
       // Update period for the start of the month
       period -= 1
       this.updateTimePeriod()
+
+      // Update Salary at the beginning of the year
+      const isStartOfYear = this.#currentDate.month() === 0
+      const shouldUpdateMonthlySalary =
+        this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
+      if (isStartOfYear && shouldUpdateMonthlySalary) {
+        this.addMonthlySalaryAtEndOfYear()
+      }
 
       // Update Accrued Interest amount
       this.addMonthlyInterest()
@@ -477,13 +529,7 @@ export class CPFAccount {
 
       // Add interest at the end of the period
       if (period === 0) {
-        this.addInterestToAccounts()
-
-        if (!this.#reachedWithdrawalAge) {
-          this.updateHistory('Balance')
-        } else {
-          this.updateHistoryAfterWithdrawalAge('Balance')
-        }
+        this.addInterestAtEndOfPeriod()
       }
     }
   }
@@ -499,6 +545,8 @@ export class CPFAccount {
       history: this.#history,
       historyAfterWithdrawalAge: this.#historyAfterWithdrawalAge,
       monthlySalary: this.#monthlySalary,
+      salaryHistory: this.#salaryHistory,
+      salaryHistoryAfterWithdrawalAge: this.#salaryHistoryAfterWithdrawalAge,
     }
   }
 
