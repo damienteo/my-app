@@ -29,21 +29,35 @@ describe('getCPFAllocation should return the right interest rates', () => {
   })
 })
 
+const date16YearsAgo = moment().subtract(16, 'y')
+const yearsBeforeWithdrawal = withdrawalAge - 16
+const monthsBeforeWithdrawal = yearsBeforeWithdrawal * 12
+const yearsAfterWithdrawal = payoutAge - withdrawalAge
+const monthsAfterWithdrawal = yearsAfterWithdrawal * 12
+
+const zeroValues = {
+  ordinaryAccount: '0',
+  specialAccount: '0',
+  monthlySalary: '0',
+  salaryIncreaseRate: '0',
+  selectedDate: date16YearsAgo,
+  housingLoan: '0',
+}
+
+const normalValues = {
+  ordinaryAccount: '1000',
+  specialAccount: '1000',
+  monthlySalary: '1000',
+  salaryIncreaseRate: '1',
+  selectedDate: date16YearsAgo,
+  housingLoan: '1000',
+}
+
 let instance: CPFAccount
 
 describe('CPFAccount should have methods to return values', () => {
-  const date = moment()
-  const values = {
-    ordinaryAccount: '',
-    specialAccount: '',
-    monthlySalary: '',
-    salaryIncreaseRate: '0',
-    selectedDate: date,
-    housingLoan: '0',
-  }
-
   beforeEach(() => {
-    instance = new CPFAccount(values)
+    instance = new CPFAccount(zeroValues)
   })
 
   it('should have get methods that return values', async () => {
@@ -65,24 +79,9 @@ describe('CPFAccount should have methods to return values', () => {
   })
 })
 
-const date16YearsAgo = moment().subtract(16, 'y')
-const yearsBeforeWithdrawal = withdrawalAge - 16
-const monthsBeforeWithdrawal = yearsBeforeWithdrawal * 12
-const yearsAfterWithdrawal = payoutAge - withdrawalAge
-const monthsAfterWithdrawal = yearsAfterWithdrawal * 12
-
 describe('CPFAccount should not have interest accruement in history if there is no money in special or ordinary accounts, nor monthly salary', () => {
-  const values = {
-    ordinaryAccount: '0',
-    specialAccount: '0',
-    monthlySalary: '0',
-    salaryIncreaseRate: '0',
-    selectedDate: date16YearsAgo,
-    housingLoan: '0',
-  }
-
   beforeEach(() => {
-    instance = new CPFAccount(values)
+    instance = new CPFAccount(zeroValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -110,17 +109,8 @@ describe('CPFAccount should not have interest accruement in history if there is 
 })
 
 describe('CPFAccount should not have positive values in their final balance if there is no preceding amount or monthly salary', () => {
-  const values = {
-    ordinaryAccount: '0',
-    specialAccount: '0',
-    monthlySalary: '0',
-    salaryIncreaseRate: '0',
-    selectedDate: date16YearsAgo,
-    housingLoan: '0',
-  }
-
   beforeEach(() => {
-    instance = new CPFAccount(values)
+    instance = new CPFAccount(zeroValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -153,18 +143,16 @@ describe('CPFAccount should not have positive values in their final balance if t
   })
 })
 
+// TODO: Update following test to check that entries in every object does not have Caegory: Contribution
 describe('CPFAccount should not have contributions in history if monthly salary is 0', () => {
-  const values = {
+  const nextValues = {
+    ...zeroValues,
     ordinaryAccount: '1000',
     specialAccount: '1000',
-    monthlySalary: '0',
-    salaryIncreaseRate: '0',
-    selectedDate: date16YearsAgo,
-    housingLoan: '0',
   }
 
   beforeAll(() => {
-    instance = new CPFAccount(values)
+    instance = new CPFAccount(nextValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
@@ -190,15 +178,6 @@ describe('CPFAccount should not have contributions in history if monthly salary 
     )
   })
 })
-
-const normalValues = {
-  ordinaryAccount: '1000',
-  specialAccount: '1000',
-  monthlySalary: '1000',
-  salaryIncreaseRate: '1',
-  selectedDate: date16YearsAgo,
-  housingLoan: '0',
-}
 
 describe('CPFAccount should have relevant entries in histories if there is at least a monthly salary and salary increase rate', () => {
   beforeAll(() => {
@@ -277,14 +256,10 @@ describe('CPFAccount should not have contributions in history after withdrawal a
   })
 })
 
-describe('CPFAccount should not have entries in salaryHistory if salary increase rate is 0', () => {
+describe('CPFAccount should not have entries in salaryHistory or increase salary if salary increase rate is 0', () => {
   const values = {
-    ordinaryAccount: '1000',
-    specialAccount: '1000',
-    monthlySalary: '1000',
+    ...normalValues,
     salaryIncreaseRate: '0',
-    selectedDate: date16YearsAgo,
-    housingLoan: '0',
   }
 
   beforeAll(() => {
@@ -304,5 +279,66 @@ describe('CPFAccount should not have entries in salaryHistory if salary increase
     const { salaryHistoryAfterWithdrawalAge } = instance.accountValues
 
     expect(salaryHistoryAfterWithdrawalAge.length).toEqual(0)
+  })
+
+  it('does not increase monthly salary', async () => {
+    const { monthlySalary } = instance.accountValues
+
+    expect(monthlySalary).toEqual(parseFloat(values.monthlySalary))
+  })
+})
+
+describe('CPFAccount should have the correct final salary amount based on salaryRateIncrease', () => {
+  const nextValues = {
+    ...normalValues,
+    salaryIncreaseRate: '2',
+  }
+
+  beforeAll(() => {
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+  })
+
+  it('Salaries at withdrawal age and payout age are correct', async () => {
+    const remainingMonths = instance.monthsTillWithdrawal % 12
+    const numberOfIncreasesTillWithdrawalAge =
+      (instance.monthsTillWithdrawal - remainingMonths) / 12
+    const numberOfIncreasesAfterWithdrawalAge = payoutAge - withdrawalAge
+
+    const salaryIncreasePercentageRate: number =
+      parseFloat(nextValues.salaryIncreaseRate) / 100
+    const compoundedPercentageRateTillWithdrawalAge =
+      (1 + salaryIncreasePercentageRate) ** numberOfIncreasesTillWithdrawalAge
+    const compoundedPercentageRateAfterWithdrawalAge =
+      (1 + salaryIncreasePercentageRate) ** numberOfIncreasesAfterWithdrawalAge
+
+    const salaryAtWithdrawalAge: number =
+      parseFloat(nextValues.monthlySalary) *
+      compoundedPercentageRateTillWithdrawalAge
+    const salaryAtPayoutAge: number =
+      salaryAtWithdrawalAge * compoundedPercentageRateAfterWithdrawalAge
+
+    const {
+      salaryHistory,
+      salaryHistoryAfterWithdrawalAge,
+    } = instance.accountValues
+
+    const accountSalaryAtWithdrawalAge =
+      salaryHistory[salaryHistory.length - 1].amount
+
+    // CPF Account rounds MonthlySalary to 2 decimal places at every increase. As such, there will be a minor difference when simply calculating final monthly salary by straight compounding
+    expect(accountSalaryAtWithdrawalAge.toFixed(0)).toEqual(
+      salaryAtWithdrawalAge.toFixed(0)
+    )
+
+    const accountSalaryAtPayoutAge =
+      salaryHistoryAfterWithdrawalAge[
+        salaryHistoryAfterWithdrawalAge.length - 1
+      ].amount
+    expect(accountSalaryAtPayoutAge.toFixed(0)).toEqual(
+      salaryAtPayoutAge.toFixed(0)
+    )
   })
 })

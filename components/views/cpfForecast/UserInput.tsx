@@ -295,7 +295,6 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               format="dd/MM/yyyy"
               minDate={moment()}
               minDateMessage={`This date is before the present`}
-              maxDateMessage="You need to be 16 years old and above to contribute to CPF"
             />
           </Grid>
         </Grid>

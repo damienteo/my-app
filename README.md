@@ -34,7 +34,6 @@ CPF-forecast TODOs:
 - Add more tests specifically for calculation in CPFAccount class
 - Fix bug found in cpfForecast.ts
 - Add option for bonuses (13th month, optional) - input: number of months, which month
-- Add scenario for using CPF to pay for housing - input: amount, date
 - Add scenario for choosing to move all sums to Special Account - input: checkbox
 
 Other TODOs:
