@@ -53,6 +53,10 @@ export class Salary {
     return this.#amount
   }
 
+  get increaseRate() {
+    return this.#increaseRate
+  }
+
   get history() {
     return this.#history
   }

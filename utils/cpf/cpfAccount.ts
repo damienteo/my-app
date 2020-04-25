@@ -57,7 +57,6 @@ export class CPFAccount {
   #retirementAccount = 0
   #ordinaryAccountAtWithdrawalAge = 0
   #specialAccountAtWithdrawalAge = 0
-  #salaryIncreaseRate: number
 
   #person: Person
   #salary: Salary
@@ -84,14 +83,13 @@ export class CPFAccount {
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
     this.#specialAccount = parseFloat(specialAccount)
-    this.#salaryIncreaseRate = parseFloat(salaryIncreaseRate)
 
     this.#person = new Person(selectedDate, housingLoan, housingLoanDate)
     this.#salary = new Salary(monthlySalary, salaryIncreaseRate)
 
     // Add in entry for current year in Salary History
     const shouldInitiateSalaryHistory =
-      this.#salary.amount > 0 && this.#salaryIncreaseRate > 0
+      this.#salary.amount > 0 && this.#salary.increaseRate > 0
     if (shouldInitiateSalaryHistory) {
       this.#salary.updateSalaryHistory(
         this.#person.age,
@@ -516,7 +514,7 @@ export class CPFAccount {
       // Update Salary at the beginning of the year
       const isStartOfYear = this.#person.date.month() === 0
       const shouldUpdateMonthlySalary =
-        this.#salary.amount > 0 && this.#salaryIncreaseRate > 0
+        this.#salary.amount > 0 && this.#salary.increaseRate > 0
       if (isStartOfYear && shouldUpdateMonthlySalary) {
         this.#salary.addMonthlySalaryAtEndOfYear(
           this.#person.age,
