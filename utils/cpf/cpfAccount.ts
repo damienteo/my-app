@@ -7,7 +7,7 @@ import {
   ordinaryWageCeiling,
   withdrawalAge,
 } from '../../constants'
-import { getAge } from './cpfForecast'
+import { Person } from './person'
 import { normalRound } from '../utils'
 import {
   AccountValues,
@@ -66,11 +66,7 @@ export class CPFAccount {
   #monthlySalary: number
   #salaryIncreaseRate: number
 
-  #currentAge: number
-  #birthDate: moment.Moment
-  #currentDate = moment()
-  #reachedWithdrawalAge = false
-  #monthsTillWithdrawal: number
+  #person: Person
 
   #history: Entry[] = []
   #historyAfterWithdrawalAge: Entry[] = []
@@ -102,12 +98,7 @@ export class CPFAccount {
     this.#monthlySalary = parseFloat(monthlySalary)
     this.#salaryIncreaseRate = parseFloat(salaryIncreaseRate)
 
-    const currentAgeInMonths = getAge(selectedDate, 'months')
-    const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
-    this.#monthsTillWithdrawal = monthsTillWithdrawal
-
-    this.#birthDate = moment(selectedDate)
-    this.#currentAge = getAge(selectedDate, 'years')
+    this.#person = new Person(selectedDate)
 
     // Add in entry for current year in Salary History
     const shouldInitiateSalaryHistory =
@@ -115,8 +106,8 @@ export class CPFAccount {
     if (shouldInitiateSalaryHistory) {
       this.#salaryHistory.push({
         amount: normalRound(this.#monthlySalary),
-        age: this.#currentAge,
-        year: this.#currentDate.year(),
+        age: this.#person.age,
+        year: this.#person.date.year(),
       })
     }
 
@@ -124,19 +115,9 @@ export class CPFAccount {
     this.#housingLoanDate = moment(housingLoanDate).format('MMM YYYY')
   }
 
-  updateTimePeriod() {
-    // Track progression of time
-    this.#currentDate.add(1, 'M')
-
-    // Update Age if month of current date is same as month of birthdate
-    if (this.#birthDate.month() === this.#currentDate.month()) {
-      this.#currentAge++
-    }
-  }
-
   updateHistory(category: string, rest = {} as Accounts) {
     this.#history.push({
-      date: this.#currentDate.format('MMM YYYY'),
+      date: this.#person.date.format('MMM YYYY'),
       category,
       ordinaryAccount: normalRound(this.#ordinaryAccount),
       specialAccount: normalRound(this.#specialAccount),
@@ -146,7 +127,7 @@ export class CPFAccount {
 
   updateHistoryAfterWithdrawalAge(category: string, rest = {} as Accounts) {
     this.#historyAfterWithdrawalAge.push({
-      date: this.#currentDate.format('MMM YYYY'),
+      date: this.#person.date.format('MMM YYYY'),
       category,
       ordinaryAccount: normalRound(this.#ordinaryAccount),
       specialAccount: normalRound(this.#specialAccount),
@@ -159,7 +140,7 @@ export class CPFAccount {
     // Provides Snapshot of Values at Withdrawal Age
     this.#ordinaryAccountAtWithdrawalAge = this.#ordinaryAccount
     this.#specialAccountAtWithdrawalAge = this.#specialAccount
-    this.#reachedWithdrawalAge = true
+    this.#person.setReachedWithdrawalAge()
 
     // Extrapolate potential future Full Retirement Sum (FRS)
     const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
@@ -205,7 +186,7 @@ export class CPFAccount {
         : this.#monthlySalary
 
     // Get CPF Allocation rates based on current age
-    const currentCPFAllocation = getCPFAllocation(this.#currentAge)
+    const currentCPFAllocation = getCPFAllocation(this.#person.age)
 
     // Calculate CPF Allocation amounts and add accordingly
     const OAContribution = normalRound(eligibleSalary * currentCPFAllocation.OA)
@@ -215,7 +196,7 @@ export class CPFAccount {
     this.#specialAccount += SAContribution
 
     // Update History Array
-    if (!this.#reachedWithdrawalAge) {
+    if (!this.#person.reachedWithdrawalAge) {
       this.updateHistory('Contribution', {
         ordinaryAccount: OAContribution,
         specialAccount: SAContribution,
@@ -402,7 +383,7 @@ export class CPFAccount {
     // Bonus Interest from the Ordinary Account is passed into the Special Account (if below 55), or Retirement Account (if 55 and above)
 
     // If Withdrawal Age reached, calculate Retirement Account interest and Accrue:
-    if (this.#reachedWithdrawalAge) {
+    if (this.#person.reachedWithdrawalAge) {
       this.accrueRAInterest()
     }
 
@@ -432,7 +413,7 @@ export class CPFAccount {
         ? nextBonusAmountCap - eligibleOrdinaryAmount
         : 0
 
-    if (this.#reachedWithdrawalAge) {
+    if (this.#person.reachedWithdrawalAge) {
       // Take note of Different Bonus Ordinary Account Interests before or after 55
       this.accrueBonusOAInterestAfterWithdrawalAge(eligibleOrdinaryAmount)
       this.accrueSAInterestAfterWithdrawalAge(eligibleSpecialAmountCap)
@@ -460,7 +441,7 @@ export class CPFAccount {
       this.#ordinaryAccount += normalRound(this.#accruedOrdinaryInterest)
       this.#specialAccount += normalRound(this.#accruedSpecialInterest)
 
-      if (this.#reachedWithdrawalAge) {
+      if (this.#person.reachedWithdrawalAge) {
         // Account for RA matters if after withdrawal age
         this.#retirementAccount += normalRound(this.#accruedRetirementInterest)
 
@@ -486,7 +467,7 @@ export class CPFAccount {
   addInterestAtEndOfPeriod() {
     this.addInterestToAccounts()
 
-    if (!this.#reachedWithdrawalAge) {
+    if (!this.#person.reachedWithdrawalAge) {
       this.updateHistory('Balance')
     } else {
       this.updateHistoryAfterWithdrawalAge('Balance')
@@ -500,16 +481,16 @@ export class CPFAccount {
 
     const nextSalaryRecord = {
       amount: normalRound(this.#monthlySalary),
-      age: this.#currentAge,
-      year: this.#currentDate.year(),
+      age: this.#person.age,
+      year: this.#person.date.year(),
     }
 
     // Initiate salaryHistoryAfterWithdrawalAge with the first year's salary, which is still the salary just before the user has reached withdrawal age
-    if (this.#currentAge === withdrawalAge - 1) {
+    if (this.#person.age === withdrawalAge - 1) {
       this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
     }
 
-    if (this.#reachedWithdrawalAge) {
+    if (this.#person.reachedWithdrawalAge) {
       this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
     } else {
       this.#salaryHistory.push(nextSalaryRecord)
@@ -523,13 +504,13 @@ export class CPFAccount {
         this.#ordinaryAccount
       } in your ordinary account, and you need ${
         this.#housingLoan
-      } for the housing loan on ${this.#currentDate.format('MMM YYYY')}`)
+      } for the housing loan on ${this.#person.date.format('MMM YYYY')}`)
     }
 
     // Clear housing loan amount from ordinary account
     this.#ordinaryAccount -= this.#housingLoan
 
-    if (!this.#reachedWithdrawalAge) {
+    if (!this.#person.reachedWithdrawalAge) {
       this.updateHistory('Housing', {
         ordinaryAccount: -this.#housingLoan,
         specialAccount: 0,
@@ -553,7 +534,7 @@ export class CPFAccount {
 
     while (period > 0) {
       // Calculate and add Accrued Interest for the end of the year. Ignore for the previous full year as that has been accounted for.
-      const isEndOfYear = this.#currentDate.month() === 11
+      const isEndOfYear = this.#person.date.month() === 11
       if (isEndOfYear && period !== months) {
         this.addInterestAtEndOfPeriod()
       }
@@ -561,17 +542,17 @@ export class CPFAccount {
       // Check for usage of housing loan
       if (
         this.#housingLoan > 0 &&
-        this.#currentDate.format('MMM YYYY') === this.#housingLoanDate
+        this.#person.date.format('MMM YYYY') === this.#housingLoanDate
       ) {
         this.processHousingLoan()
       }
 
       // Update period for the start of the month
       period -= 1
-      this.updateTimePeriod()
+      this.#person.updateTimePeriod()
 
       // Update Salary at the beginning of the year
-      const isStartOfYear = this.#currentDate.month() === 0
+      const isStartOfYear = this.#person.date.month() === 0
       const shouldUpdateMonthlySalary =
         this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
       if (isStartOfYear && shouldUpdateMonthlySalary) {
@@ -598,7 +579,7 @@ export class CPFAccount {
       retirementAccount: this.#retirementAccount,
       ordinaryAccountAtWithdrawalAge: this.#ordinaryAccountAtWithdrawalAge,
       specialAccountAtWithdrawalAge: this.#specialAccountAtWithdrawalAge,
-      monthsTillWithdrawal: this.#monthsTillWithdrawal,
+      monthsTillWithdrawal: this.#person.monthsTillWithdrawal,
       history: this.#history,
       historyAfterWithdrawalAge: this.#historyAfterWithdrawalAge,
       monthlySalary: this.#monthlySalary,
@@ -609,6 +590,6 @@ export class CPFAccount {
   }
 
   get monthsTillWithdrawal() {
-    return this.#monthsTillWithdrawal
+    return this.#person.monthsTillWithdrawal
   }
 }
