@@ -41,7 +41,7 @@ export interface AccountValues {
   salaryIncreaseRate: string
   selectedDate: moment.Moment
   housingLoan: string
-  housingLoanDate?: moment.Moment
+  housingLoanDate: moment.Moment
 }
 
 export interface FutureValues {

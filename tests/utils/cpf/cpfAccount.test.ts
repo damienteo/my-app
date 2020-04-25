@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { cpfAllocation, withdrawalAge, payoutAge } from '../../../constants'
 import { getCPFAllocation, CPFAccount } from '../../../utils/cpf/cpfAccount'
+import { Entry } from '../../../utils/cpf/types'
 
 describe('getCPFAllocation should return the right interest rates', () => {
   test('Should return CPF rates for age below 36 if value is 25', () => {
@@ -42,6 +43,7 @@ const zeroValues = {
   salaryIncreaseRate: '0',
   selectedDate: date16YearsAgo,
   housingLoan: '0',
+  housingLoanDate: moment(),
 }
 
 const normalValues = {
@@ -51,6 +53,7 @@ const normalValues = {
   salaryIncreaseRate: '1',
   selectedDate: date16YearsAgo,
   housingLoan: '1000',
+  housingLoanDate: moment(),
 }
 
 let instance: CPFAccount
@@ -143,7 +146,7 @@ describe('CPFAccount should not have positive values in their final balance if t
   })
 })
 
-// TODO: Update following test to check that entries in every object does not have Caegory: Contribution
+// TODO: Update following test to check that entries in every object does not have Category: Contribution
 describe('CPFAccount should not have contributions in history if monthly salary is 0', () => {
   const nextValues = {
     ...zeroValues,
@@ -340,5 +343,134 @@ describe('CPFAccount should have the correct final salary amount based on salary
     expect(accountSalaryAtPayoutAge.toFixed(0)).toEqual(
       salaryAtPayoutAge.toFixed(0)
     )
+  })
+})
+
+describe('CPFAccount should have entries in history which show deduction of housing loan', () => {
+  const housingHistoryEntry = {
+    category: 'Housing',
+    date: moment().format('MMM YYYY'),
+    ordinaryAccount: -1000,
+    specialAccount: 0,
+  }
+
+  it('History will have Housing as first entry if User wants immediate application of Housing Loan', async () => {
+    instance = new CPFAccount(normalValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history } = instance.accountValues
+
+    expect(history[0]).toEqual(housingHistoryEntry)
+  })
+
+  it('History will have a Housing Entry with correct Date and Amount deducted', async () => {
+    const dateIn2years = moment().add(2, 'y')
+    const nextDateIn2years = dateIn2years.format('MMM YYYY')
+    const nextValues = {
+      ...normalValues,
+      housingLoan: '2000',
+      housingLoanDate: dateIn2years,
+    }
+
+    const nextHousingHistoryEntry = {
+      ...housingHistoryEntry,
+      date: nextDateIn2years,
+      ordinaryAccount: -2000,
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history } = instance.accountValues
+
+    const housingEntry = history.find(
+      (entry: Entry) =>
+        entry.date === nextDateIn2years && entry.category === 'Housing'
+    )
+
+    expect(housingEntry).toEqual(nextHousingHistoryEntry)
+  })
+
+  it('Housing Entry will be in HistoryAfterWithdrawalAge, not History, with correct Date and Amount deducted if the Housing Loan Date is after withdrawal age', async () => {
+    const dateAfterWithdrawalAge = moment().add(withdrawalAge - 15, 'y')
+    const nextDateAfterWithdrawalAge = dateAfterWithdrawalAge.format('MMM YYYY')
+    const nextValues = {
+      ...normalValues,
+      housingLoan: '3000',
+      monthlySalary: '4000',
+      housingLoanDate: dateAfterWithdrawalAge,
+    }
+
+    const nextHousingHistoryEntry = {
+      ...housingHistoryEntry,
+      date: nextDateAfterWithdrawalAge,
+      ordinaryAccount: -3000,
+      retirementAccount: 0,
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history, historyAfterWithdrawalAge } = instance.accountValues
+
+    const housingEntryInHistory = history.find(
+      (entry: Entry) =>
+        entry.date === nextDateAfterWithdrawalAge &&
+        entry.category === 'Housing'
+    )
+    expect(housingEntryInHistory).toEqual(undefined)
+
+    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
+      (entry: Entry) =>
+        entry.date === nextDateAfterWithdrawalAge &&
+        entry.category === 'Housing'
+    )
+
+    expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(
+      nextHousingHistoryEntry
+    )
+  })
+
+  it('If Ordinary Account is insufficient, Housing Entry will not be present in histories, and there will be an error.', async () => {
+    const futureDate = moment().add(15, 'y')
+    const nextFutureDate = futureDate.format('MMM YYYY')
+    const nextValues = {
+      ...normalValues,
+      housingLoan: '3000000',
+      housingLoanDate: futureDate,
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const {
+      history,
+      historyAfterWithdrawalAge,
+      errors,
+    } = instance.accountValues
+
+    const housingEntryInHistory = history.find(
+      (entry: Entry) =>
+        entry.date === nextFutureDate && entry.category === 'Housing'
+    )
+    expect(housingEntryInHistory).toEqual(undefined)
+
+    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
+      (entry: Entry) =>
+        entry.date === nextFutureDate && entry.category === 'Housing'
+    )
+
+    expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
+
+    const { housingLoan = '' } = errors
+    expect(housingLoan.length).toBeGreaterThan(90)
   })
 })
