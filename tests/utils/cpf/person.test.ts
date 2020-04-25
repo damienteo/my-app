@@ -8,7 +8,7 @@ describe('Person', () => {
   const withdrawalAgeBirthDate = moment().subtract(withdrawalAge, 'y')
 
   test('Initializes with Birthdate', () => {
-    const newAccount = new Person(sixteenYearsAgo)
+    const newAccount = new Person(sixteenYearsAgo, '3000', moment())
 
     expect(newAccount.birthDate.format('DD/MM/YYYY')).toBe(
       sixteenYearsAgo.format('DD/MM/YYYY')
@@ -17,20 +17,20 @@ describe('Person', () => {
 
   describe('#age', () => {
     test('Returns the age as sixteen years old', () => {
-      const newAccount = new Person(sixteenYearsAgo)
+      const newAccount = new Person(sixteenYearsAgo, '3000', moment())
 
       expect(newAccount.age).toBe(16)
     })
 
     test('Returns the age as withdrawal age', () => {
-      const newAccount = new Person(withdrawalAgeBirthDate)
+      const newAccount = new Person(withdrawalAgeBirthDate, '3000', moment())
 
       expect(newAccount.age).toBe(withdrawalAge)
     })
   })
 
   describe('#updateTimePeriod', () => {
-    const newAccount = new Person(sixteenYearsAgo)
+    const newAccount = new Person(sixteenYearsAgo, '3000', moment())
 
     for (let i = 0; i < 120; i++) {
       newAccount.updateTimePeriod()
@@ -48,7 +48,7 @@ describe('Person', () => {
 
   describe('#monthsTillWithdrawal', () => {
     test('Returns the age as sixteen years old', () => {
-      const newAccount = new Person(sixteenYearsAgo)
+      const newAccount = new Person(sixteenYearsAgo, '3000', moment())
 
       const currentAgeInMonths = getAge(sixteenYearsAgo, 'months')
       const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
@@ -59,7 +59,7 @@ describe('Person', () => {
 
   describe('#reachedWithdrawalAge', () => {
     test('Elderly person', () => {
-      const newAccount = new Person(withdrawalAgeBirthDate)
+      const newAccount = new Person(withdrawalAgeBirthDate, '3000', moment())
 
       // Requires setting of boolean, so that updateAccountsAtWithdrawalAge method can provide a distinct boundary between the time periods before and after withdrawal age
       newAccount.setReachedWithdrawalAge()
@@ -67,7 +67,7 @@ describe('Person', () => {
     })
 
     test('Young person', () => {
-      const newAccount = new Person(sixteenYearsAgo)
+      const newAccount = new Person(sixteenYearsAgo, '3000', moment())
 
       expect(newAccount.reachedWithdrawalAge).toBe(false)
     })

@@ -69,9 +69,6 @@ export class CPFAccount {
   #accruedSpecialInterest = 0
   #accruedRetirementInterest = 0
 
-  #housingLoan: number
-  #housingLoanDate: string
-
   #errors: ErrorValues = {}
 
   constructor(values: AccountValues) {
@@ -89,7 +86,7 @@ export class CPFAccount {
     this.#specialAccount = parseFloat(specialAccount)
     this.#salaryIncreaseRate = parseFloat(salaryIncreaseRate)
 
-    this.#person = new Person(selectedDate)
+    this.#person = new Person(selectedDate, housingLoan, housingLoanDate)
     this.#salary = new Salary(monthlySalary, salaryIncreaseRate)
 
     // Add in entry for current year in Salary History
@@ -101,9 +98,6 @@ export class CPFAccount {
         this.#person.date.year()
       )
     }
-
-    this.#housingLoan = parseFloat(housingLoan)
-    this.#housingLoanDate = moment(housingLoanDate).format('MMM YYYY')
   }
 
   updateHistory(category: string, rest = {} as Accounts) {
@@ -467,26 +461,26 @@ export class CPFAccount {
 
   processHousingLoan() {
     // If Ordinary Account is not enough, indicate error and return early
-    if (this.#housingLoan > this.#ordinaryAccount) {
+    if (this.#person.housingLoan > this.#ordinaryAccount) {
       return (this.#errors.housingLoan = `There is only ${
         this.#ordinaryAccount
       } in your ordinary account, and you need ${
-        this.#housingLoan
+        this.#person.housingLoan
       } for the housing loan on ${this.#person.date.format('MMM YYYY')}`)
     }
 
     // Clear housing loan amount from ordinary account
-    this.#ordinaryAccount -= this.#housingLoan
+    this.#ordinaryAccount -= this.#person.housingLoan
 
     if (!this.#person.reachedWithdrawalAge) {
       this.updateHistory('Housing', {
-        ordinaryAccount: -this.#housingLoan,
+        ordinaryAccount: -this.#person.housingLoan,
         specialAccount: 0,
       })
       this.updateHistory('Balance')
     } else {
       this.updateHistoryAfterWithdrawalAge('Housing', {
-        ordinaryAccount: -this.#housingLoan,
+        ordinaryAccount: -this.#person.housingLoan,
         specialAccount: 0,
         retirementAccount: 0,
       })
@@ -494,7 +488,7 @@ export class CPFAccount {
     }
 
     // Clear amount in housing loan as it is no longer needed
-    this.#housingLoan = 0
+    this.#person.clearHousingLoan()
   }
 
   addSalaryAndInterestOverTime(months: number) {
@@ -509,8 +503,8 @@ export class CPFAccount {
 
       // Check for usage of housing loan
       if (
-        this.#housingLoan > 0 &&
-        this.#person.date.format('MMM YYYY') === this.#housingLoanDate
+        this.#person.housingLoan > 0 &&
+        this.#person.date.format('MMM YYYY') === this.#person.housingLoanDate
       ) {
         this.processHousingLoan()
       }

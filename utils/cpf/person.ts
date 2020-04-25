@@ -9,13 +9,23 @@ export class Person {
   #monthsTillWithdrawal: number
   #reachedWithdrawalAge = false
 
-  constructor(selectedDate: moment.Moment) {
+  #housingLoan: number
+  #housingLoanDate: string
+
+  constructor(
+    selectedDate: moment.Moment,
+    housingLoan: string,
+    housingLoanDate: moment.Moment
+  ) {
     this.#birthDate = moment(selectedDate)
     this.#age = getAge(selectedDate, 'years')
 
     const currentAgeInMonths = getAge(selectedDate, 'months')
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
     this.#monthsTillWithdrawal = monthsTillWithdrawal
+
+    this.#housingLoan = parseFloat(housingLoan)
+    this.#housingLoanDate = moment(housingLoanDate).format('MMM YYYY')
   }
 
   updateTimePeriod() {
@@ -30,6 +40,10 @@ export class Person {
 
   setReachedWithdrawalAge() {
     this.#reachedWithdrawalAge = true
+  }
+
+  clearHousingLoan() {
+    this.#housingLoan = 0
   }
 
   get birthDate() {
@@ -50,5 +64,13 @@ export class Person {
 
   get reachedWithdrawalAge() {
     return this.#reachedWithdrawalAge
+  }
+
+  get housingLoan() {
+    return this.#housingLoan
+  }
+
+  get housingLoanDate() {
+    return this.#housingLoanDate
   }
 }
