@@ -5,17 +5,11 @@ import {
   fullRetirementSum,
   retirementSumIncrease,
   ordinaryWageCeiling,
-  withdrawalAge,
 } from '../../constants'
 import { Person } from './person'
+import { Salary } from './salary'
 import { normalRound } from '../utils'
-import {
-  AccountValues,
-  Entry,
-  Accounts,
-  SalaryRecord,
-  ErrorValues,
-} from './types'
+import { AccountValues, Entry, Accounts, ErrorValues } from './types'
 
 const {
   ordinaryIR,
@@ -63,15 +57,13 @@ export class CPFAccount {
   #retirementAccount = 0
   #ordinaryAccountAtWithdrawalAge = 0
   #specialAccountAtWithdrawalAge = 0
-  #monthlySalary: number
   #salaryIncreaseRate: number
 
   #person: Person
+  #salary: Salary
 
   #history: Entry[] = []
   #historyAfterWithdrawalAge: Entry[] = []
-  #salaryHistory: SalaryRecord[] = []
-  #salaryHistoryAfterWithdrawalAge: SalaryRecord[] = []
 
   #accruedOrdinaryInterest = 0
   #accruedSpecialInterest = 0
@@ -95,20 +87,19 @@ export class CPFAccount {
     // roundTo2Dec function converts values into string
     this.#ordinaryAccount = parseFloat(ordinaryAccount)
     this.#specialAccount = parseFloat(specialAccount)
-    this.#monthlySalary = parseFloat(monthlySalary)
     this.#salaryIncreaseRate = parseFloat(salaryIncreaseRate)
 
     this.#person = new Person(selectedDate)
+    this.#salary = new Salary(monthlySalary, salaryIncreaseRate)
 
     // Add in entry for current year in Salary History
     const shouldInitiateSalaryHistory =
-      this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
+      this.#salary.amount > 0 && this.#salaryIncreaseRate > 0
     if (shouldInitiateSalaryHistory) {
-      this.#salaryHistory.push({
-        amount: normalRound(this.#monthlySalary),
-        age: this.#person.age,
-        year: this.#person.date.year(),
-      })
+      this.#salary.updateSalaryHistory(
+        this.#person.age,
+        this.#person.date.year()
+      )
     }
 
     this.#housingLoan = parseFloat(housingLoan)
@@ -181,9 +172,9 @@ export class CPFAccount {
   addMonthlySalary() {
     // If monthly salary exceeds wage ceiling, take only wage ceiling as eligible for CPF contribution
     const eligibleSalary =
-      this.#monthlySalary > ordinaryWageCeiling
+      this.#salary.amount > ordinaryWageCeiling
         ? ordinaryWageCeiling
-        : this.#monthlySalary
+        : this.#salary.amount
 
     // Get CPF Allocation rates based on current age
     const currentCPFAllocation = getCPFAllocation(this.#person.age)
@@ -474,29 +465,6 @@ export class CPFAccount {
     }
   }
 
-  addMonthlySalaryAtEndOfYear() {
-    this.#monthlySalary += normalRound(
-      this.#monthlySalary * (this.#salaryIncreaseRate / 100)
-    )
-
-    const nextSalaryRecord = {
-      amount: normalRound(this.#monthlySalary),
-      age: this.#person.age,
-      year: this.#person.date.year(),
-    }
-
-    // Initiate salaryHistoryAfterWithdrawalAge with the first year's salary, which is still the salary just before the user has reached withdrawal age
-    if (this.#person.age === withdrawalAge - 1) {
-      this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
-    }
-
-    if (this.#person.reachedWithdrawalAge) {
-      this.#salaryHistoryAfterWithdrawalAge.push(nextSalaryRecord)
-    } else {
-      this.#salaryHistory.push(nextSalaryRecord)
-    }
-  }
-
   processHousingLoan() {
     // If Ordinary Account is not enough, indicate error and return early
     if (this.#housingLoan > this.#ordinaryAccount) {
@@ -554,16 +522,20 @@ export class CPFAccount {
       // Update Salary at the beginning of the year
       const isStartOfYear = this.#person.date.month() === 0
       const shouldUpdateMonthlySalary =
-        this.#monthlySalary > 0 && this.#salaryIncreaseRate > 0
+        this.#salary.amount > 0 && this.#salaryIncreaseRate > 0
       if (isStartOfYear && shouldUpdateMonthlySalary) {
-        this.addMonthlySalaryAtEndOfYear()
+        this.#salary.addMonthlySalaryAtEndOfYear(
+          this.#person.age,
+          this.#person.date.year(),
+          this.#person.reachedWithdrawalAge
+        )
       }
 
       // Update Accrued Interest amount
       this.addMonthlyInterest()
 
       // Add salary at the end of the month, as interest is based on the lowest amount in the account at any time in the month
-      if (this.#monthlySalary > 0) this.addMonthlySalary()
+      if (this.#salary.amount > 0) this.addMonthlySalary()
 
       // Add interest at the end of the period
       if (period === 0) {
@@ -582,9 +554,9 @@ export class CPFAccount {
       monthsTillWithdrawal: this.#person.monthsTillWithdrawal,
       history: this.#history,
       historyAfterWithdrawalAge: this.#historyAfterWithdrawalAge,
-      monthlySalary: this.#monthlySalary,
-      salaryHistory: this.#salaryHistory,
-      salaryHistoryAfterWithdrawalAge: this.#salaryHistoryAfterWithdrawalAge,
+      monthlySalary: this.#salary.amount,
+      salaryHistory: this.#salary.history,
+      salaryHistoryAfterWithdrawalAge: this.#salary.historyAfterWithdrawalAge,
       errors: this.#errors,
     }
   }
