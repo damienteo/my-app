@@ -3,6 +3,8 @@ import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Button,
+  Checkbox,
+  FormControlLabel,
   Grid,
   Snackbar,
   TextField,
@@ -85,6 +87,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   const [housingLoanDate, handleHousingDateChange] = useState<moment.Moment>(
     moment()
   )
+  const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<ErrorValues>({})
 
@@ -115,6 +118,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     const nextErrors = { ...errors }
     nextErrors[field] = undefined
     setErrors({ ...nextErrors })
+  }
+
+  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSpecialAccountOnly(event.target.checked)
   }
 
   const handleSubmit = () => {
@@ -287,7 +294,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <CurrencyInput
               value={values.housingLoan}
-              label="Use CPF for Housing Loan (Optional)"
+              label="Use CPF for Housing (Optional)"
               field="housingLoan"
               error={Boolean(errors.housingLoan)}
               helperText={errors.housingLoan}
@@ -297,7 +304,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <KeyboardDatePicker
               value={housingLoanDate}
-              label="Planned Date for Housing Loan (Optional)"
+              label="Planned Date for Housing Lump Sum Payment (Optional)"
               // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
               onChange={(date: any) => handleHousingDateChange(date)}
               format="dd/MM/yyyy"
@@ -305,6 +312,18 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               minDateMessage={`This date is before the present`}
             />
           </Grid>
+          {/* <Grid item xs={12} className={classes.inputWrapper}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={specialAccountOnly}
+                  onChange={handleSelect}
+                  name="specialAccountOnly"
+                />
+              }
+              label="Move all Ordinary Account value and future contributions to Special Account. This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
+            />
+          </Grid> */}
         </Grid>
       </Section>
 
