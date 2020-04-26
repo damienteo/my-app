@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  FormHelperText,
   Grid,
   Snackbar,
   TextField,
@@ -45,10 +46,26 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, 1.5),
     color: '#282c35',
   },
+  optionHeaderWrapper: {
+    marginTop: theme.spacing(1.5),
+  },
+  optionHeader: {
+    fontSize: '0.9rem',
+    color: '#282c35',
+  },
   inputWrapper: {
     padding: 10,
     '& .MuiFormControl-root': {
       width: '100%',
+    },
+  },
+  checkboxWrapper: {
+    padding: '0 10px 10px',
+    '& .MuiFormControl-root': {
+      width: '100%',
+    },
+    '& .MuiFormControlLabel-label': {
+      fontSize: '0.75rem',
     },
   },
   buttonWrapper: {
@@ -66,6 +83,10 @@ const useStyles = makeStyles((theme) => ({
       '& .MuiInputBase-input': { padding: '20px 0 7px' },
       '& .MuiInputAdornment-root ': { marginTop: 15 },
     },
+  },
+  checkboxError: {
+    color: '#f44336',
+    marginTop: 0,
   },
 }))
 
@@ -104,6 +125,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       }
     })
 
+    if (specialAccountOnly === true && parseFloat(values.housingLoan) > 0) {
+      nextErrors.specialAccountOnly =
+        "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
+    }
     setErrors({ ...nextErrors })
 
     return nextErrors
@@ -291,6 +316,27 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         {/* TODO: Add details on options when CPF site is up */}
         <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
         <Grid container className={classes.longLabel}>
+          <Grid item xs={12} className={classes.optionHeaderWrapper}>
+            <Paragraph className={classes.optionHeader}>
+              1) Use CPF to pay for housing{' '}
+              <InfoPopup title="Using CPF to buy Housing">
+                <Paragraph className={classes.paragraph}>
+                  You may use funds in your CPF Ordinary Account to buy housing
+                  either under the{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
+                    label="Public Housing Scheme"
+                  />
+                  , or the{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
+                    label="Private Properties Scheme"
+                  />{' '}
+                  .
+                </Paragraph>
+              </InfoPopup>
+            </Paragraph>
+          </Grid>
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <CurrencyInput
               value={values.housingLoan}
@@ -312,18 +358,39 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               minDateMessage={`This date is before the present`}
             />
           </Grid>
-          {/* <Grid item xs={12} className={classes.inputWrapper}>
+          <Grid item xs={12} className={classes.optionHeaderWrapper}>
+            <Paragraph className={classes.optionHeader}>
+              2) Move all Ordinary Account value and future contributions to
+              Special Account (Optional){' '}
+              <InfoPopup title="Higher Interest Rate in Special Account">
+                <Paragraph className={classes.paragraph}>
+                  You may{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-topping-up-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Topping-Up+Scheme&ajfaqid=2188830&folderid=19860"
+                    label="transfer"
+                  />{' '}
+                  funds from your Ordinary Account to your Special Account up
+                  till the age of 55.
+                </Paragraph>
+              </InfoPopup>
+            </Paragraph>
+          </Grid>
+          <Grid item xs={12} className={classes.checkboxWrapper}>
             <FormControlLabel
               control={
                 <Checkbox
                   checked={specialAccountOnly}
                   onChange={handleSelect}
                   name="specialAccountOnly"
+                  color="primary"
                 />
               }
-              label="Move all Ordinary Account value and future contributions to Special Account. This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
+              label="This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
             />
-          </Grid> */}
+            <FormHelperText className={classes.checkboxError}>
+              {errors.specialAccountOnly}
+            </FormHelperText>
+          </Grid>
         </Grid>
       </Section>
 
