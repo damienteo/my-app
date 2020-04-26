@@ -54,5 +54,42 @@ describe('Accounts', () => {
     expect(newAccounts.accruedRetirementInterest).toBe(6000 * 2)
   })
 
-  //   Shift tests that overlap with CPFAccount.test
+  test('Updates Account Values at Withdrawal Age', () => {
+    newAccounts.ordinaryAccount = 10000
+    newAccounts.specialAccount = 10000
+    newAccounts.retirementAccount = 0
+    newAccounts.ordinaryAccountAtWithdrawalAge = 0
+    newAccounts.specialAccountAtWithdrawalAge = 0
+
+    newAccounts.updateAccountsAtWithdrawalAge(15000)
+
+    // Money is shifted from OA and SA to RA. SA is transfered first
+    expect(newAccounts.ordinaryAccount).toBe(5000)
+    expect(newAccounts.specialAccount).toBe(0)
+    expect(newAccounts.retirementAccount).toBe(15000)
+    // Snapshot is taken to keep a record of what the values were before the transfer
+    expect(newAccounts.ordinaryAccountAtWithdrawalAge).toBe(10000)
+    expect(newAccounts.specialAccountAtWithdrawalAge).toBe(10000)
+  })
+
+  test('Adds Accrued Interest to Respective Accounts', () => {
+    newAccounts.ordinaryAccount = 3000
+    newAccounts.specialAccount = 4000
+    newAccounts.retirementAccount = 5000
+    newAccounts.accruedOrdinaryInterest = 1000
+    newAccounts.accruedSpecialInterest = 2000
+    newAccounts.accruedRetirementInterest = 3000
+
+    newAccounts.addInterestToAccounts()
+
+    expect(newAccounts.ordinaryAccount).toBe(3000 + 1000)
+    expect(newAccounts.specialAccount).toBe(4000 + 2000)
+    expect(newAccounts.retirementAccount).toBe(5000 + 3000)
+    // Accrued Interests should be reset after added to Accounts
+    expect(newAccounts.accruedOrdinaryInterest).toBe(0)
+    expect(newAccounts.accruedSpecialInterest).toBe(0)
+    expect(newAccounts.accruedRetirementInterest).toBe(0)
+  })
+
+  //   TODO: Write more tests for accrue interest for the various accounts
 })
