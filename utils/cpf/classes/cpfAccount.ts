@@ -1,54 +1,29 @@
 import moment from 'moment'
 import {
-  cpfAllocation,
   cpfValues,
+  cpfInterestRates,
   fullRetirementSum,
   retirementSumIncrease,
   ordinaryWageCeiling,
 } from '../../../constants'
 import { Accounts, Person, Salary } from './'
+import { getCPFAllocation } from '../cpfForecast'
 import { normalRound, formatCurrency } from '../../utils'
 import { AccountValues, Entry, AccountsType, ErrorValues } from '../types'
 
+const { bonusAmtCap, extraBonusAmtCap, ordinaryAmtCap } = cpfValues
+
 const {
-  ordinaryIR,
-  specialIR,
-  retirementIR,
-  bonusIR,
-  bonusIRAfter55,
-  bonusAmtCap,
-  extraBonusAmtCap,
-  ordinaryAmtCap,
-} = cpfValues
-
-const ordinaryInterestRate = ordinaryIR / 12
-const specialInterestRate = specialIR / 12
-const retirementInterestRate = retirementIR / 12
-
-const bonusOrdinaryInterestRate = bonusIR / 12
-const bonusSpecialInterestRate = (specialIR + bonusIR) / 12
-const bonusRetirementInterestRate = (retirementIR + bonusIR) / 12
-
-// extraBonusOrdinaryInterest is transferred to Special or Retirement Account instead of Ordinary Account
-const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
-const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
-const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
-
-export const getCPFAllocation = (age: number) => {
-  if (age <= 35) return cpfAllocation['35AndBelow']
-
-  if (age >= 36 && age <= 45) return cpfAllocation['36to45']
-
-  if (age >= 46 && age <= 50) return cpfAllocation['46to50']
-
-  if (age >= 51 && age <= 55) return cpfAllocation['51to55']
-
-  if (age >= 56 && age <= 60) return cpfAllocation['56to60']
-
-  if (age >= 61 && age <= 65) return cpfAllocation['61to65']
-
-  return cpfAllocation['66andAbove']
-}
+  ordinaryInterestRate,
+  specialInterestRate,
+  retirementInterestRate,
+  bonusOrdinaryInterestRate,
+  bonusSpecialInterestRate,
+  bonusRetirementInterestRate,
+  extraBonusOrdinaryInterestRate,
+  extraBonusSpecialInterestRate,
+  extraBonusRetirementInterestRate,
+} = cpfInterestRates
 
 export class CPFAccount {
   #person: Person

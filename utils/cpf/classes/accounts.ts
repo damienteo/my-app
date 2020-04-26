@@ -1,7 +1,3 @@
-// import { SalaryRecord } from '../types'
-// import { normalRound } from '../../utils'
-// import { withdrawalAge } from '../../../constants'
-
 export class Accounts {
   #ordinaryAccount: number
   #specialAccount: number

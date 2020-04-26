@@ -27,6 +27,39 @@ export const cpfValues = {
   ordinaryAmtCap: 20000,
 }
 
+const {
+  ordinaryIR,
+  specialIR,
+  retirementIR,
+  bonusIR,
+  bonusIRAfter55,
+} = cpfValues
+
+const ordinaryInterestRate = ordinaryIR / 12
+const specialInterestRate = specialIR / 12
+const retirementInterestRate = retirementIR / 12
+
+const bonusOrdinaryInterestRate = bonusIR / 12
+const bonusSpecialInterestRate = (specialIR + bonusIR) / 12
+const bonusRetirementInterestRate = (retirementIR + bonusIR) / 12
+
+// extraBonusOrdinaryInterest is transferred to Special or Retirement Account instead of Ordinary Account
+const extraBonusOrdinaryInterestRate = bonusIRAfter55 / 12
+const extraBonusSpecialInterestRate = (specialIR + bonusIRAfter55) / 12
+const extraBonusRetirementInterestRate = (retirementIR + bonusIRAfter55) / 12
+
+export const cpfInterestRates = {
+  ordinaryInterestRate,
+  specialInterestRate,
+  retirementInterestRate,
+  bonusOrdinaryInterestRate,
+  bonusSpecialInterestRate,
+  bonusRetirementInterestRate,
+  extraBonusOrdinaryInterestRate,
+  extraBonusSpecialInterestRate,
+  extraBonusRetirementInterestRate,
+}
+
 export const cpfAllocation = {
   '35AndBelow': {
     OA: 0.23,

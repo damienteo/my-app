@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { CPFAccount } from './classes'
-import { withdrawalAge, payoutAge } from '../../constants'
+import { cpfAllocation, withdrawalAge, payoutAge } from '../../constants'
 import { AccountValues } from './types'
 
 export const roundTo2Dec = (value: string) => {
@@ -36,6 +36,22 @@ export const getMonthsTillEOY = (date = moment()) => {
   const monthsTillInterest = endOfYear.diff(date, 'months')
 
   return monthsTillInterest
+}
+
+export const getCPFAllocation = (age: number) => {
+  if (age <= 35) return cpfAllocation['35AndBelow']
+
+  if (age >= 36 && age <= 45) return cpfAllocation['36to45']
+
+  if (age >= 46 && age <= 50) return cpfAllocation['46to50']
+
+  if (age >= 51 && age <= 55) return cpfAllocation['51to55']
+
+  if (age >= 56 && age <= 60) return cpfAllocation['56to60']
+
+  if (age >= 61 && age <= 65) return cpfAllocation['61to65']
+
+  return cpfAllocation['66andAbove']
 }
 
 export const calculateFutureValues = (values: AccountValues) => {
