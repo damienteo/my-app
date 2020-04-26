@@ -3,8 +3,10 @@ import {
   roundTo2Dec,
   getAge,
   getCPFAllocation,
+  calculateFutureValues,
 } from '../../../utils/cpf/cpfForecast'
 import { cpfAllocation } from '../../../constants'
+import { AccountValues } from '../../../utils/cpf/types'
 
 describe('roundTo2Dec should ensure that values do not go beyond three decimal places', () => {
   test('Should not go beyong three decimal places', () => {
@@ -82,5 +84,33 @@ describe('getCPFAllocation should return the right interest rates', () => {
   })
   test('Should return CPF rates for age equal to 70 if value is 70', () => {
     expect(getCPFAllocation(70)).toBe(cpfAllocation['66andAbove'])
+  })
+})
+
+describe('calculateFutureValues should return the right values', () => {
+  const date16YearsAgo = moment().subtract(16, 'y')
+
+  const normalValues: AccountValues = {
+    ordinaryAccount: '1000',
+    specialAccount: '1000',
+    monthlySalary: '1000',
+    salaryIncreaseRate: '1',
+    selectedDate: date16YearsAgo,
+    housingLoan: '1000',
+    housingLoanDate: moment(),
+    specialAccountOnly: false,
+  }
+
+  const result = calculateFutureValues(normalValues)
+
+  test('Should not have ComparisoValues if un-needed as there is no Special Account scenario', () => {
+    expect(result.comparisonValues).not.toBeDefined()
+  })
+
+  const nextValues = { ...normalValues, specialAccountOnly: true }
+  const nextResult = calculateFutureValues(nextValues)
+
+  test('Should have ComparisoValues if un-needed as there is Special Account scenario', () => {
+    expect(nextResult.comparisonValues).toBeDefined()
   })
 })

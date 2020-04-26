@@ -102,7 +102,7 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
       </Paragraph>
       {comparisonValues && (
         <Paragraph className={classes.addendum}>
-          * Without housing loans, or transfering from OA to SA, you will have{' '}
+          * Without housing loans, or transfering from OA to SA, you would have{' '}
           <span className={classes.highlightText}>
             {formatCurrency(comparisonValues.ordinaryAccount)}
           </span>{' '}

@@ -35,7 +35,6 @@ CPF-forecast TODOs:
 - Fix bug found in cpfForecast.ts
 - Add option for bonuses (13th month, optional) - input: number of months, which month
 - Add option for housing loan
-- Add comparison for SPecial Accounts only versus normal scenario
 
 Other TODOs:
 
