@@ -19,7 +19,7 @@ export interface SalaryRecord {
   year: number
 }
 
-export interface Accounts {
+export interface AccountsType {
   ordinaryAccount?: number
   specialAccount?: number
   retirementAccount?: number
