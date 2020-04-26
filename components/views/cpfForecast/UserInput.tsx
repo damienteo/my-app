@@ -139,8 +139,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     if (isCorrectInput) {
       const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
-      setCalculating(true)
-      setSnackbarOpen(true)
+
+      if (nextFutureValues.errors.housingLoan) {
+        setErrors({ ...nextFutureValues.errors })
+        setCalculating(false)
+      } else {
+        setFutureValues(nextFutureValues)
+        setCalculating(true)
+        setSnackbarOpen(true)
+      }
     }
   }
 

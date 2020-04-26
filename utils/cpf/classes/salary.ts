@@ -1,6 +1,6 @@
-import { SalaryRecord } from './types'
-import { normalRound } from '../utils'
-import { withdrawalAge } from '../../constants'
+import { SalaryRecord } from '../types'
+import { normalRound } from '../../utils'
+import { withdrawalAge } from '../../../constants'
 
 export class Salary {
   #amount: number

@@ -1,6 +1,9 @@
 import moment from 'moment'
 import { cpfAllocation, withdrawalAge, payoutAge } from '../../../constants'
-import { getCPFAllocation, CPFAccount } from '../../../utils/cpf/cpfAccount'
+import {
+  getCPFAllocation,
+  CPFAccount,
+} from '../../../utils/cpf/classes/cpfAccount'
 import { Entry } from '../../../utils/cpf/types'
 
 describe('getCPFAllocation should return the right interest rates', () => {

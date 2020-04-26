@@ -5,11 +5,11 @@ import {
   fullRetirementSum,
   retirementSumIncrease,
   ordinaryWageCeiling,
-} from '../../constants'
+} from '../../../constants'
 import { Person } from './person'
 import { Salary } from './salary'
-import { normalRound } from '../utils'
-import { AccountValues, Entry, Accounts, ErrorValues } from './types'
+import { normalRound, formatCurrency } from '../../utils'
+import { AccountValues, Entry, Accounts, ErrorValues } from '../types'
 
 const {
   ordinaryIR,
@@ -460,11 +460,13 @@ export class CPFAccount {
   processHousingLoan() {
     // If Ordinary Account is not enough, indicate error and return early
     if (this.#person.housingLoan > this.#ordinaryAccount) {
-      return (this.#errors.housingLoan = `There is only ${
+      return (this.#errors.housingLoan = `There is only ${formatCurrency(
         this.#ordinaryAccount
-      } in your ordinary account, and you need ${
+      )} in your ordinary account on ${this.#person.date.format(
+        'MMM YYYY'
+      )}, and you need ${formatCurrency(
         this.#person.housingLoan
-      } for the housing loan on ${this.#person.date.format('MMM YYYY')}`)
+      )} for the housing loan `)
     }
 
     // Clear housing loan amount from ordinary account

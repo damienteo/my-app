@@ -1,4 +1,4 @@
-import { Salary } from '../../../utils/cpf/salary'
+import { Salary } from '../../../utils/cpf/classes/salary'
 
 describe('Salary', () => {
   test('Initializes with Amount', () => {

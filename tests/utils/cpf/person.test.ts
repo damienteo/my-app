@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { Person } from '../../../utils/cpf/person'
+import { Person } from '../../../utils/cpf/classes/person'
 import { getAge } from '../../../utils/cpf/cpfForecast'
 import { withdrawalAge } from '../../../constants'
 

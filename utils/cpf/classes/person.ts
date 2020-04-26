@@ -1,6 +1,6 @@
 import moment from 'moment'
-import { getAge } from './cpfForecast'
-import { withdrawalAge } from '../../constants'
+import { getAge } from '../cpfForecast'
+import { withdrawalAge } from '../../../constants'
 
 export class Person {
   #age: number

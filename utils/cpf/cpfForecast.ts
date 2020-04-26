@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { CPFAccount } from './cpfAccount'
+import { CPFAccount } from './classes/cpfAccount'
 import { withdrawalAge, payoutAge } from '../../constants'
 import { AccountValues } from './types'
 
