@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     margin: `${theme.spacing(1.5)}px 0`,
+    '& .MuiTableCell-root': {
+      [theme.breakpoints.down('sm')]: { fontSize: '0.6rem' },
+    },
   },
   paragraph: {
     color: '#282c35',

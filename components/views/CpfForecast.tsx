@@ -45,7 +45,9 @@ const CPFForecastPage = () => {
 
         <Paragraph variant="subtitle2" className={classes.introduction}>
           Interest Rates, etc, were last checked in April 2020. This page does
-          not save any data, and calculates values based on your input.
+          not save any data, and calculates values based on your input. Medisave
+          values are not included as this page mainly deals with usage of CPF
+          for retirement and potentially housing.
         </Paragraph>
 
         <UserInput
