@@ -1,7 +1,7 @@
 import { Accounts } from '../../../utils/cpf/classes/accounts'
 
 describe('Accounts', () => {
-  const newAccounts = new Accounts(3000, 3000)
+  const newAccounts = new Accounts(3000, 3000, false)
 
   test('Initializes with required values', () => {
     expect(newAccounts.ordinaryAccount).toBe(3000)
@@ -89,6 +89,13 @@ describe('Accounts', () => {
     expect(newAccounts.accruedOrdinaryInterest).toBe(0)
     expect(newAccounts.accruedSpecialInterest).toBe(0)
     expect(newAccounts.accruedRetirementInterest).toBe(0)
+  })
+
+  const specialAccountOnly = new Accounts(3000, 3000, true)
+
+  test('If specialAccountOnly is set to true, Accounts class instance has 0 in ordinary Account, as Ordinary Account Money is transfered to Special Account', () => {
+    expect(specialAccountOnly.ordinaryAccount).toBe(0)
+    expect(specialAccountOnly.specialAccount).toBe(3000 + 3000)
   })
 
   //   TODO: Write more tests for accrue interest for the various accounts

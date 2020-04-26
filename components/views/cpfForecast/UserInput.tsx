@@ -166,6 +166,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       ...nextValues,
       selectedDate,
       housingLoanDate,
+      specialAccountOnly,
     } as AccountValues
 
     if (isCorrectInput) {
@@ -318,7 +319,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         <Grid container className={classes.longLabel}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              1) Use CPF to pay for housing{' '}
+              1) Use CPF to pay for Housing (Lump Sum){' '}
               <InfoPopup title="Using CPF to buy Housing">
                 <Paragraph className={classes.paragraph}>
                   You may use funds in your CPF Ordinary Account to buy housing

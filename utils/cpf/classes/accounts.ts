@@ -26,9 +26,19 @@ export class Accounts {
   #accruedSpecialInterest = 0
   #accruedRetirementInterest = 0
 
-  constructor(ordinaryAccount: number, specialAccount: number) {
-    this.#ordinaryAccount = ordinaryAccount
-    this.#specialAccount = specialAccount
+  constructor(
+    ordinaryAccount: number,
+    specialAccount: number,
+    specialAccountOnly: boolean
+  ) {
+    if (specialAccountOnly) {
+      // Transfer funds from Ordinary Account to Special Account
+      this.#ordinaryAccount = 0
+      this.#specialAccount = specialAccount + ordinaryAccount
+    } else {
+      this.#ordinaryAccount = ordinaryAccount
+      this.#specialAccount = specialAccount
+    }
   }
 
   updateAccountsAtWithdrawalAge(fullRetirementSum: number) {

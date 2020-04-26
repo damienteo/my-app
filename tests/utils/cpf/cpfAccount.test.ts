@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { withdrawalAge, payoutAge } from '../../../constants'
 import { CPFAccount } from '../../../utils/cpf/classes/cpfAccount'
-import { Entry } from '../../../utils/cpf/types'
+import { AccountValues, Entry } from '../../../utils/cpf/types'
 
 const date16YearsAgo = moment().subtract(16, 'y')
 const yearsBeforeWithdrawal = withdrawalAge - 16
@@ -9,7 +9,7 @@ const monthsBeforeWithdrawal = yearsBeforeWithdrawal * 12
 const yearsAfterWithdrawal = payoutAge - withdrawalAge
 const monthsAfterWithdrawal = yearsAfterWithdrawal * 12
 
-const zeroValues = {
+const zeroValues: AccountValues = {
   ordinaryAccount: '0',
   specialAccount: '0',
   monthlySalary: '0',
@@ -17,9 +17,10 @@ const zeroValues = {
   selectedDate: date16YearsAgo,
   housingLoan: '0',
   housingLoanDate: moment(),
+  specialAccountOnly: false,
 }
 
-const normalValues = {
+const normalValues: AccountValues = {
   ordinaryAccount: '1000',
   specialAccount: '1000',
   monthlySalary: '1000',
@@ -27,6 +28,7 @@ const normalValues = {
   selectedDate: date16YearsAgo,
   housingLoan: '1000',
   housingLoanDate: moment(),
+  specialAccountOnly: false,
 }
 
 let instance: CPFAccount
@@ -445,5 +447,23 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     const { housingLoan = '' } = errors
     expect(housingLoan.length).toBeGreaterThan(90)
+  })
+
+  it('If specialAccountOnly is selected, there should not be any funds in Ordinary Account.', async () => {
+    const nextValues = {
+      ...normalValues,
+      specialAccountOnly: true,
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history, historyAfterWithdrawalAge } = instance.accountValues
+
+    expect(history[0].ordinaryAccount).toEqual(0)
+
+    expect(historyAfterWithdrawalAge[0].ordinaryAccount).toEqual(0)
   })
 })

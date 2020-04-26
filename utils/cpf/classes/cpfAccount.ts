@@ -21,6 +21,7 @@ export class CPFAccount {
   #historyAfterWithdrawalAge: Entry[] = []
 
   #errors: ErrorValues = {}
+  #specialAccountOnly: boolean
 
   constructor(values: AccountValues) {
     const {
@@ -31,14 +32,18 @@ export class CPFAccount {
       selectedDate,
       housingLoan,
       housingLoanDate,
+      specialAccountOnly,
     } = values
 
     this.#person = new Person(selectedDate, housingLoan, housingLoanDate)
     this.#salary = new Salary(monthlySalary, salaryIncreaseRate)
     this.#accounts = new Accounts(
       parseFloat(ordinaryAccount),
-      parseFloat(specialAccount)
+      parseFloat(specialAccount),
+      specialAccountOnly
     )
+
+    this.#specialAccountOnly = specialAccountOnly
 
     // Add in entry for current year in Salary History
     this.#salary.checkInitialSalaryHistory(
@@ -96,10 +101,19 @@ export class CPFAccount {
     const currentCPFAllocation = getCPFAllocation(this.#person.age)
 
     // Calculate CPF Allocation amounts and add accordingly
-    const OAContribution = normalRound(eligibleSalary * currentCPFAllocation.OA)
+    // If SpecialAccountOnly option is selected, added contribution for OA to Special Account instead
+    const OAContribution = this.#specialAccountOnly
+      ? 0
+      : normalRound(eligibleSalary * currentCPFAllocation.OA)
     this.#accounts.ordinaryAccount += OAContribution
 
-    const SAContribution = normalRound(eligibleSalary * currentCPFAllocation.SA)
+    // If SpecialAccountOnly option is selected, added contribution for OA to Special Account instead
+    const SAContribution = this.#specialAccountOnly
+      ? normalRound(
+          eligibleSalary * currentCPFAllocation.OA +
+            eligibleSalary * currentCPFAllocation.SA
+        )
+      : normalRound(eligibleSalary * currentCPFAllocation.SA)
     this.#accounts.specialAccount += SAContribution
 
     // Update History Array

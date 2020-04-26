@@ -42,6 +42,7 @@ export interface AccountValues {
   selectedDate: moment.Moment
   housingLoan: string
   housingLoanDate: moment.Moment
+  specialAccountOnly: boolean
 }
 
 export interface FutureValues {
