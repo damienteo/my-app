@@ -79,14 +79,10 @@ export class CPFAccount {
     )
 
     // Add in entry for current year in Salary History
-    const shouldInitiateSalaryHistory =
-      this.#salary.amount > 0 && this.#salary.increaseRate > 0
-    if (shouldInitiateSalaryHistory) {
-      this.#salary.updateSalaryHistory(
-        this.#person.age,
-        this.#person.date.year()
-      )
-    }
+    this.#salary.checkInitialSalaryHistory(
+      this.#person.age,
+      this.#person.date.year()
+    )
   }
 
   updateHistory(category: string, rest = {} as AccountsType) {

@@ -137,12 +137,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     } as AccountValues
 
     if (isCorrectInput) {
+      // setCalculating to false refreshes breakdown in case new information needs to be displayed
+      setCalculating(false)
       const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
 
       if (nextFutureValues.errors.housingLoan) {
         setErrors({ ...nextFutureValues.errors })
-        setCalculating(false)
       } else {
         setFutureValues(nextFutureValues)
         setCalculating(true)

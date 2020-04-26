@@ -14,6 +14,15 @@ export class Salary {
     this.#increaseRate = parseFloat(increaseRate)
   }
 
+  checkInitialSalaryHistory(age: number, year: number) {
+    const shouldInitiateSalaryHistory =
+      this.#amount > 0 && this.#increaseRate > 0
+
+    if (shouldInitiateSalaryHistory) {
+      this.updateSalaryHistory(age, year)
+    }
+  }
+
   updateSalaryHistory(age: number, year: number) {
     this.#history.push({
       amount: normalRound(this.#amount),
