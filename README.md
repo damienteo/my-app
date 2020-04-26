@@ -34,7 +34,8 @@ CPF-forecast TODOs:
 - Add more tests specifically for Accounts class
 - Fix bug found in cpfForecast.ts
 - Add option for bonuses (13th month, optional) - input: number of months, which month
-- Add scenario for choosing to move all sums to Special Account - input: checkbox
+- Add option for housing loan
+- Add comparison for SPecial Accounts only versus normal scenario
 
 Other TODOs:
 

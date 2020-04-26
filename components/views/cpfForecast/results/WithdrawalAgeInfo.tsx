@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
 
-import { FutureValues } from '../../../../utils/cpf/types'
+import { FutureValues, ComparisonValues } from '../../../../utils/cpf/types'
 import { getYearsAndMonths, formatCurrency } from '../../../../utils/utils'
 import { withdrawalAge } from '../../../../constants'
 
@@ -13,6 +13,11 @@ interface WithdrawalAgeInfoProps {
 
 const useStyles = makeStyles((theme) => ({
   paragraph: {
+    margin: theme.spacing(0, 0, 1.5),
+    color: '#282c35',
+  },
+  addendum: {
+    fontSize: '0.75rem',
     margin: theme.spacing(0, 0, 1.5),
     color: '#282c35',
   },
@@ -31,7 +36,15 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
   props
 ) => {
   const { futureValues } = props
+  const { comparisonValues } = futureValues
   const classes = useStyles()
+
+  const comparisonSum = comparisonValues
+    ? comparisonValues.ordinaryAccountAtWithdrawalAge +
+      comparisonValues.specialAccountAtWithdrawalAge -
+      (futureValues.ordinaryAccountAtWithdrawalAge +
+        futureValues.specialAccountAtWithdrawalAge)
+    : 0
 
   return (
     <>
@@ -85,6 +98,23 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
           </Paragraph>
         </InfoPopup>
       </Paragraph>
+      {comparisonValues && (
+        <Paragraph className={classes.addendum}>
+          * Without housing loans, or transfering from OA to SA, you will have{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(comparisonValues.ordinaryAccountAtWithdrawalAge)}
+          </span>{' '}
+          in your Ordinary Account , and{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(comparisonValues.specialAccountAtWithdrawalAge)}
+          </span>{' '}
+          in your Special Account. This is{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(Math.abs(comparisonSum))}
+          </span>{' '}
+          {comparisonSum >= 0 ? 'more' : 'less'} than your chosen scenario.
+        </Paragraph>
+      )}
     </>
   )
 }

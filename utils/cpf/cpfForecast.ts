@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { CPFAccount } from './classes'
 import { cpfAllocation, withdrawalAge, payoutAge } from '../../constants'
-import { AccountValues } from './types'
+import { AccountValues, ComparisonValues } from './types'
 
 export const roundTo2Dec = (value: string) => {
   const isLeadingWithZero = value[0] === '0' && value[1] === '.'
@@ -98,8 +98,37 @@ export const calculateFutureValues = (values: AccountValues) => {
   // Update balance for remaining months
   newAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
 
-  // eslint-disable-next-line no-console
-  console.log('newAccount.accountValues', newAccount.accountValues)
+  let comparisonValues: ComparisonValues = undefined
+  if (values.specialAccountOnly) {
+    const nextValues = { ...values, specialAccountOnly: false }
+    const nextAccount = new CPFAccount(nextValues)
+    nextAccount.addSalaryAndInterestOverTime(monthsTillEOY)
+    nextAccount.addSalaryAndInterestOverTime(monthsOfFullYears)
+    nextAccount.addSalaryAndInterestOverTime(remainingMonths)
+    nextAccount.updateAccountsAtWithdrawalAge()
+    nextAccount.addSalaryAndInterestOverTime(monthsTillEndOfWithdrawalYear)
+    nextAccount.addSalaryAndInterestOverTime(
+      monthsOfFullYearsAfterWithdrawalYear
+    )
+    nextAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
+    const {
+      ordinaryAccount,
+      specialAccount,
+      retirementAccount,
+      ordinaryAccountAtWithdrawalAge,
+      specialAccountAtWithdrawalAge,
+    } = nextAccount.accountValues
+    comparisonValues = {
+      ordinaryAccount,
+      specialAccount,
+      retirementAccount,
+      ordinaryAccountAtWithdrawalAge,
+      specialAccountAtWithdrawalAge,
+    }
+  }
 
-  return newAccount.accountValues
+  const prevValues = newAccount.accountValues
+  const nextValues = { ...prevValues, comparisonValues }
+
+  return nextValues
 }

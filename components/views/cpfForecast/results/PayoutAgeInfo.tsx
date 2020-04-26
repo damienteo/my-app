@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, 1.5),
     color: '#282c35',
   },
+  addendum: {
+    fontSize: '0.75rem',
+    margin: theme.spacing(0, 0, 1.5),
+    color: '#282c35',
+  },
   image: {
     height: 'auto',
     width: '100%',
@@ -29,7 +34,17 @@ const useStyles = makeStyles((theme) => ({
 
 const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
   const { futureValues } = props
+  const { comparisonValues } = futureValues
   const classes = useStyles()
+
+  const comparisonSum = comparisonValues
+    ? comparisonValues.ordinaryAccount +
+      comparisonValues.specialAccount +
+      comparisonValues.retirementAccount -
+      (futureValues.ordinaryAccount +
+        futureValues.specialAccount +
+        futureValues.retirementAccount)
+    : 0
 
   return (
     <>
@@ -84,8 +99,28 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
             forecast.
           </Paragraph>
         </InfoPopup>
-        {/* TODO: Add history table */}
       </Paragraph>
+      {comparisonValues && (
+        <Paragraph className={classes.addendum}>
+          * Without housing loans, or transfering from OA to SA, you will have{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(comparisonValues.ordinaryAccount)}
+          </span>{' '}
+          in your Ordinary Account ,{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(comparisonValues.specialAccount)}
+          </span>{' '}
+          in your Special Account, and{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(comparisonValues.retirementAccount)}
+          </span>{' '}
+          in your Retirement Account. This is{' '}
+          <span className={classes.highlightText}>
+            {formatCurrency(Math.abs(comparisonSum))}
+          </span>{' '}
+          {comparisonSum >= 0 ? 'more' : 'less'} than your chosen scenario.
+        </Paragraph>
+      )}
     </>
   )
 }

@@ -57,7 +57,18 @@ export interface FutureValues {
   monthlySalary: number
   salaryHistory: SalaryRecord[]
   salaryHistoryAfterWithdrawalAge: SalaryRecord[]
+  comparisonValues?: ComparisonValues
 }
+
+export type ComparisonValues =
+  | {
+      ordinaryAccount: number
+      specialAccount: number
+      retirementAccount: number
+      ordinaryAccountAtWithdrawalAge: number
+      specialAccountAtWithdrawalAge: number
+    }
+  | undefined
 
 export interface ErrorValues {
   // Each key (going by field) has a string
