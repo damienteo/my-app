@@ -32,9 +32,10 @@ Testing is done with Jest.
 CPF-forecast TODOs:
 
 - Add more tests specifically for Accounts class
+- Add more tests specifically for calculation of allocation amounts
 - Add tests for FE
 - Fix bug found in cpfForecast.ts
-- Add option for bonuses (13th month, optional) - input: number of months, which month
+- Add option for multiple bonuses in a year
 - Add option for housing loan
 
 Other TODOs:

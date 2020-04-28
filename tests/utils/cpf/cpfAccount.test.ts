@@ -15,6 +15,8 @@ const zeroValues: AccountValues = {
   monthlySalary: '0',
   salaryIncreaseRate: '0',
   selectedDate: date16YearsAgo,
+  bonusMonth: '0',
+  monthsOfBonus: '0',
   housingLoan: '0',
   housingLoanDate: moment(),
   specialAccountOnly: false,
@@ -26,6 +28,8 @@ const normalValues: AccountValues = {
   monthlySalary: '1000',
   salaryIncreaseRate: '1',
   selectedDate: date16YearsAgo,
+  bonusMonth: '0',
+  monthsOfBonus: '0',
   housingLoan: '1000',
   housingLoanDate: moment(),
   specialAccountOnly: false,
@@ -466,4 +470,60 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     expect(historyAfterWithdrawalAge[0].ordinaryAccount).toEqual(0)
   })
+
+  it('should not have Bonus amounts in history if monthsOfBonus is 0', async () => {
+    const nextValues = {
+      ...normalValues,
+      bonusMonth: '3',
+      monthsOfBonus: '0',
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history, historyAfterWithdrawalAge } = instance.accountValues
+
+    const historyBonusEntry = history.find((record: Entry) => {
+      return record.category === 'Bonus'
+    })
+    expect(historyBonusEntry).toBeUndefined()
+
+    const historyAfterWithdrawalAgeBonusEntry = historyAfterWithdrawalAge.find(
+      (record: Entry) => {
+        return record.category === 'Bonus'
+      }
+    )
+    expect(historyAfterWithdrawalAgeBonusEntry).toBeUndefined()
+  })
+
+  it('should have Bonus amounts in history if monthsOfBonus is more than 0', async () => {
+    const nextValues = {
+      ...normalValues,
+      bonusMonth: '3',
+      monthsOfBonus: '2',
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const { history, historyAfterWithdrawalAge } = instance.accountValues
+
+    const historyBonusEntry = history.find((record: Entry) => {
+      return record.category === 'Bonus'
+    })
+    expect(historyBonusEntry).toBeDefined()
+
+    const historyAfterWithdrawalAgeBonusEntry = historyAfterWithdrawalAge.find(
+      (record: Entry) => {
+        return record.category === 'Bonus'
+      }
+    )
+    expect(historyAfterWithdrawalAgeBonusEntry).toBeDefined()
+  })
+
+  // TODO: Add test for calculation of contribution
 })

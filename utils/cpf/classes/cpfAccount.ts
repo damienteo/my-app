@@ -4,6 +4,7 @@ import {
   fullRetirementSum,
   retirementSumIncrease,
   ordinaryWageCeiling,
+  additionalWageCeiling,
 } from '../../../constants'
 import { Accounts, Person, Salary } from './'
 import { getCPFAllocation } from '../cpfForecast'
@@ -97,13 +98,7 @@ export class CPFAccount {
     this.updateHistoryAfterWithdrawalAge('Transfer')
   }
 
-  addMonthlySalary() {
-    // If monthly salary exceeds wage ceiling, take only wage ceiling as eligible for CPF contribution
-    const eligibleSalary =
-      this.#salary.amount > ordinaryWageCeiling
-        ? ordinaryWageCeiling
-        : this.#salary.amount
-
+  addContribution(eligibleAmount: number, label: string) {
     // Get CPF Allocation rates based on current age
     const currentCPFAllocation = getCPFAllocation(this.#person.age)
 
@@ -111,31 +106,59 @@ export class CPFAccount {
     // If SpecialAccountOnly option is selected, added contribution for OA to Special Account instead
     const OAContribution = this.#specialAccountOnly
       ? 0
-      : normalRound(eligibleSalary * currentCPFAllocation.OA)
+      : normalRound(eligibleAmount * currentCPFAllocation.OA)
     this.#accounts.ordinaryAccount += OAContribution
 
     // If SpecialAccountOnly option is selected, added contribution for OA to Special Account instead
     const SAContribution = this.#specialAccountOnly
       ? normalRound(
-          eligibleSalary * currentCPFAllocation.OA +
-            eligibleSalary * currentCPFAllocation.SA
+          eligibleAmount * currentCPFAllocation.OA +
+            eligibleAmount * currentCPFAllocation.SA
         )
-      : normalRound(eligibleSalary * currentCPFAllocation.SA)
+      : normalRound(eligibleAmount * currentCPFAllocation.SA)
     this.#accounts.specialAccount += SAContribution
 
     // Update History Array
     if (!this.#person.reachedWithdrawalAge) {
-      this.updateHistory('Contribution', {
+      this.updateHistory(label, {
         ordinaryAccount: OAContribution,
         specialAccount: SAContribution,
       })
     } else {
-      this.updateHistoryAfterWithdrawalAge('Contribution', {
+      this.updateHistoryAfterWithdrawalAge(label, {
         ordinaryAccount: OAContribution,
         specialAccount: SAContribution,
         retirementAccount: 0,
       })
     }
+  }
+
+  addMonthlySalaryContribution() {
+    // If monthly salary exceeds wage ceiling, take only wage ceiling as eligible for CPF contribution
+    const eligibleSalary =
+      this.#salary.amount > ordinaryWageCeiling
+        ? ordinaryWageCeiling
+        : this.#salary.amount
+
+    this.addContribution(eligibleSalary, 'Contribution')
+  }
+
+  addYearlyBonusContribution() {
+    // https://www.cpf.gov.sg/Assets/employers/Documents/ExamplesonAdditionalWageCeilingComputation.pdf
+    // calculate bonus amount and additional wage ceiling
+    const bonusAmount = this.#salary.amount * this.#salary.monthsOfBonus
+    const applicableOrdinaryWages =
+      this.#salary.amount > ordinaryWageCeiling
+        ? ordinaryWageCeiling
+        : this.#salary.amount
+    const additionalCeiling =
+      additionalWageCeiling - applicableOrdinaryWages * 12
+
+    // If annual bonus exceeds additional wage ceiling, take only wage ceiling as eligible for CPF contribution
+    const eligiblebonus =
+      bonusAmount > additionalCeiling ? additionalCeiling : bonusAmount
+
+    this.addContribution(eligiblebonus, 'Bonus')
   }
 
   addMonthlyInterest() {
@@ -286,7 +309,13 @@ export class CPFAccount {
       this.addMonthlyInterest()
 
       // Add salary at the end of the month, as interest is based on the lowest amount in the account at any time in the month
-      if (this.#salary.amount > 0) this.addMonthlySalary()
+      if (this.#salary.amount > 0) this.addMonthlySalaryContribution()
+
+      // Check for Bonus Contribution
+      const isBonusMonth = this.#person.date.month() === this.#salary.bonusMonth
+      if (isBonusMonth && this.#salary.monthsOfBonus > 0) {
+        this.addYearlyBonusContribution()
+      }
 
       // Add interest at the end of the period
       if (period === 0) {

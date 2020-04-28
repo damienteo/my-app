@@ -95,6 +95,8 @@ describe('calculateFutureValues should return the right values', () => {
     specialAccount: '1000',
     monthlySalary: '1000',
     salaryIncreaseRate: '1',
+    bonusMonth: '0',
+    monthsOfBonus: '0',
     selectedDate: date16YearsAgo,
     housingLoan: '1000',
     housingLoanDate: moment(),
