@@ -298,15 +298,6 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               sets the maximum amount of OWs on which CPF contributions are
               payable per month. The prevailing OW Ceiling is $6,000 per month.
             </Paragraph>
-            <Paragraph className={classes.paragraph}>
-              There is also an{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
-                label="Additional Wage (AW) Ceiling"
-              />{' '}
-              that sets a maximum on the amount of bonus that are subject to CPF
-              contribution.
-            </Paragraph>
           </InfoPopup>
         </Paragraph>
         <Grid container className={classes.longLabel}>
@@ -333,11 +324,32 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             />
           </Grid>
         </Grid>
+      </Section>
+
+      <Section>
+        {/* TODO: Add details on options when CPF site is up */}
+        <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
         <Grid container className={classes.longLabel}>
+          <Grid item xs={12} className={classes.optionHeaderWrapper}>
+            <Paragraph className={classes.optionHeader}>
+              1) Account for CPF contribution from expected Bonus{' '}
+              <InfoPopup title="Bonuses Subject to CPF Contribution">
+                <Paragraph className={classes.paragraph}>
+                  There is an{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
+                    label="Additional Wage (AW) Ceiling"
+                  />{' '}
+                  that sets a maximum on the amount of bonus that are subject to
+                  CPF contribution.
+                </Paragraph>
+              </InfoPopup>
+            </Paragraph>
+          </Grid>
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <TextField
               value={values.monthsOfBonus}
-              label="Estimated Yearly Bonus (Optional)"
+              label="Estimated Yearly Bonus in Months (Optional)"
               error={Boolean(errors.monthsOfBonus)}
               helperText={errors.monthsOfBonus}
               onChange={handleChange('monthsOfBonus')}
@@ -366,15 +378,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </FormControl>
           </Grid>
         </Grid>
-      </Section>
-
-      <Section>
-        {/* TODO: Add details on options when CPF site is up */}
-        <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
         <Grid container className={classes.longLabel}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              1) Use CPF to pay for Housing (Lump Sum){' '}
+              2) Use CPF to pay for Housing (Lump Sum){' '}
               <InfoPopup title="Using CPF to buy Housing">
                 <Paragraph className={classes.paragraph}>
                   You may use funds in your CPF Ordinary Account to buy housing
@@ -416,7 +423,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           </Grid>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              2) Move all Ordinary Account value and future contributions to
+              3) Move all Ordinary Account value and future contributions to
               Special Account (Optional){' '}
               <InfoPopup title="Higher Interest Rate in Special Account">
                 <Paragraph className={classes.paragraph}>
