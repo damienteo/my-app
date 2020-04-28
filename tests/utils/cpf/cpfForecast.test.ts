@@ -98,7 +98,10 @@ describe('calculateFutureValues should return the right values', () => {
     bonusMonth: '0',
     monthsOfBonus: '0',
     selectedDate: date16YearsAgo,
-    housingLoan: '1000',
+    housingLumpSum: '1000',
+    housingLumpSumDate: moment(),
+    housingMonthlyPayment: '0',
+    housingLoanTenure: '0',
     housingLoanDate: moment(),
     specialAccountOnly: false,
   }

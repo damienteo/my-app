@@ -2,7 +2,7 @@ import { Salary } from '../../../utils/cpf/classes/salary'
 
 describe('Salary', () => {
   test('Initializes with Amount', () => {
-    const newSalary = new Salary('3000', '1')
+    const newSalary = new Salary('3000', '1', '0', '0')
 
     expect(newSalary.amount).toBe(3000)
   })

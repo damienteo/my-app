@@ -9,13 +9,13 @@ export class Person {
   #monthsTillWithdrawal: number
   #reachedWithdrawalAge = false
 
-  #housingLoan: number
-  #housingLoanDate: string
+  #housingLumpSum: number
+  #housingLumpSumDate: string
 
   constructor(
     selectedDate: moment.Moment,
-    housingLoan: string,
-    housingLoanDate: moment.Moment
+    housingLumpSum: string,
+    housingLumpSumDate: moment.Moment
   ) {
     this.#birthDate = moment(selectedDate)
     this.#age = getAge(selectedDate, 'years')
@@ -24,8 +24,8 @@ export class Person {
     const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
     this.#monthsTillWithdrawal = monthsTillWithdrawal
 
-    this.#housingLoan = parseFloat(housingLoan)
-    this.#housingLoanDate = moment(housingLoanDate).format('MMM YYYY')
+    this.#housingLumpSum = parseFloat(housingLumpSum)
+    this.#housingLumpSumDate = moment(housingLumpSumDate).format('MMM YYYY')
   }
 
   updateTimePeriod() {
@@ -43,7 +43,7 @@ export class Person {
   }
 
   clearHousingLoan() {
-    this.#housingLoan = 0
+    this.#housingLumpSum = 0
   }
 
   get birthDate() {
@@ -66,11 +66,11 @@ export class Person {
     return this.#reachedWithdrawalAge
   }
 
-  get housingLoan() {
-    return this.#housingLoan
+  get housingLumpSum() {
+    return this.#housingLumpSum
   }
 
-  get housingLoanDate() {
-    return this.#housingLoanDate
+  get housingLumpSumDate() {
+    return this.#housingLumpSumDate
   }
 }

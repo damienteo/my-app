@@ -33,12 +33,15 @@ export class CPFAccount {
       monthsOfBonus,
       bonusMonth,
       selectedDate,
-      housingLoan,
+      housingLumpSum,
+      housingLumpSumDate,
+      housingMonthlyPayment,
+      housingLoanTenure,
       housingLoanDate,
       specialAccountOnly,
     } = values
 
-    this.#person = new Person(selectedDate, housingLoan, housingLoanDate)
+    this.#person = new Person(selectedDate, housingLumpSum, housingLumpSumDate)
     this.#salary = new Salary(
       monthlySalary,
       salaryIncreaseRate,
@@ -239,28 +242,28 @@ export class CPFAccount {
 
   processHousingLoan() {
     // If Ordinary Account is not enough, indicate error and return early
-    if (this.#person.housingLoan > this.#accounts.ordinaryAccount) {
-      return (this.#errors.housingLoan = `There is only ${formatCurrency(
+    if (this.#person.housingLumpSum > this.#accounts.ordinaryAccount) {
+      return (this.#errors.housingLumpSum = `There is only ${formatCurrency(
         this.#accounts.ordinaryAccount
       )} in your ordinary account on ${this.#person.date.format(
         'MMM YYYY'
       )}, and you need ${formatCurrency(
-        this.#person.housingLoan
+        this.#person.housingLumpSum
       )} for the housing loan `)
     }
 
     // Clear housing loan amount from ordinary account
-    this.#accounts.ordinaryAccount -= this.#person.housingLoan
+    this.#accounts.ordinaryAccount -= this.#person.housingLumpSum
 
     if (!this.#person.reachedWithdrawalAge) {
       this.updateHistory('Housing', {
-        ordinaryAccount: -this.#person.housingLoan,
+        ordinaryAccount: -this.#person.housingLumpSum,
         specialAccount: 0,
       })
       this.updateHistory('Balance')
     } else {
       this.updateHistoryAfterWithdrawalAge('Housing', {
-        ordinaryAccount: -this.#person.housingLoan,
+        ordinaryAccount: -this.#person.housingLumpSum,
         specialAccount: 0,
         retirementAccount: 0,
       })
@@ -283,8 +286,8 @@ export class CPFAccount {
 
       // Check for usage of housing loan
       if (
-        this.#person.housingLoan > 0 &&
-        this.#person.date.format('MMM YYYY') === this.#person.housingLoanDate
+        this.#person.housingLumpSum > 0 &&
+        this.#person.date.format('MMM YYYY') === this.#person.housingLumpSumDate
       ) {
         this.processHousingLoan()
       }

@@ -36,7 +36,6 @@ CPF-forecast TODOs:
 - Add tests for FE
 - Fix bug found in cpfForecast.ts
 - Add option for multiple bonuses in a year
-- Add option for housing loan
 
 Other TODOs:
 

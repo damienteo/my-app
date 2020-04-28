@@ -32,7 +32,9 @@ export interface Values {
   monthsOfBonus: string
   bonusMonth: string
   salaryIncreaseRate: string
-  housingLoan: string
+  housingLumpSum: string
+  housingMonthlyPayment: string
+  housingLoanTenure: string
   [key: string]: string
 }
 
@@ -44,7 +46,10 @@ export interface AccountValues {
   monthsOfBonus: string
   bonusMonth: string
   selectedDate: moment.Moment
-  housingLoan: string
+  housingLumpSum: string
+  housingLumpSumDate: moment.Moment
+  housingMonthlyPayment: string
+  housingLoanTenure: string
   housingLoanDate: moment.Moment
   specialAccountOnly: boolean
 }

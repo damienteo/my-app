@@ -17,7 +17,10 @@ const zeroValues: AccountValues = {
   selectedDate: date16YearsAgo,
   bonusMonth: '0',
   monthsOfBonus: '0',
-  housingLoan: '0',
+  housingLumpSum: '0',
+  housingLumpSumDate: moment(),
+  housingMonthlyPayment: '0',
+  housingLoanTenure: '0',
   housingLoanDate: moment(),
   specialAccountOnly: false,
 }
@@ -30,8 +33,11 @@ const normalValues: AccountValues = {
   selectedDate: date16YearsAgo,
   bonusMonth: '0',
   monthsOfBonus: '0',
-  housingLoan: '1000',
+  housingLumpSum: '1000',
+  housingMonthlyPayment: '0',
+  housingLoanTenure: '0',
   housingLoanDate: moment(),
+  housingLumpSumDate: moment(),
   specialAccountOnly: false,
 }
 
@@ -349,8 +355,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
     const nextDateIn2years = dateIn2years.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
-      housingLoan: '2000',
-      housingLoanDate: dateIn2years,
+      housingLumpSum: '2000',
+      housingLumpSumDate: dateIn2years,
     }
 
     const nextHousingHistoryEntry = {
@@ -379,9 +385,9 @@ describe('CPFAccount should have entries in history which show deduction of hous
     const nextDateAfterWithdrawalAge = dateAfterWithdrawalAge.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
-      housingLoan: '3000',
+      housingLumpSum: '3000',
       monthlySalary: '4000',
-      housingLoanDate: dateAfterWithdrawalAge,
+      housingLumpSumDate: dateAfterWithdrawalAge,
     }
 
     const nextHousingHistoryEntry = {
@@ -421,8 +427,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
     const nextFutureDate = futureDate.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
-      housingLoan: '3000000',
-      housingLoanDate: futureDate,
+      housingLumpSum: '3000000',
+      housingLumpSumDate: futureDate,
     }
 
     instance = new CPFAccount(nextValues)
@@ -449,8 +455,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
 
-    const { housingLoan = '' } = errors
-    expect(housingLoan.length).toBeGreaterThan(90)
+    const { housingLumpSum = '' } = errors
+    expect(housingLumpSum.length).toBeGreaterThan(90)
   })
 
   it('If specialAccountOnly is selected, there should not be any funds in Ordinary Account.', async () => {

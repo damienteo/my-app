@@ -50,6 +50,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, 1.5),
     color: '#282c35',
   },
+  optionalSection: {
+    backgroundColor: '#cbe8fd',
+    padding: theme.spacing(0.25, 1),
+    borderRadius: 5,
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      '& .MuiInputBase-input': { padding: '20px 0 7px' },
+      '& .MuiInputAdornment-root ': { marginTop: 15 },
+    },
+  },
   optionHeaderWrapper: {
     marginTop: theme.spacing(1.5),
   },
@@ -108,12 +118,17 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     monthsOfBonus: '0',
     bonusMonth: '0',
     salaryIncreaseRate: '0',
-    housingLoan: '0',
+    housingLumpSum: '0',
+    housingMonthlyPayment: '0',
+    housingLoanTenure: '0',
   })
   const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
-  const [housingLoanDate, handleHousingDateChange] = useState<moment.Moment>(
-    moment()
-  )
+  const [housingLumpSumDate, handleHousingLumpSumDateChange] = useState<
+    moment.Moment
+  >(moment())
+  const [housingLoanDate, handleHousingLoanDateChange] = useState<
+    moment.Moment
+  >(moment())
   const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<ErrorValues>({})
@@ -131,7 +146,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       }
     })
 
-    if (specialAccountOnly === true && parseFloat(values.housingLoan) > 0) {
+    if (specialAccountOnly === true && parseFloat(values.housingLumpSum) > 0) {
       nextErrors.specialAccountOnly =
         "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
     }
@@ -178,7 +193,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     const accountValues = {
       ...nextValues,
       selectedDate,
-      housingLoanDate,
+      housingLumpSumDate,
       specialAccountOnly,
     } as AccountValues
 
@@ -188,7 +203,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
 
-      if (nextFutureValues.errors.housingLoan) {
+      if (nextFutureValues.errors.housingLumpSum) {
         setErrors({ ...nextFutureValues.errors })
       } else {
         setFutureValues(nextFutureValues)
@@ -327,12 +342,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       </Section>
 
       <Section>
-        {/* TODO: Add details on options when CPF site is up */}
+        {' '}
         <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
-        <Grid container className={classes.longLabel}>
+        {/* Option 1: Take Bonus in account */}
+        <Grid container className={classes.optionalSection}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              1) Account for CPF contribution from expected Bonus{' '}
+              1)CPF contribution from expected Bonus{' '}
               <InfoPopup title="Bonuses Subject to CPF Contribution">
                 <Paragraph className={classes.paragraph}>
                   There is an{' '}
@@ -378,7 +394,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid container className={classes.longLabel}>
+        {/* Option 2: Use CPF as lump sum for Housing */}
+        <Grid container className={classes.optionalSection}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
               2) Use CPF to pay for Housing (Lump Sum){' '}
@@ -402,28 +419,90 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           </Grid>
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <CurrencyInput
-              value={values.housingLoan}
-              label="Use CPF for Housing (Optional)"
-              field="housingLoan"
-              error={Boolean(errors.housingLoan)}
-              helperText={errors.housingLoan}
+              value={values.housingLumpSum}
+              label="Lump Sum for Housing from CPF (Optional)"
+              field="housingLumpSum"
+              error={Boolean(errors.housingLumpSum)}
+              helperText={errors.housingLumpSum}
               handleChange={handleChange}
             />
           </Grid>
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <KeyboardDatePicker
-              value={housingLoanDate}
-              label="Planned Date for Housing Lump Sum Payment (Optional)"
+              value={housingLumpSumDate}
+              label="Date for Lump Sum Payment (Optional)"
               // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-              onChange={(date: any) => handleHousingDateChange(date)}
+              onChange={(date: any) => handleHousingLumpSumDateChange(date)}
               format="dd/MM/yyyy"
               minDate={moment()}
               minDateMessage={`This date is before the present`}
             />
           </Grid>
+        </Grid>
+        {/* Option 3: Use CPF as to pay for housing loan */}
+        <Grid container className={classes.optionalSection}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              3) Move all Ordinary Account value and future contributions to
+              3) Use CPF to pay for Housing Loan{' '}
+              <InfoPopup title="Using CPF to buy Housing">
+                <Paragraph className={classes.paragraph}>
+                  You may use funds in your CPF Ordinary Account to buy housing
+                  either under the{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
+                    label="Public Housing Scheme"
+                  />
+                  , or the{' '}
+                  <ExternalLink
+                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
+                    label="Private Properties Scheme"
+                  />{' '}
+                  .
+                </Paragraph>
+              </InfoPopup>
+            </Paragraph>
+          </Grid>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <CurrencyInput
+              value={values.housingMonthlyPayment}
+              label="Monthly Payment (Optional)"
+              field="housingMonthlyPayment"
+              error={Boolean(errors.housingMonthlyPayment)}
+              helperText={errors.housingMonthlyPayment}
+              handleChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <TextField
+              value={values.housingLoanTenure}
+              label="Loan Tenure - Years (Optional)"
+              error={Boolean(errors.housingLoanTenure)}
+              helperText={errors.housingLoanTenure}
+              onChange={handleChange('housingLoanTenure')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">years</InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <KeyboardDatePicker
+              value={housingLoanDate}
+              label="Date of first Monthly Payment (Optional)"
+              // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+              onChange={(date: any) => handleHousingLoanDateChange(date)}
+              format="dd/MM/yyyy"
+              minDate={moment()}
+              minDateMessage={`This date is before the present`}
+            />
+          </Grid>
+        </Grid>
+        {/* Option 4: Move all Ordinary Account money to Special Account */}
+        <Grid container className={classes.optionalSection}>
+          <Grid item xs={12} className={classes.optionHeaderWrapper}>
+            <Paragraph className={classes.optionHeader}>
+              4) Move all Ordinary Account value and future contributions to
               Special Account (Optional){' '}
               <InfoPopup title="Higher Interest Rate in Special Account">
                 <Paragraph className={classes.paragraph}>
