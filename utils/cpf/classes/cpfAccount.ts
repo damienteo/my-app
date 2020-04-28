@@ -29,6 +29,8 @@ export class CPFAccount {
       specialAccount,
       monthlySalary,
       salaryIncreaseRate,
+      monthsOfBonus,
+      bonusMonth,
       selectedDate,
       housingLoan,
       housingLoanDate,
@@ -36,7 +38,12 @@ export class CPFAccount {
     } = values
 
     this.#person = new Person(selectedDate, housingLoan, housingLoanDate)
-    this.#salary = new Salary(monthlySalary, salaryIncreaseRate)
+    this.#salary = new Salary(
+      monthlySalary,
+      salaryIncreaseRate,
+      monthsOfBonus,
+      bonusMonth
+    )
     this.#accounts = new Accounts(
       parseFloat(ordinaryAccount),
       parseFloat(specialAccount),

@@ -6,12 +6,23 @@ export class Salary {
   #amount: number
   #increaseRate: number
 
+  #monthsOfBonus: number
+  #bonusMonth: number
+
   #history: SalaryRecord[] = []
   #historyAfterWithdrawalAge: SalaryRecord[] = []
 
-  constructor(amount: string, increaseRate: string) {
+  constructor(
+    amount: string,
+    increaseRate: string,
+    monthsOfBonus: string,
+    bonusMonth: string
+  ) {
     this.#amount = parseFloat(amount)
     this.#increaseRate = parseFloat(increaseRate)
+
+    this.#bonusMonth = parseInt(bonusMonth)
+    this.#monthsOfBonus = parseFloat(monthsOfBonus)
   }
 
   checkInitialSalaryHistory(age: number, year: number) {
@@ -64,6 +75,14 @@ export class Salary {
 
   get increaseRate() {
     return this.#increaseRate
+  }
+
+  get monthsOfBonus() {
+    return this.#monthsOfBonus
+  }
+
+  get bonusMonth() {
+    return this.#bonusMonth
   }
 
   get history() {

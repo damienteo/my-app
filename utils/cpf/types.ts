@@ -41,6 +41,8 @@ export interface AccountValues {
   specialAccount: string
   monthlySalary: string
   salaryIncreaseRate: string
+  monthsOfBonus: string
+  bonusMonth: string
   selectedDate: moment.Moment
   housingLoan: string
   housingLoanDate: moment.Moment
