@@ -4,13 +4,17 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormHelperText,
   Grid,
+  Select,
   Snackbar,
   TextField,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
 } from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
 import { cyan, teal } from '@material-ui/core/colors/'
@@ -34,7 +38,7 @@ import {
   AccountValues,
   FutureValues,
 } from '../../../utils/cpf/types'
-import { cpfAccounts, withdrawalAge } from '../../../constants'
+import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
@@ -101,6 +105,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     ordinaryAccount: '0',
     specialAccount: '0',
     monthlySalary: '0',
+    monthsOfBonus: '0',
+    bonusMonth: '0',
     salaryIncreaseRate: '0',
     housingLoan: '0',
   })
@@ -147,6 +153,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
 
   const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSpecialAccountOnly(event.target.checked)
+  }
+
+  // TODO: Fix typing
+  const handleDropdownChange = (event: any) => {
+    const nextValues = { ...values }
+    nextValues.bonusMonth = event.target.value
+    setValues(nextValues)
   }
 
   const handleSubmit = () => {
@@ -285,6 +298,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               sets the maximum amount of OWs on which CPF contributions are
               payable per month. The prevailing OW Ceiling is $6,000 per month.
             </Paragraph>
+            <Paragraph className={classes.paragraph}>
+              There is also an{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
+                label="Additional Wage (AW) Ceiling"
+              />{' '}
+              that sets a maximum on the amount of bonus that are subject to CPF
+              contribution.
+            </Paragraph>
           </InfoPopup>
         </Paragraph>
         <Grid container className={classes.longLabel}>
@@ -301,7 +323,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
             <TextField
               value={values.salaryIncreaseRate}
-              label="Projected % Increase/Year (Optional)"
+              label="Projected Salary % Increase/Year (Optional)"
               error={Boolean(errors.salaryIncreaseRate)}
               helperText={errors.salaryIncreaseRate}
               onChange={handleChange('salaryIncreaseRate')}
@@ -309,6 +331,39 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}
             />
+          </Grid>
+        </Grid>
+        <Grid container className={classes.longLabel}>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <TextField
+              value={values.monthsOfBonus}
+              label="Estimated Yearly Bonus (Optional)"
+              error={Boolean(errors.monthsOfBonus)}
+              helperText={errors.monthsOfBonus}
+              onChange={handleChange('monthsOfBonus')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">months</InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} className={classes.inputWrapper}>
+            <FormControl>
+              <InputLabel id="demo-simple-select-helper-label">
+                Month in which Bonus is given (Optional)
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={values.bonusMonth}
+                onChange={handleDropdownChange}
+              >
+                {momentMonths.map((month) => (
+                  <MenuItem value={month.value}>{month.label}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
       </Section>

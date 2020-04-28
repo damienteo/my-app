@@ -114,11 +114,12 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
           <span className={classes.highlightText}>
             {formatCurrency(comparisonValues.retirementAccount)}
           </span>{' '}
-          in your Retirement Account. This is{' '}
+          in your Retirement Account. The sum of both these accounts is{' '}
           <span className={classes.highlightText}>
             {formatCurrency(Math.abs(comparisonSum))}
           </span>{' '}
-          {comparisonSum >= 0 ? 'more' : 'less'} than your chosen scenario.
+          {comparisonSum >= 0 ? 'more' : 'less'} than the sum of both accounts
+          in your chosen scenario.
         </Paragraph>
       )}
     </>

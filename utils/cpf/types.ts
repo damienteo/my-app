@@ -29,6 +29,8 @@ export interface Values {
   ordinaryAccount: string
   specialAccount: string
   monthlySalary: string
+  monthsOfBonus: string
+  bonusMonth: string
   salaryIncreaseRate: string
   housingLoan: string
   [key: string]: string

@@ -46,7 +46,7 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
   return (
     <Link href={url} as={url} prefetch>
       <Button href={url} color="inherit" className={classes.button}>
-        <a>{text}</a>
+        {text}
       </Button>
     </Link>
   )

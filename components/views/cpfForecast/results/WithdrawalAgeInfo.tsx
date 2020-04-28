@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
 
-import { FutureValues, ComparisonValues } from '../../../../utils/cpf/types'
+import { FutureValues } from '../../../../utils/cpf/types'
 import { getYearsAndMonths, formatCurrency } from '../../../../utils/utils'
 import { withdrawalAge } from '../../../../constants'
 
@@ -108,11 +108,12 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
           <span className={classes.highlightText}>
             {formatCurrency(comparisonValues.specialAccountAtWithdrawalAge)}
           </span>{' '}
-          in your Special Account. This is{' '}
+          in your Special Account. The sum of these three accounts is{' '}
           <span className={classes.highlightText}>
             {formatCurrency(Math.abs(comparisonSum))}
           </span>{' '}
-          {comparisonSum >= 0 ? 'more' : 'less'} than your chosen scenario.
+          {comparisonSum >= 0 ? 'more' : 'less'} than the sum of the three
+          acounts in your chosen scenario.
         </Paragraph>
       )}
     </>
