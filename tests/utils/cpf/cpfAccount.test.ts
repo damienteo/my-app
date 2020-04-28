@@ -333,7 +333,7 @@ describe('CPFAccount should have the correct final salary amount based on salary
 
 describe('CPFAccount should have entries in history which show deduction of housing loan', () => {
   const housingHistoryEntry = {
-    category: 'Housing',
+    category: 'Housing Lump Sum',
     date: moment().format('MMM YYYY'),
     ordinaryAccount: -1000,
     specialAccount: 0,
@@ -374,7 +374,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     const housingEntry = history.find(
       (entry: Entry) =>
-        entry.date === nextDateIn2years && entry.category === 'Housing'
+        entry.date === nextDateIn2years && entry.category === 'Housing Lump Sum'
     )
 
     expect(housingEntry).toEqual(nextHousingHistoryEntry)
@@ -407,14 +407,14 @@ describe('CPFAccount should have entries in history which show deduction of hous
     const housingEntryInHistory = history.find(
       (entry: Entry) =>
         entry.date === nextDateAfterWithdrawalAge &&
-        entry.category === 'Housing'
+        entry.category === 'Housing Lump Sum'
     )
     expect(housingEntryInHistory).toEqual(undefined)
 
     const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
       (entry: Entry) =>
         entry.date === nextDateAfterWithdrawalAge &&
-        entry.category === 'Housing'
+        entry.category === 'Housing Lump Sum'
     )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(
@@ -444,13 +444,13 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     const housingEntryInHistory = history.find(
       (entry: Entry) =>
-        entry.date === nextFutureDate && entry.category === 'Housing'
+        entry.date === nextFutureDate && entry.category === 'Housing Lump Sum'
     )
     expect(housingEntryInHistory).toEqual(undefined)
 
     const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
       (entry: Entry) =>
-        entry.date === nextFutureDate && entry.category === 'Housing'
+        entry.date === nextFutureDate && entry.category === 'Housing Lump Sum'
     )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
@@ -476,6 +476,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     expect(historyAfterWithdrawalAge[0].ordinaryAccount).toEqual(0)
   })
+
+  // TODO: Write tests for housing loan
 
   it('should not have Bonus amounts in history if monthsOfBonus is 0', async () => {
     const nextValues = {

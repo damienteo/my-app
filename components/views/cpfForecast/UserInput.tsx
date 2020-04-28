@@ -194,6 +194,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       ...nextValues,
       selectedDate,
       housingLumpSumDate,
+      housingLoanDate,
       specialAccountOnly,
     } as AccountValues
 
@@ -348,7 +349,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         <Grid container className={classes.optionalSection}>
           <Grid item xs={12} className={classes.optionHeaderWrapper}>
             <Paragraph className={classes.optionHeader}>
-              1)CPF contribution from expected Bonus{' '}
+              1) CPF contribution from expected Bonus{' '}
               <InfoPopup title="Bonuses Subject to CPF Contribution">
                 <Paragraph className={classes.paragraph}>
                   There is an{' '}

@@ -2,6 +2,15 @@ import moment from 'moment'
 import { getAge } from '../cpfForecast'
 import { withdrawalAge } from '../../../constants'
 
+export type PersonValues = {
+  selectedDate: moment.Moment
+  housingLumpSum: string
+  housingLumpSumDate: moment.Moment
+  housingMonthlyPayment: string
+  housingLoanTenure: string
+  housingLoanDate: moment.Moment
+}
+
 export class Person {
   #age: number
   #birthDate: moment.Moment
@@ -12,11 +21,20 @@ export class Person {
   #housingLumpSum: number
   #housingLumpSumDate: string
 
-  constructor(
-    selectedDate: moment.Moment,
-    housingLumpSum: string,
-    housingLumpSumDate: moment.Moment
-  ) {
+  #housingMonthlyPayment: number
+  #housingLoanTenureInMonths: number
+  #housingLoanDate: moment.Moment
+
+  constructor(personValues: PersonValues) {
+    const {
+      selectedDate,
+      housingLumpSum,
+      housingLumpSumDate,
+      housingMonthlyPayment,
+      housingLoanTenure,
+      housingLoanDate,
+    } = personValues
+
     this.#birthDate = moment(selectedDate)
     this.#age = getAge(selectedDate, 'years')
 
@@ -26,6 +44,10 @@ export class Person {
 
     this.#housingLumpSum = parseFloat(housingLumpSum)
     this.#housingLumpSumDate = moment(housingLumpSumDate).format('MMM YYYY')
+
+    this.#housingMonthlyPayment = parseFloat(housingMonthlyPayment)
+    this.#housingLoanTenureInMonths = parseInt(housingLoanTenure) * 12
+    this.#housingLoanDate = moment(housingLoanDate)
   }
 
   updateTimePeriod() {
@@ -38,11 +60,15 @@ export class Person {
     }
   }
 
+  decrementLoanTenure() {
+    this.#housingLoanTenureInMonths -= 1
+  }
+
   setReachedWithdrawalAge() {
     this.#reachedWithdrawalAge = true
   }
 
-  clearHousingLoan() {
+  clearHousingLumpSum() {
     this.#housingLumpSum = 0
   }
 
@@ -72,5 +98,21 @@ export class Person {
 
   get housingLumpSumDate() {
     return this.#housingLumpSumDate
+  }
+
+  get housingMonthlyPayment() {
+    return this.#housingMonthlyPayment
+  }
+
+  get housingLoanTenureInMonths() {
+    return this.#housingLoanTenureInMonths
+  }
+
+  set housingLoanTenureInMonths(value: number) {
+    this.#housingLoanTenureInMonths = value
+  }
+
+  get housingLoanDate() {
+    return this.#housingLoanDate
   }
 }

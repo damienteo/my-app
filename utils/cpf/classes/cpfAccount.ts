@@ -41,7 +41,16 @@ export class CPFAccount {
       specialAccountOnly,
     } = values
 
-    this.#person = new Person(selectedDate, housingLumpSum, housingLumpSumDate)
+    const personValues = {
+      selectedDate,
+      housingLumpSum,
+      housingLumpSumDate,
+      housingMonthlyPayment,
+      housingLoanTenure,
+      housingLoanDate,
+    }
+
+    this.#person = new Person(personValues)
     this.#salary = new Salary(
       monthlySalary,
       salaryIncreaseRate,
@@ -240,7 +249,7 @@ export class CPFAccount {
     }
   }
 
-  processHousingLoan() {
+  processHousingLumpSum() {
     // If Ordinary Account is not enough, indicate error and return early
     if (this.#person.housingLumpSum > this.#accounts.ordinaryAccount) {
       return (this.#errors.housingLumpSum = `There is only ${formatCurrency(
@@ -249,20 +258,20 @@ export class CPFAccount {
         'MMM YYYY'
       )}, and you need ${formatCurrency(
         this.#person.housingLumpSum
-      )} for the housing loan `)
+      )} for the housing lump sum payment `)
     }
 
-    // Clear housing loan amount from ordinary account
+    // Clear housing lump sum amount from ordinary account
     this.#accounts.ordinaryAccount -= this.#person.housingLumpSum
 
     if (!this.#person.reachedWithdrawalAge) {
-      this.updateHistory('Housing', {
+      this.updateHistory('Housing Lump Sum', {
         ordinaryAccount: -this.#person.housingLumpSum,
         specialAccount: 0,
       })
       this.updateHistory('Balance')
     } else {
-      this.updateHistoryAfterWithdrawalAge('Housing', {
+      this.updateHistoryAfterWithdrawalAge('Housing Lump Sum', {
         ordinaryAccount: -this.#person.housingLumpSum,
         specialAccount: 0,
         retirementAccount: 0,
@@ -270,8 +279,42 @@ export class CPFAccount {
       this.updateHistoryAfterWithdrawalAge('Balance')
     }
 
-    // Clear amount in housing loan as it is no longer needed
-    this.#person.clearHousingLoan()
+    // Clear amount in housing lump sum as it is no longer needed
+    this.#person.clearHousingLumpSum()
+  }
+
+  processHousingLoan() {
+    // If Ordinary Account is not enough, indicate error and return early
+    if (this.#person.housingMonthlyPayment > this.#accounts.ordinaryAccount) {
+      // Stop future loan deductions if run out of money
+      this.#person.housingLoanTenureInMonths = 0
+      return (this.#errors.housingMonthlyPayment = `There is only ${formatCurrency(
+        this.#accounts.ordinaryAccount
+      )} in your ordinary account on ${this.#person.date.format(
+        'MMM YYYY'
+      )}, and you need ${formatCurrency(
+        this.#person.housingMonthlyPayment
+      )} for the housing lump sum payment `)
+    }
+
+    // Clear housing loan amount from ordinary account
+    this.#accounts.ordinaryAccount -= this.#person.housingMonthlyPayment
+
+    if (!this.#person.reachedWithdrawalAge) {
+      this.updateHistory('Housing Loan', {
+        ordinaryAccount: -this.#person.housingMonthlyPayment,
+        specialAccount: 0,
+      })
+    } else {
+      this.updateHistoryAfterWithdrawalAge('Housing Loan', {
+        ordinaryAccount: -this.#person.housingMonthlyPayment,
+        specialAccount: 0,
+        retirementAccount: 0,
+      })
+    }
+
+    // Decrease number of months the person has left to pay the monthly loan amount
+    this.#person.decrementLoanTenure()
   }
 
   addSalaryAndInterestOverTime(months: number) {
@@ -284,10 +327,21 @@ export class CPFAccount {
         this.addInterestAtEndOfPeriod()
       }
 
-      // Check for usage of housing loan
+      // Check for usage of housing lump sum
       if (
         this.#person.housingLumpSum > 0 &&
         this.#person.date.format('MMM YYYY') === this.#person.housingLumpSumDate
+      ) {
+        this.processHousingLumpSum()
+      }
+
+      // Check for usage of housing loan
+      if (
+        this.#person.housingLoanTenureInMonths > 0 &&
+        this.#person.date.isAfter(
+          this.#person.housingLoanDate.subtract(1, 'm'),
+          'day'
+        )
       ) {
         this.processHousingLoan()
       }
