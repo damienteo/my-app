@@ -204,7 +204,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
 
-      if (nextFutureValues.errors.housingLumpSum) {
+      if (Object.values(nextFutureValues.errors).length > 0) {
         setErrors({ ...nextFutureValues.errors })
       } else {
         setFutureValues(nextFutureValues)

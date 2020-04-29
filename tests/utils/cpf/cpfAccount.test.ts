@@ -459,6 +459,46 @@ describe('CPFAccount should have entries in history which show deduction of hous
     expect(housingLumpSum.length).toBeGreaterThan(90)
   })
 
+  it('will update error object if Ordinary Account is insufficient for Housing Loan Payment', async () => {
+    const currentDateString = moment().format('MMM YYYY')
+    const nextValues = {
+      ...normalValues,
+      ordinaryAccount: '0',
+      housingLumpSum: '0',
+      housingMonthlyPayment: '2000',
+      housingLoanTenure: '10',
+    }
+
+    instance = new CPFAccount(nextValues)
+    instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+    instance.updateAccountsAtWithdrawalAge()
+    instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
+
+    const {
+      history,
+      historyAfterWithdrawalAge,
+      errors,
+    } = instance.accountValues
+
+    const housingEntryInHistory = history.find(
+      (entry: Entry) =>
+        entry.date === currentDateString && entry.category === 'Housing Loan'
+    )
+    expect(housingEntryInHistory).toEqual(undefined)
+
+    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
+      (entry: Entry) =>
+        entry.date === currentDateString && entry.category === 'Housing Loan'
+    )
+
+    expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
+
+    const { housingMonthlyPayment = '' } = errors
+
+    // TODO: Update error message expected to match error message received, instead of comparing string length
+    expect(housingMonthlyPayment.length).toBeGreaterThan(90)
+  })
+
   it('If specialAccountOnly is selected, there should not be any funds in Ordinary Account.', async () => {
     const nextValues = {
       ...normalValues,

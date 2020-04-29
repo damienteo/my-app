@@ -62,7 +62,11 @@ describe('Person', () => {
     })
 
     test('Returns the current date as ten years in the future after 120 months (10 years)', () => {
-      const nextDate = moment().add(10, 'y').format('DD/MM/YYYY')
+      // Adding one month to moment object (29/01/2021) ends up with moment object (28/01/2021)
+      const nextDate = moment()
+        .add(10, 'y')
+        .subtract(1, 'd')
+        .format('DD/MM/YYYY')
       expect(newAccount.date.format('DD/MM/YYYY')).toBe(nextDate)
     })
   })

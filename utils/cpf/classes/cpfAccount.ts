@@ -249,6 +249,27 @@ export class CPFAccount {
     }
   }
 
+  checkForHousingPayment() {
+    // Check for usage of housing lump sum
+    if (
+      this.#person.housingLumpSum > 0 &&
+      this.#person.date.format('MMM YYYY') === this.#person.housingLumpSumDate
+    ) {
+      this.processHousingLumpSum()
+    }
+
+    // Check for usage of housing loan
+    if (
+      this.#person.housingLoanTenureInMonths > 0 &&
+      this.#person.date.isAfter(
+        this.#person.housingLoanDate.subtract(1, 'm'),
+        'day'
+      )
+    ) {
+      this.processHousingLoan()
+    }
+  }
+
   processHousingLumpSum() {
     // If Ordinary Account is not enough, indicate error and return early
     if (this.#person.housingLumpSum > this.#accounts.ordinaryAccount) {
@@ -294,7 +315,7 @@ export class CPFAccount {
         'MMM YYYY'
       )}, and you need ${formatCurrency(
         this.#person.housingMonthlyPayment
-      )} for the housing lump sum payment `)
+      )} for the housing loan monthly payment `)
     }
 
     // Clear housing loan amount from ordinary account
@@ -327,24 +348,7 @@ export class CPFAccount {
         this.addInterestAtEndOfPeriod()
       }
 
-      // Check for usage of housing lump sum
-      if (
-        this.#person.housingLumpSum > 0 &&
-        this.#person.date.format('MMM YYYY') === this.#person.housingLumpSumDate
-      ) {
-        this.processHousingLumpSum()
-      }
-
-      // Check for usage of housing loan
-      if (
-        this.#person.housingLoanTenureInMonths > 0 &&
-        this.#person.date.isAfter(
-          this.#person.housingLoanDate.subtract(1, 'm'),
-          'day'
-        )
-      ) {
-        this.processHousingLoan()
-      }
+      this.checkForHousingPayment()
 
       // Update period for the start of the month
       period -= 1

@@ -33,8 +33,11 @@ CPF-forecast TODOs:
 
 - Add more tests specifically for Accounts class
 - Add more tests specifically for calculation of allocation amounts
+- Add tests for Housing Loan
 - Add tests for FE
-- Fix bug found in cpfForecast.ts
+- Fix bug found in cpfForecast.ts (months lef till EOY if perosn is already 54 this year)
+- Fix issue with first month of contribution
+- Fix issue where Housing Loan deduction in December is after Balance
 - Add option for multiple bonuses in a year
 
 Other TODOs:
