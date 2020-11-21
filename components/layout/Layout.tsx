@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 type Props = {
-  children: JSX.Element | JSX.Element[]
+  children:  React.ReactNode
 }
 
 const Layout: React.FunctionComponent<Props> = ({ children }) => {
