@@ -20,7 +20,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/_document.jsx",
-    "lib/gtag.js"
+    "pages/_document.tsx",
+    "lib/gtag.ts"
   ]
 }
