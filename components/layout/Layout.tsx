@@ -19,18 +19,18 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-type Props = {
-  children:  React.ReactNode
+type LayoutProps = {
+  children: any
 }
 
-const Layout: React.FunctionComponent<Props> = ({ children }) => {
+const Layout: React.FunctionComponent<LayoutProps> = (props) => {
   const classes = useStyles()
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
-      <Container maxWidth="lg">{children}</Container>
+      <Container maxWidth="lg">{props.children}</Container>
       <Drawer
         open={isDrawerOpen}
         onClose={() => setDrawerOpen(false)}
