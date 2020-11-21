@@ -19,7 +19,11 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Layout: React.FunctionComponent = ({ children }) => {
+type Props = {
+  children: JSX.Element
+}
+
+const Layout: React.FunctionComponent<Props> = ({ children }) => {
   const classes = useStyles()
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
