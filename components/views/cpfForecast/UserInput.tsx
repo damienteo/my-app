@@ -39,6 +39,7 @@ import {
   FutureValues,
 } from '../../../utils/cpf/types'
 import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
+import * as gtag from '../../../lib/gtag'
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
@@ -179,6 +180,12 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
 
   const handleSubmit = () => {
     const nextErrors = validateValues()
+
+    gtag.event({
+      action: 'submit_form',
+      category: 'CPF-Forecast',
+      label: 'submission',
+    })
 
     const isCorrectInput = Object.values(nextErrors).every(
       (el) => el === undefined

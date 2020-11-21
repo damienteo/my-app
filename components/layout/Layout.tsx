@@ -1,23 +1,10 @@
 import React, { useState } from 'react'
-import { createMuiTheme } from '@material-ui/core/styles'
-import { ThemeProvider } from '@material-ui/styles'
 import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
 import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
 import { navLinks } from '../../constants'
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: blue[800],
-    },
-    secondary: {
-      main: blue[50],
-    },
-  },
-})
 
 const useStyles = makeStyles(() => ({
   drawer: {
@@ -37,7 +24,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
       <Container maxWidth="lg">{children}</Container>
       <Drawer
@@ -51,7 +38,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
           ))}
         </div>
       </Drawer>
-    </ThemeProvider>
+    </>
   )
 }
 
