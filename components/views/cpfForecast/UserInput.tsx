@@ -124,12 +124,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     housingLoanTenure: '0',
   })
   const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
-  const [housingLumpSumDate, handleHousingLumpSumDateChange] = useState<
-    moment.Moment
-  >(moment())
-  const [housingLoanDate, handleHousingLoanDateChange] = useState<
-    moment.Moment
-  >(moment())
+  const [housingLumpSumDate, handleHousingLumpSumDateChange] =
+    useState<moment.Moment>(moment())
+  const [housingLoanDate, handleHousingLoanDateChange] =
+    useState<moment.Moment>(moment())
   const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<ErrorValues>({})
@@ -156,16 +154,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     return nextErrors
   }
 
-  const handleChange = (field: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const nextValue = roundTo2Dec(event.target.value)
-    setValues({ ...values, [field]: nextValue })
+  const handleChange =
+    (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const nextValue = roundTo2Dec(event.target.value)
+      setValues({ ...values, [field]: nextValue })
 
-    const nextErrors = { ...errors }
-    nextErrors[field] = undefined
-    setErrors({ ...nextErrors })
-  }
+      const nextErrors = { ...errors }
+      nextErrors[field] = undefined
+      setErrors({ ...nextErrors })
+    }
 
   const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSpecialAccountOnly(event.target.checked)
