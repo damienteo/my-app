@@ -4,7 +4,10 @@ import { Button } from '@material-ui/core/'
 import { cyan, teal } from '@material-ui/core/colors/'
 
 import { Section } from '../../common'
-import { HistoryTable, WithdrawalAgeInfo, PayoutAgeInfo } from './results'
+// import { HistoryTable, WithdrawalAgeInfo, PayoutAgeInfo } from './results'
+import HistoryTable from './results/HistoryTable'
+import WithdrawalAgeInfo from './results/WithdrawalAgeInfo'
+import PayoutAgeInfo from './results/PayoutAgeInfo'
 
 import { FutureValues } from '../../../utils/cpf/types'
 
@@ -37,10 +40,8 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
   const classes = useStyles()
 
   const [historyOpen, setHistoryOpen] = useState<boolean>(false)
-  const [
-    historyAfterWithdrawalAgeOpen,
-    setHistoryAfterWithdrawalAgeOpen,
-  ] = useState<boolean>(false)
+  const [historyAfterWithdrawalAgeOpen, setHistoryAfterWithdrawalAgeOpen] =
+    useState<boolean>(false)
 
   return (
     <>
