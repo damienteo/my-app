@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   Checkbox,
   FormControl,
@@ -17,7 +20,8 @@ import {
   MenuItem,
 } from '@material-ui/core/'
 import CloseIcon from '@material-ui/icons/Close'
-import { cyan, teal } from '@material-ui/core/colors/'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { blue, cyan, teal } from '@material-ui/core/colors/'
 
 import { KeyboardDatePicker } from '@material-ui/pickers'
 import {
@@ -40,6 +44,38 @@ import {
 } from '../../../utils/cpf/types'
 import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
 import * as gtag from '../../../lib/gtag'
+
+const StyledAccordion = withStyles({
+  root: {
+    backgroundColor: blue[50],
+    color: '#282c35',
+    borderRadius: 10,
+    padding: '10px 10px 0px',
+  },
+  expanded: { padding: 10 },
+})(Accordion)
+
+const StyledAccordionSummary = withStyles({
+  root: {
+    padding: 0,
+    minHeight: 0,
+  },
+  content: {
+    margin: 0,
+    '&$expanded': {
+      minHeight: 0,
+      margin: '0 0 -16px',
+    },
+  },
+  expanded: { minHeight: 0 },
+})(AccordionSummary)
+
+const StyledAccordionDetails = withStyles({
+  root: {
+    display: 'block',
+    padding: 0,
+  },
+})(AccordionDetails)
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
@@ -346,200 +382,209 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </Grid>
       </Section>
 
-      <Section>
-        {' '}
-        <Paragraph className={classes.paragraph}>Additional Options:</Paragraph>
-        {/* Option 1: Take Bonus in account */}
-        <Grid container className={classes.optionalSection}>
-          <Grid item xs={12} className={classes.optionHeaderWrapper}>
-            <Paragraph className={classes.optionHeader}>
-              1) CPF contribution from expected Bonus{' '}
-              <InfoPopup title="Bonuses Subject to CPF Contribution">
-                <Paragraph className={classes.paragraph}>
-                  There is an{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
-                    label="Additional Wage (AW) Ceiling"
-                  />{' '}
-                  that sets a maximum on the amount of bonus that are subject to
-                  CPF contribution.
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph>
+      <StyledAccordion TransitionProps={{ unmountOnExit: true }}>
+        <StyledAccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="additional-options"
+          id="additional-options"
+        >
+          <Paragraph className={classes.paragraph}>
+            Optional (Bonuses, Housing, etc)
+          </Paragraph>
+        </StyledAccordionSummary>
+        <StyledAccordionDetails>
+          {/* Option 1: Take Bonus in account */}
+          <Grid container className={classes.optionalSection}>
+            <Grid item xs={12} className={classes.optionHeaderWrapper}>
+              <Paragraph className={classes.optionHeader}>
+                1) CPF contribution from expected Bonus{' '}
+                <InfoPopup title="Bonuses Subject to CPF Contribution">
+                  <Paragraph className={classes.paragraph}>
+                    There is an{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
+                      label="Additional Wage (AW) Ceiling"
+                    />{' '}
+                    that sets a maximum on the amount of bonus that are subject
+                    to CPF contribution.
+                  </Paragraph>
+                </InfoPopup>
+              </Paragraph>
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <TextField
+                value={values.monthsOfBonus}
+                label="Estimated Yearly Bonus in Months (Optional)"
+                error={Boolean(errors.monthsOfBonus)}
+                helperText={errors.monthsOfBonus}
+                onChange={handleChange('monthsOfBonus')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">months</InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <FormControl>
+                <InputLabel id="demo-simple-select-helper-label">
+                  Month in which Bonus is given (Optional)
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-helper-label"
+                  id="demo-simple-select-helper"
+                  value={values.bonusMonth}
+                  onChange={handleDropdownChange}
+                >
+                  {momentMonths.map((month) => (
+                    <MenuItem value={month.value}>{month.label}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <TextField
-              value={values.monthsOfBonus}
-              label="Estimated Yearly Bonus in Months (Optional)"
-              error={Boolean(errors.monthsOfBonus)}
-              helperText={errors.monthsOfBonus}
-              onChange={handleChange('monthsOfBonus')}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">months</InputAdornment>
-                ),
-              }}
-            />
+          {/* Option 2: Use CPF as lump sum for Housing */}
+          <Grid container className={classes.optionalSection}>
+            <Grid item xs={12} className={classes.optionHeaderWrapper}>
+              <Paragraph className={classes.optionHeader}>
+                2) Use CPF to pay for Housing (Lump Sum){' '}
+                <InfoPopup title="Using CPF to buy Housing">
+                  <Paragraph className={classes.paragraph}>
+                    You may use funds in your CPF Ordinary Account to buy
+                    housing either under the{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
+                      label="Public Housing Scheme"
+                    />
+                    , or the{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
+                      label="Private Properties Scheme"
+                    />{' '}
+                    .
+                  </Paragraph>
+                </InfoPopup>
+              </Paragraph>
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <CurrencyInput
+                value={values.housingLumpSum}
+                label="Lump Sum for Housing from CPF (Optional)"
+                field="housingLumpSum"
+                error={Boolean(errors.housingLumpSum)}
+                helperText={errors.housingLumpSum}
+                handleChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <KeyboardDatePicker
+                value={housingLumpSumDate}
+                label="Date for Lump Sum Payment (Optional)"
+                // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+                onChange={(date: any) => handleHousingLumpSumDateChange(date)}
+                format="dd/MM/yyyy"
+                minDate={moment()}
+                minDateMessage={`This date is before the present`}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <FormControl>
-              <InputLabel id="demo-simple-select-helper-label">
-                Month in which Bonus is given (Optional)
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                value={values.bonusMonth}
-                onChange={handleDropdownChange}
-              >
-                {momentMonths.map((month) => (
-                  <MenuItem value={month.value}>{month.label}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          {/* Option 3: Use CPF as to pay for housing loan */}
+          <Grid container className={classes.optionalSection}>
+            <Grid item xs={12} className={classes.optionHeaderWrapper}>
+              <Paragraph className={classes.optionHeader}>
+                3) Use CPF to pay for Housing Loan{' '}
+                <InfoPopup title="Using CPF to buy Housing">
+                  <Paragraph className={classes.paragraph}>
+                    You may use funds in your CPF Ordinary Account to buy
+                    housing either under the{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
+                      label="Public Housing Scheme"
+                    />
+                    , or the{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
+                      label="Private Properties Scheme"
+                    />{' '}
+                    .
+                  </Paragraph>
+                </InfoPopup>
+              </Paragraph>
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <CurrencyInput
+                value={values.housingMonthlyPayment}
+                label="Monthly Payment (Optional)"
+                field="housingMonthlyPayment"
+                error={Boolean(errors.housingMonthlyPayment)}
+                helperText={errors.housingMonthlyPayment}
+                handleChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <TextField
+                value={values.housingLoanTenure}
+                label="Loan Tenure - Years (Optional)"
+                error={Boolean(errors.housingLoanTenure)}
+                helperText={errors.housingLoanTenure}
+                onChange={handleChange('housingLoanTenure')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">years</InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.inputWrapper}>
+              <KeyboardDatePicker
+                value={housingLoanDate}
+                label="Date of first Monthly Payment (Optional)"
+                // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+                onChange={(date: any) => handleHousingLoanDateChange(date)}
+                format="dd/MM/yyyy"
+                minDate={moment()}
+                minDateMessage={`This date is before the present`}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-        {/* Option 2: Use CPF as lump sum for Housing */}
-        <Grid container className={classes.optionalSection}>
-          <Grid item xs={12} className={classes.optionHeaderWrapper}>
-            <Paragraph className={classes.optionHeader}>
-              2) Use CPF to pay for Housing (Lump Sum){' '}
-              <InfoPopup title="Using CPF to buy Housing">
-                <Paragraph className={classes.paragraph}>
-                  You may use funds in your CPF Ordinary Account to buy housing
-                  either under the{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
-                    label="Public Housing Scheme"
+          {/* Option 4: Move all Ordinary Account money to Special Account */}
+          <Grid container className={classes.optionalSection}>
+            <Grid item xs={12} className={classes.optionHeaderWrapper}>
+              <Paragraph className={classes.optionHeader}>
+                4) Move all Ordinary Account value and future contributions to
+                Special Account (Optional){' '}
+                <InfoPopup title="Higher Interest Rate in Special Account">
+                  <Paragraph className={classes.paragraph}>
+                    You may{' '}
+                    <ExternalLink
+                      url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-topping-up-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Topping-Up+Scheme&ajfaqid=2188830&folderid=19860"
+                      label="transfer"
+                    />{' '}
+                    funds from your Ordinary Account to your Special Account up
+                    till the age of 55.
+                  </Paragraph>
+                </InfoPopup>
+              </Paragraph>
+            </Grid>
+            <Grid item xs={12} className={classes.checkboxWrapper}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={specialAccountOnly}
+                    onChange={handleSelect}
+                    name="specialAccountOnly"
+                    color="primary"
                   />
-                  , or the{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
-                    label="Private Properties Scheme"
-                  />{' '}
-                  .
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph>
+                }
+                label="This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
+              />
+              <FormHelperText className={classes.checkboxError}>
+                {errors.specialAccountOnly}
+              </FormHelperText>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <CurrencyInput
-              value={values.housingLumpSum}
-              label="Lump Sum for Housing from CPF (Optional)"
-              field="housingLumpSum"
-              error={Boolean(errors.housingLumpSum)}
-              helperText={errors.housingLumpSum}
-              handleChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <KeyboardDatePicker
-              value={housingLumpSumDate}
-              label="Date for Lump Sum Payment (Optional)"
-              // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-              onChange={(date: any) => handleHousingLumpSumDateChange(date)}
-              format="dd/MM/yyyy"
-              minDate={moment()}
-              minDateMessage={`This date is before the present`}
-            />
-          </Grid>
-        </Grid>
-        {/* Option 3: Use CPF as to pay for housing loan */}
-        <Grid container className={classes.optionalSection}>
-          <Grid item xs={12} className={classes.optionHeaderWrapper}>
-            <Paragraph className={classes.optionHeader}>
-              3) Use CPF to pay for Housing Loan{' '}
-              <InfoPopup title="Using CPF to buy Housing">
-                <Paragraph className={classes.paragraph}>
-                  You may use funds in your CPF Ordinary Account to buy housing
-                  either under the{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
-                    label="Public Housing Scheme"
-                  />
-                  , or the{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
-                    label="Private Properties Scheme"
-                  />{' '}
-                  .
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph>
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <CurrencyInput
-              value={values.housingMonthlyPayment}
-              label="Monthly Payment (Optional)"
-              field="housingMonthlyPayment"
-              error={Boolean(errors.housingMonthlyPayment)}
-              helperText={errors.housingMonthlyPayment}
-              handleChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <TextField
-              value={values.housingLoanTenure}
-              label="Loan Tenure - Years (Optional)"
-              error={Boolean(errors.housingLoanTenure)}
-              helperText={errors.housingLoanTenure}
-              onChange={handleChange('housingLoanTenure')}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">years</InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <KeyboardDatePicker
-              value={housingLoanDate}
-              label="Date of first Monthly Payment (Optional)"
-              // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-              onChange={(date: any) => handleHousingLoanDateChange(date)}
-              format="dd/MM/yyyy"
-              minDate={moment()}
-              minDateMessage={`This date is before the present`}
-            />
-          </Grid>
-        </Grid>
-        {/* Option 4: Move all Ordinary Account money to Special Account */}
-        <Grid container className={classes.optionalSection}>
-          <Grid item xs={12} className={classes.optionHeaderWrapper}>
-            <Paragraph className={classes.optionHeader}>
-              4) Move all Ordinary Account value and future contributions to
-              Special Account (Optional){' '}
-              <InfoPopup title="Higher Interest Rate in Special Account">
-                <Paragraph className={classes.paragraph}>
-                  You may{' '}
-                  <ExternalLink
-                    url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-topping-up-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Topping-Up+Scheme&ajfaqid=2188830&folderid=19860"
-                    label="transfer"
-                  />{' '}
-                  funds from your Ordinary Account to your Special Account up
-                  till the age of 55.
-                </Paragraph>
-              </InfoPopup>
-            </Paragraph>
-          </Grid>
-          <Grid item xs={12} className={classes.checkboxWrapper}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={specialAccountOnly}
-                  onChange={handleSelect}
-                  name="specialAccountOnly"
-                  color="primary"
-                />
-              }
-              label="This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
-            />
-            <FormHelperText className={classes.checkboxError}>
-              {errors.specialAccountOnly}
-            </FormHelperText>
-          </Grid>
-        </Grid>
-      </Section>
+        </StyledAccordionDetails>
+      </StyledAccordion>
 
       <div className={classes.buttonWrapper}>
         <Button

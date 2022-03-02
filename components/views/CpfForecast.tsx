@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import Layout from '../layout/Layout'
 import { Paragraph } from '../common'
-// import { UserInput, Intro, Results } from './cpfForecast'
 import UserInput from './cpfForecast/UserInput'
 import Intro from './cpfForecast/Intro'
 import Results from './cpfForecast/Results'
