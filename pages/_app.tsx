@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { ThemeProvider } from '@material-ui/styles'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import theme from '../src/theme'
+import Head from 'next/head'
 
 import * as gtag from '../lib/gtag'
 
@@ -19,7 +20,9 @@ export default ({ Component, pageProps }: AppProps) => {
   }, [router.events])
   return (
     <ThemeProvider theme={theme}>
-      <title>Damien Teo</title>
+      <Head>
+        <title>Damien Teo</title>
+      </Head>
       <style jsx global>{`
         body {
           margin: 0;

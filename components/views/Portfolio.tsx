@@ -37,15 +37,15 @@ const PortfolioPage: React.FunctionComponent = () => {
         />{' '}
         profile
       </Paragraph>
+
+      {/* Budget Planner Section */}
       <Grid container className={classes.sectionWrapper}>
         <Grid item sm={6} className={classes.imageWrapper}>
-          <Paper>
-            <img
-              src="/budget-planner.png"
-              alt="my image"
-              className={classes.image}
-            />
-          </Paper>
+          <img
+            src="/budget-planner.png"
+            alt="Budget Planner Chart"
+            className={classes.image}
+          />
         </Grid>
         <Grid item sm={6} className={classes.textWrapper}>
           <Paragraph>
@@ -65,6 +65,35 @@ const PortfolioPage: React.FunctionComponent = () => {
               Immersive"
             />
             .
+          </Paragraph>
+        </Grid>
+      </Grid>
+
+      {/* Fireman Game Section */}
+      <Grid container className={classes.sectionWrapper}>
+        <Grid item sm={6} className={classes.imageWrapper}>
+          <img
+            src="/fireman-game.png"
+            alt="Fireman Game Image"
+            className={classes.image}
+          />
+        </Grid>
+        <Grid item sm={6} className={classes.textWrapper}>
+          <Paragraph>
+            Created a game (
+            <ExternalLink
+              url="https://fireman-game.herokuapp.com/"
+              label="The Fireman"
+            />
+            )
+          </Paragraph>
+          <Paragraph>
+            This was made with vanilla HTML, JavaScript, and CSS (
+            <ExternalLink
+              url="https://github.com/damienteo/WDI-Project-1-The-Fireman"
+              label="GitHub Repo"
+            />
+            ).
           </Paragraph>
         </Grid>
       </Grid>
