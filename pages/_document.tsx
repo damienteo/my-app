@@ -1,11 +1,9 @@
 import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@material-ui/styles'
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
+import theme from '../src/theme'
 
 import { GA_TRACKING_ID } from '../lib/gtag'
-
-const theme = responsiveFontSizes(createMuiTheme())
 
 class MyDocument extends Document {
   render() {
