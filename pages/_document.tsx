@@ -41,13 +41,6 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons&display=swap"
           />
           <title>Damien Teo</title>
-          <style jsx global>{`
-            body {
-              margin: 0;
-              background: #282c35;
-              color: #ffffff;
-            }
-          `}</style>
         </Head>
         <body>
           <Main />

@@ -19,6 +19,13 @@ export default ({ Component, pageProps }: AppProps) => {
   }, [router.events])
   return (
     <ThemeProvider theme={theme}>
+      <style jsx global>{`
+        body {
+          margin: 0;
+          background: #282c35;
+          color: #ffffff;
+        }
+      `}</style>
       <Component {...pageProps} />
     </ThemeProvider>
   )
