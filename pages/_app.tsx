@@ -19,6 +19,7 @@ export default ({ Component, pageProps }: AppProps) => {
   }, [router.events])
   return (
     <ThemeProvider theme={theme}>
+      <title>Damien Teo</title>
       <style jsx global>{`
         body {
           margin: 0;
