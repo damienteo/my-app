@@ -42,7 +42,10 @@ const CPFForecastPage = () => {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Layout>
+      <Layout
+        title="CPF Forecast"
+        description="CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"
+      >
         <Intro />
 
         <Paragraph variant="subtitle2" className={classes.introduction}>

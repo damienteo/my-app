@@ -4,7 +4,12 @@ import { ExternalLink, Header, Paragraph } from '../common'
 
 const AboutPage = () => {
   return (
-    <Layout>
+    <Layout
+      title="About Damien Teo"
+      description="Damien Teo is a hardworking peasant who enjoys working with intelligent
+    machines. Previously, he was a police officer. Now, he work in the tech
+    industry."
+    >
       <Header text="About" />
       <Paragraph>
         Hi, I am a hardworking peasant who enjoys working with intelligent

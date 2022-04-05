@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Grid } from '@material-ui/core/'
+import { Grid } from '@material-ui/core/'
 import Layout from '../layout/Layout'
 import { ExternalLink, Header, Paragraph } from '../common'
 
@@ -27,7 +27,10 @@ const PortfolioPage: React.FunctionComponent = () => {
   const classes = useStyles()
 
   return (
-    <Layout>
+    <Layout
+      title="Damien Teo's Portfolio"
+      description="Here are some small side project's which Damien Teo has previously done."
+    >
       <Header text="Portfolio" />
       <Paragraph>
         For my resume, you may refer to my{' '}
