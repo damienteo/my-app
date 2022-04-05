@@ -29,7 +29,7 @@ const PortfolioPage: React.FunctionComponent = () => {
   return (
     <Layout
       title="Damien Teo's Portfolio"
-      description="Here are some small side project's which Damien Teo has previously done."
+      description="Here are some small side projects which Damien Teo has previously done."
     >
       <Header text="Portfolio" />
       <Paragraph>

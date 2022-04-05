@@ -42,6 +42,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
       <Head>
         {/* <meta></meta> */}
         <title>{title}</title>
+        <meta name="description" key="description" content={description} />
       </Head>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
       <Container maxWidth="lg">{children}</Container>
