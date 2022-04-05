@@ -44,7 +44,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
     <>
       <Head>
         <title>{title}</title>
-        <meta name="title" key="title" content={title} />
+        <meta name="title" key="title" content={`${title} - Damien Teo`} />
         <meta name="description" key="description" content={description} />
         <meta property="og:title" key="og:title" content={title} />
         <meta property="og:locale" key="og:locale" content="en_GB" />
@@ -60,6 +60,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
           key="og:description"
           content={description}
         />
+        {/* <link rel="canonical" href="https://www.damienteo.com" /> */}
       </Head>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
       <Container maxWidth="lg">{children}</Container>
