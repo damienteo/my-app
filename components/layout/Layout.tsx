@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors/'
 import { Container, Drawer } from '@material-ui/core'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
@@ -28,21 +29,37 @@ type LayoutProps = {
 }
 
 const Layout: React.FunctionComponent<LayoutProps> = (props) => {
-  const classes = useStyles()
   const {
     title = 'Damien Teo',
     description = "Welcome to Damien Teo's Site",
     children,
   } = props
 
+  const classes = useStyles()
+  const router = useRouter()
+
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <>
       <Head>
-        {/* <meta></meta> */}
         <title>{title}</title>
+        <meta name="title" key="title" content={title} />
         <meta name="description" key="description" content={description} />
+        <meta property="og:title" key="og:title" content={title} />
+        <meta property="og:locale" key="og:locale" content="en_GB" />
+        <meta
+          property="og:url"
+          key="og:url"
+          content={`https://www.damienteo.com${router.asPath}`}
+        />
+        z
+        <meta property="og:type" key="og:type" content="website" />
+        <meta
+          property="og:description"
+          key="og:description"
+          content={description}
+        />
       </Head>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
       <Container maxWidth="lg">{children}</Container>
