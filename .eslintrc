@@ -36,7 +36,6 @@
     "@typescript-eslint/explicit-function-return-type": 0,
     // Following three lines due with issue of false positives of un-used imports
     "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars-experimental": 2
+    "@typescript-eslint/no-unused-vars": 0
   }
 }
