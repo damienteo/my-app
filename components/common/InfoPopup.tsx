@@ -28,6 +28,7 @@ interface DialogTitleProps extends MUIDialogTitleProps {
 interface InfoPopupProps {
   title: string
   iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
+  children: React.ReactNode
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
