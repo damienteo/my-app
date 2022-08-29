@@ -5,7 +5,7 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-} from '@material-ui/core/'
+} from '@mui/material/'
 
 type CurrencyInputProps = {
   label: string

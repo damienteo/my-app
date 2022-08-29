@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core/'
-import { cyan, teal } from '@material-ui/core/colors/'
+import { makeStyles } from '@mui/styles'
+import { Button } from '@mui/material/'
+import { cyan, teal } from '@mui/material/colors/'
 
 import { Section } from '../../common'
 // import { HistoryTable, WithdrawalAgeInfo, PayoutAgeInfo } from './results'

@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
   AppBar,
   Toolbar,
@@ -7,8 +7,8 @@ import {
   Hidden,
   IconButton,
   Theme,
-} from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 import { ButtonLink } from '../common/links'
 import { navLinks } from '../../constants'
 

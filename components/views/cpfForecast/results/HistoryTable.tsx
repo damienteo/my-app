@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
   Button,
   Hidden,
@@ -10,10 +10,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+} from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Paragraph } from '../../../common'
 import { formatCurrency } from '../../../../utils/utils'
 import { Entry, GroupsType, SalaryRecord } from '../../../../utils/cpf/types'

@@ -1,18 +1,18 @@
 import React from 'react'
-import { withStyles, createStyles } from '@material-ui/core/styles'
+import { withStyles, createStyles } from '@mui/styles'
 import {
   Theme,
   Typography,
   Dialog,
   IconButton,
   IconButtonProps,
-} from '@material-ui/core'
+} from '@mui/material'
 import MuiDialogTitle, {
   DialogTitleProps as MUIDialogTitleProps,
-} from '@material-ui/core/DialogTitle'
-import MuiDialogContent from '@material-ui/core/DialogContent'
-import CloseIcon from '@material-ui/icons/Close'
-import InfoIcon from '@material-ui/icons/Info'
+} from '@mui/material/DialogTitle'
+import MuiDialogContent from '@mui/material/DialogContent'
+import CloseIcon from '@mui/icons-material/Close'
+import InfoIcon from '@mui/icons-material/Info'
 
 interface DialogButtonProps extends IconButtonProps {
   title: string

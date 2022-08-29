@@ -1,6 +1,6 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { blue } from '@material-ui/core/colors/'
+import { makeStyles } from '@mui/styles'
+import { blue } from '@mui/material/colors/'
 
 type ExternalLinkProps = {
   url: string

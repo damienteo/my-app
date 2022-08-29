@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { makeStyles } from '@material-ui/core/styles'
-import Button, { ButtonProps as MuiButtonProps } from '@material-ui/core/Button'
+import { makeStyles } from '@mui/styles'
+import Button, { ButtonProps as MuiButtonProps } from '@mui/material/Button'
 
 type NextLinkProps = {
   className: string

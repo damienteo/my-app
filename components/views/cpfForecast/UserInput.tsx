@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@mui/styles'
 import {
   Accordion,
   AccordionDetails,
@@ -18,12 +18,13 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
-} from '@material-ui/core/'
-import CloseIcon from '@material-ui/icons/Close'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { blue, cyan, teal } from '@material-ui/core/colors/'
+} from '@mui/material/'
+import CloseIcon from '@mui/icons-material/Close'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { blue, cyan, teal } from '@mui/material/colors/'
+import dayjs, { Dayjs } from 'dayjs'
 
-import { KeyboardDatePicker } from '@material-ui/pickers'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import {
   CurrencyInput,
   ExternalLink,
@@ -141,8 +142,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const minDate = moment().subtract(withdrawalAge, 'y')
-const maxDate = moment().subtract(16, 'y')
+const minDate = dayjs().subtract(withdrawalAge, 'y')
+const maxDate = dayjs().subtract(16, 'y')
 
 const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   const classes = useStyles()
@@ -159,7 +160,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     housingMonthlyPayment: '0',
     housingLoanTenure: '0',
   })
-  const [selectedDate, handleDateChange] = useState<moment.Moment>(maxDate)
+  const [selectedDate, handleDateChange] = useState<Dayjs | null>(maxDate)
   const [housingLumpSumDate, handleHousingLumpSumDateChange] =
     useState<moment.Moment>(moment())
   const [housingLoanDate, handleHousingLoanDateChange] =
@@ -315,16 +316,18 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </Paragraph>
         <Grid container>
           <Grid item xs={12} md={6} className={classes.inputWrapper}>
-            <KeyboardDatePicker
+            <DatePicker
               value={selectedDate}
               label="Date of Birth"
               // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
               onChange={(date: any) => handleDateChange(date)}
-              format="dd/MM/yyyy"
+              // inputFormat="dd/MM/yyyy"
               minDate={minDate}
               maxDate={maxDate}
-              minDateMessage={`This date means that you are already ${withdrawalAge} years old`}
-              maxDateMessage="You need to be 16 years old and above to contribute to CPF"
+              // views={['day', 'month', 'year']}
+              renderInput={(params) => <TextField {...params} />}
+              // minDateMessage={`This date means that you are already ${withdrawalAge} years old`}
+              // maxDateMessage="You need to be 16 years old and above to contribute to CPF"
             />
           </Grid>
         </Grid>
@@ -477,14 +480,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.inputWrapper}>
-              <KeyboardDatePicker
+              <DatePicker
                 value={housingLumpSumDate}
                 label="Date for Lump Sum Payment (Optional)"
                 // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLumpSumDateChange(date)}
-                format="dd/MM/yyyy"
-                minDate={moment()}
-                minDateMessage={`This date is before the present`}
+                // inputFormat="dd/MM/yyyy"
+                disablePast
+                renderInput={(params) => <TextField {...params} />}
+                // minDateMessage={`This date is before the present`}
               />
             </Grid>
           </Grid>
@@ -536,14 +540,15 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.inputWrapper}>
-              <KeyboardDatePicker
+              <DatePicker
                 value={housingLoanDate}
                 label="Date of first Monthly Payment (Optional)"
                 // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLoanDateChange(date)}
-                format="dd/MM/yyyy"
-                minDate={moment()}
-                minDateMessage={`This date is before the present`}
+                // inputFormat="dd/MM/yyyy"
+                disablePast
+                renderInput={(params) => <TextField {...params} />}
+                // minDateMessage={`This date is before the present`}
               />
             </Grid>
           </Grid>

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Theme } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { blue } from '@material-ui/core/colors/'
+import { Theme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { blue } from '@mui/material/colors/'
 
 const useStyles = makeStyles((theme: Theme) => ({
   section: {

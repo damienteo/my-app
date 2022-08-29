@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import DateFnsUtils from '@date-io/date-fns'
 
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { makeStyles } from '@material-ui/core/styles'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { makeStyles } from '@mui/styles'
 
 import Layout from '../layout/Layout'
 import { Paragraph } from '../common'
@@ -41,7 +41,7 @@ const CPFForecastPage = () => {
   })
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Layout
         title="CPF Forecast"
         description="CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"
@@ -64,7 +64,7 @@ const CPFForecastPage = () => {
 
         <div className={classes.bottomPlaceholder} />
       </Layout>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   )
 }
 

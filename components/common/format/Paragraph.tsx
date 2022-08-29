@@ -1,7 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Theme, TypographyProps } from '@material-ui/core/'
-import { blue } from '@material-ui/core/colors/'
+import { makeStyles } from '@mui/styles'
+import { Typography, Theme, TypographyProps } from '@mui/material/'
+import { blue } from '@mui/material/colors/'
 
 const useStyles = makeStyles((theme: Theme) => ({
   paragraph: {

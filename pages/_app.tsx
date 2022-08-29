@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider } from '@mui/styles'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import theme from '../src/theme'
 import Head from 'next/head'
