@@ -3,6 +3,10 @@ import { Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { blue } from '@mui/material/colors/'
 
+interface SectionProps {
+  children: React.ReactNode
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
   section: {
     backgroundColor: blue[50],
@@ -13,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-const Section: React.FunctionComponent = ({ children }) => {
+const Section: React.FunctionComponent<SectionProps> = ({ children }) => {
   const classes = useStyles()
   return <section className={classes.section}>{children}</section>
 }
