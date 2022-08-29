@@ -18,13 +18,13 @@ interface DialogButtonProps extends IconButtonProps {
   title: string
   iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
   handleClickOpen: () => void
-  classes: any
+  // classes: any
 }
 
 interface DialogTitleProps extends MUIDialogTitleProps {
   onClose: () => void
   classes: any
-  children: React.ReactElement
+  children: React.ReactNode
 }
 
 interface InfoPopupProps {
@@ -51,12 +51,12 @@ const styles = (theme: Theme) =>
   })
 
 const DialogButton = withStyles(styles)((props: DialogButtonProps) => {
-  const { title, handleClickOpen, iconColor = 'primary', classes } = props
+  const { title, handleClickOpen, iconColor = 'primary' } = props
   return (
     <IconButton
       aria-label={`${title} info`}
       color={iconColor}
-      className={classes.openButton}
+      // className={classes.openButton}
       onClick={handleClickOpen}
     >
       <InfoIcon />
