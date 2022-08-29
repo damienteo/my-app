@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 type LayoutProps = {
   title?: string
   description?: string
-  children: any
+  children: React.ReactNode
 }
 
 const Layout: React.FunctionComponent<LayoutProps> = (props) => {

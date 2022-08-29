@@ -7,6 +7,7 @@ type NextLinkProps = {
   className: string
   href: string
   hrefAs: string
+  children: React.ReactNode
 }
 
 interface ButtonLinkProps extends MuiButtonProps {
