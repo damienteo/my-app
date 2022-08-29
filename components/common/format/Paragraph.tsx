@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
-import { Typography, Theme, TypographyProps } from '@mui/material/'
+import { Typography, Theme, TypographyProps } from '@mui/material'
 import { blue } from '@mui/material/colors/'
 
 const useStyles = makeStyles((theme: Theme) => ({
