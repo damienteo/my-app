@@ -9,6 +9,7 @@ import * as gtag from '../lib/gtag'
 
 export default ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
+  const NextComponent = Component as any
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       gtag.pageview(url)
@@ -30,7 +31,7 @@ export default ({ Component, pageProps }: AppProps) => {
           color: #ffffff;
         }
       `}</style>
-      <Component {...pageProps} />
+      <NextComponent {...pageProps} />
     </ThemeProvider>
   )
 }
