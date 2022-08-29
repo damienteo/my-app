@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import { makeStyles, withStyles } from '@mui/styles'
+import { styled } from '@mui/material/styles'
 import {
-  Accordion,
   AccordionDetails,
   AccordionSummary,
   Button,
@@ -19,6 +19,7 @@ import {
   InputLabel,
   MenuItem,
 } from '@mui/material/'
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { blue, cyan, teal } from '@mui/material/colors/'
@@ -46,15 +47,14 @@ import {
 import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
 import * as gtag from '../../../lib/gtag'
 
-const StyledAccordion = withStyles({
-  root: {
-    backgroundColor: blue[50],
-    color: '#282c35',
-    borderRadius: 10,
-    padding: '10px 10px 0px',
-  },
-  expanded: { padding: 10 },
-})(Accordion)
+const StyledAccordion = styled((props: AccordionProps) => (
+  <MuiAccordion {...props} />
+))(({ theme }) => ({
+  backgroundColor: blue[50],
+  color: '#282c35',
+  borderRadius: 10,
+  padding: 10,
+}))
 
 const StyledAccordionSummary = withStyles({
   root: {
@@ -70,13 +70,6 @@ const StyledAccordionSummary = withStyles({
   },
   expanded: { minHeight: 0 },
 })(AccordionSummary)
-
-const StyledAccordionDetails = withStyles({
-  root: {
-    display: 'block',
-    padding: 0,
-  },
-})(AccordionDetails)
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
@@ -139,6 +132,10 @@ const useStyles = makeStyles((theme) => ({
   checkboxError: {
     color: '#f44336',
     marginTop: 0,
+  },
+  accordianDetails: {
+    display: 'block',
+    padding: 0,
   },
 }))
 
@@ -395,7 +392,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             Optional (Bonuses, Housing, etc)
           </Paragraph>
         </StyledAccordionSummary>
-        <StyledAccordionDetails>
+        <AccordionDetails className={classes.accordianDetails}>
           {/* Option 1: Take Bonus in account */}
           <Grid container className={classes.optionalSection}>
             <Grid item xs={12} className={classes.optionHeaderWrapper}>
@@ -588,7 +585,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               </FormHelperText>
             </Grid>
           </Grid>
-        </StyledAccordionDetails>
+        </AccordionDetails>
       </StyledAccordion>
 
       <div className={classes.buttonWrapper}>
