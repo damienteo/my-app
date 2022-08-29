@@ -20,6 +20,9 @@ import {
   MenuItem,
 } from '@mui/material/'
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+} from '@mui/material/AccordionSummary'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { blue, cyan, teal } from '@mui/material/colors/'
@@ -56,20 +59,25 @@ const StyledAccordion = styled((props: AccordionProps) => (
   padding: 10,
 }))
 
-const StyledAccordionSummary = withStyles({
-  root: {
-    padding: 0,
+const StyledAccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary {...props} />
+))(({ theme }) => ({
+  padding: 0,
+  minHeight: 0,
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
     minHeight: 0,
   },
-  content: {
+  '& .MuiAccordionSummary-content': {
     margin: 0,
-    '&$expanded': {
-      minHeight: 0,
-      margin: '0 0 -16px',
-    },
   },
-  expanded: { minHeight: 0 },
-})(AccordionSummary)
+  '& .Mui-expanded': {
+    minHeight: 0,
+    margin: '0 0 -16px',
+  },
+  '& .MuiTypography-root': {
+    margin: 0,
+  },
+}))
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
