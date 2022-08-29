@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles, createStyles, makeStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles'
 import {
   Theme,
   Typography,
@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 0,
     marginTop: `-${theme.spacing(1)}px`,
   },
+  content: {
+    padding: theme.spacing(2),
+  },
 }))
 
 const DialogButton = (props: DialogButtonProps) => {
@@ -81,14 +84,9 @@ const DialogTitle = (props: DialogTitleProps) => {
   )
 }
 
-const DialogContent = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent)
-
 const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
   const { title, children } = props
+  const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -109,7 +107,9 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}
         </DialogTitle>
-        <DialogContent dividers>{children}</DialogContent>
+        <MuiDialogContent dividers className={classes.content}>
+          {children}
+        </MuiDialogContent>
       </Dialog>
     </>
   )
