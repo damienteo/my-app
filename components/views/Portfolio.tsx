@@ -85,7 +85,7 @@ const PortfolioPage: React.FunctionComponent = () => {
           <Paragraph>
             Created a game (
             <ExternalLink
-              url="https://fireman-game.herokuapp.com/"
+              url="https://fireman.vercel.app/"
               label="The Fireman"
             />
             )
