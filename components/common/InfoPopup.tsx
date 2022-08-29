@@ -101,7 +101,11 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
 
   return (
     <>
-      <DialogButton handleClickOpen={handleClickOpen} {...props} />
+      <DialogButton
+        handleClickOpen={handleClickOpen}
+        title={title}
+        iconColor={props.iconColor}
+      />
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
