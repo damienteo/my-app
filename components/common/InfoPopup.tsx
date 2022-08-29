@@ -24,7 +24,7 @@ interface DialogButtonProps extends IconButtonProps {
 interface DialogTitleProps extends MUIDialogTitleProps {
   onClose: () => void
   classes: any
-  children: React.ReactNode
+  children: React.ReactElement
 }
 
 interface InfoPopupProps {
@@ -101,11 +101,7 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
 
   return (
     <>
-      <DialogButton
-        handleClickOpen={handleClickOpen}
-        title={title}
-        iconColor={props.iconColor}
-      />
+      <DialogButton handleClickOpen={handleClickOpen} {...props} />
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
