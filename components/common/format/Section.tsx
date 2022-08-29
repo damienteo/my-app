@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#282c35',
     borderRadius: 10,
     padding: 10,
-    marginBottom: `${theme.spacing(1.5)}px`,
+    marginBottom: `${theme.spacing(1.5)}`,
   },
 }))
 

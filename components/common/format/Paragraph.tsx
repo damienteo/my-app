@@ -5,7 +5,7 @@ import { blue } from '@mui/material/colors/'
 
 const useStyles = makeStyles((theme: Theme) => ({
   paragraph: {
-    margin: `${theme.spacing(1.5)}px 0`,
+    margin: `${theme.spacing(1.5)} 0`,
     color: blue[50],
   },
 }))

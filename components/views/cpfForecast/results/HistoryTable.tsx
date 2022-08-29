@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   table: {
-    margin: `${theme.spacing(1.5)}px 0`,
+    margin: `${theme.spacing(1.5)} 0`,
     '& .MuiTableCell-root': {
       [theme.breakpoints.down('sm')]: { fontSize: '0.6rem' },
     },
