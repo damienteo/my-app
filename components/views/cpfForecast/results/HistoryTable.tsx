@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import {
+  Box,
   Button,
-  Hidden,
   Table,
   TableBody,
   TableCell,
@@ -205,11 +205,12 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       </TableContainer>
 
       {groups && (
-        <Hidden xsDown>
-          <div className={classes.groupButtonsWrapper}>
-            {renderGroupButtons()}
-          </div>
-        </Hidden>
+        <Box
+          className={classes.groupButtonsWrapper}
+          sx={{ display: { sm: 'inline', xs: 'none' } }}
+        >
+          {renderGroupButtons()}
+        </Box>
       )}
 
       {renderButtons()}

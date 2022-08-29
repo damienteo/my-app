@@ -2,9 +2,9 @@ import React, { MouseEvent } from 'react'
 import { makeStyles } from '@mui/styles'
 import {
   AppBar,
+  Box,
   Toolbar,
   Typography,
-  Hidden,
   IconButton,
   Theme,
 } from '@mui/material'
@@ -33,25 +33,24 @@ const NavBar: React.FunctionComponent<{
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Hidden mdUp>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-              onClick={props.setDrawerOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={props.setDrawerOpen}
+            sx={{ display: { md: 'none', xs: 'inline' } }}
+          >
+            <MenuIcon />
+          </IconButton>
           <div className={classes.titleWrapper} style={{ flexGrow: 1 }}>
             <Typography variant="h6">Damien Teo's Site</Typography>
           </div>
-          <Hidden smDown>
+          <Box sx={{ display: { sm: 'inline', xs: 'none' } }}>
             {navLinks.map(({ url, text }) => (
               <ButtonLink key={url} url={url} text={text} />
             ))}
-          </Hidden>
+          </Box>
         </Toolbar>
       </AppBar>
     </div>
