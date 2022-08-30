@@ -6,15 +6,14 @@ const AboutPage = () => {
   return (
     <Layout
       title="About Damien Teo"
-      description="Damien Teo is a hardworking peasant who enjoys working with intelligent
+      description="Damien Teo is a peasant who enjoys working with intelligent
     machines. Previously, he was a police officer. Now, he work in the tech
     industry."
     >
       <Header text="About" />
       <Paragraph>
-        Hi, I am a hardworking peasant who enjoys working with intelligent
-        machines. Previously, I was a police officer. Now, I work in the tech
-        industry.
+        Hi, I am a peasant who enjoys working with intelligent machines.
+        Previously, I was a police officer. Now, I work in the tech industry.
       </Paragraph>
       <Paragraph>
         This site was created with a mixture of:{' '}

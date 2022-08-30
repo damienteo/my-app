@@ -1,12 +1,12 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
 import { Typography } from '@mui/material/'
-import { blue } from '@mui/material/colors/'
+import { red } from '@mui/material/colors/'
 
 const useStyles = makeStyles(() => ({
   header: {
     margin: '20px 0 10px',
-    color: blue[200],
+    color: red[200],
   },
 }))
 

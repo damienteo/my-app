@@ -34,7 +34,7 @@ export const NextLink: React.FunctionComponent<NextLinkProps> = ({
   hrefAs,
   children,
 }) => (
-  <Link href={href} as={hrefAs} prefetch>
+  <Link href={href} as={hrefAs}>
     <a className={className}>{children}</a>
   </Link>
 )
@@ -45,7 +45,7 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
 }) => {
   const classes = useStyles()
   return (
-    <Link href={url} as={url} prefetch>
+    <Link href={url} as={url}>
       <Button href={url} color="inherit" className={classes.button}>
         {text}
       </Button>

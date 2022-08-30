@@ -13,6 +13,7 @@ import MuiDialogTitle, {
 import MuiDialogContent from '@mui/material/DialogContent'
 import CloseIcon from '@mui/icons-material/Close'
 import InfoIcon from '@mui/icons-material/Info'
+import { red } from '@mui/material/colors/'
 
 interface DialogButtonProps extends IconButtonProps {
   title: string
@@ -60,6 +61,7 @@ const DialogButton = (props: DialogButtonProps) => {
       color={iconColor}
       className={classes.openButton}
       onClick={handleClickOpen}
+      sx={{ color: red[900] }}
     >
       <InfoIcon />
     </IconButton>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@mui/styles'
-import { blue } from '@mui/material/colors/'
+import { red } from '@mui/material/colors/'
 
 type ExternalLinkProps = {
   url: string
@@ -9,7 +9,7 @@ type ExternalLinkProps = {
 
 const useStyles = makeStyles(() => ({
   link: {
-    color: blue[300],
+    color: red[300],
   },
 }))
 

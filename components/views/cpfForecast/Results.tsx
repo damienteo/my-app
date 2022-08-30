@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Button } from '@mui/material/'
-import { cyan, teal } from '@mui/material/colors/'
+import { deepOrange } from '@mui/material/colors/'
 
 import { Section } from '../../common'
 // import { HistoryTable, WithdrawalAgeInfo, PayoutAgeInfo } from './results'
@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1.5, 0),
   },
   button: {
-    backgroundColor: teal[200],
+    backgroundColor: deepOrange[800],
     '&:hover': {
-      backgroundColor: cyan[200],
+      backgroundColor: deepOrange[600],
     },
   },
 }))

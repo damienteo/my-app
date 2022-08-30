@@ -9,6 +9,8 @@ import {
   Theme,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { red } from '@mui/material/colors/'
+
 import { ButtonLink } from '../common/links'
 import { navLinks } from '../../constants'
 
@@ -31,7 +33,7 @@ const NavBar: React.FunctionComponent<{
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: red[900] }}>
         <Toolbar>
           <IconButton
             edge="start"
