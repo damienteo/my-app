@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
   cpfValues,
   fullRetirementSum,
@@ -97,7 +97,7 @@ export class CPFAccount {
     // Extrapolate potential future Full Retirement Sum (FRS)
     const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
     const yearOfWithdrawalAge = parseInt(dateOfWithdrawalAge.split(' ')[1])
-    const currentYear = moment().year()
+    const currentYear = dayjs().year()
     const yearsFromPresent = yearOfWithdrawalAge - currentYear
 
     const nextCPFFullRetirementSum =
@@ -356,8 +356,10 @@ export class CPFAccount {
 
       // Update Salary at the beginning of the year
       const isStartOfYear = this.#person.date.month() === 0
+
       const shouldUpdateMonthlySalary =
         this.#salary.amount > 0 && this.#salary.increaseRate > 0
+
       if (isStartOfYear && shouldUpdateMonthlySalary) {
         this.#salary.addMonthlySalaryAtEndOfYear(
           this.#person.age,
@@ -390,10 +392,10 @@ export class CPFAccount {
       ordinaryAccount: this.#accounts.ordinaryAccount,
       specialAccount: this.#accounts.specialAccount,
       retirementAccount: this.#accounts.retirementAccount,
-      ordinaryAccountAtWithdrawalAge: this.#accounts
-        .ordinaryAccountAtWithdrawalAge,
-      specialAccountAtWithdrawalAge: this.#accounts
-        .specialAccountAtWithdrawalAge,
+      ordinaryAccountAtWithdrawalAge:
+        this.#accounts.ordinaryAccountAtWithdrawalAge,
+      specialAccountAtWithdrawalAge:
+        this.#accounts.specialAccountAtWithdrawalAge,
       monthsTillWithdrawal: this.#person.monthsTillWithdrawal,
       monthlySalary: this.#salary.amount,
       salaryHistory: this.#salary.history,

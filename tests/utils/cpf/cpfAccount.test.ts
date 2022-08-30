@@ -1,9 +1,9 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { withdrawalAge, payoutAge } from '../../../constants'
 import { CPFAccount } from '../../../utils/cpf/classes/cpfAccount'
 import { AccountValues, Entry } from '../../../utils/cpf/types'
 
-const date16YearsAgo = moment().subtract(16, 'y')
+const date16YearsAgo = dayjs().subtract(16, 'year')
 const yearsBeforeWithdrawal = withdrawalAge - 16
 const monthsBeforeWithdrawal = yearsBeforeWithdrawal * 12
 const yearsAfterWithdrawal = payoutAge - withdrawalAge
@@ -18,10 +18,10 @@ const zeroValues: AccountValues = {
   bonusMonth: '0',
   monthsOfBonus: '0',
   housingLumpSum: '0',
-  housingLumpSumDate: moment(),
+  housingLumpSumDate: dayjs(),
   housingMonthlyPayment: '0',
   housingLoanTenure: '0',
-  housingLoanDate: moment(),
+  housingLoanDate: dayjs(),
   specialAccountOnly: false,
 }
 
@@ -36,8 +36,8 @@ const normalValues: AccountValues = {
   housingLumpSum: '1000',
   housingMonthlyPayment: '0',
   housingLoanTenure: '0',
-  housingLoanDate: moment(),
-  housingLumpSumDate: moment(),
+  housingLoanDate: dayjs(),
+  housingLumpSumDate: dayjs(),
   specialAccountOnly: false,
 }
 
@@ -215,7 +215,7 @@ describe('CPFAccount should have relevant entries in histories if there is at le
 
   it('First entry in salaryHistory is for the current year', async () => {
     const { salaryHistory } = instance.accountValues
-    const currentYear = moment().year()
+    const currentYear = dayjs().year()
 
     expect(salaryHistory[0].year).toBe(currentYear)
   })
@@ -308,10 +308,8 @@ describe('CPFAccount should have the correct final salary amount based on salary
     const salaryAtPayoutAge: number =
       salaryAtWithdrawalAge * compoundedPercentageRateAfterWithdrawalAge
 
-    const {
-      salaryHistory,
-      salaryHistoryAfterWithdrawalAge,
-    } = instance.accountValues
+    const { salaryHistory, salaryHistoryAfterWithdrawalAge } =
+      instance.accountValues
 
     const accountSalaryAtWithdrawalAge =
       salaryHistory[salaryHistory.length - 1].amount
@@ -334,7 +332,7 @@ describe('CPFAccount should have the correct final salary amount based on salary
 describe('CPFAccount should have entries in history which show deduction of housing loan', () => {
   const housingHistoryEntry = {
     category: 'Housing Lump Sum',
-    date: moment().format('MMM YYYY'),
+    date: dayjs().format('MMM YYYY'),
     ordinaryAccount: -1000,
     specialAccount: 0,
   }
@@ -351,7 +349,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
   })
 
   it('History will have a Housing Entry with correct Date and Amount deducted', async () => {
-    const dateIn2years = moment().add(2, 'y')
+    const dateIn2years = dayjs().add(2, 'year')
     const nextDateIn2years = dateIn2years.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
@@ -381,7 +379,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
   })
 
   it('Housing Entry will be in HistoryAfterWithdrawalAge, not History, with correct Date and Amount deducted if the Housing Loan Date is after withdrawal age', async () => {
-    const dateAfterWithdrawalAge = moment().add(withdrawalAge - 15, 'y')
+    const dateAfterWithdrawalAge = dayjs().add(withdrawalAge - 15, 'year')
     const nextDateAfterWithdrawalAge = dateAfterWithdrawalAge.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
@@ -411,11 +409,12 @@ describe('CPFAccount should have entries in history which show deduction of hous
     )
     expect(housingEntryInHistory).toEqual(undefined)
 
-    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
-      (entry: Entry) =>
-        entry.date === nextDateAfterWithdrawalAge &&
-        entry.category === 'Housing Lump Sum'
-    )
+    const housingEntryInHistoryAfterWithdrawalAge =
+      historyAfterWithdrawalAge.find(
+        (entry: Entry) =>
+          entry.date === nextDateAfterWithdrawalAge &&
+          entry.category === 'Housing Lump Sum'
+      )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(
       nextHousingHistoryEntry
@@ -423,7 +422,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
   })
 
   it('If Ordinary Account is insufficient, Housing Entry will not be present in histories, and there will be an error.', async () => {
-    const futureDate = moment().add(15, 'y')
+    const futureDate = dayjs().add(15, 'year')
     const nextFutureDate = futureDate.format('MMM YYYY')
     const nextValues = {
       ...normalValues,
@@ -436,11 +435,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
 
-    const {
-      history,
-      historyAfterWithdrawalAge,
-      errors,
-    } = instance.accountValues
+    const { history, historyAfterWithdrawalAge, errors } =
+      instance.accountValues
 
     const housingEntryInHistory = history.find(
       (entry: Entry) =>
@@ -448,10 +444,11 @@ describe('CPFAccount should have entries in history which show deduction of hous
     )
     expect(housingEntryInHistory).toEqual(undefined)
 
-    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
-      (entry: Entry) =>
-        entry.date === nextFutureDate && entry.category === 'Housing Lump Sum'
-    )
+    const housingEntryInHistoryAfterWithdrawalAge =
+      historyAfterWithdrawalAge.find(
+        (entry: Entry) =>
+          entry.date === nextFutureDate && entry.category === 'Housing Lump Sum'
+      )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
 
@@ -460,7 +457,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
   })
 
   it('will update error object if Ordinary Account is insufficient for Housing Loan Payment', async () => {
-    const currentDateString = moment().format('MMM YYYY')
+    const currentDateString = dayjs().format('MMM YYYY')
     const nextValues = {
       ...normalValues,
       ordinaryAccount: '0',
@@ -474,11 +471,8 @@ describe('CPFAccount should have entries in history which show deduction of hous
     instance.updateAccountsAtWithdrawalAge()
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
 
-    const {
-      history,
-      historyAfterWithdrawalAge,
-      errors,
-    } = instance.accountValues
+    const { history, historyAfterWithdrawalAge, errors } =
+      instance.accountValues
 
     const housingEntryInHistory = history.find(
       (entry: Entry) =>
@@ -486,10 +480,11 @@ describe('CPFAccount should have entries in history which show deduction of hous
     )
     expect(housingEntryInHistory).toEqual(undefined)
 
-    const housingEntryInHistoryAfterWithdrawalAge = historyAfterWithdrawalAge.find(
-      (entry: Entry) =>
-        entry.date === currentDateString && entry.category === 'Housing Loan'
-    )
+    const housingEntryInHistoryAfterWithdrawalAge =
+      historyAfterWithdrawalAge.find(
+        (entry: Entry) =>
+          entry.date === currentDateString && entry.category === 'Housing Loan'
+      )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(undefined)
 

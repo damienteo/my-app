@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
   roundTo2Dec,
   getAge,
@@ -49,8 +49,8 @@ describe('roundTo2Dec should not clear leading 0s if value starts with 0.xxx', (
 })
 
 describe('getAge function should return the correct values based on calculated duration', () => {
-  const sixteenYearsAgo = moment().subtract(16, 'y')
-  const thirtyTwoYearsAgo = moment().subtract(32, 'y')
+  const sixteenYearsAgo = dayjs().subtract(16, 'y')
+  const thirtyTwoYearsAgo = dayjs().subtract(32, 'y')
 
   test('Should return the correct values in years or months', () => {
     expect(getAge(sixteenYearsAgo, 'months')).toBe(16 * 12)
@@ -88,7 +88,7 @@ describe('getCPFAllocation should return the right interest rates', () => {
 })
 
 describe('calculateFutureValues should return the right values', () => {
-  const date16YearsAgo = moment().subtract(16, 'y')
+  const date16YearsAgo = dayjs().subtract(16, 'y')
 
   const normalValues: AccountValues = {
     ordinaryAccount: '1000',
@@ -99,10 +99,10 @@ describe('calculateFutureValues should return the right values', () => {
     monthsOfBonus: '0',
     selectedDate: date16YearsAgo,
     housingLumpSum: '1000',
-    housingLumpSumDate: moment(),
+    housingLumpSumDate: dayjs(),
     housingMonthlyPayment: '0',
     housingLoanTenure: '0',
-    housingLoanDate: moment(),
+    housingLoanDate: dayjs(),
     specialAccountOnly: false,
   }
 

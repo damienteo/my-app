@@ -1,18 +1,18 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Person } from '../../../utils/cpf/classes/person'
 import { getAge } from '../../../utils/cpf/cpfForecast'
 import { withdrawalAge } from '../../../constants'
 
-const sixteenYearsAgo = moment().subtract(16, 'y')
-const withdrawalAgeBirthDate = moment().subtract(withdrawalAge, 'y')
+const sixteenYearsAgo = dayjs().subtract(16, 'year')
+const withdrawalAgeBirthDate = dayjs().subtract(withdrawalAge, 'year')
 
 const values = {
   selectedDate: sixteenYearsAgo,
   housingLumpSum: '3000',
-  housingLumpSumDate: moment(),
+  housingLumpSumDate: dayjs(),
   housingMonthlyPayment: '0',
   housingLoanTenure: '0',
-  housingLoanDate: moment(),
+  housingLoanDate: dayjs(),
 }
 
 const withdrawalValues = {
@@ -24,7 +24,7 @@ const housingLoanValues = {
   ...values,
   housingMonthlyPayment: '200',
   housingLoanTenure: '10.1',
-  housingLoanDate: moment().add(1, 'y'),
+  housingLoanDate: dayjs().add(1, 'year'),
 }
 
 describe('Person', () => {
@@ -62,8 +62,8 @@ describe('Person', () => {
     })
 
     test('Returns the current date as ten years in the future after 120 months (10 years)', () => {
-      // Adding one month to moment object (29/01/2021) ends up with moment object (28/02/2021)
-      const nextDate = moment().add(10, 'y').format('DD/MM/YYYY')
+      // Adding one month to dayjs object (29/01/2021) ends up with dayjs object (28/02/2021)
+      const nextDate = dayjs().add(10, 'year').format('DD/MM/YYYY')
       expect(newAccount.date.format('DD/MM/YYYY')).toBe(nextDate)
     })
   })

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs, { Dayjs } from 'dayjs'
 import { CPFAccount } from './classes'
 import { cpfAllocation, withdrawalAge, payoutAge } from '../../constants'
 import { AccountValues, ComparisonValues } from './types'
@@ -21,18 +21,15 @@ export const roundTo2Dec = (value: string) => {
   return nextValue
 }
 
-export const getAge = (
-  selectedDate: moment.Moment,
-  timePeriod: 'years' | 'months'
-) => {
-  const current = moment()
-  const birthday = moment(selectedDate)
+export const getAge = (selectedDate: Dayjs, timePeriod: 'years' | 'months') => {
+  const current = dayjs()
+  const birthday = dayjs(selectedDate)
   const duration = current.diff(birthday, timePeriod)
   return duration
 }
 
-export const getMonthsTillEOY = (date = moment()) => {
-  const endOfYear = moment().endOf('year')
+export const getMonthsTillEOY = (date = dayjs()) => {
+  const endOfYear = dayjs().endOf('year')
   const monthsTillInterest = endOfYear.diff(date, 'months')
 
   return monthsTillInterest

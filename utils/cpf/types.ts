@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface Entry {
   date: string
@@ -45,12 +45,12 @@ export interface AccountValues {
   salaryIncreaseRate: string
   monthsOfBonus: string
   bonusMonth: string
-  selectedDate: moment.Moment
+  selectedDate: Dayjs
   housingLumpSum: string
-  housingLumpSumDate: moment.Moment
+  housingLumpSumDate: Dayjs
   housingMonthlyPayment: string
   housingLoanTenure: string
-  housingLoanDate: moment.Moment
+  housingLoanDate: Dayjs
   specialAccountOnly: boolean
 }
 

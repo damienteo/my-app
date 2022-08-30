@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import moment from 'moment'
 import { makeStyles } from '@mui/styles'
 import { styled } from '@mui/material/styles'
 import {
   AccordionDetails,
-  AccordionSummary,
   Button,
   Checkbox,
   FormControl,
@@ -166,10 +164,12 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     housingLoanTenure: '0',
   })
   const [selectedDate, handleDateChange] = useState<Dayjs | null>(maxDate)
-  const [housingLumpSumDate, handleHousingLumpSumDateChange] =
-    useState<moment.Moment>(moment())
-  const [housingLoanDate, handleHousingLoanDateChange] =
-    useState<moment.Moment>(moment())
+  const [housingLumpSumDate, handleHousingLumpSumDateChange] = useState<Dayjs>(
+    dayjs()
+  )
+  const [housingLoanDate, handleHousingLoanDateChange] = useState<Dayjs>(
+    dayjs()
+  )
   const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<ErrorValues>({})
@@ -324,7 +324,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <DatePicker
               value={selectedDate}
               label="Date of Birth"
-              // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+              // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
               onChange={(date: any) => handleDateChange(date)}
               // inputFormat="dd/MM/yyyy"
               minDate={minDate}
@@ -488,7 +488,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               <DatePicker
                 value={housingLumpSumDate}
                 label="Date for Lump Sum Payment (Optional)"
-                // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+                // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLumpSumDateChange(date)}
                 // inputFormat="dd/MM/yyyy"
                 disablePast
@@ -548,7 +548,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               <DatePicker
                 value={housingLoanDate}
                 label="Date of first Monthly Payment (Optional)"
-                // TODO: Fix Type '(date: moment.Moment) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
+                // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLoanDateChange(date)}
                 // inputFormat="dd/MM/yyyy"
                 disablePast
