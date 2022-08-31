@@ -326,7 +326,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               label="Date of Birth"
               // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
               onChange={(date: any) => handleDateChange(date)}
-              // inputFormat="dd/MM/yyyy"
+              inputFormat="D/MM/YYYY"
               minDate={minDate}
               maxDate={maxDate}
               // views={['day', 'month', 'year']}
@@ -487,7 +487,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 label="Date for Lump Sum Payment (Optional)"
                 // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLumpSumDateChange(date)}
-                // inputFormat="dd/MM/yyyy"
+                inputFormat="D/MM/YYYY"
                 disablePast
                 renderInput={(params) => <TextField {...params} />}
                 // minDateMessage={`This date is before the present`}
@@ -543,7 +543,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 label="Date of first Monthly Payment (Optional)"
                 // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
                 onChange={(date: any) => handleHousingLoanDateChange(date)}
-                // inputFormat="dd/MM/yyyy"
+                inputFormat="D/MM/YYYY"
                 disablePast
                 renderInput={(params) => <TextField {...params} />}
                 // minDateMessage={`This date is before the present`}
