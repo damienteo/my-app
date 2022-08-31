@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#282c35',
   },
   optionalSection: {
-    backgroundColor: '#cbe8fd',
+    backgroundColor: red[100],
     padding: theme.spacing(0.25, 1),
     borderRadius: 5,
     marginTop: theme.spacing(2),
@@ -274,7 +274,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <Paragraph className={classes.paragraph}>
               Information on what CPF is about can be found here:{' '}
               <ExternalLink
-                url="https://www.cpf.gov.sg/Members/AboutUs/about-us-info/cpf-overview"
+                url="https://www.cpf.gov.sg/member/cpf-overview"
                 label="CPF"
               />
               .
@@ -312,7 +312,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               {withdrawalAge} years old. The withdrawal of your CPF retirement
               savings is optional. More info can be found can be found{' '}
               <ExternalLink
-                url="https://www.cpf.gov.sg/Members/FAQ/schemes/retirement/withdrawals-of-cpf-savings-from-55"
+                url="https://www.cpf.gov.sg/member/infohub/educational-resources/heres-what-cpf-members-are-doing-with-their-cash-withdrawals-after-age-55"
                 label="here"
               />
               .
@@ -347,7 +347,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <Paragraph className={classes.paragraph}>
               When{' '}
               <ExternalLink
-                url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
+                url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
                 label="55 and below"
               />
               , the employer contributes 17% of the monthly salary, while the
@@ -356,7 +356,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <Paragraph className={classes.paragraph}>
               Do also take note that the{' '}
               <ExternalLink
-                url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/hiring-employees/cpf-contributions-for-your-employees/FAQDetails?category=Hiring+Employees&group=CPF+Contributions+for+your+Employees&ajfaqid=2195045&folderid=14019"
+                url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
                 label="Ordinary Wage (OW) Ceiling"
               />{' '}
               sets the maximum amount of OWs on which CPF contributions are
@@ -410,7 +410,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                   <Paragraph className={classes.paragraph}>
                     There is an{' '}
                     <ExternalLink
-                      url="https://www.cpf.gov.sg/employers/FAQ/employer-guides/Hiring-Employees/CPF-Contributions-for-your-Employees/FAQDetails?category=Hiring%20Employees&group=CPF%20Contributions%20for%20your%20Employees&folderid=14230&ajfaqid=2198478"
+                      url="https://www.cpf.gov.sg/employer/faq/employer-obligations/what-payments-attract-cpf-contributions/how-do-i-calculate-the-additional-wage--aw--ceiling-and-the-amou"
                       label="Additional Wage (AW) Ceiling"
                     />{' '}
                     that sets a maximum on the amount of bonus that are subject
@@ -459,16 +459,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 <InfoPopup title="Using CPF to buy Housing">
                   <Paragraph className={classes.paragraph}>
                     You may use funds in your CPF Ordinary Account to buy
-                    housing either under the{' '}
+                    housing under the{' '}
                     <ExternalLink
-                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
-                      label="Public Housing Scheme"
+                      url="https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home"
+                      label="Housing Scheme"
                     />
-                    , or the{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
-                      label="Private Properties Scheme"
-                    />{' '}
                     .
                   </Paragraph>
                 </InfoPopup>
@@ -504,17 +499,12 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 3) Use CPF to pay for Housing Loan{' '}
                 <InfoPopup title="Using CPF to buy Housing">
                   <Paragraph className={classes.paragraph}>
-                    You may use funds in your CPF Ordinary Account to buy
-                    housing either under the{' '}
+                    You may use funds in your CPF Ordinary Account to pay for
+                    the housing loan under the{' '}
                     <ExternalLink
-                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/public-housing-scheme"
-                      label="Public Housing Scheme"
+                      url="https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home"
+                      label="Housing Scheme"
                     />
-                    , or the{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/Members/Schemes/schemes/housing/private-properties-scheme"
-                      label="Private Properties Scheme"
-                    />{' '}
                     .
                   </Paragraph>
                 </InfoPopup>
@@ -567,7 +557,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                   <Paragraph className={classes.paragraph}>
                     You may{' '}
                     <ExternalLink
-                      url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-topping-up-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Topping-Up+Scheme&ajfaqid=2188830&folderid=19860"
+                      url="https://www.cpf.gov.sg/eSvc/Web/Schemes/OAToSATransfer/FundTransferRequest"
                       label="transfer"
                     />{' '}
                     funds from your Ordinary Account to your Special Account up
