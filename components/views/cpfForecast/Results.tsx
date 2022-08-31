@@ -4,7 +4,6 @@ import { Button } from '@mui/material/'
 import { deepOrange } from '@mui/material/colors/'
 
 import { Section } from '../../common'
-// import { HistoryTable, WithdrawalAgeInfo, PayoutAgeInfo } from './results'
 import HistoryTable from './results/HistoryTable'
 import WithdrawalAgeInfo from './results/WithdrawalAgeInfo'
 import PayoutAgeInfo from './results/PayoutAgeInfo'

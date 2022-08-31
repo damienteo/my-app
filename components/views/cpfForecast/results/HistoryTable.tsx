@@ -165,9 +165,12 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       {renderButtons()}
 
       {groups && (
-        <div className={classes.groupButtonsWrapper}>
+        <Box
+          className={classes.groupButtonsWrapper}
+          sx={{ display: { sm: 'block', xs: 'none' } }}
+        >
           {renderGroupButtons()}
-        </div>
+        </Box>
       )}
 
       {Boolean(salaryData[page]) && renderSalaryInfo(salaryData[page])}
@@ -213,7 +216,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       {groups && (
         <Box
           className={classes.groupButtonsWrapper}
-          sx={{ display: { sm: 'inline', xs: 'none' } }}
+          sx={{ display: { sm: 'block', xs: 'none' } }}
         >
           {renderGroupButtons()}
         </Box>
