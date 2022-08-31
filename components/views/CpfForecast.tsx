@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { makeStyles } from '@mui/styles'
 
 import Layout from '../layout/Layout'
-import { Paragraph } from '../common'
+import { ExternalLink, InfoPopup, Paragraph } from '../common'
 import UserInput from './cpfForecast/UserInput'
 import Intro from './cpfForecast/Intro'
 import Results from './cpfForecast/Results'
@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   bottomPlaceholder: {
     height: theme.spacing(5),
+  },
+  paragraph: {
+    margin: theme.spacing(0, 0, 1.5),
+    color: '#282c35',
   },
 }))
 
@@ -54,6 +58,24 @@ const CPFForecastPage = () => {
           not save any data, and calculates values based on your input. Medisave
           values are not included as this page mainly deals with usage of CPF
           for retirement and potentially housing.
+        </Paragraph>
+
+        <Paragraph variant="subtitle2" className={classes.introduction}>
+          For calculation of Full Retirement Sums in the future, I am assuming a
+          3.5% increase per year from the current year (2022, where the FRS is
+          $192,000).
+          <InfoPopup title="Retirement Amounts">
+            <Paragraph className={classes.paragraph}>
+              Information on CRS retirement amounts can be found here:{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/member/faq/retirement-income/general-information-on-retirement/what-are-the-retirement-sums-applicable-to-me-"
+                label="Retirement Amounts"
+              />
+              .
+            </Paragraph>
+          </InfoPopup>{' '}
+          The increase in FRS per year may change in the future according to
+          government policy.
         </Paragraph>
 
         <UserInput
