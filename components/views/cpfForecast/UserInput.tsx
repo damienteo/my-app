@@ -385,6 +385,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}
+              variant="standard"
             />
           </Grid>
         </Grid>
@@ -431,10 +432,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                     <InputAdornment position="end">months</InputAdornment>
                   ),
                 }}
+                variant="standard"
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.inputWrapper}>
-              <FormControl>
+              <FormControl variant="standard">
                 <InputLabel id="demo-simple-select-helper-label">
                   Month in which Bonus is given (Optional)
                 </InputLabel>
@@ -532,6 +534,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                     <InputAdornment position="end">years</InputAdornment>
                   ),
                 }}
+                variant="standard"
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.inputWrapper}>
