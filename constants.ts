@@ -27,13 +27,8 @@ export const cpfValues = {
   ordinaryAmtCap: 20000,
 }
 
-const {
-  ordinaryIR,
-  specialIR,
-  retirementIR,
-  bonusIR,
-  bonusIRAfter55,
-} = cpfValues
+const { ordinaryIR, specialIR, retirementIR, bonusIR, bonusIRAfter55 } =
+  cpfValues
 
 const ordinaryInterestRate = ordinaryIR / 12
 const specialInterestRate = specialIR / 12
@@ -97,8 +92,9 @@ export const additionalWageCeiling = 102000
 export const withdrawalAge = 55
 export const payoutAge = 65
 
-export const fullRetirementSum = 181000
-export const retirementSumIncrease = 5000
+export const yearFRSTakenFrom = 2022
+export const fullRetirementSum = 192000
+export const retirementSumIncrease = 0.035
 
 export const momentMonths = [
   { value: 0, label: 'January' },

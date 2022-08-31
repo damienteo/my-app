@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import enSgLocale from 'dayjs/locale/en-sg'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { makeStyles } from '@mui/styles'
 
@@ -41,7 +42,7 @@ const CPFForecastPage = () => {
   })
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={enSgLocale}>
       <Layout
         title="CPF Forecast"
         description="CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import {
   cpfValues,
+  yearFRSTakenFrom,
   fullRetirementSum,
   retirementSumIncrease,
   ordinaryWageCeiling,
@@ -97,11 +98,11 @@ export class CPFAccount {
     // Extrapolate potential future Full Retirement Sum (FRS)
     const dateOfWithdrawalAge = this.#history[this.#history.length - 1].date
     const yearOfWithdrawalAge = parseInt(dateOfWithdrawalAge.split(' ')[1])
-    const currentYear = dayjs().year()
-    const yearsFromPresent = yearOfWithdrawalAge - currentYear
+    const yearsFromFRS = yearOfWithdrawalAge - yearFRSTakenFrom
 
+    // This projects future CPF FRS, based on a current FRS, and the year where that FRS is taken from
     const nextCPFFullRetirementSum =
-      fullRetirementSum + retirementSumIncrease * yearsFromPresent
+      fullRetirementSum * (1 + retirementSumIncrease) ** yearsFromFRS
 
     // Provides Snapshot of Values at Withdrawal Age
     this.#accounts.updateAccountsAtWithdrawalAge(nextCPFFullRetirementSum)
