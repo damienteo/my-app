@@ -54,7 +54,7 @@ const PortfolioPage: React.FunctionComponent = () => {
           <Paragraph>
             One of my major side-projects is the{' '}
             <ExternalLink
-              url="https://my-budget-planner.herokuapp.com/"
+              url="https://budget-planner-frontend.vercel.app/"
               label="Budget Planner"
             />{' '}
             (March 2019).
