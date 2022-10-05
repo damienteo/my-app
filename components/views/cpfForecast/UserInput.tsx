@@ -23,7 +23,7 @@ import MuiAccordionSummary, {
 } from '@mui/material/AccordionSummary'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { red, deepOrange } from '@mui/material/colors/'
+import { blue, cyan } from '@mui/material/colors/'
 import dayjs, { Dayjs } from 'dayjs'
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -51,7 +51,7 @@ import * as gtag from '../../../lib/gtag'
 const StyledAccordion = styled((props: AccordionProps) => (
   <MuiAccordion {...props} />
 ))(({ theme }) => ({
-  backgroundColor: red[50],
+  backgroundColor: blue[50],
   color: '#282c35',
   borderRadius: 10,
   padding: 10,
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#282c35',
   },
   optionalSection: {
-    backgroundColor: red[100],
+    backgroundColor: blue[100],
     padding: theme.spacing(0.25, 1),
     borderRadius: 5,
     marginTop: theme.spacing(2),
@@ -124,9 +124,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1.5, 0),
   },
   button: {
-    backgroundColor: deepOrange[800],
+    backgroundColor: cyan[800],
     '&:hover': {
-      backgroundColor: deepOrange[600],
+      backgroundColor: cyan[600],
     },
   },
   longLabel: {

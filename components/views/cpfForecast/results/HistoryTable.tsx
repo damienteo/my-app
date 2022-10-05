@@ -14,7 +14,7 @@ import {
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { deepOrange } from '@mui/material/colors/'
+import { cyan } from '@mui/material/colors/'
 
 import { Paragraph } from '../../../common'
 import { formatCurrency } from '../../../../utils/utils'
@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
   },
   groupButton: {
     margin: theme.spacing(0.5),
-    backgroundColor: deepOrange[600],
+    backgroundColor: cyan[600],
     '&:hover': {
-      backgroundColor: deepOrange[400],
+      backgroundColor: cyan[400],
     },
   },
   table: {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
-import { red } from '@mui/material/colors/'
+import { blue } from '@mui/material/colors/'
 import { Container, Drawer } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   drawerWrapper: {
-    backgroundColor: red[50],
+    backgroundColor: blue[50],
   },
 }))
 

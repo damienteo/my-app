@@ -1,7 +1,7 @@
 import React from 'react'
 import { Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { red } from '@mui/material/colors/'
+import { blue } from '@mui/material/colors/'
 
 interface SectionProps {
   children: React.ReactNode
@@ -9,7 +9,7 @@ interface SectionProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   section: {
-    backgroundColor: red[50],
+    backgroundColor: blue[50],
     color: '#282c35',
     borderRadius: 10,
     padding: 10,

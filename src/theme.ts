@@ -1,14 +1,14 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
-import { red } from '@mui/material/colors/'
+import { blue } from '@mui/material/colors/'
 import { Theme } from '@mui/material/styles'
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: red[800],
+      main: blue[800],
     },
     secondary: {
-      main: red[50],
+      main: blue[50],
     },
   },
 })
