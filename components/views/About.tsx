@@ -29,6 +29,21 @@ const AboutPage = () => {
         <ExternalLink url="https://jestjs.io/" label="Jest" />.
       </Paragraph>
       <Paragraph>
+        Currently also learning{' '}
+        <ExternalLink url="https://docs.soliditylang.org/" label="Solidity" />{' '}
+        (documenting my progress in this{' '}
+        <ExternalLink
+          url="https://github.com/damienteo/learning-smart-contracts"
+          label="Github Repo"
+        />
+        ). Also enrolled in Encode Club's{' '}
+        <ExternalLink
+          url="https://www.encode.club/solidity-bootcamps"
+          label="Solidity Bootcamp"
+        />
+        .
+      </Paragraph>
+      <Paragraph>
         I can be contacted on{' '}
         <ExternalLink
           url="https://www.linkedin.com/in/damien-teo/"
