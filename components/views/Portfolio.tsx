@@ -41,6 +41,67 @@ const PortfolioPage: React.FunctionComponent = () => {
         profile
       </Paragraph>
 
+      {/* ThunderDome Section */}
+      <Grid container className={classes.sectionWrapper}>
+        <Grid item sm={6} className={classes.imageWrapper}>
+          <img
+            src="/thunderdome.png"
+            alt="ThunderDome Chart"
+            className={classes.image}
+          />
+        </Grid>
+        <Grid item sm={6} className={classes.textWrapper}>
+          <Paragraph>
+            Current side project is{' '}
+            <ExternalLink
+              url="https://thunderdome-fe.vercel.app/"
+              label="ThunderDome"
+            />{' '}
+            (as of Oct 2022).
+          </Paragraph>
+          <Paragraph>
+            I am currently learning solidity, so I thought it would be a fun
+            project to run on the Ethereum Goerli testnet. Users will be able to
+            buy NFTs offered. Eventually, they should be able to sell bought
+            NFTs on the local marketplace, deposit NFTs for loyalty points, and
+            even a lucky draw.
+          </Paragraph>
+          <Paragraph>
+            -{' '}
+            <ExternalLink
+              url="https://github.com/damienteo/thunderdone-fe"
+              label="Frontend Repo"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://thunderdome-be.onrender.com/api/v1/products/"
+              label="Backend Link"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://github.com/damienteo/thunderdome-be"
+              label="Backend Repo"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://github.com/damienteo/thunderdome-contracts"
+              label="Smart Contracts Repo"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://goerli.etherscan.io/address/0xfF0Cc93e85150e18BA66102469d6e3613dC8Ef9B#code"
+              label="Token Sale Contract"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://goerli.etherscan.io/address/0x16377628d5c50aE40951D63134572AB32395677C#code"
+              label="NFT Contract"
+            />
+            <br />
+          </Paragraph>
+        </Grid>
+      </Grid>
+
       {/* Budget Planner Section */}
       <Grid container className={classes.sectionWrapper}>
         <Grid item sm={6} className={classes.imageWrapper}>
