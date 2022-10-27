@@ -66,7 +66,7 @@ const PortfolioPage: React.FunctionComponent = () => {
             NFTs on the local marketplace, deposit NFTs for loyalty points, and
             even a lucky draw.
           </Paragraph>
-          <Paragraph>
+          {/* <Paragraph>
             -{' '}
             <ExternalLink
               url="https://github.com/damienteo/thunderdone-fe"
@@ -98,7 +98,7 @@ const PortfolioPage: React.FunctionComponent = () => {
               label="NFT Contract"
             />
             <br />
-          </Paragraph>
+          </Paragraph> */}
         </Grid>
       </Grid>
 
