@@ -36,12 +36,7 @@ const AboutPage = () => {
           url="https://github.com/damienteo/learning-smart-contracts"
           label="Github Repo"
         />
-        ). Also enrolled in Encode Club's{' '}
-        <ExternalLink
-          url="https://www.encode.club/solidity-bootcamps"
-          label="Solidity Bootcamp"
-        />
-        .
+        ).
       </Paragraph>
       <Paragraph>
         I can be contacted on{' '}
