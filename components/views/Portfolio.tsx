@@ -41,6 +41,57 @@ const PortfolioPage: React.FunctionComponent = () => {
         profile
       </Paragraph>
 
+      {/* Payments Agreement Section */}
+      <Grid container className={classes.sectionWrapper}>
+        <Grid item sm={6} className={classes.imageWrapper}>
+          <img
+            src="/payments-agreement.png"
+            alt="Payments Agreement Site"
+            className={classes.image}
+          />
+        </Grid>
+        <Grid item sm={6} className={classes.textWrapper}>
+          <Paragraph>
+            I recently participated in blockchain.hack(). I{' '}
+            <ExternalLink
+              url="https://www.linkedin.com/posts/gaogao_hackathon2023-hackathon-blockchain-activity-7078000311738511360-orum"
+              label="won"
+            />{' '}
+            the main prize for the problem statement: "How can blockchain help
+            B2B transactions for banking?".
+          </Paragraph>
+          <Paragraph>
+            My{' '}
+            <ExternalLink
+              url="https://milestone-payments.vercel.app/"
+              label="project"
+            />{' '}
+            deals with the usage of Merkle proofs to initially obscure payment
+            details, yet enforce payment outcomes with transparent and immutable
+            rules. Factory-clone contracts also cut down the cost of deploying
+            each payment agreement by ~70%.
+          </Paragraph>
+          <Paragraph>
+            -{' '}
+            <ExternalLink
+              url="https://mumbai.polygonscan.com/address/0xd7906deE9239509EF4564839a25460Bb8F97D2e6#code"
+              label="Factory Contract for cloning agreements"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://mumbai.polygonscan.com/address/0x9536fd0322Ab322110C4D0621b46dC936Ee9fCaa#code"
+              label="Initializer contract with agreement logic"
+            />
+            <br />-{' '}
+            <ExternalLink
+              url="https://mumbai.polygonscan.com/address/0x60BF7eba37b2A914EcEB8f228c302a1D02aDf6e2#code"
+              label="Minimal proxy contract (clone) which uses logic from the Initializer contract"
+            />
+            <br />
+          </Paragraph>
+        </Grid>
+      </Grid>
+
       {/* ThunderDome Section */}
       <Grid container className={classes.sectionWrapper}>
         <Grid item sm={6} className={classes.imageWrapper}>
@@ -66,7 +117,7 @@ const PortfolioPage: React.FunctionComponent = () => {
             NFTs on the local marketplace, deposit NFTs for loyalty points, and
             even a lucky draw.
           </Paragraph>
-          {/* <Paragraph>
+          <Paragraph>
             -{' '}
             <ExternalLink
               url="https://github.com/damienteo/thunderdone-fe"
@@ -98,7 +149,7 @@ const PortfolioPage: React.FunctionComponent = () => {
               label="NFT Contract"
             />
             <br />
-          </Paragraph> */}
+          </Paragraph>
         </Grid>
       </Grid>
 
