@@ -40,11 +40,7 @@ const AboutPage = () => {
       </Paragraph>
       <Paragraph>
         I can be contacted on{' '}
-        <ExternalLink
-          url="https://www.linkedin.com/in/damien-teo/"
-          label="LinkedIn"
-        />{' '}
-        and <ExternalLink url="https://github.com/damienteo" label="Github" />.
+        <ExternalLink url="https://github.com/damienteo" label="Github" />.
       </Paragraph>
     </Layout>
   )
