@@ -1,7 +1,9 @@
+'use client'
+
 import React, { useState } from 'react'
 import { Container, Drawer } from '@mui/material'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 
 import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
@@ -33,7 +35,7 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
     children,
   } = props
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const [isDrawerOpen, setDrawerOpen] = useState(false)
 
@@ -45,12 +47,11 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
         <meta name="description" key="description" content={description} />
         <meta property="og:title" key="og:title" content={title} />
         <meta property="og:locale" key="og:locale" content="en_GB" />
-        <meta
+        {/* <meta
           property="og:url"
           key="og:url"
           content={`https://www.damienteo.com${router.asPath}`}
-        />
-        z
+        /> */}
         <meta property="og:type" key="og:type" content="website" />
         <meta
           property="og:description"

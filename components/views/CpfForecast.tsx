@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'

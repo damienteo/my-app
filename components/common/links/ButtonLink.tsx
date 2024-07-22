@@ -20,8 +20,8 @@ export const NextLink: React.FunctionComponent<NextLinkProps> = ({
   hrefAs,
   children,
 }) => (
-  <Link href={href} as={hrefAs}>
-    <a className={className}>{children}</a>
+  <Link href={href} as={hrefAs} className={className}>
+    {children}
   </Link>
 )
 
