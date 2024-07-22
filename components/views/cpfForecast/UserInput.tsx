@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import {
   AccordionDetails,
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -22,7 +21,7 @@ import MuiAccordionSummary, {
 } from '@mui/material/AccordionSummary'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { blue, cyan } from '@mui/material/colors/'
+import { blue } from '@mui/material/colors/'
 import dayjs, { Dayjs } from 'dayjs'
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -265,20 +264,20 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   return (
     <>
       <Section>
-        <Paragraph>
+        <p>
           First, type in the current amounts in your CPF Ordinary and Special
           Accounts.{' '}
           <InfoPopup title="Info on CPF OA and SA">
-            <Paragraph>
+            <p>
               Information on what CPF is about can be found here:{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/member/cpf-overview"
                 label="CPF"
               />
               .
-            </Paragraph>
+            </p>
           </InfoPopup>
-        </Paragraph>
+        </p>
         <Grid container>
           {cpfAccounts.map((account) => (
             <Grid
@@ -301,11 +300,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </Grid>
       </Section>
       <Section>
-        <Paragraph>
+        <p>
           Next, type in your date of birth. We will use this to calculate the
           date when you can start withdrawals.{' '}
           <InfoPopup title="Withdrawal of CPF Savings">
-            <Paragraph>
+            <p>
               Members can withdraw their CPF retirement savings any time from{' '}
               {withdrawalAge} years old. The withdrawal of your CPF retirement
               savings is optional. More info can be found can be found{' '}
@@ -314,9 +313,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 label="here"
               />
               .
-            </Paragraph>
+            </p>
           </InfoPopup>
-        </Paragraph>
+        </p>
         <Grid container>
           <Grid item xs={12} md={6}>
             <DatePicker
@@ -336,13 +335,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </Grid>
       </Section>
       <Section>
-        <Paragraph>
+        <p>
           Finally, you may add in your monthly salary (before taxes and CPF
           contribution), as well as expectations on how much it may increase per
           year. *Increase in monthly salary is calculated at the beginning of
           each year.{' '}
           <InfoPopup title="Info on Employer / Employee CPF Contribution">
-            <Paragraph>
+            <p>
               When{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
@@ -350,8 +349,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               />
               , the employer contributes 17% of the monthly salary, while the
               employee contributes 20%.
-            </Paragraph>
-            <Paragraph>
+            </p>
+            <p>
               Do also take note that the{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
@@ -359,9 +358,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               />{' '}
               sets the maximum amount of OWs on which CPF contributions are
               payable per month. The prevailing OW Ceiling is $6,000 per month.
-            </Paragraph>
+            </p>
           </InfoPopup>
-        </Paragraph>
+        </p>
         <Grid container>
           <Grid item xs={12} md={6}>
             <CurrencyInput
@@ -395,16 +394,16 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           aria-controls="additional-options"
           id="additional-options"
         >
-          <Paragraph>Optional (Bonuses, Housing, etc)</Paragraph>
+          <p>Optional (Bonuses, Housing, etc)</p>
         </StyledAccordionSummary>
         <AccordionDetails>
           {/* Option 1: Take Bonus in account */}
           <Grid container>
             <Grid item xs={12}>
-              <Paragraph>
+              <p>
                 1) CPF contribution from expected Bonus{' '}
                 <InfoPopup title="Bonuses Subject to CPF Contribution">
-                  <Paragraph>
+                  <p>
                     There is an{' '}
                     <ExternalLink
                       url="https://www.cpf.gov.sg/employer/faq/employer-obligations/what-payments-attract-cpf-contributions/how-do-i-calculate-the-additional-wage--aw--ceiling-and-the-amou"
@@ -412,9 +411,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                     />{' '}
                     that sets a maximum on the amount of bonus that are subject
                     to CPF contribution.
-                  </Paragraph>
+                  </p>
                 </InfoPopup>
-              </Paragraph>
+              </p>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -452,10 +451,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           {/* Option 2: Use CPF as lump sum for Housing */}
           <Grid container>
             <Grid item xs={12}>
-              <Paragraph>
+              <p>
                 2) Use CPF to pay for Housing (Lump Sum){' '}
                 <InfoPopup title="Using CPF to buy Housing">
-                  <Paragraph>
+                  <p>
                     You may use funds in your CPF Ordinary Account to buy
                     housing under the{' '}
                     <ExternalLink
@@ -463,9 +462,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                       label="Housing Scheme"
                     />
                     .
-                  </Paragraph>
+                  </p>
                 </InfoPopup>
-              </Paragraph>
+              </p>
             </Grid>
             <Grid item xs={12} md={6}>
               <CurrencyInput
@@ -493,10 +492,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           {/* Option 3: Use CPF as to pay for housing loan */}
           <Grid container>
             <Grid item xs={12}>
-              <Paragraph>
+              <p>
                 3) Use CPF to pay for Housing Loan{' '}
                 <InfoPopup title="Using CPF to buy Housing">
-                  <Paragraph>
+                  <p>
                     You may use funds in your CPF Ordinary Account to pay for
                     the housing loan under the{' '}
                     <ExternalLink
@@ -504,9 +503,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                       label="Housing Scheme"
                     />
                     .
-                  </Paragraph>
+                  </p>
                 </InfoPopup>
-              </Paragraph>
+              </p>
             </Grid>
             <Grid item xs={12} md={6}>
               <CurrencyInput
@@ -549,11 +548,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           {/* Option 4: Move all Ordinary Account money to Special Account */}
           <Grid container>
             <Grid item xs={12}>
-              <Paragraph>
+              <p>
                 4) Move all Ordinary Account value and future contributions to
                 Special Account (Optional){' '}
                 <InfoPopup title="Higher Interest Rate in Special Account">
-                  <Paragraph>
+                  <p>
                     You may{' '}
                     <ExternalLink
                       url="https://www.cpf.gov.sg/eSvc/Web/Schemes/OAToSATransfer/FundTransferRequest"
@@ -561,9 +560,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                     />{' '}
                     funds from your Ordinary Account to your Special Account up
                     till the age of 55.
-                  </Paragraph>
+                  </p>
                 </InfoPopup>
-              </Paragraph>
+              </p>
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
@@ -584,9 +583,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       </StyledAccordion>
 
       <div>
-        <Button variant="contained" onClick={handleSubmit}>
-          Forecast my CPF!
-        </Button>
+        <button onClick={handleSubmit}>Forecast my CPF!</button>
       </div>
 
       <Snackbar

@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import Button, { ButtonProps as MuiButtonProps } from '@mui/material/Button'
 
 type NextLinkProps = {
   className: string
@@ -9,7 +8,7 @@ type NextLinkProps = {
   children: React.ReactNode
 }
 
-interface ButtonLinkProps extends MuiButtonProps {
+interface ButtonLinkProps {
   url: string
   text: string
   component?: React.ReactNode
@@ -32,13 +31,13 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
 }) => {
   return (
     <Link href={url} as={url}>
-      <Button
-        href={url}
+      <button
+        // href={url}
         color="inherit"
         className="hover:bg-[#282c35] hover:text-[#FFFFFF]"
       >
         {text}
-      </Button>
+      </button>
     </Link>
   )
 }

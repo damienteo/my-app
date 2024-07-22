@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react'
-import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material'
+import { AppBar, Toolbar, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { blue } from '@mui/material/colors/'
 
@@ -24,13 +24,14 @@ const NavBar: React.FunctionComponent<{
             <MenuIcon />
           </IconButton>
           <div className="grow" style={{ flexGrow: 1 }}>
-            <Typography variant="h6">Damien Teo's Site</Typography>
+            <p>Damien Teo's Site</p>
           </div>
-          <Box sx={{ display: { sm: 'inline', xs: 'none' } }}>
+          {/* <Box sx={{ display: { sm: 'inline', xs: 'none' } }}> */}
+          <div>
             {navLinks.map(({ url, text }) => (
               <ButtonLink key={url} url={url} text={text} />
             ))}
-          </Box>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

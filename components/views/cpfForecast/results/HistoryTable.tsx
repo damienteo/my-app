@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {
   Box,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -13,9 +12,7 @@ import {
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { cyan } from '@mui/material/colors/'
 
-import { Paragraph } from '../../../common'
 import { formatCurrency } from '../../../../utils/utils'
 import { Entry, GroupsType, SalaryRecord } from '../../../../utils/cpf/types'
 
@@ -134,14 +131,9 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const renderGroupButtons = () => {
     return groups.map((group, index) => {
       return (
-        <Button
-          key={group}
-          size="small"
-          onClick={() => setPage(index)}
-          variant={page === index ? 'contained' : undefined}
-        >
+        <button key={group} onClick={() => setPage(index)}>
           {group}
-        </Button>
+        </button>
       )
     })
   }
@@ -149,10 +141,10 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const renderSalaryInfo = (salaryData: SalaryRecord) => {
     const { year, amount, age } = salaryData
     return (
-      <Paragraph>
+      <p>
         In the year {year}, your salary is <span>{formatCurrency(amount)}</span>{' '}
         (age: {age}).
-      </Paragraph>
+      </p>
     )
   }
 

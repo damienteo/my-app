@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button } from '@mui/material/'
 
 import { Section } from '../../common'
 import HistoryTable from './results/HistoryTable'
@@ -48,13 +47,12 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {/* History Table for Transactions up to 55 years old */}
         {history.length > 0 && (
           <div>
-            <Button
-              variant="contained"
+            <button
               // className={classes.button}
               onClick={() => setHistoryOpen(!historyOpen)}
             >
               {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
-            </Button>
+            </button>
           </div>
         )}
         {historyOpen && (
@@ -65,13 +63,12 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               salaryData={salaryHistory}
             />
             <div>
-              <Button
-                variant="contained"
+              <button
                 // className={classes.button}
                 onClick={() => setHistoryOpen(!historyOpen)}
               >
                 {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
-              </Button>
+              </button>
             </div>
           </>
         )}
@@ -84,8 +81,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {/* History Table for Transactions from 55 to 65 years old */}
         {historyAfterWithdrawalAge.length > 0 && (
           <div>
-            <Button
-              variant="contained"
+            <button
               // className={classes.button}
               onClick={() =>
                 setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
@@ -93,7 +89,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
             >
               {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Calculations
               After 55!
-            </Button>
+            </button>
           </div>
         )}
         {historyAfterWithdrawalAgeOpen && (
@@ -104,8 +100,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               salaryData={salaryHistoryAfterWithdrawalAge}
             />
             <div>
-              <Button
-                variant="contained"
+              <button
                 // className={classes.button}
                 onClick={() =>
                   setHistoryAfterWithdrawalAgeOpen(
@@ -115,7 +110,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               >
                 {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Calculations
                 After 55!
-              </Button>
+              </button>
             </div>
           </>
         )}

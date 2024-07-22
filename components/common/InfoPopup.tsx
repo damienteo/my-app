@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Dialog, IconButton, IconButtonProps } from '@mui/material'
+import { Dialog, IconButton, IconButtonProps } from '@mui/material'
 import MuiDialogTitle, {
   DialogTitleProps as MUIDialogTitleProps,
 } from '@mui/material/DialogTitle'
@@ -64,7 +64,7 @@ const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props
   return (
     <MuiDialogTitle className="m-[0] p-2" {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <p>{children}</p>
       {onClose ? (
         <IconButton
           aria-label="close"
