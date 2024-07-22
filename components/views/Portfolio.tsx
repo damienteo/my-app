@@ -1,31 +1,28 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 import { Grid } from '@mui/material/'
 import Layout from '../layout/Layout'
 import { ExternalLink, Header, Paragraph } from '../common'
 
-const useStyles = makeStyles((theme) => ({
-  image: {
-    width: '95%',
-    objectFit: 'cover',
-  },
-  imageWrapper: {
-    textAlign: 'center',
-  },
-  sectionWrapper: {
-    margin: '30px 0',
-  },
-  textWrapper: {
-    paddingLeft: 0,
-    [theme.breakpoints.up('xs')]: {
-      paddingLeft: 20,
-    },
-  },
-}))
+// const useStyles = makeStyles((theme) => ({
+//   image: {
+//     width: '95%',
+//     objectFit: 'cover',
+//   },
+//   imageWrapper: {
+//     textAlign: 'center',
+//   },
+//   sectionWrapper: {
+//     margin: '30px 0',
+//   },
+//   textWrapper: {
+//     paddingLeft: 0,
+//     [theme.breakpoints.up('xs')]: {
+//       paddingLeft: 20,
+//     },
+//   },
+// }))
 
 const PortfolioPage: React.FunctionComponent = () => {
-  const classes = useStyles()
-
   return (
     <Layout
       title="Damien Teo's Portfolio"
@@ -42,15 +39,11 @@ const PortfolioPage: React.FunctionComponent = () => {
       </Paragraph>
 
       {/* Payments Agreement Section */}
-      <Grid container className={classes.sectionWrapper}>
-        <Grid item sm={6} className={classes.imageWrapper}>
-          <img
-            src="/payments-agreement.png"
-            alt="Payments Agreement Site"
-            className={classes.image}
-          />
+      <Grid container>
+        <Grid item sm={6}>
+          <img src="/payments-agreement.png" alt="Payments Agreement Site" />
         </Grid>
-        <Grid item sm={6} className={classes.textWrapper}>
+        <Grid item sm={6}>
           <Paragraph>
             I recently participated in blockchain.hack(). I{' '}
             <ExternalLink
@@ -93,15 +86,11 @@ const PortfolioPage: React.FunctionComponent = () => {
       </Grid>
 
       {/* ThunderDome Section */}
-      <Grid container className={classes.sectionWrapper}>
-        <Grid item sm={6} className={classes.imageWrapper}>
-          <img
-            src="/thunderdome.png"
-            alt="ThunderDome Chart"
-            className={classes.image}
-          />
+      <Grid container>
+        <Grid item sm={6}>
+          <img src="/thunderdome.png" alt="ThunderDome Chart" />
         </Grid>
-        <Grid item sm={6} className={classes.textWrapper}>
+        <Grid item sm={6}>
           <Paragraph>
             Current side project is{' '}
             <ExternalLink
@@ -154,15 +143,11 @@ const PortfolioPage: React.FunctionComponent = () => {
       </Grid>
 
       {/* Budget Planner Section */}
-      <Grid container className={classes.sectionWrapper}>
-        <Grid item sm={6} className={classes.imageWrapper}>
-          <img
-            src="/budget-planner.png"
-            alt="Budget Planner Chart"
-            className={classes.image}
-          />
+      <Grid container>
+        <Grid item sm={6}>
+          <img src="/budget-planner.png" alt="Budget Planner Chart" />
         </Grid>
-        <Grid item sm={6} className={classes.textWrapper}>
+        <Grid item sm={6}>
           <Paragraph>
             One of my major side-projects is the{' '}
             <ExternalLink
@@ -185,15 +170,11 @@ const PortfolioPage: React.FunctionComponent = () => {
       </Grid>
 
       {/* Fireman Game Section */}
-      <Grid container className={classes.sectionWrapper}>
-        <Grid item sm={6} className={classes.imageWrapper}>
-          <img
-            src="/fireman-game.png"
-            alt="Fireman Game Image"
-            className={classes.image}
-          />
+      <Grid container>
+        <Grid item sm={6}>
+          <img src="/fireman-game.png" alt="Fireman Game Image" />
         </Grid>
-        <Grid item sm={6} className={classes.textWrapper}>
+        <Grid item sm={6}>
           <Paragraph>
             Created a game (
             <ExternalLink

@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@mui/styles'
-import { blue } from '@mui/material/colors/'
 import { Container, Drawer } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -9,18 +7,18 @@ import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
 import { navLinks } from '../../constants'
 
-const useStyles = makeStyles(() => ({
-  drawer: {
-    padding: 20,
-    '& a': {
-      display: 'block',
-      margin: '10px 0',
-    },
-  },
-  drawerWrapper: {
-    backgroundColor: blue[50],
-  },
-}))
+// const useStyles = makeStyles(() => ({
+//   drawer: {
+//     padding: 20,
+//     '& a': {
+//       display: 'block',
+//       margin: '10px 0',
+//     },
+//   },
+//   drawerWrapper: {
+//     backgroundColor: blue[50],
+//   },
+// }))
 
 type LayoutProps = {
   title?: string
@@ -35,7 +33,6 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
     children,
   } = props
 
-  const classes = useStyles()
   const router = useRouter()
 
   const [isDrawerOpen, setDrawerOpen] = useState(false)
@@ -67,9 +64,9 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
       <Drawer
         open={isDrawerOpen}
         onClose={() => setDrawerOpen(false)}
-        classes={{ paper: classes.drawerWrapper }}
+        // classes={{ paper: classes.drawerWrapper }}
       >
-        <div className={classes.drawer}>
+        <div className="bg-blue">
           {navLinks.map(({ url, text }) => (
             <ButtonLink key={url} url={url} text={text} />
           ))}

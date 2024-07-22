@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@mui/styles'
 import { Button } from '@mui/material/'
-import { cyan } from '@mui/material/colors/'
 
 import { Section } from '../../common'
 import HistoryTable from './results/HistoryTable'
@@ -14,18 +12,18 @@ interface ResultsProps {
   futureValues: FutureValues
 }
 
-const useStyles = makeStyles((theme) => ({
-  buttonWrapper: {
-    textAlign: 'center',
-    margin: theme.spacing(1.5, 0),
-  },
-  button: {
-    backgroundColor: cyan[800],
-    '&:hover': {
-      backgroundColor: cyan[600],
-    },
-  },
-}))
+// const useStyles = makeStyles((theme) => ({
+//   buttonWrapper: {
+//     textAlign: 'center',
+//     margin: theme.spacing(1.5, 0),
+//   },
+//   button: {
+//     backgroundColor: cyan[800],
+//     '&:hover': {
+//       backgroundColor: cyan[600],
+//     },
+//   },
+// }))
 
 const Results: React.FunctionComponent<ResultsProps> = (props) => {
   const { futureValues } = props
@@ -36,7 +34,6 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
     salaryHistory,
     salaryHistoryAfterWithdrawalAge,
   } = futureValues
-  const classes = useStyles()
 
   const [historyOpen, setHistoryOpen] = useState<boolean>(false)
   const [historyAfterWithdrawalAgeOpen, setHistoryAfterWithdrawalAgeOpen] =
@@ -50,10 +47,10 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions up to 55 years old */}
         {history.length > 0 && (
-          <div className={classes.buttonWrapper}>
+          <div>
             <Button
               variant="contained"
-              className={classes.button}
+              // className={classes.button}
               onClick={() => setHistoryOpen(!historyOpen)}
             >
               {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
@@ -67,10 +64,10 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistory}
             />
-            <div className={classes.buttonWrapper}>
+            <div>
               <Button
                 variant="contained"
-                className={classes.button}
+                // className={classes.button}
                 onClick={() => setHistoryOpen(!historyOpen)}
               >
                 {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
@@ -86,10 +83,10 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions from 55 to 65 years old */}
         {historyAfterWithdrawalAge.length > 0 && (
-          <div className={classes.buttonWrapper}>
+          <div>
             <Button
               variant="contained"
-              className={classes.button}
+              // className={classes.button}
               onClick={() =>
                 setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
               }
@@ -106,10 +103,10 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistoryAfterWithdrawalAge}
             />
-            <div className={classes.buttonWrapper}>
+            <div>
               <Button
                 variant="contained"
-                className={classes.button}
+                // className={classes.button}
                 onClick={() =>
                   setHistoryAfterWithdrawalAgeOpen(
                     !historyAfterWithdrawalAgeOpen

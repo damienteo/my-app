@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import { makeStyles } from '@mui/styles'
 import Button, { ButtonProps as MuiButtonProps } from '@mui/material/Button'
 
 type NextLinkProps = {
@@ -15,18 +14,6 @@ interface ButtonLinkProps extends MuiButtonProps {
   text: string
   component?: React.ReactNode
 }
-
-const useStyles = makeStyles(() => ({
-  button: {
-    '&:hover': {
-      backgroundColor: '#282c35',
-      color: '#FFFFFF',
-    },
-    '&& a': {
-      margin: 0,
-    },
-  },
-}))
 
 export const NextLink: React.FunctionComponent<NextLinkProps> = ({
   className,
@@ -43,10 +30,13 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
   url,
   text,
 }) => {
-  const classes = useStyles()
   return (
     <Link href={url} as={url}>
-      <Button href={url} color="inherit" className={classes.button}>
+      <Button
+        href={url}
+        color="inherit"
+        className="hover:bg-[#282c35] hover:text-[#FFFFFF]"
+      >
         {text}
       </Button>
     </Link>

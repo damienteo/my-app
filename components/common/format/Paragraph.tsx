@@ -1,19 +1,9 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
-import { Typography, Theme, TypographyProps } from '@mui/material'
-import { blue } from '@mui/material/colors/'
-
-const useStyles = makeStyles((theme: Theme) => ({
-  paragraph: {
-    margin: `${theme.spacing(1.5)} 0`,
-    color: blue[50],
-  },
-}))
+import { Typography, TypographyProps } from '@mui/material'
 
 const Paragraph: React.FunctionComponent<TypographyProps> = (props) => {
-  const classes = useStyles()
   return (
-    <Typography variant="body1" className={classes.paragraph} {...props}>
+    <Typography variant="body1" className="my-[1.5] mx-0 text-blue" {...props}>
       {props.children}
     </Typography>
   )

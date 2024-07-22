@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@mui/styles'
 import {
   Box,
   Button,
@@ -26,37 +25,37 @@ interface HistoryTableProps {
   salaryData: SalaryRecord[]
 }
 
-const useStyles = makeStyles((theme) => ({
-  buttonsWrapper: {
-    textAlign: 'center',
-  },
-  groupButtonsWrapper: {
-    textAlign: 'center',
-  },
-  groupButton: {
-    margin: theme.spacing(0.5),
-    backgroundColor: cyan[600],
-    '&:hover': {
-      backgroundColor: cyan[400],
-    },
-  },
-  table: {
-    margin: `${theme.spacing(1.5)} 0`,
-    '& .MuiTableCell-root': {
-      [theme.breakpoints.down('sm')]: { fontSize: '0.6rem' },
-    },
-  },
-  paragraph: {
-    color: '#282c35',
-    textAlign: 'center',
-    margin: theme.spacing(5, 0),
-  },
-  highlightText: {
-    backgroundColor: '#282c35',
-    color: '#e3f2fd',
-    padding: '2px 5px',
-  },
-}))
+// const useStyles = makeStyles((theme) => ({
+//   buttonsWrapper: {
+//     textAlign: 'center',
+//   },
+//   groupButtonsWrapper: {
+//     textAlign: 'center',
+//   },
+//   groupButton: {
+//     margin: theme.spacing(0.5),
+//     backgroundColor: cyan[600],
+//     '&:hover': {
+//       backgroundColor: cyan[400],
+//     },
+//   },
+//   table: {
+//     margin: `${theme.spacing(1.5)} 0`,
+//     '& .MuiTableCell-root': {
+//       [theme.breakpoints.down('sm')]: { fontSize: '0.6rem' },
+//     },
+//   },
+//   paragraph: {
+//     color: '#282c35',
+//     textAlign: 'center',
+//     margin: theme.spacing(5, 0),
+//   },
+//   highlightText: {
+//     backgroundColor: '#282c35',
+//     color: '#e3f2fd',
+//     padding: '2px 5px',
+//   },
+// }))
 
 const sortEntryByYear = (myArray: Entry[]) => {
   const entriesSortedByYear = myArray.reduce((groups, entry) => {
@@ -98,7 +97,6 @@ const chunkArray = (myArray: Entry[], groupByYear: boolean, chunkSize = 15) => {
 }
 
 const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
-  const classes = useStyles()
   const { data = [], groupByYear = false, salaryData = [] } = props
   const [page, setPage] = useState(0)
 
@@ -114,7 +112,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
 
   const renderButtons = () => {
     return (
-      <div className={classes.buttonsWrapper}>
+      <div>
         <IconButton
           aria-label={`Prev Button`}
           onClick={seePrevHistory}
@@ -140,7 +138,6 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           key={group}
           size="small"
           onClick={() => setPage(index)}
-          className={classes.groupButton}
           variant={page === index ? 'contained' : undefined}
         >
           {group}
@@ -152,9 +149,8 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const renderSalaryInfo = (salaryData: SalaryRecord) => {
     const { year, amount, age } = salaryData
     return (
-      <Paragraph className={classes.paragraph}>
-        In the year {year}, your salary is{' '}
-        <span className={classes.highlightText}>{formatCurrency(amount)}</span>{' '}
+      <Paragraph>
+        In the year {year}, your salary is <span>{formatCurrency(amount)}</span>{' '}
         (age: {age}).
       </Paragraph>
     )
@@ -165,17 +161,14 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       {renderButtons()}
 
       {groups && (
-        <Box
-          className={classes.groupButtonsWrapper}
-          sx={{ display: { sm: 'block', xs: 'none' } }}
-        >
+        <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
           {renderGroupButtons()}
         </Box>
       )}
 
       {Boolean(salaryData[page]) && renderSalaryInfo(salaryData[page])}
 
-      <TableContainer component={Paper} className={classes.table}>
+      <TableContainer component={Paper}>
         <Table aria-label="CPF Forecast History">
           <TableHead>
             <TableRow>
@@ -189,35 +182,31 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {history[page] &&
-              history[page].map((row, index) => (
-                <TableRow key={index + row.date}>
-                  <TableCell component="th" scope="row">
-                    {row.date}
-                  </TableCell>
-                  <TableCell>{row.category}</TableCell>
+            {history[page]?.map((row, index) => (
+              <TableRow key={index + row.date}>
+                <TableCell component="th" scope="row">
+                  {row.date}
+                </TableCell>
+                <TableCell>{row.category}</TableCell>
+                <TableCell align="right">
+                  {formatCurrency(row.ordinaryAccount)}
+                </TableCell>
+                <TableCell align="right">
+                  {formatCurrency(row.specialAccount)}
+                </TableCell>
+                {row.retirementAccount !== undefined && (
                   <TableCell align="right">
-                    {formatCurrency(row.ordinaryAccount)}
+                    {formatCurrency(row.retirementAccount)}
                   </TableCell>
-                  <TableCell align="right">
-                    {formatCurrency(row.specialAccount)}
-                  </TableCell>
-                  {row.retirementAccount !== undefined && (
-                    <TableCell align="right">
-                      {formatCurrency(row.retirementAccount)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
+                )}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
 
       {groups && (
-        <Box
-          className={classes.groupButtonsWrapper}
-          sx={{ display: { sm: 'block', xs: 'none' } }}
-        >
+        <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
           {renderGroupButtons()}
         </Box>
       )}
