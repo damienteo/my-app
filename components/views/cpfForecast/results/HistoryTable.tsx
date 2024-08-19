@@ -1,18 +1,4 @@
 import React, { useState } from 'react'
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-
 import { formatCurrency } from '../../../../utils/utils'
 import { Entry, GroupsType, SalaryRecord } from '../../../../utils/cpf/types'
 
@@ -21,38 +7,6 @@ interface HistoryTableProps {
   groupByYear: boolean
   salaryData: SalaryRecord[]
 }
-
-// const useStyles = makeStyles((theme) => ({
-//   buttonsWrapper: {
-//     textAlign: 'center',
-//   },
-//   groupButtonsWrapper: {
-//     textAlign: 'center',
-//   },
-//   groupButton: {
-//     margin: theme.spacing(0.5),
-//     backgroundColor: cyan[600],
-//     '&:hover': {
-//       backgroundColor: cyan[400],
-//     },
-//   },
-//   table: {
-//     margin: `${theme.spacing(1.5)} 0`,
-//     '& .MuiTableCell-root': {
-//       [theme.breakpoints.down('sm')]: { fontSize: '0.6rem' },
-//     },
-//   },
-//   paragraph: {
-//     color: '#282c35',
-//     textAlign: 'center',
-//     margin: theme.spacing(5, 0),
-//   },
-//   highlightText: {
-//     backgroundColor: '#282c35',
-//     color: '#e3f2fd',
-//     padding: '2px 5px',
-//   },
-// }))
 
 const sortEntryByYear = (myArray: Entry[]) => {
   const entriesSortedByYear = myArray.reduce((groups, entry) => {
@@ -71,16 +25,12 @@ const sortEntryByYear = (myArray: Entry[]) => {
 
 const chunkArray = (myArray: Entry[], groupByYear: boolean, chunkSize = 15) => {
   if (groupByYear) {
-    // Group entries by year
-
     const entriesSortedByYear = sortEntryByYear(myArray)
     const history = Object.values(entriesSortedByYear)
     const groups = Object.keys(entriesSortedByYear)
 
     return { history, groups }
   } else {
-    // Default Page Grouping
-
     const arrayLength = myArray.length
     const tempArray = []
 
@@ -109,40 +59,55 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
 
   const renderButtons = () => {
     return (
-      <div>
-        <IconButton
-          aria-label={`Prev Button`}
+      <div className="flex justify-center my-4">
+        <button
           onClick={seePrevHistory}
           disabled={page === 0}
+          className={`p-2 rounded-full ${
+            page === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'
+          }`}
         >
-          <ChevronLeftIcon />
-        </IconButton>
-        <IconButton
-          aria-label={`Forward Button`}
+          <span>&lt;</span>
+        </button>
+        <button
           onClick={seeNextHistory}
           disabled={page === history.length - 1}
+          className={`p-2 rounded-full ml-4 ${
+            page === history.length - 1
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-blue-500'
+          }`}
         >
-          <ChevronRightIcon />
-        </IconButton>
+          <span>&gt;</span>
+        </button>
       </div>
     )
   }
 
   const renderGroupButtons = () => {
-    return groups.map((group, index) => {
-      return (
-        <button key={group} onClick={() => setPage(index)}>
-          {group}
-        </button>
-      )
-    })
+    return (
+      <div className="flex justify-center space-x-2 my-4">
+        {groups.map((group, index) => (
+          <button
+            key={group}
+            onClick={() => setPage(index)}
+            className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-400"
+          >
+            {group}
+          </button>
+        ))}
+      </div>
+    )
   }
 
   const renderSalaryInfo = (salaryData: SalaryRecord) => {
     const { year, amount, age } = salaryData
     return (
-      <p>
-        In the year {year}, your salary is <span>{formatCurrency(amount)}</span>{' '}
+      <p className="text-center text-gray-700 my-4">
+        In the year {year}, your salary is{' '}
+        <span className="bg-gray-800 text-blue-100 px-2 py-1 rounded">
+          {formatCurrency(amount)}
+        </span>{' '}
         (age: {age}).
       </p>
     )
@@ -152,56 +117,50 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
     <>
       {renderButtons()}
 
-      {groups && (
-        <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
-          {renderGroupButtons()}
-        </Box>
-      )}
+      {groups.length > 0 && renderGroupButtons()}
 
       {Boolean(salaryData[page]) && renderSalaryInfo(salaryData[page])}
 
-      <TableContainer component={Paper}>
-        <Table aria-label="CPF Forecast History">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell align="right">Ordinary Account</TableCell>
-              <TableCell align="right">Special Account</TableCell>
-              {data[1].retirementAccount !== undefined && (
-                <TableCell align="right">Retirement Account</TableCell>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 border-b">Date</th>
+              <th className="px-6 py-3 border-b">Category</th>
+              <th className="px-6 py-3 border-b text-right">
+                Ordinary Account
+              </th>
+              <th className="px-6 py-3 border-b text-right">Special Account</th>
+              {data[1]?.retirementAccount !== undefined && (
+                <th className="px-6 py-3 border-b text-right">
+                  Retirement Account
+                </th>
               )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
+            </tr>
+          </thead>
+          <tbody>
             {history[page]?.map((row, index) => (
-              <TableRow key={index + row.date}>
-                <TableCell component="th" scope="row">
-                  {row.date}
-                </TableCell>
-                <TableCell>{row.category}</TableCell>
-                <TableCell align="right">
+              <tr key={index + row.date}>
+                <td className="px-6 py-4 border-b">{row.date}</td>
+                <td className="px-6 py-4 border-b">{row.category}</td>
+                <td className="px-6 py-4 border-b text-right">
                   {formatCurrency(row.ordinaryAccount)}
-                </TableCell>
-                <TableCell align="right">
+                </td>
+                <td className="px-6 py-4 border-b text-right">
                   {formatCurrency(row.specialAccount)}
-                </TableCell>
+                </td>
                 {row.retirementAccount !== undefined && (
-                  <TableCell align="right">
+                  <td className="px-6 py-4 border-b text-right">
                     {formatCurrency(row.retirementAccount)}
-                  </TableCell>
+                  </td>
                 )}
-              </TableRow>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
 
-      {groups && (
-        <Box sx={{ display: { sm: 'block', xs: 'none' } }}>
-          {renderGroupButtons()}
-        </Box>
-      )}
+      {groups.length > 0 && renderGroupButtons()}
 
       {renderButtons()}
     </>

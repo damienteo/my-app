@@ -1,30 +1,5 @@
 import React, { useState } from 'react'
-import { styled } from '@mui/material/styles'
-import {
-  AccordionDetails,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  Select,
-  Snackbar,
-  TextField,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-} from '@mui/material/'
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-} from '@mui/material/AccordionSummary'
-import CloseIcon from '@mui/icons-material/Close'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { blue } from '@mui/material/colors/'
 import dayjs, { Dayjs } from 'dayjs'
-
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import {
   CurrencyInput,
   ExternalLink,
@@ -32,7 +7,6 @@ import {
   Paragraph,
   Section,
 } from '../../common'
-
 import {
   calculateFutureValues,
   roundTo2Dec,
@@ -46,102 +20,10 @@ import {
 import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
 import * as gtag from '../../../lib/gtag'
 
-const StyledAccordion = styled((props: AccordionProps) => (
-  <MuiAccordion {...props} />
-))(({ theme }) => ({
-  backgroundColor: blue[50],
-  color: '#282c35',
-  borderRadius: 10,
-  padding: 10,
-}))
-
-const StyledAccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary {...props} />
-))(({ theme }) => ({
-  padding: 0,
-  minHeight: 0,
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    minHeight: 0,
-  },
-  '& .MuiAccordionSummary-content': {
-    margin: 0,
-  },
-  '& .Mui-expanded': {
-    minHeight: 0,
-    margin: '0 0 -16px',
-  },
-  '& .MuiTypography-root': {
-    margin: 0,
-  },
-}))
-
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void
   setFutureValues: (values: FutureValues) => void
 }
-
-// const useStyles = makeStyles((theme) => ({
-//   paragraph: {
-//     margin: theme.spacing(0, 0, 1.5),
-//     color: '#282c35',
-//   },
-//   optionalSection: {
-//     backgroundColor: blue[100],
-//     padding: theme.spacing(0.25, 1),
-//     borderRadius: 5,
-//     marginTop: theme.spacing(2),
-//     [theme.breakpoints.down('xs')]: {
-//       '& .MuiInputBase-input': { padding: '20px 0 7px' },
-//       '& .MuiInputAdornment-root ': { marginTop: 15 },
-//     },
-//   },
-//   optionHeaderWrapper: {
-//     marginTop: theme.spacing(1.5),
-//   },
-//   optionHeader: {
-//     fontSize: '0.9rem',
-//     color: '#282c35',
-//   },
-//   inputWrapper: {
-//     padding: 10,
-//     '& .MuiFormControl-root': {
-//       width: '100%',
-//     },
-//   },
-//   checkboxWrapper: {
-//     padding: '0 10px 10px',
-//     '& .MuiFormControl-root': {
-//       width: '100%',
-//     },
-//     '& .MuiFormControlLabel-label': {
-//       fontSize: '0.75rem',
-//     },
-//   },
-//   buttonWrapper: {
-//     textAlign: 'center',
-//     margin: theme.spacing(1.5, 0),
-//   },
-//   button: {
-//     backgroundColor: cyan[800],
-//     '&:hover': {
-//       backgroundColor: cyan[600],
-//     },
-//   },
-//   longLabel: {
-//     [theme.breakpoints.down('xs')]: {
-//       '& .MuiInputBase-input': { padding: '20px 0 7px' },
-//       '& .MuiInputAdornment-root ': { marginTop: 15 },
-//     },
-//   },
-//   checkboxError: {
-//     color: '#f44336',
-//     marginTop: 0,
-//   },
-//   accordianDetails: {
-//     display: 'block',
-//     padding: 0,
-//   },
-// }))
 
 const minDate = dayjs().subtract(withdrawalAge, 'y')
 const maxDate = dayjs().subtract(16, 'y')
@@ -168,14 +50,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     dayjs()
   )
   const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
-
   const [errors, setErrors] = useState<ErrorValues>({})
-
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
 
   const validateValues = () => {
     const nextErrors = {} as ErrorValues
-
     Object.keys(values).map((field: string) => {
       if (parseFloat(values[field]) < 0) {
         nextErrors[field] = 'Please enter a value which is 0 or larger'
@@ -197,7 +76,6 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const nextValue = roundTo2Dec(event.target.value)
       setValues({ ...values, [field]: nextValue })
-
       const nextErrors = { ...errors }
       nextErrors[field] = undefined
       setErrors({ ...nextErrors })
@@ -207,8 +85,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     setSpecialAccountOnly(event.target.checked)
   }
 
-  // TODO: Fix typing
-  const handleDropdownChange = (event: any) => {
+  const handleDropdownChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const nextValues = { ...values }
     nextValues.bonusMonth = event.target.value
     setValues(nextValues)
@@ -242,7 +121,6 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     } as AccountValues
 
     if (isCorrectInput) {
-      // setCalculating to false refreshes breakdown in case new information needs to be displayed
       setCalculating(false)
       const nextFutureValues = calculateFutureValues(accountValues)
       setFutureValues(nextFutureValues)
@@ -278,15 +156,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </p>
           </InfoPopup>
         </p>
-        <Grid container>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {cpfAccounts.map((account) => (
-            <Grid
-              item
-              xs={12}
-              md={6}
-              //
-              key={account.field}
-            >
+            <div key={account.field}>
               <CurrencyInput
                 value={values[account.field]}
                 label={account.label}
@@ -295,9 +167,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 helperText={errors[account.field]}
                 handleChange={handleChange}
               />
-            </Grid>
+            </div>
           ))}
-        </Grid>
+        </div>
       </Section>
       <Section>
         <p>
@@ -307,7 +179,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <p>
               Members can withdraw their CPF retirement savings any time from{' '}
               {withdrawalAge} years old. The withdrawal of your CPF retirement
-              savings is optional. More info can be found can be found{' '}
+              savings is optional. More info can be found{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/member/infohub/educational-resources/heres-what-cpf-members-are-doing-with-their-cash-withdrawals-after-age-55"
                 label="here"
@@ -316,23 +188,17 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </p>
           </InfoPopup>
         </p>
-        <Grid container>
-          <Grid item xs={12} md={6}>
-            <DatePicker
-              value={selectedDate}
-              label="Date of Birth"
-              // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-              onChange={(date: any) => handleDateChange(date)}
-              inputFormat="D/MM/YYYY"
-              minDate={minDate}
-              maxDate={maxDate}
-              // views={['day', 'month', 'year']}
-              renderInput={(params) => <TextField {...params} />}
-              // minDateMessage={`This date means that you are already ${withdrawalAge} years old`}
-              // maxDateMessage="You need to be 16 years old and above to contribute to CPF"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            {/* Replace this with a custom date picker or use react-datepicker */}
+            <input
+              type="date"
+              value={selectedDate?.format('YYYY-MM-DD')}
+              onChange={(e) => handleDateChange(dayjs(e.target.value))}
+              className="w-full border border-gray-300 rounded p-2"
             />
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </Section>
       <Section>
         <p>
@@ -361,8 +227,8 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </p>
           </InfoPopup>
         </p>
-        <Grid container>
-          <Grid item xs={12} md={6}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
             <CurrencyInput
               value={values.monthlySalary}
               label="Monthly Salary (Optional)"
@@ -371,241 +237,36 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               helperText={errors.monthlySalary}
               handleChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
+          </div>
+          <div>
+            <input
+              type="number"
               value={values.salaryIncreaseRate}
-              label="Projected Salary % Increase/Year (Optional)"
-              error={Boolean(errors.salaryIncreaseRate)}
-              helperText={errors.salaryIncreaseRate}
               onChange={handleChange('salaryIncreaseRate')}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">%</InputAdornment>,
-              }}
-              variant="standard"
+              className="w-full border border-gray-300 rounded p-2"
+              placeholder="Projected Salary % Increase/Year (Optional)"
             />
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </Section>
 
-      <StyledAccordion TransitionProps={{ unmountOnExit: true }}>
-        <StyledAccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="additional-options"
-          id="additional-options"
+      <div className="my-4">
+        <button
+          className="bg-blue-600 text-white py-2 px-4 rounded"
+          onClick={handleSubmit}
         >
-          <p>Optional (Bonuses, Housing, etc)</p>
-        </StyledAccordionSummary>
-        <AccordionDetails>
-          {/* Option 1: Take Bonus in account */}
-          <Grid container>
-            <Grid item xs={12}>
-              <p>
-                1) CPF contribution from expected Bonus{' '}
-                <InfoPopup title="Bonuses Subject to CPF Contribution">
-                  <p>
-                    There is an{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/employer/faq/employer-obligations/what-payments-attract-cpf-contributions/how-do-i-calculate-the-additional-wage--aw--ceiling-and-the-amou"
-                      label="Additional Wage (AW) Ceiling"
-                    />{' '}
-                    that sets a maximum on the amount of bonus that are subject
-                    to CPF contribution.
-                  </p>
-                </InfoPopup>
-              </p>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                value={values.monthsOfBonus}
-                label="Estimated Yearly Bonus in Months (Optional)"
-                error={Boolean(errors.monthsOfBonus)}
-                helperText={errors.monthsOfBonus}
-                onChange={handleChange('monthsOfBonus')}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">months</InputAdornment>
-                  ),
-                }}
-                variant="standard"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControl variant="standard">
-                <InputLabel id="demo-simple-select-helper-label">
-                  Month in which Bonus is given (Optional)
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={values.bonusMonth}
-                  onChange={handleDropdownChange}
-                >
-                  {momentMonths.map((month) => (
-                    <MenuItem value={month.value}>{month.label}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          {/* Option 2: Use CPF as lump sum for Housing */}
-          <Grid container>
-            <Grid item xs={12}>
-              <p>
-                2) Use CPF to pay for Housing (Lump Sum){' '}
-                <InfoPopup title="Using CPF to buy Housing">
-                  <p>
-                    You may use funds in your CPF Ordinary Account to buy
-                    housing under the{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home"
-                      label="Housing Scheme"
-                    />
-                    .
-                  </p>
-                </InfoPopup>
-              </p>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CurrencyInput
-                value={values.housingLumpSum}
-                label="Lump Sum for Housing from CPF (Optional)"
-                field="housingLumpSum"
-                error={Boolean(errors.housingLumpSum)}
-                helperText={errors.housingLumpSum}
-                handleChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <DatePicker
-                value={housingLumpSumDate}
-                label="Date for Lump Sum Payment (Optional)"
-                // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-                onChange={(date: any) => handleHousingLumpSumDateChange(date)}
-                inputFormat="D/MM/YYYY"
-                disablePast
-                renderInput={(params) => <TextField {...params} />}
-                // minDateMessage={`This date is before the present`}
-              />
-            </Grid>
-          </Grid>
-          {/* Option 3: Use CPF as to pay for housing loan */}
-          <Grid container>
-            <Grid item xs={12}>
-              <p>
-                3) Use CPF to pay for Housing Loan{' '}
-                <InfoPopup title="Using CPF to buy Housing">
-                  <p>
-                    You may use funds in your CPF Ordinary Account to pay for
-                    the housing loan under the{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home"
-                      label="Housing Scheme"
-                    />
-                    .
-                  </p>
-                </InfoPopup>
-              </p>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CurrencyInput
-                value={values.housingMonthlyPayment}
-                label="Monthly Payment (Optional)"
-                field="housingMonthlyPayment"
-                error={Boolean(errors.housingMonthlyPayment)}
-                helperText={errors.housingMonthlyPayment}
-                handleChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                value={values.housingLoanTenure}
-                label="Loan Tenure - Years (Optional)"
-                error={Boolean(errors.housingLoanTenure)}
-                helperText={errors.housingLoanTenure}
-                onChange={handleChange('housingLoanTenure')}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">years</InputAdornment>
-                  ),
-                }}
-                variant="standard"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <DatePicker
-                value={housingLoanDate}
-                label="Date of first Monthly Payment (Optional)"
-                // TODO: Fix Type '(date: Dayjs) => void' is not assignable to type '(date: MaterialUiPickersDate, value?: string | null | undefined) => void'.
-                onChange={(date: any) => handleHousingLoanDateChange(date)}
-                inputFormat="D/MM/YYYY"
-                disablePast
-                renderInput={(params) => <TextField {...params} />}
-                // minDateMessage={`This date is before the present`}
-              />
-            </Grid>
-          </Grid>
-          {/* Option 4: Move all Ordinary Account money to Special Account */}
-          <Grid container>
-            <Grid item xs={12}>
-              <p>
-                4) Move all Ordinary Account value and future contributions to
-                Special Account (Optional){' '}
-                <InfoPopup title="Higher Interest Rate in Special Account">
-                  <p>
-                    You may{' '}
-                    <ExternalLink
-                      url="https://www.cpf.gov.sg/eSvc/Web/Schemes/OAToSATransfer/FundTransferRequest"
-                      label="transfer"
-                    />{' '}
-                    funds from your Ordinary Account to your Special Account up
-                    till the age of 55.
-                  </p>
-                </InfoPopup>
-              </p>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={specialAccountOnly}
-                    onChange={handleSelect}
-                    name="specialAccountOnly"
-                    color="primary"
-                  />
-                }
-                label="This is done to see the effect of the Special Account's higher interest rate (currently 4%), as compared to the Ordinary Account's Interest Rate (currently 2.5%)"
-              />
-              <FormHelperText>{errors.specialAccountOnly}</FormHelperText>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </StyledAccordion>
-
-      <div>
-        <button onClick={handleSubmit}>Forecast my CPF!</button>
+          Forecast my CPF!
+        </button>
       </div>
 
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        open={snackbarOpen}
-        autoHideDuration={1000}
-        onClose={handleSnackbarClose}
-        message="Success!"
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={handleSnackbarClose}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
+      {snackbarOpen && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded shadow-lg">
+          <span>Success!</span>
+          <button className="ml-2 text-white" onClick={handleSnackbarClose}>
+            &times;
+          </button>
+        </div>
+      )}
     </>
   )
 }

@@ -1,26 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Container, Drawer } from '@mui/material'
 import Head from 'next/head'
 // import { useRouter } from 'next/router'
 
 import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
 import { navLinks } from '../../constants'
-
-// const useStyles = makeStyles(() => ({
-//   drawer: {
-//     padding: 20,
-//     '& a': {
-//       display: 'block',
-//       margin: '10px 0',
-//     },
-//   },
-//   drawerWrapper: {
-//     backgroundColor: blue[50],
-//   },
-// }))
 
 type LayoutProps = {
   title?: string
@@ -61,18 +47,21 @@ const Layout: React.FunctionComponent<LayoutProps> = (props) => {
         {/* <link rel="canonical" href="https://www.damienteo.com" /> */}
       </Head>
       <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
-      <Container maxWidth="lg">{children}</Container>
-      <Drawer
-        open={isDrawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        // classes={{ paper: classes.drawerWrapper }}
-      >
-        <div className="bg-blue">
-          {navLinks.map(({ url, text }) => (
-            <ButtonLink key={url} url={url} text={text} />
-          ))}
+      <div className="container mx-auto max-w-screen-lg">{children}</div>
+      {isDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-blue-50 p-4 rounded-lg shadow-lg">
+            {navLinks.map(({ url, text }) => (
+              <ButtonLink
+                key={url}
+                url={url}
+                text={text}
+                // className="block my-2"
+              />
+            ))}
+          </div>
         </div>
-      </Drawer>
+      )}
     </>
   )
 }

@@ -10,27 +10,6 @@ interface PayoutAgeInfoProps {
   futureValues: FutureValues
 }
 
-// const useStyles = makeStyles((theme) => ({
-//   paragraph: {
-//     margin: theme.spacing(0, 0, 1.5),
-//     color: '#282c35',
-//   },
-//   addendum: {
-//     fontSize: '0.75rem',
-//     margin: theme.spacing(0, 0, 1.5),
-//     color: '#282c35',
-//   },
-//   image: {
-//     height: 'auto',
-//     width: '100%',
-//   },
-//   highlightText: {
-//     backgroundColor: '#282c35',
-//     color: '#e3f2fd',
-//     padding: '2px 5px',
-//   },
-// }))
-
 const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
   const { futureValues } = props
   const { comparisonValues } = futureValues
@@ -46,17 +25,25 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
 
   return (
     <>
-      <Paragraph>
+      <Paragraph className="my-6 text-[#282c35]">
         In {getYearsAndMonths(futureValues.monthsTillWithdrawal + 120)}, when
-        you are <span>{payoutAge} years old</span>, you will have{' '}
-        <span>{formatCurrency(futureValues.ordinaryAccount)}</span> in your
-        Ordinary Account ,{' '}
-        <span>{formatCurrency(futureValues.specialAccount)}</span> in your
-        Special Account, and{' '}
-        <span>{formatCurrency(futureValues.retirementAccount)}</span> in your
-        Retirement Account.
+        you are{' '}
+        <span className="bg-[#282c35] text-[#e3f2fd] px-1">{payoutAge}</span>{' '}
+        years old, you will have{' '}
+        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          {formatCurrency(futureValues.ordinaryAccount)}
+        </span>{' '}
+        in your Ordinary Account,{' '}
+        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          {formatCurrency(futureValues.specialAccount)}
+        </span>{' '}
+        in your Special Account, and{' '}
+        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          {formatCurrency(futureValues.retirementAccount)}
+        </span>{' '}
+        in your Retirement Account.
         <InfoPopup title="What is a Retirement Account?">
-          <Paragraph>
+          <Paragraph className="text-sm my-6 text-[#282c35]">
             On your 55th birthday, CPF will create a{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=retirement&group=Retirement+Sum+Scheme&ajfaqid=2190582&folderid=18088"
@@ -75,7 +62,7 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
             />{' '}
             from the age of 65.
           </Paragraph>
-          <Paragraph>
+          <Paragraph className="text-sm my-6 text-[#282c35]">
             * We have also made an assumption for the Full Retirement Sum based
             on{' '}
             <ExternalLink
@@ -91,15 +78,23 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
         </InfoPopup>
       </Paragraph>
       {comparisonValues && (
-        <Paragraph>
-          * Without housing loans, or transfering from OA to SA, you would have{' '}
-          <span>{formatCurrency(comparisonValues.ordinaryAccount)}</span> in
-          your Ordinary Account ,{' '}
-          <span>{formatCurrency(comparisonValues.specialAccount)}</span> in your
-          Special Account, and{' '}
-          <span>{formatCurrency(comparisonValues.retirementAccount)}</span> in
-          your Retirement Account. The sum of both these accounts is{' '}
-          <span>{formatCurrency(Math.abs(comparisonSum))}</span>{' '}
+        <Paragraph className="my-6 text-[#282c35]">
+          * Without housing loans, or transferring from OA to SA, you would have{' '}
+          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+            {formatCurrency(comparisonValues.ordinaryAccount)}
+          </span>{' '}
+          in your Ordinary Account ,{' '}
+          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+            {formatCurrency(comparisonValues.specialAccount)}
+          </span>{' '}
+          in your Special Account, and{' '}
+          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+            {formatCurrency(comparisonValues.retirementAccount)}
+          </span>{' '}
+          in your Retirement Account. The sum of both these accounts is{' '}
+          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+            {formatCurrency(Math.abs(comparisonSum))}
+          </span>{' '}
           {comparisonSum >= 0 ? 'more' : 'less'} than the sum of both accounts
           in your chosen scenario.
         </Paragraph>

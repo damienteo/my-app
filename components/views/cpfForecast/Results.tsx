@@ -11,19 +11,6 @@ interface ResultsProps {
   futureValues: FutureValues
 }
 
-// const useStyles = makeStyles((theme) => ({
-//   buttonWrapper: {
-//     textAlign: 'center',
-//     margin: theme.spacing(1.5, 0),
-//   },
-//   button: {
-//     backgroundColor: cyan[800],
-//     '&:hover': {
-//       backgroundColor: cyan[600],
-//     },
-//   },
-// }))
-
 const Results: React.FunctionComponent<ResultsProps> = (props) => {
   const { futureValues } = props
   const {
@@ -46,9 +33,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions up to 55 years old */}
         {history.length > 0 && (
-          <div>
+          <div className="text-center my-6">
             <button
-              // className={classes.button}
+              className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
               onClick={() => setHistoryOpen(!historyOpen)}
             >
               {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
@@ -62,9 +49,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistory}
             />
-            <div>
+            <div className="text-center my-6">
               <button
-                // className={classes.button}
+                className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
                 onClick={() => setHistoryOpen(!historyOpen)}
               >
                 {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
@@ -80,9 +67,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions from 55 to 65 years old */}
         {historyAfterWithdrawalAge.length > 0 && (
-          <div>
+          <div className="text-center my-6">
             <button
-              // className={classes.button}
+              className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
               onClick={() =>
                 setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
               }
@@ -99,9 +86,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistoryAfterWithdrawalAge}
             />
-            <div>
+            <div className="text-center my-6">
               <button
-                // className={classes.button}
+                className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
                 onClick={() =>
                   setHistoryAfterWithdrawalAgeOpen(
                     !historyAfterWithdrawalAgeOpen

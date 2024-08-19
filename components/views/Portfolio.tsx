@@ -1,26 +1,12 @@
 import React from 'react'
-import { Grid } from '@mui/material/'
 import Layout from '../layout/Layout'
 import { ExternalLink, Header, Paragraph } from '../common'
 
-// const useStyles = makeStyles((theme) => ({
-//   image: {
-//     width: '95%',
-//     objectFit: 'cover',
-//   },
-//   imageWrapper: {
-//     textAlign: 'center',
-//   },
-//   sectionWrapper: {
-//     margin: '30px 0',
-//   },
-//   textWrapper: {
-//     paddingLeft: 0,
-//     [theme.breakpoints.up('xs')]: {
-//       paddingLeft: 20,
-//     },
-//   },
-// }))
+// Tailwind CSS equivalents for the styles from useStyles:
+// - image: Applied width and objectFit styles
+// - imageWrapper: Applied text-align center style
+// - sectionWrapper: Applied margin
+// - textWrapper: Applied padding-left and responsive padding for larger screens
 
 const PortfolioPage: React.FunctionComponent = () => {
   return (
@@ -39,11 +25,15 @@ const PortfolioPage: React.FunctionComponent = () => {
       </Paragraph>
 
       {/* Payments Agreement Section */}
-      <Grid container>
-        <Grid item sm={6}>
-          <img src="/payments-agreement.png" alt="Payments Agreement Site" />
-        </Grid>
-        <Grid item sm={6}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+        <div className="text-center">
+          <img
+            src="/payments-agreement.png"
+            alt="Payments Agreement Site"
+            className="w-[95%] object-cover mx-auto"
+          />
+        </div>
+        <div className="pl-0 sm:pl-5">
           <Paragraph>
             I recently participated in blockchain.hack(). I{' '}
             <ExternalLink
@@ -82,15 +72,19 @@ const PortfolioPage: React.FunctionComponent = () => {
             />
             <br />
           </Paragraph>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
 
       {/* ThunderDome Section */}
-      <Grid container>
-        <Grid item sm={6}>
-          <img src="/thunderdome.png" alt="ThunderDome Chart" />
-        </Grid>
-        <Grid item sm={6}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+        <div className="text-center">
+          <img
+            src="/thunderdome.png"
+            alt="ThunderDome Chart"
+            className="w-[95%] object-cover mx-auto"
+          />
+        </div>
+        <div className="pl-0 sm:pl-5">
           <Paragraph>
             Current side project is{' '}
             <ExternalLink
@@ -109,7 +103,7 @@ const PortfolioPage: React.FunctionComponent = () => {
           <Paragraph>
             -{' '}
             <ExternalLink
-              url="https://github.com/damienteo/thunderdone-fe"
+              url="https://github.com/damienteo/thunderdome-fe"
               label="Frontend Repo"
             />
             <br />-{' '}
@@ -139,15 +133,19 @@ const PortfolioPage: React.FunctionComponent = () => {
             />
             <br />
           </Paragraph>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
 
       {/* Budget Planner Section */}
-      <Grid container>
-        <Grid item sm={6}>
-          <img src="/budget-planner.png" alt="Budget Planner Chart" />
-        </Grid>
-        <Grid item sm={6}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+        <div className="text-center">
+          <img
+            src="/budget-planner.png"
+            alt="Budget Planner Chart"
+            className="w-[95%] object-cover mx-auto"
+          />
+        </div>
+        <div className="pl-0 sm:pl-5">
           <Paragraph>
             One of my major side-projects is the{' '}
             <ExternalLink
@@ -166,15 +164,19 @@ const PortfolioPage: React.FunctionComponent = () => {
             />
             .
           </Paragraph>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
 
       {/* Fireman Game Section */}
-      <Grid container>
-        <Grid item sm={6}>
-          <img src="/fireman-game.png" alt="Fireman Game Image" />
-        </Grid>
-        <Grid item sm={6}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+        <div className="text-center">
+          <img
+            src="/fireman-game.png"
+            alt="Fireman Game Image"
+            className="w-[95%] object-cover mx-auto"
+          />
+        </div>
+        <div className="pl-0 sm:pl-5">
           <Paragraph>
             Created a game (
             <ExternalLink
@@ -191,8 +193,8 @@ const PortfolioPage: React.FunctionComponent = () => {
             />
             ).
           </Paragraph>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </Layout>
   )
 }

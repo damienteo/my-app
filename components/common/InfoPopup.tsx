@@ -1,80 +1,76 @@
 import React from 'react'
-import { Dialog, IconButton, IconButtonProps } from '@mui/material'
-import MuiDialogTitle, {
-  DialogTitleProps as MUIDialogTitleProps,
-} from '@mui/material/DialogTitle'
-import MuiDialogContent from '@mui/material/DialogContent'
-import CloseIcon from '@mui/icons-material/Close'
-import InfoIcon from '@mui/icons-material/Info'
-import { blue } from '@mui/material/colors/'
 
-interface DialogButtonProps extends IconButtonProps {
+interface DialogButtonProps {
   title: string
-  iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
+  iconColor?: string
   handleClickOpen: () => void
 }
 
-interface DialogTitleProps extends MUIDialogTitleProps {
+interface DialogTitleProps {
   onClose: () => void
   children: React.ReactNode
 }
 
 interface InfoPopupProps {
   title: string
-  iconColor?: 'inherit' | 'default' | 'primary' | 'secondary' | undefined
+  iconColor?: string
   children: React.ReactNode
 }
 
-// const useStyles = makeStyles((theme: Theme) => ({
-//   root: {
-//     margin: 0,
-//     padding: theme.spacing(2),
-//   },
-//   closeButton: {
-//     position: 'absolute',
-//     right: theme.spacing(1),
-//     top: theme.spacing(1),
-//     color: theme.palette.grey[500],
-//   },
-//   openButton: {
-//     padding: 0,
-//     marginTop: `-${theme.spacing(1)}px`,
-//   },
-//   content: {
-//     padding: theme.spacing(2),
-//   },
-// }))
-
 const DialogButton = (props: DialogButtonProps) => {
-  const { title, handleClickOpen, iconColor = 'primary' } = props
+  const { title, handleClickOpen, iconColor = 'text-blue-900' } = props
   return (
-    <IconButton
+    <button
       aria-label={`${title} info`}
-      color={iconColor}
-      className="p-[0] mt-[-3]"
+      className={`p-0 mt-[-3px] ${iconColor}`}
       onClick={handleClickOpen}
-      sx={{ color: blue[900] }}
     >
-      <InfoIcon />
-    </IconButton>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M13 16h-1v-4h-1m1-4h.01M12 19c-4.418 0-8-1.79-8-4s3.582-4 8-4 8 1.79 8 4-3.582 4-8 4z"
+        />
+      </svg>
+    </button>
   )
 }
 
 const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props
   return (
-    <MuiDialogTitle className="m-[0] p-2" {...other}>
+    <div className="relative m-0 p-2" {...other}>
       <p>{children}</p>
       {onClose ? (
-        <IconButton
+        <button
           aria-label="close"
-          className="absolute right[1] top-[1] text-gray"
+          className="absolute right-4 top-4 text-gray-500"
           onClick={onClose}
         >
-          <CloseIcon />
-        </IconButton>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       ) : null}
-    </MuiDialogTitle>
+    </div>
   )
 }
 
@@ -92,18 +88,14 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
   return (
     <>
       <DialogButton handleClickOpen={handleClickOpen} {...props} />
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {title}
-        </DialogTitle>
-        <MuiDialogContent dividers className="p-2">
-          {children}
-        </MuiDialogContent>
-      </Dialog>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg w-1/3">
+            <DialogTitle onClose={handleClose}>{title}</DialogTitle>
+            <div className="p-4">{children}</div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
