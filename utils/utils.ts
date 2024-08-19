@@ -9,7 +9,11 @@ export const getYearsAndMonths = (value: number) => {
   return `${months} ${monthString}`
 }
 
-const currencyOptions = { style: 'currency', currency: 'USD' }
+const currencyOptions: Intl.NumberFormatOptions = {
+  style: 'currency',
+  currency: 'USD',
+}
+
 const currencyFormat = new Intl.NumberFormat('en-US', currencyOptions)
 
 export const formatCurrency = (value: number) => {
