@@ -4,10 +4,16 @@ import './globals.css'
 
 import React, { useState } from 'react'
 // import Script from 'next/script'
+import localFont from 'next/font/local'
 
 import NavBar from './components/layout/Navbar'
 import { ButtonLink } from './components/common'
 import { navLinks } from '../constants'
+
+const poppins = localFont({
+  src: '../public/fonts/poppins.woff2',
+  weight: 'normal',
+})
 
 export default function RootLayout({
   children,
@@ -18,7 +24,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className={poppins.className}>
         {/* Navbar */}
         <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
 

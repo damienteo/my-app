@@ -4,7 +4,10 @@
 
 /* Global styles */
 body {
-  @apply bg-[#282c35] text-white m-0 font-sans; /* Background, text color, and margin reset */
+  @apply bg-[#282c35] text-white m-0 font-sans;
+  /* background-color: #282c35;
+  color: white;
+  margin: 0; */
 }
 
 /* Utility for balanced text wrapping */
