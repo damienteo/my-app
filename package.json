@@ -12,8 +12,7 @@
     "start": "next start -p $PORT",
     "test": "jest",
     "lint": "tsc --noEmit && eslint '*/**/*.{ts,tsx}' --quiet --fix",
-    "prettier-format": "prettier --config .prettierrc '*/**/*.{ts,tsx}' --write",
-    "heroku-postbuild": "npm run build"
+    "prettier-format": "prettier --config .prettierrc '*/**/*.{ts,tsx}' --write"
   },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
