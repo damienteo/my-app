@@ -2,34 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
-
+/* Global styles */
 body {
-  /* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
-
-  margin: 0;
-  background: #282c35;
-  color: #ffffff;
+  @apply bg-[#282c35] text-white m-0 font-sans; /* Background, text color, and margin reset */
 }
 
+/* Utility for balanced text wrapping */
 @layer utilities {
   .text-balance {
     text-wrap: balance;

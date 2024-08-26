@@ -10,10 +10,11 @@ import { ExternalLink, Header, Paragraph } from '../common'
 
 const PortfolioPage: React.FunctionComponent = () => {
   return (
-    <Layout
-      title="Damien Teo's Portfolio"
-      description="Here are some small side projects which Damien Teo has previously done."
-    >
+    // <Layout
+    //   title="Damien Teo's Portfolio"
+    //   description="Here are some small side projects which Damien Teo has previously done."
+    // >
+    <>
       <Header text="Portfolio" />
       <Paragraph>
         For my resume, you may refer to my{' '}
@@ -195,7 +196,7 @@ const PortfolioPage: React.FunctionComponent = () => {
           </Paragraph>
         </div>
       </div>
-    </Layout>
+    </>
   )
 }
 

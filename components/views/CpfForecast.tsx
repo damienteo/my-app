@@ -27,10 +27,11 @@ const CPFForecastPage = () => {
   })
 
   return (
-    <Layout
-      title="CPF Forecast"
-      description="CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"
-    >
+    // <Layout
+    //   title="CPF Forecast"
+    //   description="CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"
+    // >
+    <>
       <Intro />
 
       <Paragraph className="my-2 mx-0">
@@ -66,7 +67,7 @@ const CPFForecastPage = () => {
       {isCalculating && <Results futureValues={futureValues} />}
 
       <div className="h-5" />
-    </Layout>
+    </>
   )
 }
 

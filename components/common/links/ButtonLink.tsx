@@ -1,17 +1,30 @@
 import React from 'react'
 import Link from 'next/link'
 
+interface ButtonLinkProps {
+  url: string
+  text: string
+  component?: React.ReactNode
+}
+
+export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
+  url,
+  text,
+}) => {
+  return (
+    <Link href={url} as={url}>
+      <button className="block my-2 text-gray-900 hover:text-blue-500 hover:bg-[#282c35] transition-colors duration-300">
+        {text}
+      </button>
+    </Link>
+  )
+}
+
 type NextLinkProps = {
   className: string
   href: string
   hrefAs: string
   children: React.ReactNode
-}
-
-interface ButtonLinkProps {
-  url: string
-  text: string
-  component?: React.ReactNode
 }
 
 export const NextLink: React.FunctionComponent<NextLinkProps> = ({
@@ -24,20 +37,3 @@ export const NextLink: React.FunctionComponent<NextLinkProps> = ({
     {children}
   </Link>
 )
-
-export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
-  url,
-  text,
-}) => {
-  return (
-    <Link href={url} as={url}>
-      <button
-        // href={url}
-        color="inherit"
-        className="hover:bg-[#282c35] hover:text-[#FFFFFF]"
-      >
-        {text}
-      </button>
-    </Link>
-  )
-}

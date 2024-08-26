@@ -4,12 +4,13 @@ import { ExternalLink, Header, Paragraph } from '../common'
 
 const AboutPage = () => {
   return (
-    <Layout
-      title="About Damien Teo"
-      description="Damien Teo is a peasant who enjoys working with intelligent
-    machines. Previously, he was a police officer. Now, he work in the tech
-    industry."
-    >
+    // <Layout
+    //   title="About Damien Teo"
+    //   description="Damien Teo is a peasant who enjoys working with intelligent
+    // machines. Previously, he was a police officer. Now, he work in the tech
+    // industry."
+    // >
+    <>
       <Header text="About" />
       <Paragraph>
         Hi, I am a peasant who enjoys working with intelligent machines.
@@ -42,7 +43,7 @@ const AboutPage = () => {
         I can be contacted on{' '}
         <ExternalLink url="https://github.com/damienteo" label="Github" />.
       </Paragraph>
-    </Layout>
+    </>
   )
 }
 
