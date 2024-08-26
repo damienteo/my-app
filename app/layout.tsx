@@ -5,8 +5,8 @@ import './globals.css'
 import React, { useState } from 'react'
 // import Script from 'next/script'
 
-import NavBar from '../components/layout/Navbar'
-import { ButtonLink } from '../components/common'
+import NavBar from './components/layout/Navbar'
+import { ButtonLink } from './components/common'
 import { navLinks } from '../constants'
 
 export default function RootLayout({

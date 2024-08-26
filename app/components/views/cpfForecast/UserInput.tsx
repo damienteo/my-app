@@ -10,15 +10,15 @@ import {
 import {
   calculateFutureValues,
   roundTo2Dec,
-} from '../../../utils/cpf/cpfForecast'
+} from '../../../../utils/cpf/cpfForecast'
 import {
   ErrorValues,
   Values,
   AccountValues,
   FutureValues,
-} from '../../../utils/cpf/types'
-import { cpfAccounts, momentMonths, withdrawalAge } from '../../../constants'
-import * as gtag from '../../../lib/gtag'
+} from '../../../../utils/cpf/types'
+import { cpfAccounts, momentMonths, withdrawalAge } from '../../../../constants'
+import * as gtag from '../../../../lib/gtag'
 
 interface UserInputProps {
   setCalculating: (isCalculating: boolean) => void

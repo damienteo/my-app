@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react'
 import { ButtonLink } from '../common/links'
-import { navLinks } from '../../constants'
+import { navLinks } from '../../../constants'
 
 const NavBar: React.FunctionComponent<{
   setDrawerOpen: (event: MouseEvent) => void
