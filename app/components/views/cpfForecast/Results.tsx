@@ -5,7 +5,7 @@ import HistoryTable from './results/HistoryTable'
 import WithdrawalAgeInfo from './results/WithdrawalAgeInfo'
 import PayoutAgeInfo from './results/PayoutAgeInfo'
 
-import { FutureValues } from '../../../utils/cpf/types'
+import { FutureValues } from '../../../../utils/cpf/types'
 
 interface ResultsProps {
   futureValues: FutureValues

@@ -6,7 +6,7 @@ import Head from 'next/head'
 
 import NavBar from './Navbar'
 import { ButtonLink } from '../common/links/ButtonLink'
-import { navLinks } from '../../constants'
+import { navLinks } from '../../../constants'
 
 type LayoutProps = {
   title?: string
