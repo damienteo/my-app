@@ -7,7 +7,7 @@ import { ExternalLink, InfoPopup, Paragraph } from '../components/common'
 import UserInput from '../components/views/cpfForecast/UserInput'
 import Intro from '../components/views/cpfForecast/Intro'
 import Results from '../components/views/cpfForecast/Results'
-import { FutureValues } from '../../utils/cpf/types'
+import { FutureValues } from '@/utils/cpf/types'
 
 const CPFForecastPage = () => {
   const [isCalculating, setCalculating] = useState<boolean>(false)

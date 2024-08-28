@@ -21,7 +21,7 @@ const AboutPage = () => {
         <ExternalLink url="https://reactjs.org/" label="React.js" />
         , <ExternalLink url="https://nextjs.org/" label="Next.js" />, and{' '}
         <ExternalLink url="https://material-ui.com/" label="Material UI" />.
-        Essentially, it's just Javascript (with{' '}
+        Essentially, it`&apos;`s just Javascript (with{' '}
         <ExternalLink
           url="https://www.typescriptlang.org/"
           label="Typescript"
