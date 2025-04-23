@@ -18,27 +18,14 @@ interface InfoPopupProps {
 }
 
 const DialogButton = (props: DialogButtonProps) => {
-  const { title, handleClickOpen, iconColor = 'text-blue-900' } = props
+  const { title, handleClickOpen, iconColor = 'text-black' } = props
   return (
     <button
       aria-label={`${title} info`}
-      className={`p-0 mt-[-3px] ${iconColor}`}
+      className={`p-0 ${iconColor} mx-1 mt-1 h-6 w-6 bg-white rounded-full cursor-pointer`}
       onClick={handleClickOpen}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M12 19c-4.418 0-8-1.79-8-4s3.582-4 8-4 8 1.79 8 4-3.582 4-8 4z"
-        />
-      </svg>
+      i
     </button>
   )
 }
@@ -46,7 +33,7 @@ const DialogButton = (props: DialogButtonProps) => {
 const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props
   return (
-    <div className="relative m-0 p-2" {...other}>
+    <div className="relative m-0 p-2 text-black" {...other}>
       {children}
       {onClose ? (
         <button

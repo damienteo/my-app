@@ -1,7 +1,15 @@
 import React from 'react'
 
-const Header: React.FunctionComponent<{ text: string }> = ({ text }) => {
-  return <h1 className="text-2xl font-bold mb-2">{text}</h1>
+interface HeaderProps {
+  text: string
+  className?: string
+}
+
+const Header: React.FunctionComponent<HeaderProps> = ({
+  text,
+  className = 'mb-2',
+}) => {
+  return <h1 className={`text-2xl font-bold ${className ?? ''}`}>{text}</h1>
 }
 
 export default Header
