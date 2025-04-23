@@ -10,10 +10,6 @@ export const metadata: Metadata = {
 
 const PortfolioPage: React.FunctionComponent = () => {
   return (
-    // <Layout
-    //   title="Damien Teo's Portfolio"
-    //   description="Here are some small side projects which Damien Teo has previously done."
-    // >
     <>
       <div className="px-2 sm:px-4">
         <Header text="Portfolio" />

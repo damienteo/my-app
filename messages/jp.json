@@ -1,6 +1,38 @@
 {
-  "HomePage": {
-    "title": "こんにちわ",
-    "about": "こんにちわこんにちわ"
+  "AboutPage": {
+    "header": "アバウト",
+    "starter": "私は、知的な機械と働くのが好きな平民です。以前は警察官でした。今はテック業界で働いています。",
+    "library": {
+      "start": "このサイトは、",
+      "mid": "",
+      "previously": "以前は",
+      "end": "を使って作成しました。"
+    },
+    "programmingLanguage": {
+      "start": "基本的には、Javascript (",
+      "connector": "",
+      "end": "でできています。"
+    },
+    "testing": {
+      "start": "テストは",
+      "end": "で行っています。"
+    },
+    "learning": {
+      "solidity": {
+        "start": "",
+        "end": "を勉強していました。"
+      },
+      "github": {
+        "start": "この",
+        "repo": "リポジトリ",
+        "end": "で記録しています"
+      },
+      "japanese": "。今は日本語も勉強しています。2025年7月にJLPT N4に合格し、12月にはN3にも合格したいと思っています。"
+    },
+    "contact": {
+      "start": "",
+      "connector": "と",
+      "end": "で連絡できます。"
+    }
   }
 }

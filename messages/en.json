@@ -1,6 +1,39 @@
 {
-  "HomePage": {
-    "title": "Hello world!",
-    "about": "Go to the about page"
+  "AboutPage": {
+    "navlink": "about",
+    "header": "About",
+    "starter": "Hi, I am a peasant who enjoys working with intelligent machines. Previously, I was a police officer. Now, I work in the tech industry.",
+    "library": {
+      "start": "This site was created with a mixture of: ",
+      "mid": "and ",
+      "previously": "previously",
+      "end": "."
+    },
+    "programmingLanguage": {
+      "start": "Essentially, it’s just Javascript (with ",
+      "connector": "and",
+      "end": "."
+    },
+    "testing": {
+      "start": "Testing is done with ",
+      "end": "."
+    },
+    "learning": {
+      "solidity": {
+        "start": "I was learning ",
+        "end": ""
+      },
+      "github": {
+        "start": "documenting my progress in this ",
+        "repo": "repository",
+        "end": ""
+      },
+      "japanese": ", and now I am also learning Japanese. I hope to pass the JLPT N4 exam in July 2025, and the N3 exam subsequently in December 2025."
+    },
+    "contact": {
+      "start": "I can be contacted on ",
+      "connector": "and ",
+      "end": "."
+    }
   }
 }
