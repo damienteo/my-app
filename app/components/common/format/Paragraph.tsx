@@ -7,7 +7,7 @@ interface ParagraphProps {
 
 const Paragraph: React.FC<ParagraphProps> = ({ children, className }) => {
   // Combine the default styles with any additional className passed as a prop
-  const paragraphClassName = `my-2 ${className ?? ''}`
+  const paragraphClassName = `mb-2 ${className ?? ''}`
 
   return <p className={paragraphClassName}>{children}</p>
 }
