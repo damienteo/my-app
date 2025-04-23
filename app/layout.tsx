@@ -3,12 +3,12 @@
 import './globals.css'
 
 import React, { useState } from 'react'
-// import Script from 'next/script'
 import localFont from 'next/font/local'
 
 import NavBar from './components/layout/Navbar'
 import { ButtonLink } from './components/common'
-import { navLinks } from '../constants'
+
+import { navLinks } from '@/constants'
 
 const poppins = localFont({
   src: '../public/fonts/poppins.woff2',
@@ -35,11 +35,25 @@ export default function RootLayout({
 
         {/* Mobile Drawer */}
         {isDrawerOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-blue-50 p-4 rounded-lg shadow-lg text-gray-900">
-              {navLinks.map(({ url, text }) => (
-                <ButtonLink key={url} url={url} text={text} />
-              ))}
+          <div className="fixed inset-0 z-50 flex">
+            {/* Overlay */}
+            <div
+              className="flex-1 bg-black opacity-30"
+              onClick={() => setDrawerOpen(false)} // Close drawer when clicking outside
+            ></div>
+
+            {/* Side Drawer */}
+            <div
+              className={`fixed top-0 left-0 h-full bg-blue-900 p-4 pr-6 shadow-lg transform transition-transform ${
+                isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+              }`}
+            >
+              {/* Navigation Links */}
+              <nav className="space-y-2">
+                {navLinks.map(({ url, text }) => (
+                  <ButtonLink key={url} url={url} text={text} />
+                ))}
+              </nav>
             </div>
           </div>
         )}

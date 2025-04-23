@@ -12,7 +12,7 @@ const NavBar: React.FunctionComponent<{
         <button
           className="text-white mr-2 md:hidden"
           aria-label="menu"
-          // onClick={props.setDrawerOpen}
+          onClick={props.setDrawerOpen}
         >
           <div className="space-y-1">
             <span className="block w-6 h-0.5 bg-white"></span>
