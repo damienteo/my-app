@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from '../components/layout/Layout'
 import { ExternalLink, Header, Paragraph } from '../components/common'
 
 const AboutPage = () => {
@@ -10,7 +9,7 @@ const AboutPage = () => {
     // machines. Previously, he was a police officer. Now, he work in the tech
     // industry."
     // >
-    <>
+    <div className="max-w-3xl mx-auto px-4 md:py-8">
       <Header text="About" />
       <Paragraph>
         Hi, I am a peasant who enjoys working with intelligent machines.
@@ -43,7 +42,7 @@ const AboutPage = () => {
         I can be contacted on{' '}
         <ExternalLink url="https://github.com/damienteo" label="Github" />.
       </Paragraph>
-    </>
+    </div>
   )
 }
 

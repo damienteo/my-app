@@ -47,7 +47,7 @@ const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props
   return (
     <div className="relative m-0 p-2" {...other}>
-      <p>{children}</p>
+      {children}
       {onClose ? (
         <button
           aria-label="close"
