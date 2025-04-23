@@ -32,11 +32,11 @@ export default async function RootLayout({
         <NavBar />
 
         {/* Main Content */}
-        {/* <NextIntlClientProvider locale={locale}> */}
-        <body className=" mx-auto min-h-screen max-w-screen-lg pt-20 sm:pt-24 pb-8 px-4 md:px-0">
-          {children}
-        </body>
-        {/* </NextIntlClientProvider> */}
+        <NextIntlClientProvider locale={locale}>
+          <div className=" mx-auto min-h-screen max-w-screen-lg pt-20 sm:pt-24 pb-8 px-4 md:px-0">
+            {children}
+          </div>
+        </NextIntlClientProvider>
 
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         {/* 
