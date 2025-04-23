@@ -13,7 +13,7 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
 }) => {
   return (
     <Link href={url} as={url}>
-      <button className="block my-2 text-white hover:text-blue-500 hover:bg-[#282c35] transition-colors duration-300">
+      <button className="block my-2 text-white hover:bg-[#282c35] transition-colors duration-300 rounded-lg px-3 py-2">
         {text}
       </button>
     </Link>

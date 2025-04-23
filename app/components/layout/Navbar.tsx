@@ -7,7 +7,7 @@ const NavBar: React.FunctionComponent<{
 }> = (props) => {
   return (
     <div className="w-full bg-blue-900">
-      <nav className="flex items-center justify-between px-4 py-2">
+      <nav className="flex items-center justify-between px-4 py-1">
         {/* Menu button for mobile view */}
         <button
           className="text-white mr-2 md:hidden"
@@ -25,7 +25,7 @@ const NavBar: React.FunctionComponent<{
         <div className="text-white text-lg">Damien Teo's Site</div>
 
         {/* Navigation links for desktop view */}
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-1">
           {navLinks.map(({ url, text }) => (
             <ButtonLink key={url} url={url} text={text} />
           ))}
