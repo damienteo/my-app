@@ -10,15 +10,11 @@ const NavBar: React.FunctionComponent<{
       <nav className="flex items-center justify-between px-4 md:py-1 py-3">
         {/* Menu button for mobile view */}
         <button
-          className="text-white mr-2 md:hidden"
+          className="text-white text-sm border border-white px-3 py-1 rounded md:hidden"
           aria-label="menu"
           onClick={props.setDrawerOpen}
         >
-          <div className="space-y-1">
-            <span className="block w-6 h-0.5 bg-white"></span>
-            <span className="block w-6 h-0.5 bg-white"></span>
-            <span className="block w-6 h-0.5 bg-white"></span>
-          </div>
+          Menu
         </button>
 
         {/* Site title */}
