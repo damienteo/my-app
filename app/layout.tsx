@@ -29,7 +29,7 @@ export default function RootLayout({
         <NavBar setDrawerOpen={() => setDrawerOpen(!isDrawerOpen)} />
 
         {/* Main Content */}
-        <div className="container mx-auto max-w-screen-lg py-8 px-4 md:px-0">
+        <div className=" mx-auto min-h-screen max-w-screen-lg pt-20 sm:pt-24 pb-8 px-4 md:px-0">
           {children}
         </div>
 
