@@ -1,9 +1,12 @@
 import React from 'react'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
-import { FutureValues } from '../../../../../utils/cpf/types'
-import { getYearsAndMonths, formatCurrency } from '../../../../../utils/utils'
-import { withdrawalAge } from '../../../../../constants'
+import { FutureValues } from '../../../../../../../utils/cpf/types'
+import {
+  getYearsAndMonths,
+  formatCurrency,
+} from '../../../../../../../utils/utils'
+import { withdrawalAge } from '../../../../../../../constants'
 
 interface WithdrawalAgeInfoProps {
   futureValues: FutureValues

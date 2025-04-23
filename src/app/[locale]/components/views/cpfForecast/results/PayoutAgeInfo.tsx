@@ -2,9 +2,12 @@ import React from 'react'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
 
-import { FutureValues } from '../../../../../utils/cpf/types'
-import { getYearsAndMonths, formatCurrency } from '../../../../../utils/utils'
-import { payoutAge } from '../../../../../constants'
+import { FutureValues } from '../../../../../../../utils/cpf/types'
+import {
+  getYearsAndMonths,
+  formatCurrency,
+} from '../../../../../../../utils/utils'
+import { payoutAge } from '../../../../../../../constants'
 
 interface PayoutAgeInfoProps {
   futureValues: FutureValues

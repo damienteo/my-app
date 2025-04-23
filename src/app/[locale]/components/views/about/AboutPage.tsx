@@ -1,7 +1,10 @@
 import React from 'react'
+import { useTranslations } from 'next-intl'
+
 import { ExternalLink, Header, Paragraph } from '../../common'
 
 const AboutPage = () => {
+  const t = useTranslations('HomePage')
   return (
     // <Layout
     //   title="About Damien Teo"
@@ -11,6 +14,7 @@ const AboutPage = () => {
     // >
     <div className="max-w-3xl mx-auto px-4 md:py-8 text-justify">
       <Header text="About" />
+      <Paragraph>{t('title')}</Paragraph>
       <Paragraph>
         Hi, I am a peasant who enjoys working with intelligent machines.
         Previously, I was a police officer. Now, I work in the tech industry.

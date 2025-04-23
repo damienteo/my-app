@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
-import { formatCurrency } from '../../../../../utils/utils'
-import { Entry, GroupsType, SalaryRecord } from '../../../../../utils/cpf/types'
+import { formatCurrency } from '../../../../../../../utils/utils'
+import {
+  Entry,
+  GroupsType,
+  SalaryRecord,
+} from '../../../../../../../utils/cpf/types'
 
 interface HistoryTableProps {
   data: Entry[]
