@@ -22,9 +22,7 @@ const NavBar: React.FunctionComponent<{
         </button>
 
         {/* Site title */}
-        <div className="text-white text-lg font-semibold">
-          Damien Teo's Site
-        </div>
+        <div className="text-white text-lg">Damien Teo's Site</div>
 
         {/* Navigation links for desktop view */}
         <div className="hidden md:flex space-x-4">
