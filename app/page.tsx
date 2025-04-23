@@ -43,9 +43,6 @@ const AboutPage = () => {
         I can be contacted on{' '}
         <ExternalLink url="https://github.com/damienteo" label="Github" />.
       </Paragraph>
-      <div className="bg-gray-900 text-white">
-        <p className="text-blue-500">Hello, Tailwind!</p>
-      </div>
     </>
   )
 }
