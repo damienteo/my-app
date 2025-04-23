@@ -1,12 +1,6 @@
 import React from 'react'
 import { ExternalLink, Header, Paragraph } from '../components/common'
 
-// Tailwind CSS equivalents for the styles from useStyles:
-// - image: Applied width and objectFit styles
-// - imageWrapper: Applied text-align center style
-// - sectionWrapper: Applied margin
-// - textWrapper: Applied padding-left and responsive padding for larger screens
-
 const PortfolioPage: React.FunctionComponent = () => {
   return (
     // <Layout
@@ -14,26 +8,28 @@ const PortfolioPage: React.FunctionComponent = () => {
     //   description="Here are some small side projects which Damien Teo has previously done."
     // >
     <>
-      <Header text="Portfolio" />
-      <Paragraph>
-        For my resume, you may refer to my{' '}
-        <ExternalLink
-          url="https://www.linkedin.com/in/damien-teo/"
-          label="LinkedIn"
-        />{' '}
-        profile
-      </Paragraph>
+      <div className="px-2 sm:px-4">
+        <Header text="Portfolio" />
+        <Paragraph className="sm:mb-4">
+          For my resume, you may refer to my{' '}
+          <ExternalLink
+            url="https://www.linkedin.com/in/damien-teo/"
+            label="LinkedIn"
+          />{' '}
+          profile
+        </Paragraph>
+      </div>
 
       {/* Payments Agreement Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4 mb-8 text-justify">
         <div className="text-center">
           <img
             src="/payments-agreement.png"
             alt="Payments Agreement Site"
-            className="w-[95%] object-cover mx-auto"
+            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
           />
         </div>
-        <div className="pl-0 sm:pl-5">
+        <div className="px-2 sm:pl-5">
           <Paragraph>
             I recently participated in blockchain.hack(). I{' '}
             <ExternalLink
@@ -76,15 +72,15 @@ const PortfolioPage: React.FunctionComponent = () => {
       </div>
 
       {/* ThunderDome Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
           <img
             src="/thunderdome.png"
             alt="ThunderDome Chart"
-            className="w-[95%] object-cover mx-auto"
+            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
           />
         </div>
-        <div className="pl-0 sm:pl-5">
+        <div className="px-2 sm:pl-5">
           <Paragraph>
             Current side project is{' '}
             <ExternalLink
@@ -137,15 +133,15 @@ const PortfolioPage: React.FunctionComponent = () => {
       </div>
 
       {/* Budget Planner Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
           <img
             src="/budget-planner.png"
             alt="Budget Planner Chart"
-            className="w-[95%] object-cover mx-auto"
+            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
           />
         </div>
-        <div className="pl-0 sm:pl-5">
+        <div className="px-2 sm:pl-5">
           <Paragraph>
             One of my major side-projects is the{' '}
             <ExternalLink
@@ -168,15 +164,15 @@ const PortfolioPage: React.FunctionComponent = () => {
       </div>
 
       {/* Fireman Game Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
           <img
             src="/fireman-game.png"
             alt="Fireman Game Image"
-            className="w-[95%] object-cover mx-auto"
+            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
           />
         </div>
-        <div className="pl-0 sm:pl-5">
+        <div className="px-2 sm:pl-5">
           <Paragraph>
             Created a game (
             <ExternalLink
