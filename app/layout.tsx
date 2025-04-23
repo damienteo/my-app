@@ -44,7 +44,7 @@ export default function RootLayout({
 
             {/* Side Drawer */}
             <div
-              className={`fixed top-0 left-0 h-full bg-blue-900 p-4 pr-6 shadow-lg transform transition-transform ${
+              className={`fixed top-0 left-0 h-full bg-blue-900 p-4 pr-6 shadow-lg transform transition-all duration-300 ${
                 isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
               }`}
             >
