@@ -51,7 +51,12 @@ export default function RootLayout({
               {/* Navigation Links */}
               <nav className="space-y-2">
                 {navLinks.map(({ url, text }) => (
-                  <ButtonLink key={url} url={url} text={text} />
+                  <ButtonLink
+                    key={url}
+                    url={url}
+                    text={text}
+                    onClick={() => setDrawerOpen(false)}
+                  />
                 ))}
               </nav>
             </div>
