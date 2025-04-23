@@ -7,12 +7,12 @@ const NavBar: React.FunctionComponent<{
 }> = (props) => {
   return (
     <div className="w-full bg-blue-900">
-      <nav className="flex items-center justify-between px-4 py-1">
+      <nav className="flex items-center justify-between px-4 md:py-1 py-3">
         {/* Menu button for mobile view */}
         <button
           className="text-white mr-2 md:hidden"
           aria-label="menu"
-          onClick={props.setDrawerOpen}
+          // onClick={props.setDrawerOpen}
         >
           <div className="space-y-1">
             <span className="block w-6 h-0.5 bg-white"></span>

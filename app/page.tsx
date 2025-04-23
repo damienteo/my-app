@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from './components/layout/Layout'
 import { ExternalLink, Header, Paragraph } from './components/common'
 
 const AboutPage = () => {
