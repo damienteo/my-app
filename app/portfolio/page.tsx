@@ -1,5 +1,12 @@
 import React from 'react'
+import { Metadata } from 'next'
 import { ExternalLink, Header, Paragraph } from '../components/common'
+
+export const metadata: Metadata = {
+  title: 'Portfolio',
+  description:
+    'Here are some small side projects which Damien Teo has previously done.',
+}
 
 const PortfolioPage: React.FunctionComponent = () => {
   return (
