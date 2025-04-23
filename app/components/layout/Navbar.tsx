@@ -6,7 +6,7 @@ const NavBar: React.FunctionComponent<{
   setDrawerOpen: (event: MouseEvent) => void
 }> = (props) => {
   return (
-    <div className="w-full bg-blue-900">
+    <div className="w-full bg-blue-900 px-3">
       <nav className="flex items-center justify-between px-4 md:py-1 py-3">
         {/* Menu button for mobile view */}
         <button

@@ -9,7 +9,7 @@ const AboutPage = () => {
     // machines. Previously, he was a police officer. Now, he work in the tech
     // industry."
     // >
-    <div className="max-w-3xl mx-auto px-4 md:py-8">
+    <div className="max-w-3xl mx-auto px-4 md:py-8 text-justify">
       <Header text="About" />
       <Paragraph>
         Hi, I am a peasant who enjoys working with intelligent machines.
