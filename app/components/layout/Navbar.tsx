@@ -10,7 +10,9 @@ const NavBar: React.FunctionComponent<{
       <nav className="flex items-center justify-between px-4 md:py-1 py-3">
         {/* Menu button for mobile view */}
         <button
-          className="text-white text-sm border border-[#FFFFFF] px-3 py-1 rounded md:hidden"
+          // Border color does not show correctly on Brave Browser on Mobile
+          // Still works for Chrome and Safari
+          className="text-white text-sm border border-white px-3 py-1 rounded md:hidden"
           aria-label="menu"
           onClick={props.setDrawerOpen}
         >
