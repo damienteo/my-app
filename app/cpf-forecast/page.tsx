@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 import dayjs from 'dayjs'
-// import Layout from '../layout/Layout'
 import { ExternalLink, InfoPopup, Paragraph } from '../components/common'
 import UserInput from '../components/views/cpfForecast/UserInput'
 import Intro from '../components/views/cpfForecast/Intro'
