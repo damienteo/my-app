@@ -15,6 +15,7 @@
     "prettier-format": "prettier --config .prettierrc '*/**/*.{ts,tsx}' --write"
   },
   "dependencies": {
+    "@next/third-parties": "^15.3.1",
     "@tailwindcss/postcss": "^4.1.4",
     "dayjs": "^1.11.13",
     "next": "15.3.1",

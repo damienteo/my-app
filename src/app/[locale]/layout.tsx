@@ -4,6 +4,8 @@ import React from 'react'
 import localFont from 'next/font/local'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import { routing } from '../../i18n/routing'
 
 import NavBar from './components/layout/Navbar'
@@ -37,27 +39,7 @@ export default async function RootLayout({
           </div>
         </NextIntlClientProvider>
 
-        {/* Global Site Tag (gtag.js) - Google Analytics */}
-        {/* 
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script
-          id="gtag-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        /> 
-        */}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TRACKING_ID || ''} />
       </body>
     </html>
   )
