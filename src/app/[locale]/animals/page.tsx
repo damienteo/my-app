@@ -37,17 +37,16 @@ const animalGifs = [
   'whale.gif',
 ]
 
-const About: React.FunctionComponent = () => {
+const Animals: React.FunctionComponent = () => {
   const t = useTranslations('AnimalsPage')
   return (
     <>
-      <div className="px-2 sm:px-4">
-        <Header text={t('header')} />
-        <Paragraph className="sm:mb-4">{t('description')}</Paragraph>
-      </div>
-
-      {/* Animal GIFs */}
-      <div className="flex flex-col items-center space-y-4 mt-6">
+      <div className="flex flex-col items-center space-y-4 max-w-xl px-2 sm:px-4 mx-auto">
+        <div>
+          <Header text={t('header')} />
+          <Paragraph className="sm:mb-4">{t('description')}</Paragraph>{' '}
+        </div>
+        {/* Animal GIFs */}
         {animalGifs.map((gif) => (
           <Image
             key={gif}
@@ -64,4 +63,4 @@ const About: React.FunctionComponent = () => {
   )
 }
 
-export default About
+export default Animals
