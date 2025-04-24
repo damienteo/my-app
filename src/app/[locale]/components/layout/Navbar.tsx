@@ -2,13 +2,24 @@
 
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRouter, usePathname } from '@/src/i18n/navigation'
+import { useLocale } from 'next-intl'
 
 import { ButtonLink } from '../common/links'
 import { navLinks } from '../../../../../constants'
 
 const NavBar: React.FunctionComponent = () => {
   const t = useTranslations('NavLinks')
+  const router = useRouter()
+  const pathname = usePathname()
+  const locale = useLocale()
   const [isDrawerOpen, setDrawerOpen] = useState(false)
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'en' ? 'jp' : 'en'
+    router.replace(pathname, { locale: newLocale })
+  }
+
   return (
     <>
       <div className="fixed top-0 top-0 z-50 w-full bg-blue-900 px-3">
@@ -32,6 +43,21 @@ const NavBar: React.FunctionComponent = () => {
             {navLinks.map(({ url, text }) => (
               <ButtonLink key={url} url={url} text={t(text)} />
             ))}
+            {/* Locale Toggle Switch */}
+            <div className="flex items-center space-x-1 ml-3 text-sm text-white">
+              <span>ENG</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={locale === 'jp'}
+                  onChange={toggleLocale}
+                />
+                <div className="w-10 h-5 rounded-full peer dark:bg-white peer-checked:bg-white"></div>
+                <div className="absolute left-1 top-1 w-3 h-3 bg-blue-900 rounded-full transition-transform peer-checked:translate-x-5"></div>
+              </label>
+              <span>日本語</span>
+            </div>
           </div>
         </nav>
       </div>
