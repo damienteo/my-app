@@ -1,5 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
+import { useTranslations } from 'next-intl'
 import { ExternalLink, Header, Paragraph } from '../components/common'
 
 export const metadata: Metadata = {
@@ -9,17 +10,18 @@ export const metadata: Metadata = {
 }
 
 const PortfolioPage: React.FunctionComponent = () => {
+  const t = useTranslations('PortfolioPage')
   return (
     <>
       <div className="px-2 sm:px-4">
-        <Header text="Portfolio" />
+        <Header text={t('header')} />
         <Paragraph className="sm:mb-4">
-          For my resume, you may refer to my{' '}
+          {t('resume.start')}
           <ExternalLink
             url="https://www.linkedin.com/in/damien-teo/"
             label="LinkedIn"
-          />{' '}
-          profile
+          />
+          {t('resume.end')}
         </Paragraph>
       </div>
 
@@ -34,40 +36,36 @@ const PortfolioPage: React.FunctionComponent = () => {
         </div>
         <div className="px-2 sm:pl-5">
           <Paragraph>
-            I recently participated in blockchain.hack(). I{' '}
+            {t('hackathon.start')}
             <ExternalLink
               url="https://www.linkedin.com/posts/gaogao_hackathon2023-hackathon-blockchain-activity-7078000311738511360-orum"
-              label="won"
-            />{' '}
-            the main prize for the problem statement: "How can blockchain help
-            B2B transactions for banking?".
+              label={t('hackathon.won')}
+            />
+            {t('hackathon.end')}
           </Paragraph>
           <Paragraph>
-            My{' '}
+            {t('projectOverview.start')}
             <ExternalLink
               url="https://milestone-payments.vercel.app/"
-              label="project"
+              label={t('projectOverview.project')}
             />{' '}
-            deals with the usage of Merkle proofs to initially obscure payment
-            details, yet enforce payment outcomes with transparent and immutable
-            rules. Factory-clone contracts also cut down the cost of deploying
-            each payment agreement by ~70%.
+            {t('projectOverview.end')}
           </Paragraph>
           <Paragraph>
             -{' '}
             <ExternalLink
               url="https://mumbai.polygonscan.com/address/0xd7906deE9239509EF4564839a25460Bb8F97D2e6#code"
-              label="Factory Contract for cloning agreements"
+              label={t('projectComponents.factory')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://mumbai.polygonscan.com/address/0x9536fd0322Ab322110C4D0621b46dC936Ee9fCaa#code"
-              label="Initializer contract with agreement logic"
+              label={t('projectComponents.initializer')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://mumbai.polygonscan.com/address/0x60BF7eba37b2A914EcEB8f228c302a1D02aDf6e2#code"
-              label="Minimal proxy contract (clone) which uses logic from the Initializer contract"
+              label={t('projectComponents.proxy')}
             />
             <br />
           </Paragraph>
@@ -85,50 +83,44 @@ const PortfolioPage: React.FunctionComponent = () => {
         </div>
         <div className="px-2 sm:pl-5">
           <Paragraph>
-            Current side project is{' '}
+            {t('thunderdomeIntro.start')}
             <ExternalLink
               url="https://thunderdome-fe.vercel.app/"
-              label="ThunderDome"
+              label={t('thunderdomeIntro.thunderdome')}
             />{' '}
-            (as of Oct 2022).
+            {t('thunderdomeIntro.end')}
           </Paragraph>
-          <Paragraph>
-            I am currently learning solidity, so I thought it would be a fun
-            project to run on the Ethereum Goerli testnet. Users will be able to
-            buy NFTs offered. Eventually, they should be able to sell bought
-            NFTs on the local marketplace, deposit NFTs for loyalty points, and
-            even a lucky draw.
-          </Paragraph>
+          <Paragraph>{t('thunderdomeDetails')}</Paragraph>
           <Paragraph>
             -{' '}
             <ExternalLink
               url="https://github.com/damienteo/thunderdome-fe"
-              label="Frontend Repo"
+              label={t('thunderdomeLinks.fe')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://thunderdome-be.onrender.com/api/v1/products/"
-              label="Backend Link"
+              label={t('thunderdomeLinks.be-link')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://github.com/damienteo/thunderdome-be"
-              label="Backend Repo"
+              label={t('thunderdomeLinks.be')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://github.com/damienteo/thunderdome-contracts"
-              label="Smart Contracts Repo"
+              label={t('thunderdomeLinks.sc')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://goerli.etherscan.io/address/0xfF0Cc93e85150e18BA66102469d6e3613dC8Ef9B#code"
-              label="Token Sale Contract"
+              label={t('thunderdomeLinks.token')}
             />
             <br />-{' '}
             <ExternalLink
               url="https://goerli.etherscan.io/address/0x16377628d5c50aE40951D63134572AB32395677C#code"
-              label="NFT Contract"
+              label={t('thunderdomeLinks.nft')}
             />
             <br />
           </Paragraph>
@@ -146,22 +138,25 @@ const PortfolioPage: React.FunctionComponent = () => {
         </div>
         <div className="px-2 sm:pl-5">
           <Paragraph>
-            One of my major side-projects is the{' '}
+            {t('budgetPlanner.start')}{' '}
             <ExternalLink
               url="https://budget-planner-frontend.vercel.app/"
-              label="Budget Planner"
+              label={t('budgetPlanner.name')}
             />{' '}
-            (March 2019).
+            {t('budgetPlanner.end')}
           </Paragraph>
           <Paragraph>
-            This was my Capstone Project during my participation in General
-            Assembly's Web Development Immersive, now known as the{' '}
+            {t('budgetPlannerDetails')} (
             <ExternalLink
-              url="https://generalassemb.ly/education/software-engineering-immersive/singapore"
-              label="Software Engineering
-              Immersive"
+              url="https://github.com/damienteo/WDI-Capstone-Frontend-Budget-Planner"
+              label={t('budgetPlanner.fe')}
             />
-            .
+            {t('budgetPlanner.and')}
+            <ExternalLink
+              url="https://github.com/damienteo/WDI-Capstone-Backend-Budget-Planner"
+              label={t('budgetPlanner.be')}
+            />
+            )
           </Paragraph>
         </div>
       </div>
@@ -177,20 +172,20 @@ const PortfolioPage: React.FunctionComponent = () => {
         </div>
         <div className="px-2 sm:pl-5">
           <Paragraph>
-            Created a game (
+            {t('firemanGame.start')} (
             <ExternalLink
               url="https://fireman.vercel.app/"
               label="The Fireman"
             />
-            )
+            ){t('firemanGame.end')}
           </Paragraph>
           <Paragraph>
-            This was made with vanilla HTML, JavaScript, and CSS (
+            {t('firemanDetails.start')}(
             <ExternalLink
               url="https://github.com/damienteo/WDI-Project-1-The-Fireman"
-              label="GitHub Repo"
+              label={t('firemanDetails.github')}
             />
-            ).
+            ){t('firemanDetails.end')}
           </Paragraph>
         </div>
       </div>

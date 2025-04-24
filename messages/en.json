@@ -40,7 +40,7 @@
     "header": "Portfolio",
     "resume": {
       "start": "For my resume, you may refer to my ",
-      "end": " profile"
+      "end": " profile."
     },
     "hackathon": {
       "start": "I recently participated in blockchain.hack(). I ",
@@ -52,29 +52,32 @@
       "project": "project",
       "end": " deals with the usage of Merkle proofs to initially obscure payment details, yet enforce payment outcomes with transparent and immutable rules. Factory-clone contracts also cut down the cost of deploying each payment agreement by ~70%."
     },
-    "projectComponents": [
-      "Factory Contract for cloning agreements",
-      "Initializer contract with agreement logic",
-      "Minimal proxy contract (clone) which uses logic from the Initializer contract"
-    ],
+    "projectComponents": {
+      "factory": "Factory Contract for cloning agreements",
+      "initializer": "Initializer contract with agreement logic",
+      "proxy": "Minimal proxy contract (clone) which uses logic from the Initializer contract"
+    },
     "thunderdomeIntro": {
       "start": "Current side project is ",
       "thunderdome": "ThunderDome",
       "end": " (as of Oct 2022)."
     },
-    "thunderdomeDetails": "I am currently learning solidity, so I thought it would be a fun project to run on the Ethereum Goerli testnet. Users will be able to buy NFTs offered. Eventually, they should be able to sell bought NFTs on the local marketplace, deposit NFTs for loyalty points, and even a lucky draw.",
-    "thunderdomeLinks": [
-      "Frontend Repo",
-      "Backend Link",
-      "Backend Repo",
-      "Smart Contracts Repo",
-      "Token Sale Contract",
-      "NFT Contract"
-    ],
+    "thunderdomeDetails": "I am currently learning Solidity, so I thought it would be a fun project to run on the Ethereum Goerli testnet. Users will be able to buy NFTs offered. Eventually, they should be able to sell bought NFTs on the local marketplace, deposit NFTs for loyalty points, and even a lucky draw.",
+    "thunderdomeLinks": {
+      "fe": "Frontend Repo",
+      "be-link": "Backend Link",
+      "be": "Backend Repo",
+      "sc": "Smart Contracts Repo",
+      "token": "Token Sale Contract",
+      "nft": "NFT Contract"
+    },
     "budgetPlanner": {
       "start": "One of my major side-projects is the ",
       "name": "Budget Planner",
-      "end": " (March 2019)."
+      "end": " (March 2019).",
+      "fe": "Frontend Repo",
+      "and": " and ",
+      "be": "Backend Repo"
     },
     "budgetPlannerDetails": "This was my Capstone Project during my participation in General Assembly's Web Development Immersive, now known as the Software Engineering Immersive.",
     "firemanGame": {
