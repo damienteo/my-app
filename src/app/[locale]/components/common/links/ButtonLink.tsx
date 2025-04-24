@@ -16,7 +16,7 @@ export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({
     <Link
       href={url}
       as={url}
-      className="block my-6 md:my-2 ml-2 text-white hover:bg-black rounded-lg px-3 py-1 border border-white hover:border-0"
+      className="block my-6 md:my-2 mx-1 text-white hover:bg-black rounded-lg px-3 py-1 border border-white hover:border-0"
       onClick={onClick}
     >
       {text}
