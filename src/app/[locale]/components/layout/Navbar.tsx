@@ -45,7 +45,7 @@ const NavBar: React.FunctionComponent = () => {
 
   return (
     <>
-      <div className="fixed top-0 top-0 z-50 w-full bg-blue-900 px-3">
+      <div className="fixed top-0 top-0 z-50 w-full bg-blue-900 px-1">
         <nav className="flex items-center justify-between px-4 md:py-1 py-3">
           {/* Menu button for mobile view */}
           <button
