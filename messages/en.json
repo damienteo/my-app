@@ -3,7 +3,8 @@
     "menu": "menu",
     "title": "Damien Teo's Site",
     "about": "about",
-    "portfolio": "portfolio"
+    "portfolio": "portfolio",
+    "animals": "animals"
   },
   "AboutPage": {
     "navlink": "about",
@@ -41,6 +42,10 @@
       "connector": "and ",
       "end": "."
     }
+  },
+  "AnimalsPage": {
+    "header": "Animals",
+    "description": "I saw them while I was travelling."
   },
   "PortfolioPage": {
     "header": "Portfolio",

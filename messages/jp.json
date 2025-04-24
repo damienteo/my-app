@@ -3,7 +3,8 @@
     "menu": "メニュー",
     "title": "ダミアン・テオのサイト",
     "about": "アバウト",
-    "portfolio": "ポートフォリオ"
+    "portfolio": "ポートフォリオ",
+    "animals": "動物たち"
   },
   "AboutPage": {
     "header": "アバウト",
@@ -40,6 +41,10 @@
       "connector": "と",
       "end": "で連絡できます。"
     }
+  },
+  "AnimalsPage": {
+    "header": "動物たち",
+    "description": "旅行中に見かけました。"
   },
   "PortfolioPage": {
     "header": "ポートフォリオ",

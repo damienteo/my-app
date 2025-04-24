@@ -1,6 +1,7 @@
 export const navLinks = [
   { url: 'about', text: 'about' },
   { url: 'portfolio', text: 'portfolio' },
+  { url: 'animals', text: 'animals' },
   // { url: 'cpf-forecast', text: 'cpf forecast' },
 ]
 
