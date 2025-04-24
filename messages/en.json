@@ -35,5 +35,57 @@
       "connector": "and ",
       "end": "."
     }
+  },
+  "PortfolioPage": {
+    "header": "Portfolio",
+    "resume": {
+      "start": "For my resume, you may refer to my ",
+      "end": " profile"
+    },
+    "hackathon": {
+      "start": "I recently participated in blockchain.hack(). I ",
+      "won": "won",
+      "end": " the main prize for the problem statement: \"How can blockchain help B2B transactions for banking?\""
+    },
+    "projectOverview": {
+      "start": "My ",
+      "project": "project",
+      "end": " deals with the usage of Merkle proofs to initially obscure payment details, yet enforce payment outcomes with transparent and immutable rules. Factory-clone contracts also cut down the cost of deploying each payment agreement by ~70%."
+    },
+    "projectComponents": [
+      "Factory Contract for cloning agreements",
+      "Initializer contract with agreement logic",
+      "Minimal proxy contract (clone) which uses logic from the Initializer contract"
+    ],
+    "thunderdomeIntro": {
+      "start": "Current side project is ",
+      "thunderdome": "ThunderDome",
+      "end": " (as of Oct 2022)."
+    },
+    "thunderdomeDetails": "I am currently learning solidity, so I thought it would be a fun project to run on the Ethereum Goerli testnet. Users will be able to buy NFTs offered. Eventually, they should be able to sell bought NFTs on the local marketplace, deposit NFTs for loyalty points, and even a lucky draw.",
+    "thunderdomeLinks": [
+      "Frontend Repo",
+      "Backend Link",
+      "Backend Repo",
+      "Smart Contracts Repo",
+      "Token Sale Contract",
+      "NFT Contract"
+    ],
+    "budgetPlanner": {
+      "start": "One of my major side-projects is the ",
+      "name": "Budget Planner",
+      "end": " (March 2019)."
+    },
+    "budgetPlannerDetails": "This was my Capstone Project during my participation in General Assembly's Web Development Immersive, now known as the Software Engineering Immersive.",
+    "firemanGame": {
+      "start": "Created a game ",
+      "name": "The Fireman",
+      "end": ""
+    },
+    "firemanDetails": {
+      "start": "This was made with vanilla HTML, JavaScript, and CSS ",
+      "github": "GitHub Repo",
+      "end": "."
+    }
   }
 }

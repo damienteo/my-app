@@ -34,5 +34,57 @@
       "connector": "と",
       "end": "で連絡できます。"
     }
+  },
+  "PortfolioPage": {
+    "header": "ポートフォリオ",
+    "resume": {
+      "start": "履歴書については、私の",
+      "end": "プロフィールをご参照ください。"
+    },
+    "hackathon": {
+      "start": "最近、blockchain.hack() に参加し、",
+      "won": "優勝し",
+      "end": "ました。課題は「ブロックチェーンは銀行のB2B取引にどのように役立つか？」というものでした。"
+    },
+    "projectOverview": {
+      "start": "私の",
+      "project": "プロジェクト",
+      "end": "は、Merkle証明を用いて支払いの詳細を当初は秘匿しつつ、透明かつ不変のルールで支払い結果を確実に実行することを目的としています。さらに、ファクトリー・クローン契約により、各支払い契約のデプロイコストを約70％削減しています。"
+    },
+    "projectComponents": [
+      "契約を複製するためのファクトリーコントラクト",
+      "契約ロジックを含むイニシャライザーコントラクト",
+      "イニシャライザーコントラクトのロジックを使用するミニマルプロキシコントラクト（クローン）"
+    ],
+    "thunderdomeIntro": {
+      "start": "現在のサイドプロジェクトは",
+      "thunderdome": "ThunderDome",
+      "end": "です（2022年10月時点）。"
+    },
+    "thunderdomeDetails": "現在Solidityを学習中であり、その一環としてEthereum Goerliテストネット上でこのプロジェクトを実行するのが面白いと考えました。ユーザーはNFTを購入できるようになり、最終的には購入したNFTをローカルマーケットプレイスで販売したり、ロイヤルティポイントのために預け入れたり、さらには抽選にも参加できるようになる予定です。",
+    "thunderdomeLinks": [
+      "フロントエンドリポジトリ",
+      "バックエンドリンク",
+      "バックエンドリポジトリ",
+      "スマートコントラクトリポジトリ",
+      "トークンセールコントラクト",
+      "NFTコントラクト"
+    ],
+    "budgetPlanner": {
+      "start": "主要なサイドプロジェクトの一つが",
+      "name": "Budget Planner",
+      "end": "です（2019年3月）。"
+    },
+    "budgetPlannerDetails": "これは、General AssemblyのWeb Development Immersive（現在のSoftware Engineering Immersive）に参加した際のキャップストーンプロジェクトです。",
+    "firemanGame": {
+      "start": "ゲーム「",
+      "name": "The Fireman",
+      "end": "」を作成しました。"
+    },
+    "firemanDetails": {
+      "start": "これは、バニラのHTML、JavaScript、およびCSSを使用して作成されました。詳しくは",
+      "github": "GitHubリポジトリ",
+      "end": "をご覧ください。"
+    }
   }
 }
