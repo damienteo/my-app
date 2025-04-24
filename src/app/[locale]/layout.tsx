@@ -28,11 +28,10 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={poppins.className}>
-        {/* Navbar */}
-        <NavBar />
-
-        {/* Main Content */}
         <NextIntlClientProvider locale={locale}>
+          {/* Navbar */}
+          <NavBar />
+          {/* Main Content */}
           <div className=" mx-auto min-h-screen max-w-screen-lg pt-20 sm:pt-24 pb-8 px-4 md:px-0">
             {children}
           </div>

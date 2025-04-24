@@ -1,10 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
+
 import { ButtonLink } from '../common/links'
 import { navLinks } from '../../../../../constants'
 
 const NavBar: React.FunctionComponent = () => {
+  const t = useTranslations('NavLinks')
   const [isDrawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
@@ -18,16 +21,16 @@ const NavBar: React.FunctionComponent = () => {
             aria-label="menu"
             onClick={() => setDrawerOpen(!isDrawerOpen)}
           >
-            Menu
+            {t('menu')}
           </button>
 
           {/* Site title */}
-          <div className="text-white text-lg">Damien Teo's Site</div>
+          <div className="text-white text-lg"> {t('title')}</div>
 
           {/* Navigation links for desktop view */}
           <div className="hidden md:flex space-x-1">
             {navLinks.map(({ url, text }) => (
-              <ButtonLink key={url} url={url} text={text} />
+              <ButtonLink key={url} url={url} text={t(text)} />
             ))}
           </div>
         </nav>
@@ -54,7 +57,7 @@ const NavBar: React.FunctionComponent = () => {
                 <ButtonLink
                   key={url}
                   url={url}
-                  text={text}
+                  text={t(text)}
                   onClick={() => setDrawerOpen(false)}
                 />
               ))}

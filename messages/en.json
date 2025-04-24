@@ -1,4 +1,10 @@
 {
+  "NavLinks": {
+    "menu": "menu",
+    "title": "Damien Teo's Site",
+    "about": "about",
+    "portfolio": "portfolio"
+  },
   "AboutPage": {
     "navlink": "about",
     "header": "About",
