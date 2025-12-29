@@ -75,22 +75,19 @@ const NavBar: React.FunctionComponent = () => {
       </div>
       {/* Mobile Drawer */}
       {isDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Overlay */}
+        <div className="fixed inset-0 z-50">
+          {/* Overlay: clicking closes drawer */}
           <div
-            className="flex-1 bg-black opacity-30"
-            onClick={() => setDrawerOpen(false)} // Close drawer when clicking outside
-          ></div>
-
-          {/* Side Drawer */}
-          {/* Drawer may not be sliding in due to how isDrawerOpen may be causing re-render */}
+            className="absolute inset-0 bg-black opacity-30"
+            onClick={() => setDrawerOpen(false)}
+          />
+          {/* Right-side sliding drawer */}
           <div
-            className={`fixed top-0 left-0 h-full bg-blue-900 px-5 shadow-lg transform transition-all duration-300 ${
-              isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+            className={`absolute inset-y-0 right-0 w-64 bg-blue-900 p-5 shadow-lg transform transition-transform duration-300 ease-in-out ${
+              isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >
-            {/* Navigation Links */}
-            <nav className="space-y-2">
+            <nav className="space-y-4">
               {navLinks.map(({ url, text }) => (
                 <ButtonLink
                   key={url}
@@ -99,7 +96,7 @@ const NavBar: React.FunctionComponent = () => {
                   onClick={() => setDrawerOpen(false)}
                 />
               ))}
-              <div className="flex justify-center">
+              <div className="flex justify-center pt-4">
                 <LocaleToggle locale={locale} toggleLocale={toggleLocale} />
               </div>
             </nav>
