@@ -104,6 +104,8 @@
       },
       "redLine": {
         "warning": "⚠️ RED LINE",
+        "proximity": "Proximity",
+        "threshold": "Threshold",
         "rrp": {
           "threshold": "Below $50B threshold - shock absorber gone"
         },

@@ -103,6 +103,8 @@
       },
       "redLine": {
         "warning": "⚠️ レッドライン",
+        "proximity": "近接度",
+        "threshold": "閾値",
         "rrp": {
           "threshold": "$50B閾値を下回る - ショックアブソーバー消失"
         },

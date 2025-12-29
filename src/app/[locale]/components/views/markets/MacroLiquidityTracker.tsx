@@ -72,6 +72,81 @@ const formatBasisPoints = (value: number | null): string => {
   return `${value.toFixed(2)} bps`
 }
 
+// Calculate proximity to red line threshold (0-100%, where 100% = at threshold)
+const calculateProximity = (
+  current: number | null,
+  threshold: number,
+  isLowerBetter: boolean = false
+): number | null => {
+  if (current === null) return null
+
+  if (isLowerBetter) {
+    // For metrics where lower is better (e.g., Z-Score where -2.0 is threshold)
+    // Calculate how close we are to the threshold from above
+    // If threshold is -2.0 and current is -1.35, we're 67.5% of the way there
+    const range = 0 - threshold // e.g., 0 - (-2.0) = 2.0
+    if (range === 0) return null
+    const distance = current - threshold // e.g., -1.35 - (-2.0) = 0.65
+    return Math.max(0, Math.min(100, (1 - distance / range) * 100))
+  } else {
+    // For metrics where higher is better (e.g., Bank Reserves, RRP)
+    // Calculate how close we are to the threshold from below
+    if (threshold === 0) return null
+    return Math.max(0, Math.min(100, (current / threshold) * 100))
+  }
+}
+
+// Get color based on proximity
+const getProximityColor = (proximity: number | null): string => {
+  if (proximity === null) return 'bg-gray-600'
+  if (proximity >= 100) return 'bg-red-500'
+  if (proximity >= 80) return 'bg-yellow-500'
+  if (proximity >= 60) return 'bg-yellow-400'
+  return 'bg-green-500'
+}
+
+// Proximity indicator component
+const ProximityIndicator: React.FC<{
+  current: number | null
+  threshold: number
+  isLowerBetter?: boolean
+  formatValue: (val: number | null) => string
+  proximityLabel: string
+  thresholdLabel: string
+}> = ({
+  current,
+  threshold,
+  isLowerBetter = false,
+  formatValue,
+  proximityLabel,
+  thresholdLabel,
+}) => {
+  const proximity = calculateProximity(current, threshold, isLowerBetter)
+
+  if (proximity === null) return null
+
+  return (
+    <div className="mt-2">
+      <div className="flex items-center justify-between text-xs mb-1">
+        <span className="text-gray-400">
+          {proximityLabel}: {proximity.toFixed(0)}%
+        </span>
+        <span className="text-gray-400">
+          {thresholdLabel}: {formatValue(threshold)}
+        </span>
+      </div>
+      <div className="w-full bg-gray-700 rounded-full h-2">
+        <div
+          className={`h-2 rounded-full transition-all ${getProximityColor(
+            proximity
+          )}`}
+          style={{ width: `${Math.min(100, proximity)}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
 // Format date for chart display
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr)
@@ -213,6 +288,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               {formatCurrency(data.rrp)}
             </p>
             <p className="text-xs text-gray-400 mt-1">{t('rrp.description')}</p>
+            <ProximityIndicator
+              current={data.rrp}
+              threshold={50e9}
+              formatValue={formatCurrency}
+              proximityLabel={t('redLine.proximity')}
+              thresholdLabel={t('redLine.threshold')}
+            />
             {data.redLines?.rrp && (
               <p className="text-xs text-red-400 mt-1">
                 {t('redLine.rrp.threshold')}
@@ -243,6 +325,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <p className="text-xs text-gray-400 mt-1">
               {t('bankReserves.description')}
             </p>
+            <ProximityIndicator
+              current={data.bankReserves}
+              threshold={2.7e12}
+              formatValue={formatCurrency}
+              proximityLabel={t('redLine.proximity')}
+              thresholdLabel={t('redLine.threshold')}
+            />
             {data.redLines?.bankReserves && (
               <p className="text-xs text-red-400 mt-1">
                 {t('redLine.bankReserves.threshold')}
@@ -308,6 +397,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <p className="text-xs text-gray-400 mt-1">
               {t('sofrIorbSpread.description')}
             </p>
+            <ProximityIndicator
+              current={data.sofrIorbSpread}
+              threshold={20}
+              formatValue={(val) => `${val?.toFixed(0) || 0} bps`}
+              proximityLabel={t('redLine.proximity')}
+              thresholdLabel={t('redLine.threshold')}
+            />
             {data.redLines?.sofrSpread && (
               <p className="text-xs text-red-400 mt-1">
                 {t('redLine.sofrSpread.threshold')}
@@ -361,6 +457,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               <p className="text-xs text-gray-400 mt-1">
                 {t('netLiquidityZScore.description')}
               </p>
+              <ProximityIndicator
+                current={data.netLiquidityZScore}
+                threshold={-2.0}
+                isLowerBetter={true}
+                formatValue={(val) => val?.toFixed(1) || '0.0'}
+                proximityLabel={t('redLine.proximity')}
+                thresholdLabel={t('redLine.threshold')}
+              />
               {data.redLines?.netLiquidityZScore && (
                 <p className="text-xs text-red-400 mt-1">
                   {t('redLine.netLiquidityZScore.threshold')}
