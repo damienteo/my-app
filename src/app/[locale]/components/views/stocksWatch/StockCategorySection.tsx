@@ -32,21 +32,17 @@ interface StockQuote {
 interface StockData {
   symbol: string
   quote: StockQuote | null
-  historical: Array<{ date: string; price: number }> | null
   quoteTimestamp?: number
-  historicalTimestamp?: number
 }
 
 interface StockCategorySectionProps {
   category: StockCategory
   stockData: Record<string, StockData>
-  period: '1week' | '1month' | '3months'
 }
 
 const StockCategorySection: React.FC<StockCategorySectionProps> = ({
   category,
   stockData,
-  period,
 }) => {
   return (
     <Section>
@@ -57,7 +53,6 @@ const StockCategorySection: React.FC<StockCategorySectionProps> = ({
             key={stock.symbol}
             stock={stock}
             data={stockData[stock.symbol]}
-            period={period}
           />
         ))}
       </div>

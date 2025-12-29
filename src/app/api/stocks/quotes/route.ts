@@ -17,96 +17,10 @@ interface StockQuote {
   t: number // Timestamp
 }
 
-interface CandleData {
-  c: number[] // Close prices
-  h: number[] // High prices
-  l: number[] // Low prices
-  o: number[] // Open prices
-  s: string // Status
-  t: number[] // Timestamps
-  v: number[] // Volume
-}
+// Removed CandleData and YearHighLow interfaces - year high/low requires paid subscription
 
-interface YearHighLow {
-  high: number | null
-  low: number | null
-}
-
-async function fetchYearHighLow(symbol: string): Promise<YearHighLow> {
-  if (!FINNHUB_API_KEY) {
-    console.warn(`FINNHUB_API_KEY not set for year high/low fetch: ${symbol}`)
-    return { high: null, low: null }
-  }
-
-  try {
-    // Calculate 1 year ago (use 380 days to ensure full year of trading days)
-    const to = Math.floor(Date.now() / 1000)
-    const from = Math.floor((Date.now() - 380 * 24 * 60 * 60 * 1000) / 1000)
-
-    const url = `${FINNHUB_BASE_URL}/stock/candle?symbol=${symbol}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`
-    console.log(
-      `Fetching year high/low for ${symbol}: from ${new Date(
-        from * 1000
-      ).toISOString()} to ${new Date(to * 1000).toISOString()}`
-    )
-
-    const response = await fetch(url, {
-      next: { revalidate: 3600 }, // Reduced to 1 hour cache for testing
-      cache: 'force-cache',
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => 'Unknown error')
-      console.warn(
-        `Finnhub year high/low API error for ${symbol}: Status ${response.status}, Response: ${errorText}`
-      )
-      return { high: null, low: null }
-    }
-
-    const data: CandleData = await response.json()
-
-    console.log(
-      `Year high/low response for ${symbol}: status=${data.s}, dataPoints=${
-        data.h?.length || 0
-      }, firstHigh=${data.h?.[0]}, lastHigh=${data.h?.[data.h?.length - 1]}`
-    )
-
-    if (data.s !== 'ok' || !data.h || !data.l || data.h.length === 0) {
-      console.warn(
-        `Invalid year high/low data for ${symbol}: status=${
-          data.s
-        }, hasHigh=${!!data.h}, hasLow=${!!data.l}, highLength=${
-          data.h?.length || 0
-        }`
-      )
-      return { high: null, low: null }
-    }
-
-    // Filter out invalid values (0 or negative)
-    const allHighs = data.h.filter((h) => h > 0)
-    const allLows = data.l.filter((l) => l > 0)
-
-    if (allHighs.length === 0 || allLows.length === 0) {
-      console.warn(
-        `No valid price data for ${symbol} year high/low: validHighs=${allHighs.length}, validLows=${allLows.length}`
-      )
-      return { high: null, low: null }
-    }
-
-    // Calculate 1-year high and low from all high/low prices
-    const high = Math.max(...allHighs)
-    const low = Math.min(...allLows)
-
-    console.log(
-      `52W High/Low calculated for ${symbol}: High=${high}, Low=${low}, DataPoints=${allHighs.length}`
-    )
-
-    return { high, low }
-  } catch (error) {
-    console.error(`Error fetching year high/low for ${symbol}:`, error)
-    return { high: null, low: null }
-  }
-}
+// Note: Year high/low requires paid Finnhub subscription (403 error on free tier)
+// The UI will fall back to displaying daily high/low instead
 
 async function fetchQuote(symbol: string): Promise<StockQuote | null> {
   if (!FINNHUB_API_KEY) {
@@ -174,9 +88,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Fetch quotes and 1-year high/low with delay to respect rate limits
+    // Fetch quotes with delay to respect rate limits
     const quotes: Record<string, StockQuote | null> = {}
-    const yearHighLow: Record<string, YearHighLow> = {}
 
     for (let i = 0; i < symbols.length; i++) {
       const symbol = symbols[i]
@@ -185,19 +98,11 @@ export async function GET(request: Request) {
         await new Promise((resolve) => setTimeout(resolve, 200))
       }
 
-      // Fetch quote and 1-year high/low in parallel for each symbol
-      const [quote, highLow] = await Promise.all([
-        fetchQuote(symbol),
-        fetchYearHighLow(symbol),
-      ])
-
-      quotes[symbol] = quote
-      yearHighLow[symbol] = highLow
+      quotes[symbol] = await fetchQuote(symbol)
     }
 
     return NextResponse.json({
       quotes,
-      yearHighLow,
       timestamp: new Date().toISOString(),
     })
   } catch (error) {

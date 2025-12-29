@@ -17,23 +17,14 @@ interface StockQuote {
   t: number
 }
 
-interface YearHighLow {
-  high: number | null
-  low: number | null
-}
-
 interface StockData {
   symbol: string
   quote: StockQuote | null
-  historical: Array<{ date: string; price: number }> | null
-  yearHighLow?: YearHighLow
   quoteTimestamp?: number
-  historicalTimestamp?: number
 }
 
 // Cache TTLs
 const CACHE_TTL_QUOTES = 60 * 1000 // 1 minute
-const CACHE_TTL_HISTORICAL = 60 * 60 * 1000 // 1 hour
 
 // Rate limit tracking
 const RATE_LIMIT_WARNING_THRESHOLD = 50 // Warn at 50 calls/min
@@ -42,10 +33,8 @@ let apiCallWindowStart = Date.now()
 
 const StocksWatchClient = () => {
   const t = useTranslations('StocksWatchPage')
-  const period = '1month' as const // Fixed to 1 month
   const [stockData, setStockData] = useState<Record<string, StockData>>({})
   const [loading, setLoading] = useState(true)
-  const [loadingHistorical, setLoadingHistorical] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [rateLimitWarning, setRateLimitWarning] = useState(false)
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
@@ -100,7 +89,6 @@ const StocksWatchClient = () => {
                   ...updated[symbol],
                   symbol,
                   quote: parsed.quotes[symbol],
-                  yearHighLow: parsed.yearHighLow?.[symbol],
                   quoteTimestamp: cacheTime,
                 }
               })
@@ -128,7 +116,6 @@ const StocksWatchClient = () => {
           'stocks_quotes',
           JSON.stringify({
             quotes: data.quotes,
-            yearHighLow: data.yearHighLow || {},
             timestamp,
           })
         )
@@ -141,7 +128,6 @@ const StocksWatchClient = () => {
               ...updated[symbol],
               symbol,
               quote: data.quotes[symbol],
-              yearHighLow: data.yearHighLow?.[symbol],
               quoteTimestamp: timestamp,
             }
           })
@@ -152,85 +138,6 @@ const StocksWatchClient = () => {
         if (err instanceof Error) {
           setError(err.message)
         }
-      }
-    },
-    [allSymbols.join(','), isCacheValid, trackApiCall]
-  )
-
-  // Fetch historical data
-  const fetchHistorical = useCallback(
-    async (period: '1week' | '1month' | '3months', force = false) => {
-      try {
-        setLoadingHistorical(true)
-
-        // Check cache first
-        const cacheKey = `stocks_historical_${period}`
-        const cachedData = localStorage.getItem(cacheKey)
-
-        if (!force && cachedData) {
-          const parsed = JSON.parse(cachedData)
-          const cacheTime = parsed.timestamp || 0
-
-          if (isCacheValid(cacheTime, CACHE_TTL_HISTORICAL)) {
-            setStockData((prev) => {
-              const updated = { ...prev }
-              Object.keys(parsed.historical).forEach((symbol) => {
-                updated[symbol] = {
-                  ...updated[symbol],
-                  symbol,
-                  historical: parsed.historical[symbol],
-                  historicalTimestamp: cacheTime,
-                }
-              })
-              return updated
-            })
-            setLoadingHistorical(false)
-            return
-          }
-        }
-
-        trackApiCall()
-        const symbolsParam = allSymbols.join(',')
-        // Route-side caching handles this (1h cache on server via revalidate)
-        const res = await fetch(
-          `/api/stocks/historical?symbols=${symbolsParam}&period=${period}`
-        )
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch historical data')
-        }
-
-        const data = await res.json()
-        const timestamp = Date.now()
-
-        // Update cache
-        localStorage.setItem(
-          cacheKey,
-          JSON.stringify({
-            historical: data.historical,
-            timestamp,
-          })
-        )
-
-        // Update state
-        setStockData((prev) => {
-          const updated = { ...prev }
-          Object.keys(data.historical).forEach((symbol) => {
-            updated[symbol] = {
-              ...updated[symbol],
-              symbol,
-              historical: data.historical[symbol],
-              historicalTimestamp: timestamp,
-            }
-          })
-          return updated
-        })
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message)
-        }
-      } finally {
-        setLoadingHistorical(false)
       }
     },
     [allSymbols.join(','), isCacheValid, trackApiCall]
@@ -255,11 +162,6 @@ const StocksWatchClient = () => {
     }
   }, [fetchQuotes])
 
-  // Fetch historical when period changes
-  useEffect(() => {
-    fetchHistorical(period)
-  }, [period, fetchHistorical])
-
   // Auto-refresh quotes every 5 minutes
   useEffect(() => {
     const interval = setInterval(() => {
@@ -273,11 +175,9 @@ const StocksWatchClient = () => {
   const handleManualRefresh = useCallback(() => {
     // Clear client-side cache
     localStorage.removeItem('stocks_quotes')
-    localStorage.removeItem(`stocks_historical_${period}`)
-    
+
     fetchQuotes(true)
-    fetchHistorical(period, true)
-  }, [fetchQuotes, fetchHistorical, period])
+  }, [fetchQuotes])
 
   if (loading) {
     return (
@@ -301,8 +201,7 @@ const StocksWatchClient = () => {
           )}
           <button
             onClick={handleManualRefresh}
-            disabled={loadingHistorical}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full transition-colors font-medium"
           >
             {t('refresh')}
           </button>
@@ -327,7 +226,6 @@ const StocksWatchClient = () => {
           key={category.id}
           category={category}
           stockData={stockData}
-          period={period}
         />
       ))}
     </div>
