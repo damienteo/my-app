@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server'
 
-const FRED_API_KEY = process.env.FRED_API_KEY || ''
 const FRED_BASE_URL = 'https://api.stlouisfed.org/fred'
 const FRED_SERIES_URL = `${FRED_BASE_URL}/series`
 const FRED_OBSERVATIONS_URL = `${FRED_BASE_URL}/series/observations`
+
+// Helper to get API key
+function getFredApiKey(): string {
+  return process.env.FRED_API_KEY || process.env.NEXT_PUBLIC_FRED_API_KEY || ''
+}
 
 interface FredObservation {
   date: string
@@ -26,10 +30,14 @@ interface FredSeriesResponse {
 // Fetch series info to get units
 async function fetchSeriesInfo(seriesId: string): Promise<string | null> {
   try {
-    const url = `${FRED_SERIES_URL}?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json`
+    const apiKey = getFredApiKey()
+    const url = `${FRED_SERIES_URL}?series_id=${seriesId}&api_key=${apiKey}&file_type=json`
     const response = await fetch(url)
 
     if (!response.ok) {
+      console.error(
+        `FRED API error for ${seriesId} series info: ${response.status} ${response.statusText}`
+      )
       return null
     }
 
@@ -48,11 +56,20 @@ async function fetchSeriesInfo(seriesId: string): Promise<string | null> {
 
 async function fetchFredObservation(seriesId: string): Promise<number | null> {
   try {
-    const url = `${FRED_OBSERVATIONS_URL}?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&limit=1&sort_order=desc`
+    const apiKey = getFredApiKey()
+    const url = `${FRED_OBSERVATIONS_URL}?series_id=${seriesId}&api_key=${apiKey}&file_type=json&limit=1&sort_order=desc`
     const response = await fetch(url)
 
     if (!response.ok) {
-      throw new Error(`FRED API error: ${response.statusText}`)
+      // Log more details for debugging
+      const errorText = await response.text().catch(() => response.statusText)
+      console.error(
+        `FRED API error for ${seriesId}: ${response.status} ${response.statusText}`,
+        errorText
+      )
+      throw new Error(
+        `FRED API error: ${response.status} ${response.statusText}`
+      )
     }
 
     const data: FredResponse = await response.json()
@@ -75,6 +92,7 @@ async function fetchFredHistoricalData(
   units: string | null
 ): Promise<Array<{ date: string; value: number }> | null> {
   try {
+    const apiKey = getFredApiKey()
     // Calculate date 5 years ago
     const endDate = new Date()
     const startDate = new Date()
@@ -83,11 +101,18 @@ async function fetchFredHistoricalData(
     const startDateStr = startDate.toISOString().split('T')[0]
     const endDateStr = endDate.toISOString().split('T')[0]
 
-    const url = `${FRED_OBSERVATIONS_URL}?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&observation_start=${startDateStr}&observation_end=${endDateStr}&sort_order=asc`
+    const url = `${FRED_OBSERVATIONS_URL}?series_id=${seriesId}&api_key=${apiKey}&file_type=json&observation_start=${startDateStr}&observation_end=${endDateStr}&sort_order=asc`
     const response = await fetch(url)
 
     if (!response.ok) {
-      throw new Error(`FRED API error: ${response.statusText}`)
+      const errorText = await response.text().catch(() => response.statusText)
+      console.error(
+        `FRED API error for ${seriesId} historical: ${response.status} ${response.statusText}`,
+        errorText
+      )
+      throw new Error(
+        `FRED API error: ${response.status} ${response.statusText}`
+      )
     }
 
     const data: FredResponse = await response.json()
@@ -148,8 +173,12 @@ function convertValue(
 }
 
 export async function GET() {
-  if (!FRED_API_KEY) {
-    console.error('FRED_API_KEY is not set')
+  // Check for API key - try both env var names for compatibility
+  const apiKey =
+    process.env.FRED_API_KEY || process.env.NEXT_PUBLIC_FRED_API_KEY || ''
+
+  if (!apiKey) {
+    console.error('FRED_API_KEY is not set. Check your .env.local file.')
     return NextResponse.json(
       { error: 'FRED_API_KEY is not configured' },
       { status: 500 }
