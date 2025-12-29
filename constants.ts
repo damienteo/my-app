@@ -4,6 +4,7 @@ export const navLinks = [
   { url: 'markets', text: 'markets' },
   { url: 'cpf-forecast', text: 'cpf forecast' },
   { url: 'daily-checks', text: 'daily checks' },
+  { url: 'stocks-watch', text: 'stocks watch' },
   { url: 'animals', text: 'animals' },
 ]
 
@@ -112,4 +113,43 @@ export const momentMonths = [
   { value: 9, label: 'October' },
   { value: 10, label: 'November' },
   { value: 11, label: 'December' },
+]
+
+export const stockCategories = [
+  {
+    id: 'brains',
+    title: 'The Brains: Processing & Edge AI',
+    stocks: [
+      { symbol: 'NVDA', name: 'NVIDIA', exchange: 'NASDAQ', market: 'US' },
+      { symbol: 'ARM', name: 'Arm Holdings', exchange: 'NASDAQ', market: 'US' },
+      { symbol: 'AMBA', name: 'Ambarella', exchange: 'NASDAQ', market: 'US' },
+    ],
+  },
+  {
+    id: 'senses',
+    title: 'The Senses: Vision & LiDAR',
+    stocks: [
+      { symbol: 'OUST', name: 'Ouster', exchange: 'NYSE', market: 'US' },
+      { symbol: 'LAZR', name: 'Luminar', exchange: 'NASDAQ', market: 'US' },
+      { symbol: 'TER', name: 'Teradyne', exchange: 'NASDAQ', market: 'US' },
+      { symbol: 'STM', name: 'STMicroelectronics', exchange: 'NYSE', market: 'US' },
+    ],
+  },
+  {
+    id: 'muscles',
+    title: 'The Muscles: Motors & Precision Parts',
+    stocks: [
+      { symbol: '6324.T', name: 'Harmonic Drive Systems', exchange: 'TSE', market: 'JP' },
+      { symbol: '300433.SZ', name: 'Lens Technology', exchange: 'SZSE', market: 'CN' },
+      { symbol: 'ROK', name: 'Rockwell Automation', exchange: 'NYSE', market: 'US' },
+    ],
+  },
+  {
+    id: 'nervous',
+    title: 'The Nervous System: Simulation & Software',
+    stocks: [
+      { symbol: 'U', name: 'Unity Software', exchange: 'NYSE', market: 'US' },
+      { symbol: 'MSFT', name: 'Microsoft', exchange: 'NASDAQ', market: 'US' },
+    ],
+  },
 ]

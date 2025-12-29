@@ -7,6 +7,7 @@
     "markets": "markets",
     "cpf forecast": "cpf forecast",
     "daily checks": "daily checks",
+    "stocks watch": "stocks watch",
     "animals": "animals"
   },
   "AboutPage": {
@@ -415,6 +416,22 @@
         "usdToJpy": "USD to JPY"
       },
       "dataAvailability": "Historical data available: {count} data points from {startDate} to {endDate}. Note: CurrencyAPI free tier may have limited historical data availability."
+    }
+  },
+  "StocksWatchPage": {
+    "title": "Stocks Watch",
+    "loading": "Loading stock data...",
+    "error": "Error loading stock data",
+    "noData": "No data available",
+    "noHistoricalData": "No historical data available",
+    "refresh": "Refresh",
+    "clearCache": "Clear Cache",
+    "lastUpdated": "Last updated",
+    "rateLimitWarning": "⚠️ Approaching rate limit",
+    "periods": {
+      "1week": "1 Week",
+      "1month": "1 Month",
+      "3months": "3 Months"
     }
   }
 }
