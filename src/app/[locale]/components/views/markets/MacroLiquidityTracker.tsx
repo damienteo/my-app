@@ -83,7 +83,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
   if (error || !data) {
     return (
       <Section>
-        <Paragraph className="text-red-600">{error || t('error')}</Paragraph>
+        <Paragraph className="text-red-400">{error || t('error')}</Paragraph>
       </Section>
     )
   }
@@ -93,14 +93,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
   return (
     <Section>
       <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">{t('title')}</h2>
-        <p className="text-sm text-gray-600 mb-6">{t('description')}</p>
+        <h2 className="text-2xl font-bold mb-4 text-[#282c35]">{t('title')}</h2>
+        <p className="text-sm text-gray-300 mb-6">{t('description')}</p>
 
         {/* Traffic Light Indicator */}
-        <div className="flex items-center gap-4 mb-6 p-4 bg-gray-100 rounded-lg">
+        <div className="flex items-center gap-4 mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
           <div className="flex flex-col items-center">
             <div
-              className={`w-16 h-16 rounded-full border-4 border-gray-800 ${
+              className={`w-16 h-16 rounded-full border-4 border-gray-600 ${
                 trafficLightColor === 'red'
                   ? 'bg-red-500'
                   : trafficLightColor === 'yellow'
@@ -108,7 +108,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                   : 'bg-green-500'
               }`}
             />
-            <span className="mt-2 text-sm font-semibold">
+            <span className="mt-2 text-sm font-semibold text-gray-200">
               {trafficLightColor === 'red'
                 ? t('status.critical')
                 : trafficLightColor === 'yellow'
@@ -117,13 +117,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             </span>
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-lg mb-2">
+            <h3 className="font-bold text-lg mb-2 text-gray-200">
               {t('netLiquidity.title')}
             </h3>
-            <p className="text-3xl font-bold">
+            <p className="text-3xl font-bold text-white">
               {formatCurrency(data.netLiquidity)}
             </p>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               {t('netLiquidity.formula')}
             </p>
           </div>
@@ -131,60 +131,64 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
 
         {/* Data Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('rrp.title')}
             </h3>
-            <p className="text-2xl font-bold">{formatCurrency(data.rrp)}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('rrp.description')}</p>
+            <p className="text-2xl font-bold text-white">
+              {formatCurrency(data.rrp)}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">{t('rrp.description')}</p>
           </div>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('bankReserves.title')}
             </h3>
-            <p className="text-2xl font-bold">
+            <p className="text-2xl font-bold text-white">
               {formatCurrency(data.bankReserves)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               {t('bankReserves.description')}
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('fedBalanceSheet.title')}
             </h3>
-            <p className="text-2xl font-bold">
+            <p className="text-2xl font-bold text-white">
               {formatCurrency(data.fedBalanceSheet)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               {t('fedBalanceSheet.description')}
             </p>
           </div>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('tga.title')}
             </h3>
-            <p className="text-2xl font-bold">{formatCurrency(data.tga)}</p>
-            <p className="text-xs text-gray-500 mt-1">{t('tga.description')}</p>
+            <p className="text-2xl font-bold text-white">
+              {formatCurrency(data.tga)}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">{t('tga.description')}</p>
           </div>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('treasury10Y.title')}
             </h3>
-            <p className="text-2xl font-bold">
+            <p className="text-2xl font-bold text-white">
               {formatPercent(data.treasury10Y)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               {t('treasury10Y.description')}
             </p>
           </div>
         </div>
 
-        <p className="text-xs text-gray-500 mt-4 text-center">
+        <p className="text-xs text-gray-400 mt-4 text-center">
           {t('lastUpdated')}: {new Date(data.lastUpdated).toLocaleString()}
         </p>
       </div>
