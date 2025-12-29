@@ -146,11 +146,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   return (
     <>
       <Section>
-        <p>
+        <p className="text-gray-300 mb-4">
           First, type in the current amounts in your CPF Ordinary and Special
           Accounts.{' '}
           <InfoPopup title="Info on CPF OA and SA">
-            <p>
+            <p className="text-gray-300">
               Information on what CPF is about can be found here:{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/member/cpf-overview"
@@ -176,11 +176,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </div>
       </Section>
       <Section>
-        <p>
+        <p className="text-gray-300 mb-4">
           Next, type in your date of birth. We will use this to calculate the
           date when you can start withdrawals.{' '}
           <InfoPopup title="Withdrawal of CPF Savings">
-            <p>
+            <p className="text-gray-300">
               Members can withdraw their CPF retirement savings any time from{' '}
               {withdrawalAge} years old. The withdrawal of your CPF retirement
               savings is optional. More info can be found{' '}
@@ -192,26 +192,26 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </p>
           </InfoPopup>
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            {/* Replace this with a custom date picker or use react-datepicker */}
-            <input
-              type="date"
-              value={selectedDate?.format('YYYY-MM-DD')}
-              onChange={(e) => handleDateChange(dayjs(e.target.value))}
-              className="w-full border border-gray-300 rounded p-2"
-            />
-          </div>
+        <div className="max-w-md">
+          <label className="block text-sm font-medium text-gray-300 mb-1">
+            Date of Birth
+          </label>
+          <input
+            type="date"
+            value={selectedDate?.format('YYYY-MM-DD')}
+            onChange={(e) => handleDateChange(dayjs(e.target.value))}
+            className="block w-full sm:text-sm rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3"
+          />
         </div>
       </Section>
       <Section>
-        <p>
+        <p className="text-gray-300 mb-4">
           Finally, you may add in your monthly salary (before taxes and CPF
           contribution), as well as expectations on how much it may increase per
           year. *Increase in monthly salary is calculated at the beginning of
           each year.{' '}
           <InfoPopup title="Info on Employer / Employee CPF Contribution">
-            <p>
+            <p className="text-gray-300">
               When{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
@@ -220,7 +220,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
               , the employer contributes 17% of the monthly salary, while the
               employee contributes 20%.
             </p>
-            <p>
+            <p className="text-gray-300">
               Do also take note that the{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
@@ -243,20 +243,23 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Projected Salary % Increase/Year (Optional)
+            </label>
             <input
               type="number"
               value={values.salaryIncreaseRate}
               onChange={handleChange('salaryIncreaseRate')}
-              className="w-full border border-gray-300 rounded p-2"
-              placeholder="Projected Salary % Increase/Year (Optional)"
+              className="block w-full sm:text-sm rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3 placeholder-gray-500"
+              placeholder="Enter percentage"
             />
           </div>
         </div>
       </Section>
 
-      <div className="my-4">
+      <div className="mt-6 mb-8">
         <button
-          className="bg-blue-600 text-white py-2 px-4 rounded"
+          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors font-medium"
           onClick={handleSubmit}
         >
           Forecast my CPF!
@@ -264,9 +267,9 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       </div>
 
       {snackbarOpen && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded shadow-lg">
+        <div className="fixed bottom-4 right-4 bg-green-600 text-white p-3 rounded shadow-lg z-50">
           <span>Success!</span>
-          <button className="ml-2 text-white" onClick={handleSnackbarClose}>
+          <button className="ml-2 text-white hover:text-gray-200" onClick={handleSnackbarClose}>
             &times;
           </button>
         </div>

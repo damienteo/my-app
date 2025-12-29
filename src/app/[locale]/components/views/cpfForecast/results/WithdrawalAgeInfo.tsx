@@ -27,22 +27,22 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
 
   return (
     <>
-      <Paragraph className="mb-6 text-[#282c35]">
+      <Paragraph className="mb-6 text-gray-300">
         In {getYearsAndMonths(futureValues.monthsTillWithdrawal)}, when you are{' '}
-        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+        <span className="bg-gray-700 text-blue-200 px-1 rounded">
           {withdrawalAge}
         </span>{' '}
         years old, you will have{' '}
-        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+        <span className="bg-gray-700 text-blue-200 px-1 rounded">
           {formatCurrency(futureValues.ordinaryAccountAtWithdrawalAge)}
         </span>{' '}
         in your Ordinary Account, and{' '}
-        <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+        <span className="bg-gray-700 text-blue-200 px-1 rounded">
           {formatCurrency(futureValues.specialAccountAtWithdrawalAge)}
         </span>{' '}
         in your Special Account.
         <InfoPopup title="How calculations are made">
-          <Paragraph className="text-sm mb-6 text-[#282c35]">
+          <Paragraph className="text-sm mb-6 text-gray-300">
             With regards to{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726"
@@ -51,7 +51,7 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
             , CPF interest is computed monthly. It is then credited to your
             respective accounts and compounded annually.
           </Paragraph>
-          <Paragraph className="text-sm mb-6 text-[#282c35]">
+          <Paragraph className="text-sm mb-6 text-gray-300">
             Central Provident Fund (CPF) members currently earn interest rates
             of up to 3.5% per annum on their Ordinary Account (OA) monies, and
             up to 5% per annum on their Special and MediSave Account (SMA)
@@ -69,7 +69,7 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
             alt="CPF Allocation Table"
             className="w-full h-auto"
           />
-          <Paragraph className="text-sm mb-6 text-[#282c35]">
+          <Paragraph className="text-sm mb-6 text-gray-300">
             The image above for CPF Allocation rates was sourced from{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/Employers/EmployerGuides/employer-guides/paying-cpf-contributions/cpf-contribution-and-allocation-rates"
@@ -80,17 +80,17 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
         </InfoPopup>
       </Paragraph>
       {comparisonValues && (
-        <Paragraph className="mb-6 text-[#282c35]">
+        <Paragraph className="mb-6 text-gray-300">
           * Without housing loans, or transferring from OA to SA, you would have{' '}
-          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(comparisonValues.ordinaryAccountAtWithdrawalAge)}
           </span>{' '}
           in your Ordinary Account, and{' '}
-          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(comparisonValues.specialAccountAtWithdrawalAge)}
           </span>{' '}
           in your Special Account. The sum of these three accounts is{' '}
-          <span className="bg-[#282c35] text-[#e3f2fd] px-1">
+          <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(Math.abs(comparisonSum))}
           </span>{' '}
           {comparisonSum >= 0 ? 'more' : 'less'} than the sum of the three

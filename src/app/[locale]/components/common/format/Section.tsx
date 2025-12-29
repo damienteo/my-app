@@ -6,7 +6,7 @@ interface SectionProps {
 
 const Section: React.FunctionComponent<SectionProps> = ({ children }) => {
   return (
-    <section className="bg-blue text-[#282c35] rounded-lg p-2 mb-[1.5]">
+    <section className="bg-gray-800 text-gray-300 rounded-lg p-6 mb-6 border border-gray-700">
       {children}
     </section>
   )

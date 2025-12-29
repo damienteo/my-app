@@ -107,9 +107,9 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
   const renderSalaryInfo = (salaryData: SalaryRecord) => {
     const { year, amount, age } = salaryData
     return (
-      <p className="text-center text-gray-700 my-4">
+      <p className="text-center text-gray-300 my-4">
         In the year {year}, your salary is{' '}
-        <span className="bg-gray-800 text-blue-100 px-2 py-1 rounded">
+        <span className="bg-gray-800 text-blue-200 px-2 py-1 rounded">
           {formatCurrency(amount)}
         </span>{' '}
         (age: {age}).
@@ -126,17 +126,17 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
       {Boolean(salaryData[page]) && renderSalaryInfo(salaryData[page])}
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border">
+        <table className="min-w-full bg-gray-800 border border-gray-700">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b">Date</th>
-              <th className="px-6 py-3 border-b">Category</th>
-              <th className="px-6 py-3 border-b text-right">
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">Date</th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">Category</th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                 Ordinary Account
               </th>
-              <th className="px-6 py-3 border-b text-right">Special Account</th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">Special Account</th>
               {data[1]?.retirementAccount !== undefined && (
-                <th className="px-6 py-3 border-b text-right">
+                <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                   Retirement Account
                 </th>
               )}
@@ -144,17 +144,17 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           </thead>
           <tbody>
             {history[page]?.map((row, index) => (
-              <tr key={index + row.date}>
-                <td className="px-6 py-4 border-b">{row.date}</td>
-                <td className="px-6 py-4 border-b">{row.category}</td>
-                <td className="px-6 py-4 border-b text-right">
+              <tr key={index + row.date} className="hover:bg-gray-700">
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">{row.date}</td>
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">{row.category}</td>
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
                   {formatCurrency(row.ordinaryAccount)}
                 </td>
-                <td className="px-6 py-4 border-b text-right">
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
                   {formatCurrency(row.specialAccount)}
                 </td>
                 {row.retirementAccount !== undefined && (
-                  <td className="px-6 py-4 border-b text-right">
+                  <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
                     {formatCurrency(row.retirementAccount)}
                   </td>
                 )}
