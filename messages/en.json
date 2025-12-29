@@ -106,6 +106,7 @@
         "warning": "⚠️ RED LINE",
         "proximity": "Proximity",
         "threshold": "Threshold",
+        "safeAboveThreshold": "Safe (above threshold)",
         "rrp": {
           "threshold": "Below $50B threshold - shock absorber gone"
         },

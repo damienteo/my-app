@@ -105,6 +105,7 @@
         "warning": "⚠️ レッドライン",
         "proximity": "近接度",
         "threshold": "閾値",
+        "safeAboveThreshold": "安全（閾値を上回る）",
         "rrp": {
           "threshold": "$50B閾値を下回る - ショックアブソーバー消失"
         },

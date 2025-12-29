@@ -13,6 +13,14 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { Section, Paragraph } from '../../common'
+import ProximityIndicator from './ProximityIndicator'
+import {
+  formatCurrencyLarge as formatCurrency,
+  formatPercent,
+  formatBasisPoints,
+  formatDate,
+  formatChartValue,
+} from '../../../../../../utils/utils'
 
 interface HistoricalDataPoint {
   date: string
@@ -52,129 +60,6 @@ interface MacroData {
     highYieldSpreads: HistoricalDataPoint[]
     vix: HistoricalDataPoint[]
   }
-}
-
-const formatCurrency = (value: number | null): string => {
-  if (value === null) return 'N/A'
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`
-  return `$${value.toFixed(2)}`
-}
-
-const formatPercent = (value: number | null): string => {
-  if (value === null) return 'N/A'
-  return `${value.toFixed(2)}%`
-}
-
-const formatBasisPoints = (value: number | null): string => {
-  if (value === null) return 'N/A'
-  return `${value.toFixed(2)} bps`
-}
-
-// Calculate proximity to red line threshold (0-100%, where 100% = at threshold)
-const calculateProximity = (
-  current: number | null,
-  threshold: number,
-  isLowerBetter: boolean = false
-): number | null => {
-  if (current === null) return null
-
-  if (isLowerBetter) {
-    // For metrics where lower is better (e.g., Z-Score where -2.0 is threshold)
-    // Calculate how close we are to the threshold from above
-    // If threshold is -2.0 and current is -1.35, we're 67.5% of the way there
-    const range = 0 - threshold // e.g., 0 - (-2.0) = 2.0
-    if (range === 0) return null
-    const distance = current - threshold // e.g., -1.35 - (-2.0) = 0.65
-    return Math.max(0, Math.min(100, (1 - distance / range) * 100))
-  } else {
-    // For metrics where higher is better (e.g., Bank Reserves, RRP)
-    // Calculate how close we are to the threshold from below
-    if (threshold === 0) return null
-    return Math.max(0, Math.min(100, (current / threshold) * 100))
-  }
-}
-
-// Get color based on proximity
-const getProximityColor = (proximity: number | null): string => {
-  if (proximity === null) return 'bg-gray-600'
-  if (proximity >= 100) return 'bg-red-500'
-  if (proximity >= 80) return 'bg-yellow-500'
-  if (proximity >= 60) return 'bg-yellow-400'
-  return 'bg-green-500'
-}
-
-// Proximity indicator component
-const ProximityIndicator: React.FC<{
-  current: number | null
-  threshold: number
-  isLowerBetter?: boolean
-  formatValue: (val: number | null) => string
-  proximityLabel: string
-  thresholdLabel: string
-}> = ({
-  current,
-  threshold,
-  isLowerBetter = false,
-  formatValue,
-  proximityLabel,
-  thresholdLabel,
-}) => {
-  const proximity = calculateProximity(current, threshold, isLowerBetter)
-
-  if (proximity === null) return null
-
-  return (
-    <div className="mt-2">
-      <div className="flex items-center justify-between text-xs mb-1">
-        <span className="text-gray-400">
-          {proximityLabel}: {proximity.toFixed(0)}%
-        </span>
-        <span className="text-gray-400">
-          {thresholdLabel}: {formatValue(threshold)}
-        </span>
-      </div>
-      <div className="w-full bg-gray-700 rounded-full h-2">
-        <div
-          className={`h-2 rounded-full transition-all ${getProximityColor(
-            proximity
-          )}`}
-          style={{ width: `${Math.min(100, proximity)}%` }}
-        />
-      </div>
-    </div>
-  )
-}
-
-// Format date for chart display
-const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
-}
-
-// Format chart value for tooltip
-const formatChartValue = (
-  value: number,
-  isPercent: boolean = false
-): string => {
-  if (isPercent) return `${value.toFixed(2)}%`
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`
-  return `$${value.toFixed(0)}`
-}
-
-const getTrafficLightColor = (
-  netLiquidity: number | null
-): 'red' | 'yellow' | 'green' => {
-  if (netLiquidity === null) return 'yellow'
-
-  // These thresholds are examples - adjust based on your analysis
-  // Typically, lower net liquidity indicates tighter conditions
-  if (netLiquidity < 2e12) return 'red' // Critical
-  if (netLiquidity < 3e12) return 'yellow' // Warning
-  return 'green' // Healthy
 }
 
 const MacroLiquidityTracker: React.FunctionComponent = () => {
@@ -224,6 +109,19 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
         <Paragraph className="text-red-400">{error || t('error')}</Paragraph>
       </Section>
     )
+  }
+
+  // Determine traffic light color based on Net Liquidity Index
+  const getTrafficLightColor = (
+    netLiquidity: number | null
+  ): 'red' | 'yellow' | 'green' => {
+    if (netLiquidity === null) return 'yellow'
+
+    // These thresholds are examples - adjust based on your analysis
+    // Typically, lower net liquidity indicates tighter conditions
+    if (netLiquidity < 2e12) return 'red' // Critical
+    if (netLiquidity < 3e12) return 'yellow' // Warning
+    return 'green' // Healthy
   }
 
   const trafficLightColor = getTrafficLightColor(data.netLiquidity)
@@ -294,6 +192,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               formatValue={formatCurrency}
               proximityLabel={t('redLine.proximity')}
               thresholdLabel={t('redLine.threshold')}
+              safeAboveThresholdLabel={t('redLine.safeAboveThreshold')}
             />
             {data.redLines?.rrp && (
               <p className="text-xs text-red-400 mt-1">
@@ -331,6 +230,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               formatValue={formatCurrency}
               proximityLabel={t('redLine.proximity')}
               thresholdLabel={t('redLine.threshold')}
+              safeAboveThresholdLabel={t('redLine.safeAboveThreshold')}
             />
             {data.redLines?.bankReserves && (
               <p className="text-xs text-red-400 mt-1">
@@ -403,6 +303,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               formatValue={(val) => `${val?.toFixed(0) || 0} bps`}
               proximityLabel={t('redLine.proximity')}
               thresholdLabel={t('redLine.threshold')}
+              safeAboveThresholdLabel={t('redLine.safeAboveThreshold')}
             />
             {data.redLines?.sofrSpread && (
               <p className="text-xs text-red-400 mt-1">
@@ -464,6 +365,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 formatValue={(val) => val?.toFixed(1) || '0.0'}
                 proximityLabel={t('redLine.proximity')}
                 thresholdLabel={t('redLine.threshold')}
+                safeAboveThresholdLabel={t('redLine.safeAboveThreshold')}
               />
               {data.redLines?.netLiquidityZScore && (
                 <p className="text-xs text-red-400 mt-1">
