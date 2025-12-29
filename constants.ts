@@ -94,8 +94,8 @@ export const additionalWageCeiling = 102000
 export const withdrawalAge = 55
 export const payoutAge = 65
 
-export const yearFRSTakenFrom = 2022
-export const fullRetirementSum = 192000
+export const yearFRSTakenFrom = 2025
+export const fullRetirementSum = 213000
 export const retirementSumIncrease = 0.035
 
 export const momentMonths = [

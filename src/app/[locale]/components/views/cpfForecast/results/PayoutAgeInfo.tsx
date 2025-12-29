@@ -72,11 +72,11 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
               url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Scheme&ajfaqid=2190584&folderid=18088"
               label="historical trends"
             />
-            . The FRS has increased by $5,000 per year from 2017 till 2021, and
-            we have adjusted the FRS accordingly for when you turn 55. Please
-            note that, this is purely an assumption made by me, who do not
-            represent the government or CPF in any shape or form. It is just a
-            forecast.
+            . The FRS has increased over the years, and we have adjusted the FRS
+            accordingly for when you turn 55 based on a 3.5% annual increase from
+            the 2025 FRS of $213,000. Please note that, this is purely an
+            assumption made by me, who do not represent the government or CPF in
+            any shape or form. It is just a forecast.
           </Paragraph>
         </InfoPopup>
       </Paragraph>

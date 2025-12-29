@@ -259,7 +259,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
 
       <div className="mt-6 mb-8">
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors font-medium"
+          className="bg-blue-600 hover:bg-blue-500 text-white py-3 px-8 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
           onClick={handleSubmit}
         >
           Forecast my CPF!
@@ -269,7 +269,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       {snackbarOpen && (
         <div className="fixed bottom-4 right-4 bg-green-600 text-white p-3 rounded shadow-lg z-50">
           <span>Success!</span>
-          <button className="ml-2 text-white hover:text-gray-200" onClick={handleSnackbarClose}>
+          <button
+            className="ml-2 text-white hover:text-gray-200"
+            onClick={handleSnackbarClose}
+          >
             &times;
           </button>
         </div>

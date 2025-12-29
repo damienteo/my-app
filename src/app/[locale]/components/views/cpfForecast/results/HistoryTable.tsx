@@ -63,26 +63,56 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
 
   const renderButtons = () => {
     return (
-      <div className="flex justify-center my-4">
+      <div className="flex justify-center items-center gap-3 my-4">
         <button
           onClick={seePrevHistory}
           disabled={page === 0}
-          className={`p-2 rounded-full ${
-            page === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+            page === 0
+              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-500 text-white'
           }`}
+          aria-label="Previous page"
         >
-          <span>&lt;</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
         </button>
         <button
           onClick={seeNextHistory}
           disabled={page === history.length - 1}
-          className={`p-2 rounded-full ml-4 ${
+          className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
             page === history.length - 1
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-500'
+              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-500 text-white'
           }`}
+          aria-label="Next page"
         >
-          <span>&gt;</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
         </button>
       </div>
     )
@@ -90,12 +120,16 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
 
   const renderGroupButtons = () => {
     return (
-      <div className="flex justify-center space-x-2 my-4">
+      <div className="flex flex-wrap justify-center gap-2 my-4">
         {groups.map((group, index) => (
           <button
             key={group}
             onClick={() => setPage(index)}
-            className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-400"
+            className={`px-4 py-2 text-white rounded-full transition-all font-medium ${
+              page === index
+                ? 'bg-blue-600 hover:bg-blue-500 shadow-lg'
+                : 'bg-gray-700 hover:bg-gray-600'
+            }`}
           >
             {group}
           </button>
@@ -129,12 +163,18 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
         <table className="min-w-full bg-gray-800 border border-gray-700">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">Date</th>
-              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">Category</th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">
+                Date
+              </th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200">
+                Category
+              </th>
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                 Ordinary Account
               </th>
-              <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">Special Account</th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
+                Special Account
+              </th>
               {data[1]?.retirementAccount !== undefined && (
                 <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                   Retirement Account
@@ -145,8 +185,12 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           <tbody>
             {history[page]?.map((row, index) => (
               <tr key={index + row.date} className="hover:bg-gray-700">
-                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">{row.date}</td>
-                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">{row.category}</td>
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">
+                  {row.date}
+                </td>
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300">
+                  {row.category}
+                </td>
                 <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
                   {formatCurrency(row.ordinaryAccount)}
                 </td>

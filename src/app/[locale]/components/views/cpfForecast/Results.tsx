@@ -35,7 +35,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {history.length > 0 && (
           <div className="text-center my-6">
             <button
-              className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
+              className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
               onClick={() => setHistoryOpen(!historyOpen)}
             >
               {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
@@ -69,7 +69,7 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
         {historyAfterWithdrawalAge.length > 0 && (
           <div className="text-center my-6">
             <button
-              className="bg-cyan-800 hover:bg-cyan-600 text-white py-2 px-4 rounded"
+              className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
               onClick={() =>
                 setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
               }

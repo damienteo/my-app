@@ -5,7 +5,8 @@ import CPFForecastPageClient from './CPFForecastPageClient'
 
 export const metadata: Metadata = {
   title: 'CPF Forecast',
-  description: 'CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions',
+  description:
+    'CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions',
 }
 
 const CPFForecast: React.FunctionComponent = () => {
@@ -13,4 +14,3 @@ const CPFForecast: React.FunctionComponent = () => {
 }
 
 export default CPFForecast
-

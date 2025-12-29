@@ -31,7 +31,7 @@ const CPFForecastPageClient = () => {
       </div>
 
       <Paragraph className="mb-4">
-        Interest Rates, etc, were last checked in April 2020. This page does not
+        Interest Rates, etc, were last checked in December 2025. This page does not
         save any data, and calculates values based on your input. Medisave
         values are not included as this page mainly deals with usage of CPF for
         retirement and potentially housing.
@@ -39,8 +39,8 @@ const CPFForecastPageClient = () => {
 
       <Paragraph className="mb-8">
         For calculation of Full Retirement Sums in the future, I am assuming a
-        3.5% increase per year from the current year (2022, where the FRS is
-        $192,000).
+        3.5% increase per year from the current year (2025, where the FRS is
+        $213,000).
         <InfoPopup title="Retirement Amounts">
           <Paragraph className="m-0 mb-2 text-gray-300">
             Information on CRS retirement amounts can be found here:{' '}
