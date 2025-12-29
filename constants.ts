@@ -2,8 +2,8 @@ export const navLinks = [
   { url: 'about', text: 'about' },
   { url: 'portfolio', text: 'portfolio' },
   { url: 'markets', text: 'markets' },
+  { url: 'cpf-forecast', text: 'cpf forecast' },
   { url: 'animals', text: 'animals' },
-  // { url: 'cpf-forecast', text: 'cpf forecast' },
 ]
 
 export const cpfAccounts = [

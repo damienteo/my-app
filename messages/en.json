@@ -5,6 +5,7 @@
     "about": "about",
     "portfolio": "portfolio",
     "markets": "markets",
+    "cpf forecast": "cpf forecast",
     "animals": "animals"
   },
   "AboutPage": {
@@ -244,6 +245,125 @@
       "start": "This was made with vanilla HTML, JavaScript, and CSS ",
       "github": "GitHub Repo",
       "end": "."
+    }
+  },
+  "CPFForecastPage": {
+    "title": "CPF Forecast",
+    "description": "CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions",
+    "intro": {
+      "title": "CPF Forecast",
+      "disclaimer": {
+        "title": "Disclaimer",
+        "notFinancialAdvice": "This page is not meant to be for financial advice.",
+        "notEmployee": "I am neither an employee of CPF, nor am I a representative of the government.",
+        "researchBased": "The calculations here are based on research I have done, and I have listed my sources as far as possible.",
+        "corrections": "If there are any corrections or enhancements to be made, please let me know.",
+        "thankYou": "Thank you."
+      }
+    },
+    "lastChecked": "Interest Rates, etc, were last checked in December 2025. This page does not save any data, and calculates values based on your input. Medisave values are not included as this page mainly deals with usage of CPF for retirement and potentially housing.",
+    "frsAssumption": {
+      "text": "For calculation of Full Retirement Sums in the future, I am assuming a 3.5% increase per year from the current year (2025, where the FRS is $213,000).",
+      "retirementAmounts": {
+        "title": "Retirement Amounts",
+        "info": "Information on CRS retirement amounts can be found here:"
+      },
+      "policyNote": "The increase in FRS per year may change in the future according to government policy."
+    },
+    "userInput": {
+      "accountBalances": {
+        "instruction": "First, type in the current amounts in your CPF Ordinary and Special Accounts.",
+        "ordinaryAccount": "Ordinary Account",
+        "specialAccount": "Special Account",
+        "infoPopup": {
+          "title": "Info on CPF OA and SA",
+          "text": "Information on what CPF is about can be found here:"
+        }
+      },
+      "dateOfBirth": {
+        "instruction": "Next, type in your date of birth. We will use this to calculate the date when you can start withdrawals.",
+        "label": "Date of Birth",
+        "withdrawalInfo": {
+          "title": "Withdrawal of CPF Savings",
+          "text": "Members can withdraw their CPF retirement savings any time from {age} years old. The withdrawal of your CPF retirement savings is optional. More info can be found",
+          "here": "here"
+        }
+      },
+      "salary": {
+        "instruction": "Finally, you may add in your monthly salary (before taxes and CPF contribution), as well as expectations on how much it may increase per year. *Increase in monthly salary is calculated at the beginning of each year.",
+        "monthlySalary": "Monthly Salary (Optional)",
+        "salaryIncrease": "Projected Salary % Increase/Year (Optional)",
+        "salaryIncreasePlaceholder": "Enter percentage",
+        "contributionInfo": {
+          "title": "Info on Employer / Employee CPF Contribution",
+          "when55": "When",
+          "employerContribution": ", the employer contributes 17% of the monthly salary, while the employee contributes 20%.",
+          "owCeiling": "Do also take note that the",
+          "owCeilingText": "sets the maximum amount of OWs on which CPF contributions are payable per month. The prevailing OW Ceiling is $6,000 per month."
+        }
+      },
+      "submit": "Forecast my CPF!",
+      "success": "Success!",
+      "errors": {
+        "negativeValue": "Please enter a value which is 0 or larger",
+        "specialAccountOnly": "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
+      }
+    },
+    "results": {
+      "showCalculationsTill55": "Show Calculations Till 55!",
+      "hideCalculationsTill55": "Hide Calculations Till 55!",
+      "showCalculationsAfter55": "Show Calculations After 55!",
+      "hideCalculationsAfter55": "Hide Calculations After 55!",
+      "withdrawalAge": {
+        "title": "How calculations are made",
+        "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, and {specialAmount} in your Special Account.",
+        "interest": "interest",
+        "interestText": ", CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually.",
+        "interestRates": "Central Provident Fund (CPF) members currently earn interest rates of up to 3.5% per annum on their Ordinary Account (OA) monies, and up to 5% per annum on their Special and MediSave Account (SMA) monies. Retirement Account (RA) monies currently earn up to 5% per annum. The above",
+        "interestRatesLink": "interest rates",
+        "extraInterest": "include an extra 1% interest paid on the first $60,000 of a member's combined balances (with up to $20,000 from the OA).",
+        "allocationTable": "CPF Allocation Table",
+        "allocationSource": "The image above for CPF Allocation rates was sourced from",
+        "here": "here",
+        "comparison": {
+          "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
+          "inOrdinaryAccount": "in your Ordinary Account, and",
+          "inSpecialAccount": "in your Special Account. The sum of these three accounts is",
+          "more": "more",
+          "less": "less",
+          "thanSum": "than the sum of the three accounts in your chosen scenario."
+        }
+      },
+      "payoutAge": {
+        "title": "What is a Retirement Account?",
+        "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, {specialAmount} in your Special Account, and {retirementAmount} in your Retirement Account.",
+        "retirementAccount": "On your 55th birthday, CPF will create a",
+        "retirementAccountText": "(RA) for you. Savings from your Special Account and Ordinary Account, up to the Full Retirement Sum (FRS), will be",
+        "transferred": "transferred",
+        "payouts": "to your RA to form your retirement sum which will provide you with",
+        "monthlyPayouts": "monthly payouts",
+        "fromAge65": "from the age of 65.",
+        "frsAssumption": "* We have also made an assumption for the Full Retirement Sum based on",
+        "historicalTrends": "historical trends",
+        "frsNote": ". The FRS has increased over the years, and we have adjusted the FRS accordingly for when you turn 55 based on a 3.5% annual increase from the 2025 FRS of $213,000. Please note that, this is purely an assumption made by me, who do not represent the government or CPF in any shape or form. It is just a forecast.",
+        "comparison": {
+          "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
+          "inOrdinaryAccount": "in your Ordinary Account ,",
+          "inSpecialAccount": "in your Special Account, and",
+          "inRetirementAccount": "in your Retirement Account. The sum of both these accounts is",
+          "more": "more",
+          "less": "less",
+          "thanSum": "than the sum of both accounts in your chosen scenario."
+        }
+      },
+      "historyTable": {
+        "date": "Date",
+        "category": "Category",
+        "ordinaryAccount": "Ordinary Account",
+        "specialAccount": "Special Account",
+        "retirementAccount": "Retirement Account",
+        "salaryInfo": "In the year {year}, your salary is {amount} (age: {age})."
+      }
     }
   }
 }

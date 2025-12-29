@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { formatCurrency } from '../../../../../../../utils/utils'
 import {
   Entry,
@@ -48,6 +49,7 @@ const chunkArray = (myArray: Entry[], groupByYear: boolean, chunkSize = 15) => {
 }
 
 const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
+  const t = useTranslations('CPFForecastPage.results.historyTable')
   const { data = [], groupByYear = false, salaryData = [] } = props
   const [page, setPage] = useState(0)
 
@@ -142,11 +144,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
     const { year, amount, age } = salaryData
     return (
       <p className="text-center text-gray-300 my-4">
-        In the year {year}, your salary is{' '}
-        <span className="bg-gray-800 text-blue-200 px-2 py-1 rounded">
-          {formatCurrency(amount)}
-        </span>{' '}
-        (age: {age}).
+        {t('salaryInfo', { year, amount: formatCurrency(amount), age })}
       </p>
     )
   }
@@ -164,20 +162,20 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           <thead>
             <tr>
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200">
-                Date
+                {t('date')}
               </th>
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200">
-                Category
+                {t('category')}
               </th>
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
-                Ordinary Account
+                {t('ordinaryAccount')}
               </th>
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
-                Special Account
+                {t('specialAccount')}
               </th>
               {data[1]?.retirementAccount !== undefined && (
                 <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
-                  Retirement Account
+                  {t('retirementAccount')}
                 </th>
               )}
             </tr>

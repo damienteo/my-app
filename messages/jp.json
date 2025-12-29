@@ -5,6 +5,7 @@
     "about": "アバウト",
     "portfolio": "ポートフォリオ",
     "markets": "市場",
+    "cpf forecast": "CPF予測",
     "animals": "動物たち"
   },
   "AboutPage": {
@@ -243,6 +244,125 @@
       "start": "これは、バニラのHTML、JavaScript、およびCSSを使用して作成されました。詳しくは",
       "github": "GitHubリポジトリ",
       "end": "をご覧ください。"
+    }
+  },
+  "CPFForecastPage": {
+    "title": "CPF予測",
+    "description": "CPF予測は、ユーザーが将来の拠出金に基づいてCPF OAとSAを計算するのに役立ちます",
+    "intro": {
+      "title": "CPF予測",
+      "disclaimer": {
+        "title": "免責事項",
+        "notFinancialAdvice": "このページは金融アドバイスを目的としたものではありません。",
+        "notEmployee": "私はCPFの従業員でも、政府の代表者でもありません。",
+        "researchBased": "ここでの計算は、私が行った研究に基づいており、可能な限り情報源を記載しています。",
+        "corrections": "修正や改善が必要な場合は、お知らせください。",
+        "thankYou": "ありがとうございます。"
+      }
+    },
+    "lastChecked": "金利などは、2025年12月に最後に確認されました。このページはデータを保存せず、入力に基づいて値を計算します。メディセーブの値は含まれていません。このページは主に退職や住宅購入のためのCPFの使用を扱っています。",
+    "frsAssumption": {
+      "text": "将来の完全退職額（FRS）の計算については、現在の年（2025年、FRSは$213,000）から年間3.5%の増加を想定しています。",
+      "retirementAmounts": {
+        "title": "退職金額",
+        "info": "CRS退職金額に関する情報はこちらで確認できます："
+      },
+      "policyNote": "FRSの年間増加率は、政府の方針に応じて将来変更される可能性があります。"
+    },
+    "userInput": {
+      "accountBalances": {
+        "instruction": "まず、CPF普通口座と特別口座の現在の金額を入力してください。",
+        "ordinaryAccount": "普通口座",
+        "specialAccount": "特別口座",
+        "infoPopup": {
+          "title": "CPF OAとSAについて",
+          "text": "CPFについての情報はこちらで確認できます："
+        }
+      },
+      "dateOfBirth": {
+        "instruction": "次に、生年月日を入力してください。これを使用して、引き出しを開始できる日付を計算します。",
+        "label": "生年月日",
+        "withdrawalInfo": {
+          "title": "CPF貯蓄の引き出し",
+          "text": "会員は{age}歳からいつでもCPF退職貯蓄を引き出すことができます。CPF退職貯蓄の引き出しは任意です。詳細は",
+          "here": "こちら"
+        }
+      },
+      "salary": {
+        "instruction": "最後に、月給（税金とCPF拠出前）と、年間の増加率の予想を入力できます。*月給の増加は各年の初めに計算されます。",
+        "monthlySalary": "月給（任意）",
+        "salaryIncrease": "予想給与増加率/年（任意）",
+        "salaryIncreasePlaceholder": "パーセンテージを入力",
+        "contributionInfo": {
+          "title": "雇用主/従業員CPF拠出について",
+          "when55": "55歳以下の場合",
+          "employerContribution": "、雇用主は月給の17%を拠出し、従業員は20%を拠出します。",
+          "owCeiling": "また、",
+          "owCeilingText": "は、CPF拠出が支払われる月額OWの最大額を設定します。現在のOW上限は月額$6,000です。"
+        }
+      },
+      "submit": "CPFを予測する！",
+      "success": "成功！",
+      "errors": {
+        "negativeValue": "0以上の値を入力してください",
+        "specialAccountOnly": "すべてのお金を特別口座に移すと、住宅購入に使用する普通口座に資金がなくなります。"
+      }
+    },
+    "results": {
+      "showCalculationsTill55": "55歳までの計算を表示！",
+      "hideCalculationsTill55": "55歳までの計算を非表示！",
+      "showCalculationsAfter55": "55歳以降の計算を表示！",
+      "hideCalculationsAfter55": "55歳以降の計算を非表示！",
+      "withdrawalAge": {
+        "title": "計算方法",
+        "inTime": "{time}後、あなたが{age}歳のとき、普通口座に{ordinaryAmount}、特別口座に{specialAmount}あります。",
+        "interest": "金利",
+        "interestText": "について、CPFの金利は毎月計算されます。その後、それぞれの口座に記入され、年間で複利計算されます。",
+        "interestRates": "中央積立基金（CPF）会員は現在、普通口座（OA）の資金に対して年間最大3.5%、特別口座およびメディセーブ口座（SMA）の資金に対して年間最大5%の金利を獲得しています。退職口座（RA）の資金は現在、年間最大5%の金利を獲得しています。上記の",
+        "interestRatesLink": "金利",
+        "extraInterest": "には、会員の合計残高の最初の$60,000（OAから最大$20,000）に支払われる追加の1%の金利が含まれています。",
+        "allocationTable": "CPF配分表",
+        "allocationSource": "上記のCPF配分率の画像は",
+        "here": "こちら",
+        "comparison": {
+          "withoutHousing": "* 住宅ローンやOAからSAへの移転がない場合、",
+          "inOrdinaryAccount": "が普通口座に、",
+          "inSpecialAccount": "が特別口座にあります。これら3つの口座の合計は、",
+          "more": "多い",
+          "less": "少ない",
+          "thanSum": "選択したシナリオの3つの口座の合計よりも。"
+        }
+      },
+      "payoutAge": {
+        "title": "退職口座とは何ですか？",
+        "inTime": "{time}後、あなたが{age}歳のとき、普通口座に{ordinaryAmount}、特別口座に{specialAmount}、退職口座に{retirementAmount}あります。",
+        "retirementAccount": "55歳の誕生日に、CPFは",
+        "retirementAccountText": "（RA）を作成します。特別口座と普通口座からの貯蓄は、完全退職額（FRS）まで、",
+        "transferred": "移転",
+        "payouts": "され、退職額を形成し、65歳から",
+        "monthlyPayouts": "月額支払い",
+        "fromAge65": "を提供します。",
+        "frsAssumption": "* 完全退職額についても、",
+        "historicalTrends": "歴史的傾向",
+        "frsNote": "に基づいて仮定を行いました。FRSは長年にわたって増加しており、2025年のFRS $213,000から年間3.5%の増加に基づいて、55歳になる時点でFRSを調整しました。これは私が行った純粋な仮定であり、政府やCPFを何らかの形で代表するものではないことにご注意ください。これは単なる予測です。",
+        "comparison": {
+          "withoutHousing": "* 住宅ローンやOAからSAへの移転がない場合、",
+          "inOrdinaryAccount": "が普通口座に、",
+          "inSpecialAccount": "が特別口座に、",
+          "inRetirementAccount": "が退職口座にあります。これら両方の口座の合計は、",
+          "more": "多い",
+          "less": "少ない",
+          "thanSum": "選択したシナリオの両方の口座の合計よりも。"
+        }
+      },
+      "historyTable": {
+        "date": "日付",
+        "category": "カテゴリ",
+        "ordinaryAccount": "普通口座",
+        "specialAccount": "特別口座",
+        "retirementAccount": "退職口座",
+        "salaryInfo": "{year}年、あなたの給与は{amount}（年齢：{age}）です。"
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
 
@@ -14,6 +15,7 @@ interface PayoutAgeInfoProps {
 }
 
 const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
+  const t = useTranslations('CPFForecastPage.results.payoutAge')
   const { futureValues } = props
   const { comparisonValues } = futureValues
 
@@ -29,77 +31,62 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
   return (
     <>
       <Paragraph className="my-6 text-gray-300">
-        In {getYearsAndMonths(futureValues.monthsTillWithdrawal + 120)}, when
-        you are{' '}
-        <span className="bg-gray-700 text-blue-200 px-1 rounded">{payoutAge}</span>{' '}
-        years old, you will have{' '}
-        <span className="bg-gray-700 text-blue-200 px-1 rounded">
-          {formatCurrency(futureValues.ordinaryAccount)}
-        </span>{' '}
-        in your Ordinary Account,{' '}
-        <span className="bg-gray-700 text-blue-200 px-1 rounded">
-          {formatCurrency(futureValues.specialAccount)}
-        </span>{' '}
-        in your Special Account, and{' '}
-        <span className="bg-gray-700 text-blue-200 px-1 rounded">
-          {formatCurrency(futureValues.retirementAccount)}
-        </span>{' '}
-        in your Retirement Account.
-        <InfoPopup title="What is a Retirement Account?">
+        {t('inTime', {
+          time: getYearsAndMonths(futureValues.monthsTillWithdrawal + 120),
+          age: payoutAge,
+          ordinaryAmount: formatCurrency(futureValues.ordinaryAccount),
+          specialAmount: formatCurrency(futureValues.specialAccount),
+          retirementAmount: formatCurrency(futureValues.retirementAccount),
+        })}
+        <InfoPopup title={t('title')}>
           <Paragraph className="text-sm my-6 text-gray-300">
-            On your 55th birthday, CPF will create a{' '}
+            {t('retirementAccount')}{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=retirement&group=Retirement+Sum+Scheme&ajfaqid=2190582&folderid=18088"
-              label="Retirement Account"
+              label={t('retirementAccount')}
             />{' '}
-            (RA) for you. Savings from your Special Account and Ordinary
-            Account, up to the Full Retirement Sum (FRS), will be{' '}
+            {t('retirementAccountText')}{' '}
             <ExternalLink
               url="https://www.areyouready.sg/YourInfoHub/Pages/News-3-questions-about-CPF-withdrawals-from-age-55.aspx"
-              label="transferred"
+              label={t('transferred')}
             />{' '}
-            to your RA to form your retirement sum which will provide you with{' '}
+            {t('payouts')}{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/Members/Schemes/schemes/retirement/cpf-life"
-              label="monthly payouts"
+              label={t('monthlyPayouts')}
             />{' '}
-            from the age of 65.
+            {t('fromAge65')}
           </Paragraph>
           <Paragraph className="text-sm my-6 text-gray-300">
-            * We have also made an assumption for the Full Retirement Sum based
-            on{' '}
+            {t('frsAssumption')}{' '}
             <ExternalLink
               url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=Retirement&group=Retirement+Sum+Scheme&ajfaqid=2190584&folderid=18088"
-              label="historical trends"
+              label={t('historicalTrends')}
             />
-            . The FRS has increased over the years, and we have adjusted the FRS
-            accordingly for when you turn 55 based on a 3.5% annual increase from
-            the 2025 FRS of $213,000. Please note that, this is purely an
-            assumption made by me, who do not represent the government or CPF in
-            any shape or form. It is just a forecast.
+            {t('frsNote')}
           </Paragraph>
         </InfoPopup>
       </Paragraph>
       {comparisonValues && (
         <Paragraph className="my-6 text-gray-300">
-          * Without housing loans, or transferring from OA to SA, you would have{' '}
+          {t('comparison.withoutHousing')}{' '}
           <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(comparisonValues.ordinaryAccount)}
           </span>{' '}
-          in your Ordinary Account ,{' '}
+          {t('comparison.inOrdinaryAccount')}{' '}
           <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(comparisonValues.specialAccount)}
           </span>{' '}
-          in your Special Account, and{' '}
+          {t('comparison.inSpecialAccount')}{' '}
           <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(comparisonValues.retirementAccount)}
           </span>{' '}
-          in your Retirement Account. The sum of both these accounts is{' '}
+          {t('comparison.inRetirementAccount')}{' '}
           <span className="bg-gray-700 text-blue-200 px-1 rounded">
             {formatCurrency(Math.abs(comparisonSum))}
           </span>{' '}
-          {comparisonSum >= 0 ? 'more' : 'less'} than the sum of both accounts
-          in your chosen scenario.
+          {comparisonSum >= 0 ? t('comparison.more') : t('comparison.less')}{' '}
+          {t('comparison.thanSum')}
         </Paragraph>
       )}
     </>

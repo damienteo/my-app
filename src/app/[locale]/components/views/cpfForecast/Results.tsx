@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 import { Section } from '../../common'
 import HistoryTable from './results/HistoryTable'
@@ -12,6 +13,7 @@ interface ResultsProps {
 }
 
 const Results: React.FunctionComponent<ResultsProps> = (props) => {
+  const t = useTranslations('CPFForecastPage.results')
   const { futureValues } = props
   const {
     history,
@@ -38,7 +40,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
               onClick={() => setHistoryOpen(!historyOpen)}
             >
-              {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
+              {historyOpen
+                ? t('hideCalculationsTill55')
+                : t('showCalculationsTill55')}
             </button>
           </div>
         )}
@@ -74,8 +78,9 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
                 setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
               }
             >
-              {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Calculations
-              After 55!
+              {historyAfterWithdrawalAgeOpen
+                ? t('hideCalculationsAfter55')
+                : t('showCalculationsAfter55')}
             </button>
           </div>
         )}

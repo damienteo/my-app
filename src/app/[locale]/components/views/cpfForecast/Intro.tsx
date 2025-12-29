@@ -1,30 +1,29 @@
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { Header, InfoPopup, Paragraph } from '../../common'
 
-// Styles were originally in useStyles, now converted to Tailwind CSS
-
 const Intro: React.FunctionComponent = () => {
+  const t = useTranslations('CPFForecastPage.intro')
   return (
     <div>
       <div className="flex">
-        <Header text="CPF Forecast" className="mb-2 mr-1" />{' '}
-        <InfoPopup title="Disclaimer">
+        <Header text={t('title')} className="mb-2 mr-1" />{' '}
+        <InfoPopup title={t('disclaimer.title')}>
           <Paragraph className="mb-6 text-gray-300">
-            This page is not meant to be for financial advice.
+            {t('disclaimer.notFinancialAdvice')}
           </Paragraph>
           <Paragraph className="mb-6 text-gray-300">
-            I am neither an employee of CPF, nor am I a representative of the
-            government.
+            {t('disclaimer.notEmployee')}
           </Paragraph>
           <Paragraph className="mb-6 text-gray-300">
-            The calculations here are based on research I have done, and I have
-            listed my sources as far as possible.
+            {t('disclaimer.researchBased')}
           </Paragraph>
           <Paragraph className="mb-6 text-gray-300">
-            If there are any corrections or enhancements to be made, please let
-            me know.
+            {t('disclaimer.corrections')}
           </Paragraph>
-          <Paragraph className="mb-6 text-gray-300">Thank you.</Paragraph>
+          <Paragraph className="mb-6 text-gray-300">
+            {t('disclaimer.thankYou')}
+          </Paragraph>
         </InfoPopup>
       </div>
     </div>

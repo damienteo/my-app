@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import dayjs, { Dayjs } from 'dayjs'
 import {
   CurrencyInput,
@@ -33,6 +34,7 @@ const minDate = dayjs().subtract(withdrawalAge, 'y')
 const maxDate = dayjs().subtract(16, 'y')
 
 const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
+  const t = useTranslations('CPFForecastPage.userInput')
   const { setFutureValues, setCalculating } = props
 
   const [values, setValues] = useState<Values>({
@@ -61,15 +63,14 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     const nextErrors = {} as ErrorValues
     Object.keys(values).map((field: string) => {
       if (parseFloat(values[field]) < 0) {
-        nextErrors[field] = 'Please enter a value which is 0 or larger'
+        nextErrors[field] = t('errors.negativeValue')
       } else {
         nextErrors[field] = undefined
       }
     })
 
     if (specialAccountOnly === true && parseFloat(values.housingLumpSum) > 0) {
-      nextErrors.specialAccountOnly =
-        "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
+      nextErrors.specialAccountOnly = t('errors.specialAccountOnly')
     }
     setErrors({ ...nextErrors })
 
@@ -147,11 +148,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     <>
       <Section>
         <p className="text-gray-300 mb-4">
-          First, type in the current amounts in your CPF Ordinary and Special
-          Accounts.{' '}
-          <InfoPopup title="Info on CPF OA and SA">
+          {t('accountBalances.instruction')}{' '}
+          <InfoPopup title={t('accountBalances.infoPopup.title')}>
             <p className="text-gray-300">
-              Information on what CPF is about can be found here:{' '}
+              {t('accountBalances.infoPopup.text')}{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/member/cpf-overview"
                 label="CPF"
@@ -165,7 +165,11 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <div key={account.field}>
               <CurrencyInput
                 value={values[account.field]}
-                label={account.label}
+                label={
+                  account.field === 'ordinaryAccount'
+                    ? t('accountBalances.ordinaryAccount')
+                    : t('accountBalances.specialAccount')
+                }
                 field={account.field}
                 error={Boolean(errors[account.field])}
                 helperText={errors[account.field]}
@@ -177,16 +181,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       </Section>
       <Section>
         <p className="text-gray-300 mb-4">
-          Next, type in your date of birth. We will use this to calculate the
-          date when you can start withdrawals.{' '}
-          <InfoPopup title="Withdrawal of CPF Savings">
+          {t('dateOfBirth.instruction')}{' '}
+          <InfoPopup title={t('dateOfBirth.withdrawalInfo.title')}>
             <p className="text-gray-300">
-              Members can withdraw their CPF retirement savings any time from{' '}
-              {withdrawalAge} years old. The withdrawal of your CPF retirement
-              savings is optional. More info can be found{' '}
+              {t('dateOfBirth.withdrawalInfo.text', { age: withdrawalAge })}{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/member/infohub/educational-resources/heres-what-cpf-members-are-doing-with-their-cash-withdrawals-after-age-55"
-                label="here"
+                label={t('dateOfBirth.withdrawalInfo.here')}
               />
               .
             </p>
@@ -194,7 +195,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </p>
         <div className="max-w-md">
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Date of Birth
+            {t('dateOfBirth.label')}
           </label>
           <input
             type="date"
@@ -206,28 +207,23 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       </Section>
       <Section>
         <p className="text-gray-300 mb-4">
-          Finally, you may add in your monthly salary (before taxes and CPF
-          contribution), as well as expectations on how much it may increase per
-          year. *Increase in monthly salary is calculated at the beginning of
-          each year.{' '}
-          <InfoPopup title="Info on Employer / Employee CPF Contribution">
+          {t('salary.instruction')}{' '}
+          <InfoPopup title={t('salary.contributionInfo.title')}>
             <p className="text-gray-300">
-              When{' '}
+              {t('salary.contributionInfo.when55')}{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
-                label="55 and below"
+                label={t('salary.contributionInfo.when55')}
               />
-              , the employer contributes 17% of the monthly salary, while the
-              employee contributes 20%.
+              {t('salary.contributionInfo.employerContribution')}
             </p>
             <p className="text-gray-300">
-              Do also take note that the{' '}
+              {t('salary.contributionInfo.owCeiling')}{' '}
               <ExternalLink
                 url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
-                label="Ordinary Wage (OW) Ceiling"
+                label={t('salary.contributionInfo.owCeiling')}
               />{' '}
-              sets the maximum amount of OWs on which CPF contributions are
-              payable per month. The prevailing OW Ceiling is $6,000 per month.
+              {t('salary.contributionInfo.owCeilingText')}
             </p>
           </InfoPopup>
         </p>
@@ -235,7 +231,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           <div>
             <CurrencyInput
               value={values.monthlySalary}
-              label="Monthly Salary (Optional)"
+              label={t('salary.monthlySalary')}
               field="monthlySalary"
               error={Boolean(errors.monthlySalary)}
               helperText={errors.monthlySalary}
@@ -244,14 +240,14 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Projected Salary % Increase/Year (Optional)
+              {t('salary.salaryIncrease')}
             </label>
             <input
               type="number"
               value={values.salaryIncreaseRate}
               onChange={handleChange('salaryIncreaseRate')}
               className="block w-full sm:text-sm rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3 placeholder-gray-500"
-              placeholder="Enter percentage"
+              placeholder={t('salary.salaryIncreasePlaceholder')}
             />
           </div>
         </div>
@@ -262,13 +258,13 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           className="bg-blue-600 hover:bg-blue-500 text-white py-3 px-8 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
           onClick={handleSubmit}
         >
-          Forecast my CPF!
+          {t('submit')}
         </button>
       </div>
 
       {snackbarOpen && (
         <div className="fixed bottom-4 right-4 bg-green-600 text-white p-3 rounded shadow-lg z-50">
-          <span>Success!</span>
+          <span>{t('success')}</span>
           <button
             className="ml-2 text-white hover:text-gray-200"
             onClick={handleSnackbarClose}
