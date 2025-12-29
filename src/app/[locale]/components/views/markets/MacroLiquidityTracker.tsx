@@ -1,0 +1,195 @@
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { Section, Paragraph } from '../../common'
+
+interface MacroData {
+  rrp: number | null
+  bankReserves: number | null
+  fedBalanceSheet: number | null
+  tga: number | null
+  netLiquidity: number | null
+  treasury10Y: number | null
+  lastUpdated: string
+}
+
+const formatCurrency = (value: number | null): string => {
+  if (value === null) return 'N/A'
+  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
+  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`
+  return `$${value.toFixed(2)}`
+}
+
+const formatPercent = (value: number | null): string => {
+  if (value === null) return 'N/A'
+  return `${value.toFixed(2)}%`
+}
+
+const getTrafficLightColor = (
+  netLiquidity: number | null
+): 'red' | 'yellow' | 'green' => {
+  if (netLiquidity === null) return 'yellow'
+
+  // These thresholds are examples - adjust based on your analysis
+  // Typically, lower net liquidity indicates tighter conditions
+  if (netLiquidity < 2e12) return 'red' // Critical
+  if (netLiquidity < 3e12) return 'yellow' // Warning
+  return 'green' // Healthy
+}
+
+const MacroLiquidityTracker: React.FunctionComponent = () => {
+  const t = useTranslations('MarketsPage.MacroTracker')
+  const [data, setData] = useState<MacroData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/macro-data')
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch macro data')
+        }
+
+        const macroData: MacroData = await response.json()
+        setData(macroData)
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+    // Refresh every 5 minutes
+    const interval = setInterval(fetchData, 5 * 60 * 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  if (loading) {
+    return (
+      <Section>
+        <Paragraph>{t('loading')}</Paragraph>
+      </Section>
+    )
+  }
+
+  if (error || !data) {
+    return (
+      <Section>
+        <Paragraph className="text-red-600">{error || t('error')}</Paragraph>
+      </Section>
+    )
+  }
+
+  const trafficLightColor = getTrafficLightColor(data.netLiquidity)
+
+  return (
+    <Section>
+      <div className="p-4">
+        <h2 className="text-2xl font-bold mb-4">{t('title')}</h2>
+        <p className="text-sm text-gray-600 mb-6">{t('description')}</p>
+
+        {/* Traffic Light Indicator */}
+        <div className="flex items-center gap-4 mb-6 p-4 bg-gray-100 rounded-lg">
+          <div className="flex flex-col items-center">
+            <div
+              className={`w-16 h-16 rounded-full border-4 border-gray-800 ${
+                trafficLightColor === 'red'
+                  ? 'bg-red-500'
+                  : trafficLightColor === 'yellow'
+                  ? 'bg-yellow-500'
+                  : 'bg-green-500'
+              }`}
+            />
+            <span className="mt-2 text-sm font-semibold">
+              {trafficLightColor === 'red'
+                ? t('status.critical')
+                : trafficLightColor === 'yellow'
+                ? t('status.warning')
+                : t('status.healthy')}
+            </span>
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-2">
+              {t('netLiquidity.title')}
+            </h3>
+            <p className="text-3xl font-bold">
+              {formatCurrency(data.netLiquidity)}
+            </p>
+            <p className="text-xs text-gray-600 mt-1">
+              {t('netLiquidity.formula')}
+            </p>
+          </div>
+        </div>
+
+        {/* Data Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+              {t('rrp.title')}
+            </h3>
+            <p className="text-2xl font-bold">{formatCurrency(data.rrp)}</p>
+            <p className="text-xs text-gray-500 mt-1">{t('rrp.description')}</p>
+          </div>
+
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+              {t('bankReserves.title')}
+            </h3>
+            <p className="text-2xl font-bold">
+              {formatCurrency(data.bankReserves)}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {t('bankReserves.description')}
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+              {t('fedBalanceSheet.title')}
+            </h3>
+            <p className="text-2xl font-bold">
+              {formatCurrency(data.fedBalanceSheet)}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {t('fedBalanceSheet.description')}
+            </p>
+          </div>
+
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+              {t('tga.title')}
+            </h3>
+            <p className="text-2xl font-bold">{formatCurrency(data.tga)}</p>
+            <p className="text-xs text-gray-500 mt-1">{t('tga.description')}</p>
+          </div>
+
+          <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="font-semibold text-sm text-gray-600 mb-1">
+              {t('treasury10Y.title')}
+            </h3>
+            <p className="text-2xl font-bold">
+              {formatPercent(data.treasury10Y)}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {t('treasury10Y.description')}
+            </p>
+          </div>
+        </div>
+
+        <p className="text-xs text-gray-500 mt-4 text-center">
+          {t('lastUpdated')}: {new Date(data.lastUpdated).toLocaleString()}
+        </p>
+      </div>
+    </Section>
+  )
+}
+
+export default MacroLiquidityTracker

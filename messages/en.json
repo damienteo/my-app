@@ -47,6 +47,46 @@
     "header": "Animals",
     "description": "I saw them while I was travelling."
   },
+  "MarketsPage": {
+    "header": "Markets",
+    "description": "Data that I occasionally check",
+    "MacroTracker": {
+      "title": "Macro Liquidity Tracker",
+      "description": "Monitor when the 'market plumbing' is about to break. The Net Liquidity Index is the single most important number for 2026.",
+      "loading": "Loading macro data...",
+      "error": "Failed to load macro data",
+      "lastUpdated": "Last updated",
+      "status": {
+        "critical": "Critical",
+        "warning": "Warning",
+        "healthy": "Healthy"
+      },
+      "netLiquidity": {
+        "title": "Net Liquidity Index",
+        "formula": "Fed Balance Sheet - TGA - RRP"
+      },
+      "rrp": {
+        "title": "Reverse Repo (RRP) Balance",
+        "description": "Total dollar amount in the Fed's Overnight Reverse Repo facility"
+      },
+      "bankReserves": {
+        "title": "Bank Reserves",
+        "description": "Total reserve balances at Federal Reserve Banks"
+      },
+      "fedBalanceSheet": {
+        "title": "Fed Balance Sheet",
+        "description": "Total assets of the Federal Reserve"
+      },
+      "tga": {
+        "title": "Treasury General Account (TGA)",
+        "description": "Treasury's operating account at the Fed"
+      },
+      "treasury10Y": {
+        "title": "10-Year Treasury Yield",
+        "description": "Current yield to monitor the cost of borrowing"
+      }
+    }
+  },
   "PortfolioPage": {
     "header": "Portfolio",
     "resume": {

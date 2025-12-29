@@ -46,6 +46,46 @@
     "header": "動物たち",
     "description": "旅行中に見かけました。"
   },
+  "MarketsPage": {
+    "header": "市場",
+    "description": "時々確認するデータです",
+    "MacroTracker": {
+      "title": "マクロ流動性トラッカー",
+      "description": "「市場の配管」が壊れそうなタイミングを監視します。ネット流動性指数は2026年において最も重要な数値です。",
+      "loading": "マクロデータを読み込み中...",
+      "error": "マクロデータの読み込みに失敗しました",
+      "lastUpdated": "最終更新",
+      "status": {
+        "critical": "危険",
+        "warning": "警告",
+        "healthy": "健全"
+      },
+      "netLiquidity": {
+        "title": "ネット流動性指数",
+        "formula": "連邦準備制度のバランスシート - TGA - RRP"
+      },
+      "rrp": {
+        "title": "リバースレポ（RRP）残高",
+        "description": "連邦準備制度のオーバーナイトリバースレポ施設の総額"
+      },
+      "bankReserves": {
+        "title": "銀行準備金",
+        "description": "連邦準備銀行の総準備残高"
+      },
+      "fedBalanceSheet": {
+        "title": "連邦準備制度のバランスシート",
+        "description": "連邦準備制度の総資産"
+      },
+      "tga": {
+        "title": "財務省一般勘定（TGA）",
+        "description": "連邦準備制度における財務省の運営勘定"
+      },
+      "treasury10Y": {
+        "title": "10年国債利回り",
+        "description": "借入コストを監視するための現在の利回り"
+      }
+    }
+  },
   "PortfolioPage": {
     "header": "ポートフォリオ",
     "resume": {
