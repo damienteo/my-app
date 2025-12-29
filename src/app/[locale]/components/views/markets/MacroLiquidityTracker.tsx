@@ -44,6 +44,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
   const [data, setData] = useState<MacroData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +94,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
   return (
     <Section>
       <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4 text-[#282c35]">{t('title')}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-300">{t('title')}</h2>
         <p className="text-sm text-gray-300 mb-6">{t('description')}</p>
 
         {/* Traffic Light Indicator */}
@@ -191,6 +192,124 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
         <p className="text-xs text-gray-400 mt-4 text-center">
           {t('lastUpdated')}: {new Date(data.lastUpdated).toLocaleString()}
         </p>
+
+        {/* Collapsible Explanation Section */}
+        <div className="mt-6 border-t border-gray-700 pt-4">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full flex items-center justify-between p-3 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
+          >
+            <span className="text-gray-200 font-semibold">
+              {t('explanation.title')}
+            </span>
+            <svg
+              className={`w-5 h-5 text-gray-400 transition-transform ${
+                isExpanded ? 'rotate-180' : ''
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {isExpanded && (
+            <div className="mt-4 p-4 bg-gray-800 rounded-lg border border-gray-700 space-y-4">
+              {/* Traffic Light Explanation */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-200 mb-3">
+                  {t('explanation.trafficLight.title')}
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-4 h-4 rounded-full bg-green-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-gray-200">
+                        {t('explanation.trafficLight.green.title')}
+                      </p>
+                      <p className="text-sm text-gray-400 mt-1">
+                        {t('explanation.trafficLight.green.description')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-4 h-4 rounded-full bg-yellow-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-gray-200">
+                        {t('explanation.trafficLight.yellow.title')}
+                      </p>
+                      <p className="text-sm text-gray-400 mt-1">
+                        {t('explanation.trafficLight.yellow.description')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-4 h-4 rounded-full bg-red-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-gray-200">
+                        {t('explanation.trafficLight.red.title')}
+                      </p>
+                      <p className="text-sm text-gray-400 mt-1">
+                        {t('explanation.trafficLight.red.description')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Data Explanation */}
+              <div>
+                <h3 className="text-lg font-bold text-gray-200 mb-3">
+                  {t('explanation.data.title')}
+                </h3>
+                <div className="space-y-3 text-sm text-gray-400">
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.netLiquidity.title')}
+                    </p>
+                    <p>{t('explanation.data.netLiquidity.description')}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.rrp.title')}
+                    </p>
+                    <p>{t('explanation.data.rrp.description')}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.bankReserves.title')}
+                    </p>
+                    <p>{t('explanation.data.bankReserves.description')}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.fedBalanceSheet.title')}
+                    </p>
+                    <p>{t('explanation.data.fedBalanceSheet.description')}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.tga.title')}
+                    </p>
+                    <p>{t('explanation.data.tga.description')}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-200 mb-1">
+                      {t('explanation.data.treasury10Y.title')}
+                    </p>
+                    <p>{t('explanation.data.treasury10Y.description')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Section>
   )

@@ -84,6 +84,51 @@
       "treasury10Y": {
         "title": "10-Year Treasury Yield",
         "description": "Current yield to monitor the cost of borrowing"
+      },
+      "explanation": {
+        "title": "What does this data mean?",
+        "trafficLight": {
+          "title": "Traffic Light Status",
+          "green": {
+            "title": "Green (Healthy)",
+            "description": "Net Liquidity Index ≥ $3T. Market liquidity conditions are healthy. The financial system has sufficient reserves to handle normal operations and stress."
+          },
+          "yellow": {
+            "title": "Yellow (Warning)",
+            "description": "Net Liquidity Index between $2T and $3T. Market liquidity is becoming constrained. Monitor closely as conditions may deteriorate."
+          },
+          "red": {
+            "title": "Red (Critical)",
+            "description": "Net Liquidity Index < $2T. Market liquidity is critically low. The 'market plumbing' is at risk of breaking, which could lead to volatility, funding stress, or systemic issues."
+          }
+        },
+        "data": {
+          "title": "Understanding the Metrics",
+          "netLiquidity": {
+            "title": "Net Liquidity Index",
+            "description": "The most important metric for 2026. Calculated as Fed Balance Sheet minus Treasury General Account minus Reverse Repo. This represents the actual liquidity available in the financial system. When this number drops too low, the market's ability to function smoothly is at risk."
+          },
+          "rrp": {
+            "title": "Reverse Repo (RRP) Balance",
+            "description": "Money market funds and other institutions parking excess cash with the Fed overnight. High RRP balances indicate excess liquidity in the system. When RRP drains, that liquidity moves into the broader market."
+          },
+          "bankReserves": {
+            "title": "Bank Reserves",
+            "description": "Cash that commercial banks hold at the Federal Reserve. These reserves are the foundation of the banking system's ability to lend and meet withdrawal demands. Declining reserves can signal tightening conditions."
+          },
+          "fedBalanceSheet": {
+            "title": "Fed Balance Sheet",
+            "description": "Total assets held by the Federal Reserve, primarily Treasury securities and mortgage-backed securities. The size of the balance sheet directly impacts system-wide liquidity. Quantitative tightening (QT) reduces this, tightening liquidity."
+          },
+          "tga": {
+            "title": "Treasury General Account (TGA)",
+            "description": "The Treasury's checking account at the Fed. When the TGA increases, money is drained from the banking system. When it decreases (through spending), money flows back into the system, increasing liquidity."
+          },
+          "treasury10Y": {
+            "title": "10-Year Treasury Yield",
+            "description": "The interest rate on 10-year U.S. government bonds. This is a key indicator of borrowing costs and market expectations. Rising yields can indicate tightening financial conditions or inflation expectations."
+          }
+        }
       }
     }
   },

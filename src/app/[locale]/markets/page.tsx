@@ -14,13 +14,6 @@ const Markets: React.FunctionComponent = () => {
   const t = useTranslations('MarketsPage')
   return (
     <>
-      <div className="flex flex-col items-center space-y-4 max-w-xl px-2 sm:px-4 mx-auto">
-        <div>
-          <Header text={t('header')} />
-          <Paragraph className="sm:mb-4">{t('description')}</Paragraph>
-        </div>
-      </div>
-
       <div className="max-w-4xl mx-auto px-2 sm:px-4 mt-8">
         <MacroLiquidityTracker />
       </div>
