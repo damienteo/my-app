@@ -6,6 +6,7 @@
     "portfolio": "portfolio",
     "markets": "markets",
     "cpf forecast": "cpf forecast",
+    "daily checks": "daily checks",
     "animals": "animals"
   },
   "AboutPage": {
@@ -378,6 +379,42 @@
         "retirementAccount": "Retirement Account",
         "salaryInfo": "In the year {year}, your salary is {amount} (age: {age})."
       }
+    }
+  },
+  "DailyChecksPage": {
+    "title": "Daily Checks",
+    "weather": {
+      "title": "Shinjuku Weather",
+      "loading": "Loading weather data...",
+      "error": "Error loading weather data",
+      "feelsLike": "Feels like",
+      "humidity": "Humidity",
+      "windSpeed": "Wind Speed",
+      "pressure": "Pressure",
+      "visibility": "Visibility",
+      "forecast": "5-Day Forecast",
+      "day": "Day",
+      "night": "Night",
+      "peak": "Peak",
+      "trough": "Trough",
+      "noData": "No data available"
+    },
+    "forex": {
+      "title": "Forex Rates",
+      "loading": "Loading forex data...",
+      "error": "Error loading forex data",
+      "noHistoricalData": "Historical data not available",
+      "periods": {
+        "1week": "1 Week",
+        "1month": "1 Month",
+        "3months": "3 Months"
+      },
+      "rates": {
+        "usdToSgd": "USD to SGD",
+        "sgdToJpy": "SGD to JPY",
+        "usdToJpy": "USD to JPY"
+      },
+      "dataAvailability": "Historical data available: {count} data points from {startDate} to {endDate}. Note: CurrencyAPI free tier may have limited historical data availability."
     }
   }
 }

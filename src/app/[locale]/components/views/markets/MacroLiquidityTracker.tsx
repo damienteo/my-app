@@ -62,6 +62,17 @@ interface MacroData {
   }
 }
 
+// Calculate Y-axis domain based on data range
+const getYAxisDomain = (data: HistoricalDataPoint[]): [number, number] => {
+  if (data.length === 0) return [0, 100]
+  const values = data.map((d) => d.value)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const range = max - min
+  const padding = range * 0.1 // 10% padding on each side
+  return [min - padding, max + padding]
+}
+
 const MacroLiquidityTracker: React.FunctionComponent = () => {
   const t = useTranslations('MarketsPage.MacroTracker')
   const [data, setData] = useState<MacroData | null>(null)
@@ -409,6 +420,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatChartValue(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.netLiquidity)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -498,6 +510,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatChartValue(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.fedBalanceSheet)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -553,6 +566,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatChartValue(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.bankReserves)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -608,6 +622,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatChartValue(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.rrp)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -663,6 +678,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatChartValue(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.tga)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -718,6 +734,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       tickFormatter={(value) => formatPercent(value)}
                       stroke="#9CA3AF"
                       style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.treasury10Y)}
                     />
                     <Tooltip
                       formatter={(value: number | undefined) =>
@@ -774,6 +791,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         tickFormatter={(value) => `${value.toFixed(0)} bps`}
                         stroke="#9CA3AF"
                         style={{ fontSize: '12px' }}
+                        domain={getYAxisDomain(data.historical.sofrIorbSpread)}
                       />
                       <Tooltip
                         formatter={(value: number | undefined) =>
@@ -830,6 +848,9 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         tickFormatter={(value) => `${value.toFixed(0)} bps`}
                         stroke="#9CA3AF"
                         style={{ fontSize: '12px' }}
+                        domain={getYAxisDomain(
+                          data.historical.highYieldSpreads
+                        )}
                       />
                       <Tooltip
                         formatter={(value: number | undefined) =>
@@ -881,7 +902,11 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       textAnchor="end"
                       height={80}
                     />
-                    <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+                    <YAxis
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      domain={getYAxisDomain(data.historical.vix)}
+                    />
                     <Tooltip
                       formatter={(value: number | undefined) =>
                         value !== undefined ? value.toFixed(2) : 'N/A'

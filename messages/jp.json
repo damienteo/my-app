@@ -6,6 +6,7 @@
     "portfolio": "ポートフォリオ",
     "markets": "市場",
     "cpf forecast": "CPF予測",
+    "daily checks": "日次チェック",
     "animals": "動物たち"
   },
   "AboutPage": {
@@ -377,6 +378,42 @@
         "retirementAccount": "退職口座",
         "salaryInfo": "{year}年、あなたの給与は{amount}（年齢：{age}）です。"
       }
+    }
+  },
+  "DailyChecksPage": {
+    "title": "日次チェック",
+    "weather": {
+      "title": "新宿の天気",
+      "loading": "天気データを読み込み中...",
+      "error": "天気データの読み込みエラー",
+      "feelsLike": "体感温度",
+      "humidity": "湿度",
+      "windSpeed": "風速",
+      "pressure": "気圧",
+      "visibility": "視程",
+      "forecast": "5日間の予報",
+      "day": "昼",
+      "night": "夜",
+      "peak": "最高",
+      "trough": "最低",
+      "noData": "データなし"
+    },
+    "forex": {
+      "title": "為替レート",
+      "loading": "為替データを読み込み中...",
+      "error": "為替データの読み込みエラー",
+      "noHistoricalData": "履歴データは利用できません",
+      "periods": {
+        "1week": "1週間",
+        "1month": "1ヶ月",
+        "3months": "3ヶ月"
+      },
+      "rates": {
+        "usdToSgd": "USD/SGD",
+        "sgdToJpy": "SGD/JPY",
+        "usdToJpy": "USD/JPY"
+      },
+      "dataAvailability": "履歴データ利用可能：{count}データポイント、{startDate}から{endDate}まで。注：CurrencyAPI無料プランは履歴データの利用が制限されている場合があります。"
     }
   }
 }
