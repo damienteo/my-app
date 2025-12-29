@@ -157,7 +157,17 @@ export async function GET() {
   }
 
   try {
-    const seriesIds = ['RRPONTSYD', 'WRESBAL', 'WALCL', 'WTREGEN', 'DGS10']
+    const seriesIds = [
+      'RRPONTSYD',
+      'WRESBAL',
+      'WALCL',
+      'WTREGEN',
+      'DGS10',
+      'SOFR', // Secured Overnight Financing Rate
+      'IORB', // Interest on Reserve Balances
+      'BAMLH0A0HYM2', // High Yield Credit Spreads
+      'VIXCLS', // VIX (as proxy for volatility/MOVE)
+    ]
 
     // Fetch all series info and observations in parallel
     const [seriesInfoResults, observationResults] = await Promise.all([
@@ -180,6 +190,17 @@ export async function GET() {
       observationResults[4],
       seriesInfoResults[4]
     )
+    const sofr = convertValue(observationResults[5], seriesInfoResults[5])
+    const iorb = convertValue(observationResults[6], seriesInfoResults[6])
+    const highYieldSpreads = convertValue(
+      observationResults[7],
+      seriesInfoResults[7]
+    )
+    const vix = convertValue(observationResults[8], seriesInfoResults[8])
+
+    // Calculate SOFR-IORB Spread (in basis points)
+    const sofrIorbSpread =
+      sofr !== null && iorb !== null ? (sofr - iorb) * 100 : null
 
     // Calculate Net Liquidity Index
     const netLiquidity =
@@ -223,6 +244,61 @@ export async function GET() {
       })
       .filter((item): item is { date: string; value: number } => item !== null)
 
+    // Calculate Net Liquidity Z-Score
+    const netLiquidityMean =
+      netLiquidityHist.length > 0
+        ? netLiquidityHist.reduce((sum, item) => sum + item.value, 0) /
+          netLiquidityHist.length
+        : null
+    const netLiquidityStdDev =
+      netLiquidityMean !== null && netLiquidityHist.length > 1
+        ? Math.sqrt(
+            netLiquidityHist.reduce(
+              (sum, item) => sum + Math.pow(item.value - netLiquidityMean, 2),
+              0
+            ) /
+              (netLiquidityHist.length - 1)
+          )
+        : null
+    const netLiquidityZScore =
+      netLiquidity !== null &&
+      netLiquidityMean !== null &&
+      netLiquidityStdDev !== null &&
+      netLiquidityStdDev > 0
+        ? (netLiquidity - netLiquidityMean) / netLiquidityStdDev
+        : null
+
+    // Calculate historical SOFR-IORB spread
+    const sofrHist =
+      historicalData.find((d) => d.seriesId === 'SOFR')?.data || []
+    const iorbHist =
+      historicalData.find((d) => d.seriesId === 'IORB')?.data || []
+
+    const sofrMap = new Map(sofrHist.map((item) => [item.date, item.value]))
+    const iorbMap = new Map(iorbHist.map((item) => [item.date, item.value]))
+
+    const sofrIorbSpreadHist = sofrHist
+      .map((item) => {
+        const iorbValue = iorbMap.get(item.date)
+        if (iorbValue !== undefined) {
+          return {
+            date: item.date,
+            value: (item.value - iorbValue) * 100, // Convert to basis points
+          }
+        }
+        return null
+      })
+      .filter((item): item is { date: string; value: number } => item !== null)
+
+    // Check Red Lines
+    const redLines = {
+      bankReserves: bankReserves !== null && bankReserves < 2.7e12,
+      rrp: rrp !== null && rrp < 50e9,
+      sofrSpread: sofrIorbSpread !== null && sofrIorbSpread > 20,
+      netLiquidityZScore:
+        netLiquidityZScore !== null && netLiquidityZScore < -2.0,
+    }
+
     return NextResponse.json({
       rrp,
       bankReserves,
@@ -230,6 +306,13 @@ export async function GET() {
       tga,
       netLiquidity,
       treasury10Y,
+      sofr,
+      iorb,
+      sofrIorbSpread,
+      highYieldSpreads,
+      vix,
+      netLiquidityZScore,
+      redLines,
       lastUpdated: new Date().toISOString(),
       historical: {
         rrp: historicalData.find((d) => d.seriesId === 'RRPONTSYD')?.data || [],
@@ -241,6 +324,12 @@ export async function GET() {
         treasury10Y:
           historicalData.find((d) => d.seriesId === 'DGS10')?.data || [],
         netLiquidity: netLiquidityHist,
+        sofr: sofrHist,
+        iorb: iorbHist,
+        sofrIorbSpread: sofrIorbSpreadHist,
+        highYieldSpreads:
+          historicalData.find((d) => d.seriesId === 'BAMLH0A0HYM2')?.data || [],
+        vix: historicalData.find((d) => d.seriesId === 'VIXCLS')?.data || [],
       },
     })
   } catch (error) {

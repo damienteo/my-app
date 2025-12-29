@@ -86,6 +86,37 @@
         "title": "10-Year Treasury Yield",
         "description": "Current yield to monitor the cost of borrowing"
       },
+      "sofrIorbSpread": {
+        "title": "SOFR-IORB Spread",
+        "description": "Difference between SOFR and Interest on Reserve Balances (in basis points)"
+      },
+      "highYieldSpreads": {
+        "title": "High-Yield Credit Spreads",
+        "description": "Spread between risky corporate debt and safe government bonds"
+      },
+      "vix": {
+        "title": "VIX (Volatility Index)",
+        "description": "Market volatility indicator (proxy for MOVE Index)"
+      },
+      "netLiquidityZScore": {
+        "title": "Net Liquidity Z-Score",
+        "description": "Standard deviations from historical mean"
+      },
+      "redLine": {
+        "warning": "⚠️ RED LINE",
+        "rrp": {
+          "threshold": "Below $50B threshold - shock absorber gone"
+        },
+        "bankReserves": {
+          "threshold": "Below $2.7T threshold - critical level"
+        },
+        "sofrSpread": {
+          "threshold": "Above 20 bps - banks desperate for cash"
+        },
+        "netLiquidityZScore": {
+          "threshold": "Below -2.0 - extreme deviation from norm"
+        }
+      },
       "explanation": {
         "title": "What does this data mean?",
         "trafficLight": {
@@ -128,6 +159,18 @@
           "treasury10Y": {
             "title": "10-Year Treasury Yield",
             "description": "The interest rate on 10-year U.S. government bonds. This is a key indicator of borrowing costs and market expectations. Rising yields can indicate tightening financial conditions or inflation expectations."
+          },
+          "sofrIorbSpread": {
+            "title": "SOFR-IORB Spread",
+            "description": "The difference between the Secured Overnight Financing Rate (SOFR) and the Interest on Reserve Balances (IORB). If SOFR spikes above IORB (spread > 20 bps), it means banks are desperate for cash and willing to pay more than the Fed's 'safe' rate to get it. This is a critical early warning signal that the 'market plumbing' is blocked."
+          },
+          "highYieldSpreads": {
+            "title": "High-Yield Credit Spreads",
+            "description": "The gap between risky corporate debt and 'safe' government bonds. Widening spreads indicate that lenders are becoming afraid of defaults—a key sign that the 'bottom' of the K-shaped economy is failing. This often precedes broader market stress."
+          },
+          "vix": {
+            "title": "VIX (Volatility Index)",
+            "description": "While the VIX tracks stock market volatility, it serves as a proxy for bond market volatility (MOVE Index). High VIX levels often precede equity crashes and indicate market stress. It measures the 'heartbeat' of market fear."
           }
         }
       },
@@ -138,7 +181,10 @@
         "bankReserves": "Bank Reserves Trend",
         "fedBalanceSheet": "Fed Balance Sheet Trend",
         "tga": "Treasury General Account Trend",
-        "treasury10Y": "10-Year Treasury Yield Trend"
+        "treasury10Y": "10-Year Treasury Yield Trend",
+        "sofrIorbSpread": "SOFR-IORB Spread Trend",
+        "highYieldSpreads": "High-Yield Credit Spreads Trend",
+        "vix": "VIX (Volatility Index) Trend"
       }
     }
   },

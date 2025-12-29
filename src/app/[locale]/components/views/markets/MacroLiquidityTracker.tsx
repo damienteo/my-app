@@ -26,6 +26,18 @@ interface MacroData {
   tga: number | null
   netLiquidity: number | null
   treasury10Y: number | null
+  sofr: number | null
+  iorb: number | null
+  sofrIorbSpread: number | null
+  highYieldSpreads: number | null
+  vix: number | null
+  netLiquidityZScore: number | null
+  redLines?: {
+    bankReserves: boolean
+    rrp: boolean
+    sofrSpread: boolean
+    netLiquidityZScore: boolean
+  }
   lastUpdated: string
   historical?: {
     rrp: HistoricalDataPoint[]
@@ -34,6 +46,11 @@ interface MacroData {
     tga: HistoricalDataPoint[]
     treasury10Y: HistoricalDataPoint[]
     netLiquidity: HistoricalDataPoint[]
+    sofr: HistoricalDataPoint[]
+    iorb: HistoricalDataPoint[]
+    sofrIorbSpread: HistoricalDataPoint[]
+    highYieldSpreads: HistoricalDataPoint[]
+    vix: HistoricalDataPoint[]
   }
 }
 
@@ -48,6 +65,11 @@ const formatCurrency = (value: number | null): string => {
 const formatPercent = (value: number | null): string => {
   if (value === null) return 'N/A'
   return `${value.toFixed(2)}%`
+}
+
+const formatBasisPoints = (value: number | null): string => {
+  if (value === null) return 'N/A'
+  return `${value.toFixed(2)} bps`
 }
 
 // Format date for chart display
@@ -172,26 +194,60 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
 
         {/* Data Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
-            <h3 className="font-semibold text-sm text-gray-300 mb-1">
-              {t('rrp.title')}
-            </h3>
+          <div
+            className={`p-4 bg-gray-800 rounded-lg border ${
+              data.redLines?.rrp ? 'border-red-500 border-2' : 'border-gray-700'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-semibold text-sm text-gray-300">
+                {t('rrp.title')}
+              </h3>
+              {data.redLines?.rrp && (
+                <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
+                  {t('redLine.warning')}
+                </span>
+              )}
+            </div>
             <p className="text-2xl font-bold text-white">
               {formatCurrency(data.rrp)}
             </p>
             <p className="text-xs text-gray-400 mt-1">{t('rrp.description')}</p>
+            {data.redLines?.rrp && (
+              <p className="text-xs text-red-400 mt-1">
+                {t('redLine.rrp.threshold')}
+              </p>
+            )}
           </div>
 
-          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
-            <h3 className="font-semibold text-sm text-gray-300 mb-1">
-              {t('bankReserves.title')}
-            </h3>
+          <div
+            className={`p-4 bg-gray-800 rounded-lg border ${
+              data.redLines?.bankReserves
+                ? 'border-red-500 border-2'
+                : 'border-gray-700'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-semibold text-sm text-gray-300">
+                {t('bankReserves.title')}
+              </h3>
+              {data.redLines?.bankReserves && (
+                <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
+                  {t('redLine.warning')}
+                </span>
+              )}
+            </div>
             <p className="text-2xl font-bold text-white">
               {formatCurrency(data.bankReserves)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
               {t('bankReserves.description')}
             </p>
+            {data.redLines?.bankReserves && (
+              <p className="text-xs text-red-400 mt-1">
+                {t('redLine.bankReserves.threshold')}
+              </p>
+            )}
           </div>
 
           <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
@@ -227,6 +283,91 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
               {t('treasury10Y.description')}
             </p>
           </div>
+
+          {/* Early Warning Signals */}
+          <div
+            className={`p-4 bg-gray-800 rounded-lg border ${
+              data.redLines?.sofrSpread
+                ? 'border-red-500 border-2'
+                : 'border-gray-700'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-semibold text-sm text-gray-300">
+                {t('sofrIorbSpread.title')}
+              </h3>
+              {data.redLines?.sofrSpread && (
+                <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
+                  {t('redLine.warning')}
+                </span>
+              )}
+            </div>
+            <p className="text-2xl font-bold text-white">
+              {formatBasisPoints(data.sofrIorbSpread)}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {t('sofrIorbSpread.description')}
+            </p>
+            {data.redLines?.sofrSpread && (
+              <p className="text-xs text-red-400 mt-1">
+                {t('redLine.sofrSpread.threshold')}
+              </p>
+            )}
+          </div>
+
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
+              {t('highYieldSpreads.title')}
+            </h3>
+            <p className="text-2xl font-bold text-white">
+              {formatBasisPoints(data.highYieldSpreads)}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {t('highYieldSpreads.description')}
+            </p>
+          </div>
+
+          <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="font-semibold text-sm text-gray-300 mb-1">
+              {t('vix.title')}
+            </h3>
+            <p className="text-2xl font-bold text-white">
+              {data.vix !== null ? data.vix.toFixed(2) : 'N/A'}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">{t('vix.description')}</p>
+          </div>
+
+          {data.netLiquidityZScore !== null && (
+            <div
+              className={`p-4 bg-gray-800 rounded-lg border ${
+                data.redLines?.netLiquidityZScore
+                  ? 'border-red-500 border-2'
+                  : 'border-gray-700'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="font-semibold text-sm text-gray-300">
+                  {t('netLiquidityZScore.title')}
+                </h3>
+                {data.redLines?.netLiquidityZScore && (
+                  <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
+                    {t('redLine.warning')}
+                  </span>
+                )}
+              </div>
+              <p className="text-2xl font-bold text-white">
+                {data.netLiquidityZScore.toFixed(2)}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                {t('netLiquidityZScore.description')}
+              </p>
+              {data.redLines?.netLiquidityZScore && (
+                <p className="text-xs text-red-400 mt-1">
+                  {t('redLine.netLiquidityZScore.threshold')}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <p className="text-xs text-gray-400 mt-4 text-center">
@@ -599,6 +740,169 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       {t('explanation.data.treasury10Y.title')}:
                     </span>{' '}
                     {t('explanation.data.treasury10Y.description')}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* SOFR-IORB Spread Chart */}
+            {data.historical.sofrIorbSpread &&
+              data.historical.sofrIorbSpread.length > 0 && (
+                <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                  <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                    {t('charts.sofrIorbSpread')}
+                  </h4>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={data.historical.sofrIorbSpread}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <XAxis
+                        dataKey="date"
+                        tickFormatter={formatDate}
+                        stroke="#9CA3AF"
+                        style={{ fontSize: '12px' }}
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                      />
+                      <YAxis
+                        tickFormatter={(value) => `${value.toFixed(0)} bps`}
+                        stroke="#9CA3AF"
+                        style={{ fontSize: '12px' }}
+                      />
+                      <Tooltip
+                        formatter={(value: number | undefined) =>
+                          value !== undefined ? formatBasisPoints(value) : 'N/A'
+                        }
+                        labelFormatter={(label) => formatDate(label)}
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '4px',
+                          color: '#F3F4F6',
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#F59E0B"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                  <div className="mt-4 pt-4 border-t border-gray-700">
+                    <p className="text-sm text-gray-300">
+                      <span className="font-semibold">
+                        {t('explanation.data.sofrIorbSpread.title')}:
+                      </span>{' '}
+                      {t('explanation.data.sofrIorbSpread.description')}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+            {/* High Yield Credit Spreads Chart */}
+            {data.historical.highYieldSpreads &&
+              data.historical.highYieldSpreads.length > 0 && (
+                <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                  <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                    {t('charts.highYieldSpreads')}
+                  </h4>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={data.historical.highYieldSpreads}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <XAxis
+                        dataKey="date"
+                        tickFormatter={formatDate}
+                        stroke="#9CA3AF"
+                        style={{ fontSize: '12px' }}
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                      />
+                      <YAxis
+                        tickFormatter={(value) => `${value.toFixed(0)} bps`}
+                        stroke="#9CA3AF"
+                        style={{ fontSize: '12px' }}
+                      />
+                      <Tooltip
+                        formatter={(value: number | undefined) =>
+                          value !== undefined ? formatBasisPoints(value) : 'N/A'
+                        }
+                        labelFormatter={(label) => formatDate(label)}
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '4px',
+                          color: '#F3F4F6',
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#EC4899"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                  <div className="mt-4 pt-4 border-t border-gray-700">
+                    <p className="text-sm text-gray-300">
+                      <span className="font-semibold">
+                        {t('explanation.data.highYieldSpreads.title')}:
+                      </span>{' '}
+                      {t('explanation.data.highYieldSpreads.description')}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+            {/* VIX Chart */}
+            {data.historical.vix && data.historical.vix.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.vix')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.vix}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? value.toFixed(2) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#10B981"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+                <div className="mt-4 pt-4 border-t border-gray-700">
+                  <p className="text-sm text-gray-300">
+                    <span className="font-semibold">
+                      {t('explanation.data.vix.title')}:
+                    </span>{' '}
+                    {t('explanation.data.vix.description')}
                   </p>
                 </div>
               </div>

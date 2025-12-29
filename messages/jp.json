@@ -85,6 +85,37 @@
         "title": "10年国債利回り",
         "description": "借入コストを監視するための現在の利回り"
       },
+      "sofrIorbSpread": {
+        "title": "SOFR-IORBスプレッド",
+        "description": "SOFRと準備金残高への利子の差（ベーシスポイント単位）"
+      },
+      "highYieldSpreads": {
+        "title": "ハイイールド・クレジット・スプレッド",
+        "description": "リスクの高い企業債と安全な政府債の差"
+      },
+      "vix": {
+        "title": "VIX（ボラティリティ指数）",
+        "description": "市場のボラティリティ指標（MOVE指数の代替）"
+      },
+      "netLiquidityZScore": {
+        "title": "ネット流動性Zスコア",
+        "description": "歴史的平均からの標準偏差"
+      },
+      "redLine": {
+        "warning": "⚠️ レッドライン",
+        "rrp": {
+          "threshold": "$50B閾値を下回る - ショックアブソーバー消失"
+        },
+        "bankReserves": {
+          "threshold": "$2.7T閾値を下回る - 危険レベル"
+        },
+        "sofrSpread": {
+          "threshold": "20 bps超過 - 銀行が現金を切望"
+        },
+        "netLiquidityZScore": {
+          "threshold": "-2.0未満 - 標準からの極端な偏差"
+        }
+      },
       "explanation": {
         "title": "このデータは何を意味しますか？",
         "trafficLight": {
@@ -127,6 +158,18 @@
           "treasury10Y": {
             "title": "10年国債利回り",
             "description": "10年物米国政府債の金利。これは借入コストと市場の期待を示す重要な指標です。利回りの上昇は、金融条件の引き締めやインフレ期待を示す可能性があります。"
+          },
+          "sofrIorbSpread": {
+            "title": "SOFR-IORBスプレッド",
+            "description": "担保付きオーバーナイト資金調達金利（SOFR）と準備金残高への利子（IORB）の差。SOFRがIORBを上回る（スプレッド > 20 bps）場合、銀行が現金を切望しており、連邦準備制度の「安全」な金利よりも多く支払う意思があることを意味します。これは「市場の配管」が詰まっているという重要な早期警告信号です。"
+          },
+          "highYieldSpreads": {
+            "title": "ハイイールド・クレジット・スプレッド",
+            "description": "リスクの高い企業債と「安全」な政府債の差。スプレッドの拡大は、貸し手がデフォルトを恐れていることを示し、K字型経済の「底辺」が崩壊している重要な兆候です。これはしばしばより広範な市場ストレスの前兆となります。"
+          },
+          "vix": {
+            "title": "VIX（ボラティリティ指数）",
+            "description": "VIXは株式市場のボラティリティを追跡しますが、債券市場のボラティリティ（MOVE指数）の代替として機能します。高いVIXレベルはしばしば株式の暴落に先行し、市場のストレスを示します。これは市場の恐怖の「心拍数」を測定します。"
           }
         }
       },
@@ -137,7 +180,10 @@
         "bankReserves": "銀行準備金のトレンド",
         "fedBalanceSheet": "連邦準備制度のバランスシートのトレンド",
         "tga": "財務省一般勘定のトレンド",
-        "treasury10Y": "10年国債利回りのトレンド"
+        "treasury10Y": "10年国債利回りのトレンド",
+        "sofrIorbSpread": "SOFR-IORBスプレッドのトレンド",
+        "highYieldSpreads": "ハイイールド・クレジット・スプレッドのトレンド",
+        "vix": "VIX（ボラティリティ指数）のトレンド"
       }
     }
   },
