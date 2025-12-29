@@ -391,7 +391,12 @@
       "windSpeed": "風速",
       "pressure": "気圧",
       "visibility": "視程",
-      "forecast": "5日間の予報"
+      "forecast": "5日間の予報",
+      "day": "昼",
+      "night": "夜",
+      "peak": "最高",
+      "trough": "最低",
+      "noData": "データなし"
     },
     "forex": {
       "title": "為替レート",
@@ -401,13 +406,14 @@
       "periods": {
         "1week": "1週間",
         "1month": "1ヶ月",
-        "1year": "1年"
+        "3months": "3ヶ月"
       },
       "rates": {
         "usdToSgd": "USD/SGD",
         "sgdToJpy": "SGD/JPY",
         "usdToJpy": "USD/JPY"
-      }
+      },
+      "dataAvailability": "履歴データ利用可能：{count}データポイント、{startDate}から{endDate}まで。注：CurrencyAPI無料プランは履歴データの利用が制限されている場合があります。"
     }
   }
 }

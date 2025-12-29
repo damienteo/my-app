@@ -13,7 +13,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-type Period = '1week' | '1month' | '1year'
+type Period = '1week' | '1month' | '3months'
 
 interface HistoricalDataPoint {
   date: string
@@ -41,24 +41,42 @@ const ForexSection = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    let isMounted = true
+    let abortController = new AbortController()
+
     const fetchForex = async () => {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch(`/api/forex?period=${period}`)
+        const res = await fetch(`/api/forex?period=${period}`, {
+          signal: abortController.signal,
+        })
         if (!res.ok) {
           throw new Error('Failed to fetch forex data')
         }
         const data = await res.json()
-        setForex(data)
+        // Only update state if component is still mounted and period hasn't changed
+        if (isMounted) {
+          setForex(data)
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error')
+        // Ignore abort errors
+        if (err instanceof Error && err.name !== 'AbortError' && isMounted) {
+          setError(err.message)
+        }
       } finally {
-        setLoading(false)
+        if (isMounted) {
+          setLoading(false)
+        }
       }
     }
 
     fetchForex()
+
+    return () => {
+      isMounted = false
+      abortController.abort()
+    }
   }, [period])
 
   const formatDate = (dateStr: string): string => {
@@ -99,10 +117,14 @@ const ForexSection = () => {
 
       {/* Period Selector */}
       <div className="mb-6 flex gap-2 flex-wrap">
-        {(['1week', '1month', '1year'] as Period[]).map((p) => (
+        {(['1week', '1month', '3months'] as Period[]).map((p) => (
           <button
             key={p}
-            onClick={() => setPeriod(p)}
+            onClick={() => {
+              if (period !== p) {
+                setPeriod(p)
+              }
+            }}
             className={`px-4 py-2 rounded-full transition-colors font-medium ${
               period === p
                 ? 'bg-blue-600 text-white shadow-md'
@@ -113,7 +135,7 @@ const ForexSection = () => {
               ? t('periods.1week')
               : p === '1month'
               ? t('periods.1month')
-              : t('periods.1year')}
+              : t('periods.3months')}
           </button>
         ))}
       </div>
@@ -139,6 +161,22 @@ const ForexSection = () => {
           </p>
         </div>
       </div>
+
+      {/* Data Availability Notice */}
+      {forex.historical.usdToSgd.length > 0 && (
+        <div className="mb-4 p-3 bg-gray-700 rounded-lg">
+          <p className="text-xs text-gray-400">
+            {t('dataAvailability', {
+              count: forex.historical.usdToSgd.length,
+              startDate: formatDate(forex.historical.usdToSgd[0].date),
+              endDate: formatDate(
+                forex.historical.usdToSgd[forex.historical.usdToSgd.length - 1]
+                  .date
+              ),
+            })}
+          </p>
+        </div>
+      )}
 
       {/* Charts */}
       <div className="space-y-6">

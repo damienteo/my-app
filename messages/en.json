@@ -392,7 +392,12 @@
       "windSpeed": "Wind Speed",
       "pressure": "Pressure",
       "visibility": "Visibility",
-      "forecast": "5-Day Forecast"
+      "forecast": "5-Day Forecast",
+      "day": "Day",
+      "night": "Night",
+      "peak": "Peak",
+      "trough": "Trough",
+      "noData": "No data available"
     },
     "forex": {
       "title": "Forex Rates",
@@ -402,13 +407,14 @@
       "periods": {
         "1week": "1 Week",
         "1month": "1 Month",
-        "1year": "1 Year"
+        "3months": "3 Months"
       },
       "rates": {
         "usdToSgd": "USD to SGD",
         "sgdToJpy": "SGD to JPY",
         "usdToJpy": "USD to JPY"
-      }
+      },
+      "dataAvailability": "Historical data available: {count} data points from {startDate} to {endDate}. Note: CurrencyAPI free tier may have limited historical data availability."
     }
   }
 }

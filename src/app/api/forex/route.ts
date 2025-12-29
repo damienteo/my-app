@@ -18,14 +18,19 @@ async function fetchHistoricalRates(
   usdToJpy: HistoricalDataPoint[]
 }> {
   const endDate = new Date()
+  // Set to end of day to include today
+  endDate.setHours(23, 59, 59, 999)
   const startDate = new Date()
 
   if (period === '1week') {
     startDate.setDate(startDate.getDate() - 7)
   } else if (period === '1month') {
     startDate.setMonth(startDate.getMonth() - 1)
-  } else if (period === '1year') {
-    startDate.setFullYear(startDate.getFullYear() - 1)
+  } else if (period === '3months') {
+    startDate.setMonth(startDate.getMonth() - 3)
+    startDate.setHours(0, 0, 0, 0)
+  } else {
+    startDate.setHours(0, 0, 0, 0)
   }
 
   // CurrencyAPI historical endpoint
@@ -39,15 +44,21 @@ async function fetchHistoricalRates(
   }
 
   // For free tier, limit to reasonable number of requests
-  // Sample dates if too many (e.g., for 1 year, sample weekly)
+  // Sample dates strategically to stay within API limits
+  // IMPORTANT: Fetch from most recent dates backwards to prioritize recent data
   let sampledDates = dates
-  if (period === '1year' && dates.length > 50) {
-    // Sample weekly for 1 year
-    sampledDates = dates.filter((_, index) => index % 7 === 0)
-  } else if (period === '1month' && dates.length > 30) {
-    // Sample every other day for 1 month
+  if (period === '3months') {
+    // For 3 months, sample every 2 days to get ~45 data points
+    sampledDates = dates.filter((_, index) => index % 2 === 0)
+  } else if (period === '1month') {
+    // For 1 month, sample every other day to get ~15 data points
     sampledDates = dates.filter((_, index) => index % 2 === 0)
   }
+  // For 1 week, use all dates (7 data points)
+
+  // Reverse the array to fetch from most recent dates first
+  // This ensures we get the most current data available
+  sampledDates = sampledDates.reverse()
 
   const historicalData: {
     usdToSgd: HistoricalDataPoint[]
@@ -61,6 +72,7 @@ async function fetchHistoricalRates(
 
   // Fetch historical data for each date
   // Note: CurrencyAPI free tier has 300 requests/month, so we'll fetch strategically
+  // Also note: CurrencyAPI free tier may have limited historical data availability
   for (const date of sampledDates) {
     try {
       const url = `https://api.currencyapi.com/v3/historical?apikey=${apiKey}&base_currency=USD&date=${date}&currencies=SGD,JPY`
@@ -72,16 +84,61 @@ async function fetchHistoricalRates(
         const usdToJpy = data.data?.JPY?.value || 0
         const sgdToJpy = usdToSgd > 0 ? usdToJpy / usdToSgd : 0
 
-        historicalData.usdToSgd.push({ date, value: usdToSgd })
-        historicalData.usdToJpy.push({ date, value: usdToJpy })
-        historicalData.sgdToJpy.push({ date, value: sgdToJpy })
+        // Only add if we got valid data
+        if (usdToSgd > 0 && usdToJpy > 0) {
+          historicalData.usdToSgd.push({ date, value: usdToSgd })
+          historicalData.usdToJpy.push({ date, value: usdToJpy })
+          historicalData.sgdToJpy.push({ date, value: sgdToJpy })
+        }
+      } else if (response.status === 429) {
+        // Rate limit hit - break and return what we have
+        console.warn('CurrencyAPI rate limit reached, returning partial data')
+        break
+      } else if (response.status === 422 || response.status === 400) {
+        // Invalid date or date out of range - skip this date
+        // CurrencyAPI free tier may have limited historical data
+        console.warn(
+          `CurrencyAPI: No data available for ${date} (status: ${response.status})`
+        )
+        continue
+      } else {
+        // Log other error statuses for debugging
+        const errorText = await response.text().catch(() => 'Unknown error')
+        console.warn(
+          `CurrencyAPI: Error for ${date} - Status: ${response.status}, Error: ${errorText}`
+        )
+        continue
       }
 
       // Small delay to avoid rate limiting
       await new Promise((resolve) => setTimeout(resolve, 100))
     } catch (error) {
       console.error(`Error fetching historical data for ${date}:`, error)
+      // Continue to next date even if one fails
     }
+  }
+
+  // Sort by date to ensure chronological order
+  historicalData.usdToSgd.sort((a, b) => a.date.localeCompare(b.date))
+  historicalData.sgdToJpy.sort((a, b) => a.date.localeCompare(b.date))
+  historicalData.usdToJpy.sort((a, b) => a.date.localeCompare(b.date))
+
+  // Log data availability info
+  if (historicalData.usdToSgd.length > 0) {
+    const firstDate = historicalData.usdToSgd[0].date
+    const lastDate =
+      historicalData.usdToSgd[historicalData.usdToSgd.length - 1].date
+    const requestedStart = startDate.toISOString().split('T')[0]
+    const requestedEnd = endDate.toISOString().split('T')[0]
+    console.log(
+      `CurrencyAPI: Requested ${period} period (${requestedStart} to ${requestedEnd}), got ${historicalData.usdToSgd.length} data points from ${firstDate} to ${lastDate}`
+    )
+  } else {
+    const requestedStart = startDate.toISOString().split('T')[0]
+    const requestedEnd = endDate.toISOString().split('T')[0]
+    console.warn(
+      `CurrencyAPI: No historical data available for ${period} period (${requestedStart} to ${requestedEnd})`
+    )
   }
 
   return historicalData
@@ -122,6 +179,24 @@ export async function GET(request: Request) {
       }
     }
 
+    // Calculate requested date range for comparison
+    const requestedStartDate = new Date()
+    if (period === '1week') {
+      requestedStartDate.setDate(requestedStartDate.getDate() - 7)
+    } else if (period === '1month') {
+      requestedStartDate.setMonth(requestedStartDate.getMonth() - 1)
+    } else if (period === '3months') {
+      requestedStartDate.setMonth(requestedStartDate.getMonth() - 3)
+    }
+    const requestedStart = requestedStartDate.toISOString().split('T')[0]
+    const requestedEnd = new Date().toISOString().split('T')[0]
+
+    // Determine actual date range of historical data
+    const firstDate = historical.usdToSgd[0]?.date || 'N/A'
+    const lastDate =
+      historical.usdToSgd[historical.usdToSgd.length - 1]?.date || 'N/A'
+    const dataPoints = historical.usdToSgd.length
+
     return NextResponse.json({
       current: {
         usdToSgd,
@@ -129,6 +204,14 @@ export async function GET(request: Request) {
         usdToJpy,
       },
       historical,
+      dataAvailability: {
+        firstDate,
+        lastDate,
+        dataPoints,
+        requestedStart,
+        requestedEnd,
+        note: 'CurrencyAPI free tier may have limited historical data availability. Data shown reflects what is available from the API.',
+      },
     })
   } catch (error) {
     console.error('Error fetching forex data:', error)
@@ -138,4 +221,3 @@ export async function GET(request: Request) {
     )
   }
 }
-

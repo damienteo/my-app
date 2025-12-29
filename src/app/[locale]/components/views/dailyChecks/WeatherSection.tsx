@@ -17,13 +17,22 @@ interface WeatherData {
   }
   forecast: Array<{
     date: string
-    temp: number
-    tempMin: number
-    tempMax: number
-    description: string
-    icon: string
-    humidity: number
-    windSpeed: number
+    day: {
+      temp: number | null
+      tempMin: number | null
+      tempMax: number | null
+      description: string
+      icon: string
+    }
+    night: {
+      temp: number | null
+      tempMin: number | null
+      tempMax: number | null
+      description: string
+      icon: string
+    }
+    tempMin: number | null
+    tempMax: number | null
   }>
 }
 
@@ -122,33 +131,77 @@ const WeatherSection = () => {
         <h3 className="text-xl font-semibold text-gray-200 mb-3">
           {t('forecast')}
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {weather.forecast.map((day, index) => (
-            <div
-              key={index}
-              className="p-3 bg-gray-700 rounded-lg text-center"
-            >
-              <p className="text-sm text-gray-400 mb-2">
+            <div key={index} className="p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm text-gray-400 mb-3 text-center">
                 {new Date(day.date).toLocaleDateString('en-US', {
                   weekday: 'short',
                   month: 'short',
                   day: 'numeric',
                 })}
               </p>
-              <img
-                src={`https://openweathermap.org/img/wn/${day.icon}.png`}
-                alt={day.description}
-                className="mx-auto mb-2 w-12 h-12"
-              />
-              <p className="text-lg font-bold text-white">
-                {Math.round(day.temp)}°C
-              </p>
-              <p className="text-xs text-gray-400">
-                {Math.round(day.tempMin)}° / {Math.round(day.tempMax)}°
-              </p>
-              <p className="text-xs text-gray-400 capitalize mt-1">
-                {day.description}
-              </p>
+
+              {/* Day Section */}
+              <div className="mb-3 pb-3 border-b border-gray-600">
+                <p className="text-xs text-gray-400 mb-1">{t('day')}</p>
+                {day.day.temp !== null ? (
+                  <>
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <img
+                        src={`https://openweathermap.org/img/wn/${day.day.icon}.png`}
+                        alt={day.day.description}
+                        className="w-8 h-8"
+                      />
+                      <p className="text-lg font-bold text-white">
+                        {Math.round(day.day.temp)}°C
+                      </p>
+                    </div>
+                    {day.day.tempMin !== null && day.day.tempMax !== null && (
+                      <p className="text-xs text-gray-400">
+                        {Math.round(day.day.tempMin)}° /{' '}
+                        {Math.round(day.day.tempMax)}°
+                      </p>
+                    )}
+                    <p className="text-xs text-gray-400 capitalize mt-1">
+                      {day.day.description}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-xs text-gray-500 italic">{t('noData')}</p>
+                )}
+              </div>
+
+              {/* Night Section */}
+              <div>
+                <p className="text-xs text-gray-400 mb-1">{t('night')}</p>
+                {day.night.temp !== null ? (
+                  <>
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <img
+                        src={`https://openweathermap.org/img/wn/${day.night.icon}.png`}
+                        alt={day.night.description}
+                        className="w-8 h-8"
+                      />
+                      <p className="text-lg font-bold text-white">
+                        {Math.round(day.night.temp)}°C
+                      </p>
+                    </div>
+                    {day.night.tempMin !== null &&
+                      day.night.tempMax !== null && (
+                        <p className="text-xs text-gray-400">
+                          {Math.round(day.night.tempMin)}° /{' '}
+                          {Math.round(day.night.tempMax)}°
+                        </p>
+                      )}
+                    <p className="text-xs text-gray-400 capitalize mt-1">
+                      {day.night.description}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-xs text-gray-500 italic">{t('noData')}</p>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -158,4 +211,3 @@ const WeatherSection = () => {
 }
 
 export default WeatherSection
-
