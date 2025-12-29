@@ -70,6 +70,64 @@ async function fetchFredObservation(seriesId: string): Promise<number | null> {
   }
 }
 
+async function fetchFredHistoricalData(
+  seriesId: string,
+  units: string | null
+): Promise<Array<{ date: string; value: number }> | null> {
+  try {
+    // Calculate date 5 years ago
+    const endDate = new Date()
+    const startDate = new Date()
+    startDate.setFullYear(startDate.getFullYear() - 5)
+
+    const startDateStr = startDate.toISOString().split('T')[0]
+    const endDateStr = endDate.toISOString().split('T')[0]
+
+    const url = `${FRED_OBSERVATIONS_URL}?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&observation_start=${startDateStr}&observation_end=${endDateStr}&sort_order=asc`
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error(`FRED API error: ${response.statusText}`)
+    }
+
+    const data: FredResponse = await response.json()
+
+    if (data.observations && data.observations.length > 0) {
+      return data.observations
+        .filter((obs) => obs.value !== '.' && obs.value !== '') // Filter out missing data
+        .map((obs) => {
+          let value = parseFloat(obs.value)
+          if (isNaN(value)) return null
+
+          // Convert based on units
+          if (units && (units.includes('Millions') || units.includes('Mil'))) {
+            value = value * 1e6
+          } else if (
+            units &&
+            (units.includes('Billions') || units.includes('Bil'))
+          ) {
+            value = value * 1e9
+          } else if (
+            units &&
+            (units.includes('Thousands') || units.includes('Thou'))
+          ) {
+            value = value * 1e3
+          }
+
+          return { date: obs.date, value }
+        })
+        .filter(
+          (item): item is { date: string; value: number } => item !== null
+        )
+    }
+
+    return null
+  } catch (error) {
+    console.error(`Error fetching historical data for ${seriesId}:`, error)
+    return null
+  }
+}
+
 function convertValue(
   value: number | null,
   units: string | null
@@ -129,6 +187,42 @@ export async function GET() {
         ? fedBalanceSheet - tga - rrp
         : null
 
+    // Fetch historical data
+    const historicalData = await Promise.all(
+      seriesIds.map(async (id, index) => {
+        const units = seriesInfoResults[index]
+        const data = await fetchFredHistoricalData(id, units)
+        return { seriesId: id, data }
+      })
+    )
+
+    // Calculate historical Net Liquidity
+    const fedBalanceSheetHist =
+      historicalData.find((d) => d.seriesId === 'WALCL')?.data || []
+    const tgaHist =
+      historicalData.find((d) => d.seriesId === 'WTREGEN')?.data || []
+    const rrpHist =
+      historicalData.find((d) => d.seriesId === 'RRPONTSYD')?.data || []
+
+    // Create a map of dates to values for efficient lookup
+    const tgaMap = new Map(tgaHist.map((item) => [item.date, item.value]))
+    const rrpMap = new Map(rrpHist.map((item) => [item.date, item.value]))
+
+    const netLiquidityHist = fedBalanceSheetHist
+      .map((item) => {
+        const tgaValue = tgaMap.get(item.date)
+        const rrpValue = rrpMap.get(item.date)
+
+        if (tgaValue !== undefined && rrpValue !== undefined) {
+          return {
+            date: item.date,
+            value: item.value - tgaValue - rrpValue,
+          }
+        }
+        return null
+      })
+      .filter((item): item is { date: string; value: number } => item !== null)
+
     return NextResponse.json({
       rrp,
       bankReserves,
@@ -137,6 +231,17 @@ export async function GET() {
       netLiquidity,
       treasury10Y,
       lastUpdated: new Date().toISOString(),
+      historical: {
+        rrp: historicalData.find((d) => d.seriesId === 'RRPONTSYD')?.data || [],
+        bankReserves:
+          historicalData.find((d) => d.seriesId === 'WRESBAL')?.data || [],
+        fedBalanceSheet:
+          historicalData.find((d) => d.seriesId === 'WALCL')?.data || [],
+        tga: historicalData.find((d) => d.seriesId === 'WTREGEN')?.data || [],
+        treasury10Y:
+          historicalData.find((d) => d.seriesId === 'DGS10')?.data || [],
+        netLiquidity: netLiquidityHist,
+      },
     })
   } catch (error) {
     console.error('Error fetching macro data:', error)

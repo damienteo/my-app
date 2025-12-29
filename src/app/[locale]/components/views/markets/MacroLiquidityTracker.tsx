@@ -2,7 +2,22 @@
 
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts'
 import { Section, Paragraph } from '../../common'
+
+interface HistoricalDataPoint {
+  date: string
+  value: number
+}
 
 interface MacroData {
   rrp: number | null
@@ -12,6 +27,14 @@ interface MacroData {
   netLiquidity: number | null
   treasury10Y: number | null
   lastUpdated: string
+  historical?: {
+    rrp: HistoricalDataPoint[]
+    bankReserves: HistoricalDataPoint[]
+    fedBalanceSheet: HistoricalDataPoint[]
+    tga: HistoricalDataPoint[]
+    treasury10Y: HistoricalDataPoint[]
+    netLiquidity: HistoricalDataPoint[]
+  }
 }
 
 const formatCurrency = (value: number | null): string => {
@@ -25,6 +48,24 @@ const formatCurrency = (value: number | null): string => {
 const formatPercent = (value: number | null): string => {
   if (value === null) return 'N/A'
   return `${value.toFixed(2)}%`
+}
+
+// Format date for chart display
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+}
+
+// Format chart value for tooltip
+const formatChartValue = (
+  value: number,
+  isPercent: boolean = false
+): string => {
+  if (isPercent) return `${value.toFixed(2)}%`
+  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
+  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`
+  return `$${value.toFixed(0)}`
 }
 
 const getTrafficLightColor = (
@@ -192,6 +233,297 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
         <p className="text-xs text-gray-400 mt-4 text-center">
           {t('lastUpdated')}: {new Date(data.lastUpdated).toLocaleString()}
         </p>
+
+        {/* Historical Charts Section */}
+        {data.historical && (
+          <div className="mt-8 space-y-6">
+            <h3 className="text-xl font-bold text-gray-200 mb-4">
+              {t('charts.title')}
+            </h3>
+
+            {/* Net Liquidity Chart */}
+            {data.historical.netLiquidity.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.netLiquidity')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.netLiquidity}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatChartValue(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#10B981"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Fed Balance Sheet Chart */}
+            {data.historical.fedBalanceSheet.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.fedBalanceSheet')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.fedBalanceSheet}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatChartValue(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#3B82F6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Bank Reserves Chart */}
+            {data.historical.bankReserves.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.bankReserves')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.bankReserves}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatChartValue(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#8B5CF6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Reverse Repo Chart */}
+            {data.historical.rrp.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.rrp')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.rrp}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatChartValue(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#F59E0B"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Treasury General Account Chart */}
+            {data.historical.tga.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.tga')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.tga}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatChartValue(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#EF4444"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* 10-Year Treasury Yield Chart */}
+            {data.historical.treasury10Y.length > 0 && (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                <h4 className="text-lg font-semibold text-gray-200 mb-4">
+                  {t('charts.treasury10Y')}
+                </h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={data.historical.treasury10Y}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={formatDate}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis
+                      tickFormatter={(value) => formatPercent(value)}
+                      stroke="#9CA3AF"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Tooltip
+                      formatter={(value: number | undefined) =>
+                        value !== undefined ? formatPercent(value) : 'N/A'
+                      }
+                      labelFormatter={(label) => formatDate(label)}
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '4px',
+                        color: '#F3F4F6',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#06B6D4"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Collapsible Explanation Section */}
         <div className="mt-6 border-t border-gray-700 pt-4">

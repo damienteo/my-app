@@ -130,6 +130,15 @@
             "description": "The interest rate on 10-year U.S. government bonds. This is a key indicator of borrowing costs and market expectations. Rising yields can indicate tightening financial conditions or inflation expectations."
           }
         }
+      },
+      "charts": {
+        "title": "5-Year Historical Trends",
+        "netLiquidity": "Net Liquidity Index Trend",
+        "rrp": "Reverse Repo Balance Trend",
+        "bankReserves": "Bank Reserves Trend",
+        "fedBalanceSheet": "Fed Balance Sheet Trend",
+        "tga": "Treasury General Account Trend",
+        "treasury10Y": "10-Year Treasury Yield Trend"
       }
     }
   },
