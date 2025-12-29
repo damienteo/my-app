@@ -316,6 +316,13 @@
       "withdrawalAge": {
         "title": "計算方法",
         "inTime": "{time}後、あなたが{age}歳のとき、普通口座に{ordinaryAmount}、特別口座に{specialAmount}あります。",
+        "time": {
+          "year": "年",
+          "years": "年",
+          "month": "ヶ月",
+          "months": "ヶ月",
+          "and": "と"
+        },
         "interest": "金利",
         "interestText": "について、CPFの金利は毎月計算されます。その後、それぞれの口座に記入され、年間で複利計算されます。",
         "interestRates": "中央積立基金（CPF）会員は現在、普通口座（OA）の資金に対して年間最大3.5%、特別口座およびメディセーブ口座（SMA）の資金に対して年間最大5%の金利を獲得しています。退職口座（RA）の資金は現在、年間最大5%の金利を獲得しています。上記の",
@@ -336,6 +343,13 @@
       "payoutAge": {
         "title": "退職口座とは何ですか？",
         "inTime": "{time}後、あなたが{age}歳のとき、普通口座に{ordinaryAmount}、特別口座に{specialAmount}、退職口座に{retirementAmount}あります。",
+        "time": {
+          "year": "年",
+          "years": "年",
+          "month": "ヶ月",
+          "months": "ヶ月",
+          "and": "と"
+        },
         "retirementAccount": "55歳の誕生日に、CPFは",
         "retirementAccountText": "（RA）を作成します。特別口座と普通口座からの貯蓄は、完全退職額（FRS）まで、",
         "transferred": "移転",

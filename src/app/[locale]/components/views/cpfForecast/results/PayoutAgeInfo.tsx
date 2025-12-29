@@ -32,7 +32,10 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
     <>
       <Paragraph className="my-6 text-gray-300">
         {t('inTime', {
-          time: getYearsAndMonths(futureValues.monthsTillWithdrawal + 120),
+          time: getYearsAndMonths(
+            futureValues.monthsTillWithdrawal + 120,
+            (key: string) => t(`time.${key}`)
+          ),
           age: payoutAge,
           ordinaryAmount: formatCurrency(futureValues.ordinaryAccount),
           specialAmount: formatCurrency(futureValues.specialAccount),

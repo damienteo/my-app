@@ -34,18 +34,20 @@ const CPFForecastPageClient = () => {
 
       <Paragraph className="mb-4">{t('lastChecked')}</Paragraph>
 
-      <Paragraph className="mb-8">
-        {t('frsAssumption.text')}
-        <InfoPopup title={t('frsAssumption.retirementAmounts.title')}>
-          <Paragraph className="m-0 mb-2 text-gray-300">
-            {t('frsAssumption.retirementAmounts.info')}{' '}
-            <ExternalLink
-              url="https://www.cpf.gov.sg/member/faq/retirement-income/general-information-on-retirement/what-are-the-retirement-sums-applicable-to-me-"
-              label={t('frsAssumption.retirementAmounts.title')}
-            />
-            .
-          </Paragraph>
-        </InfoPopup>{' '}
+      <Paragraph className="mb-6">
+        {t('frsAssumption.text')}{' '}
+        <span className="inline-flex items-center">
+          <InfoPopup title={t('frsAssumption.retirementAmounts.title')}>
+            <Paragraph className="m-0 mb-2 text-gray-300">
+              {t('frsAssumption.retirementAmounts.info')}{' '}
+              <ExternalLink
+                url="https://www.cpf.gov.sg/member/faq/retirement-income/general-information-on-retirement/what-are-the-retirement-sums-applicable-to-me-"
+                label={t('frsAssumption.retirementAmounts.title')}
+              />
+              .
+            </Paragraph>
+          </InfoPopup>
+        </span>{' '}
         {t('frsAssumption.policyNote')}
       </Paragraph>
 

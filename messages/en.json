@@ -317,6 +317,13 @@
       "withdrawalAge": {
         "title": "How calculations are made",
         "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, and {specialAmount} in your Special Account.",
+        "time": {
+          "year": "year",
+          "years": "years",
+          "month": "month",
+          "months": "months",
+          "and": "and"
+        },
         "interest": "interest",
         "interestText": ", CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually.",
         "interestRates": "Central Provident Fund (CPF) members currently earn interest rates of up to 3.5% per annum on their Ordinary Account (OA) monies, and up to 5% per annum on their Special and MediSave Account (SMA) monies. Retirement Account (RA) monies currently earn up to 5% per annum. The above",
@@ -337,6 +344,13 @@
       "payoutAge": {
         "title": "What is a Retirement Account?",
         "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, {specialAmount} in your Special Account, and {retirementAmount} in your Retirement Account.",
+        "time": {
+          "year": "year",
+          "years": "years",
+          "month": "month",
+          "months": "months",
+          "and": "and"
+        },
         "retirementAccount": "On your 55th birthday, CPF will create a",
         "retirementAccountText": "(RA) for you. Savings from your Special Account and Ordinary Account, up to the Full Retirement Sum (FRS), will be",
         "transferred": "transferred",

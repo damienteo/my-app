@@ -31,7 +31,10 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
     <>
       <Paragraph className="mb-6 text-gray-300">
         {t('inTime', {
-          time: getYearsAndMonths(futureValues.monthsTillWithdrawal),
+          time: getYearsAndMonths(
+            futureValues.monthsTillWithdrawal,
+            (key: string) => t(`time.${key}`)
+          ),
           age: withdrawalAge,
           ordinaryAmount: formatCurrency(
             futureValues.ordinaryAccountAtWithdrawalAge

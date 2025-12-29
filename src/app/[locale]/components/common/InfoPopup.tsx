@@ -22,7 +22,7 @@ const DialogButton = (props: DialogButtonProps) => {
   return (
     <button
       aria-label={`${title} info`}
-      className={`p-0 ${iconColor} mx-1 mt-1 h-6 w-6 bg-gray-700 hover:bg-gray-600 rounded-full cursor-pointer flex items-center justify-center text-xs font-semibold transition-colors`}
+      className={`p-0 ${iconColor} mx-1 inline-block align-middle h-6 w-6 bg-gray-700 hover:bg-gray-600 rounded-full cursor-pointer flex items-center justify-center text-xs font-semibold transition-colors`}
       onClick={handleClickOpen}
     >
       i

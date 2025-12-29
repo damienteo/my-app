@@ -149,16 +149,18 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       <Section>
         <p className="text-gray-300 mb-4">
           {t('accountBalances.instruction')}{' '}
-          <InfoPopup title={t('accountBalances.infoPopup.title')}>
-            <p className="text-gray-300">
-              {t('accountBalances.infoPopup.text')}{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/member/cpf-overview"
-                label="CPF"
-              />
-              .
-            </p>
-          </InfoPopup>
+          <span className="inline-flex items-center">
+            <InfoPopup title={t('accountBalances.infoPopup.title')}>
+              <p className="text-gray-300">
+                {t('accountBalances.infoPopup.text')}{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/member/cpf-overview"
+                  label="CPF"
+                />
+                .
+              </p>
+            </InfoPopup>
+          </span>
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {cpfAccounts.map((account) => (
@@ -182,16 +184,18 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       <Section>
         <p className="text-gray-300 mb-4">
           {t('dateOfBirth.instruction')}{' '}
-          <InfoPopup title={t('dateOfBirth.withdrawalInfo.title')}>
-            <p className="text-gray-300">
-              {t('dateOfBirth.withdrawalInfo.text', { age: withdrawalAge })}{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/member/infohub/educational-resources/heres-what-cpf-members-are-doing-with-their-cash-withdrawals-after-age-55"
-                label={t('dateOfBirth.withdrawalInfo.here')}
-              />
-              .
-            </p>
-          </InfoPopup>
+          <span className="inline-flex items-center">
+            <InfoPopup title={t('dateOfBirth.withdrawalInfo.title')}>
+              <p className="text-gray-300">
+                {t('dateOfBirth.withdrawalInfo.text', { age: withdrawalAge })}{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/member/infohub/educational-resources/heres-what-cpf-members-are-doing-with-their-cash-withdrawals-after-age-55"
+                  label={t('dateOfBirth.withdrawalInfo.here')}
+                />
+                .
+              </p>
+            </InfoPopup>
+          </span>
         </p>
         <div className="max-w-md">
           <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -208,24 +212,26 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
       <Section>
         <p className="text-gray-300 mb-4">
           {t('salary.instruction')}{' '}
-          <InfoPopup title={t('salary.contributionInfo.title')}>
-            <p className="text-gray-300">
-              {t('salary.contributionInfo.when55')}{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
-                label={t('salary.contributionInfo.when55')}
-              />
-              {t('salary.contributionInfo.employerContribution')}
-            </p>
-            <p className="text-gray-300">
-              {t('salary.contributionInfo.owCeiling')}{' '}
-              <ExternalLink
-                url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
-                label={t('salary.contributionInfo.owCeiling')}
-              />{' '}
-              {t('salary.contributionInfo.owCeilingText')}
-            </p>
-          </InfoPopup>
+          <span className="inline-flex items-center">
+            <InfoPopup title={t('salary.contributionInfo.title')}>
+              <p className="text-gray-300">
+                {t('salary.contributionInfo.when55')}{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
+                  label={t('salary.contributionInfo.when55')}
+                />
+                {t('salary.contributionInfo.employerContribution')}
+              </p>
+              <p className="text-gray-300">
+                {t('salary.contributionInfo.owCeiling')}{' '}
+                <ExternalLink
+                  url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
+                  label={t('salary.contributionInfo.owCeiling')}
+                />{' '}
+                {t('salary.contributionInfo.owCeilingText')}
+              </p>
+            </InfoPopup>
+          </span>
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -253,7 +259,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </div>
       </Section>
 
-      <div className="mt-6 mb-8">
+      <div className="mt-4 mb-6">
         <button
           className="bg-blue-600 hover:bg-blue-500 text-white py-3 px-8 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
           onClick={handleSubmit}
