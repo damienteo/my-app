@@ -17,17 +17,39 @@ interface StockQuote {
   t: number
 }
 
+interface StockFinancials {
+  peRatio: number | null
+  marketCap: number | null
+  cash: number | null
+  totalCash: number | null
+  freeCashFlow: number | null
+  trailingPE?: number | null
+  forwardPE?: number | null
+}
+
+interface QuarterlyEarnings {
+  date: string
+  revenue: number | null
+  earnings: number | null
+}
+
 interface StockData {
   symbol: string
   quote: StockQuote | null
   historical: Array<{ date: string; price: number }> | null
+  financials: StockFinancials | null
+  earnings: QuarterlyEarnings[] | null
   quoteTimestamp?: number
   historicalTimestamp?: number
+  financialsTimestamp?: number
+  earningsTimestamp?: number
 }
 
 // Cache TTLs
 const CACHE_TTL_QUOTES = 60 * 1000 // 1 minute
 const CACHE_TTL_HISTORICAL = 60 * 60 * 1000 // 1 hour
+const CACHE_TTL_FINANCIALS = 60 * 60 * 1000 // 1 hour (financial data changes less frequently)
+const CACHE_TTL_EARNINGS = 60 * 60 * 1000 // 1 hour (earnings data changes less frequently)
 
 // Rate limit tracking
 const RATE_LIMIT_WARNING_THRESHOLD = 50 // Warn at 50 calls/min
@@ -255,7 +277,155 @@ const StocksWatchClient = () => {
     [allSymbols.join(','), period, isCacheValid, trackApiCall]
   )
 
-  // Initial load - quotes and historical data
+  // Fetch financial data
+  const fetchFinancials = useCallback(
+    async (force = false) => {
+      try {
+        // Check cache first
+        const cacheKey = 'stocks_financials'
+        const cachedData = localStorage.getItem(cacheKey)
+
+        if (!force && cachedData) {
+          const parsed = JSON.parse(cachedData)
+          const cacheTime = parsed.timestamp || 0
+
+          if (isCacheValid(cacheTime, CACHE_TTL_FINANCIALS)) {
+            setStockData((prev) => {
+              const updated = { ...prev }
+              Object.keys(parsed.financials).forEach((symbol) => {
+                updated[symbol] = {
+                  ...updated[symbol],
+                  symbol,
+                  financials: parsed.financials[symbol],
+                  financialsTimestamp: cacheTime,
+                }
+              })
+              return updated
+            })
+            return
+          }
+        }
+
+        trackApiCall()
+        const symbolsParam = allSymbols.join(',')
+        const res = await fetch(
+          `/api/stocks/financials?symbols=${symbolsParam}`
+        )
+
+        if (!res.ok) {
+          const errorText = await res.text().catch(() => 'Unknown error')
+          console.warn(
+            `Failed to fetch financial data: Status ${res.status}, ${errorText}`
+          )
+          return
+        }
+
+        const data = await res.json()
+        const timestamp = Date.now()
+
+        // Update cache
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({
+            financials: data.financials,
+            timestamp,
+          })
+        )
+
+        // Update state
+        setStockData((prev) => {
+          const updated = { ...prev }
+          Object.keys(data.financials).forEach((symbol) => {
+            updated[symbol] = {
+              ...updated[symbol],
+              symbol,
+              financials: data.financials[symbol],
+              financialsTimestamp: timestamp,
+            }
+          })
+          return updated
+        })
+      } catch (err) {
+        console.warn('Error fetching financial data:', err)
+      }
+    },
+    [allSymbols.join(','), isCacheValid, trackApiCall]
+  )
+
+  // Fetch earnings data
+  const fetchEarnings = useCallback(
+    async (force = false) => {
+      try {
+        // Check cache first
+        const cacheKey = 'stocks_earnings'
+        const cachedData = localStorage.getItem(cacheKey)
+
+        if (!force && cachedData) {
+          const parsed = JSON.parse(cachedData)
+          const cacheTime = parsed.timestamp || 0
+
+          if (isCacheValid(cacheTime, CACHE_TTL_EARNINGS)) {
+            setStockData((prev) => {
+              const updated = { ...prev }
+              Object.keys(parsed.earnings).forEach((symbol) => {
+                updated[symbol] = {
+                  ...updated[symbol],
+                  symbol,
+                  earnings: parsed.earnings[symbol],
+                  earningsTimestamp: cacheTime,
+                }
+              })
+              return updated
+            })
+            return
+          }
+        }
+
+        trackApiCall()
+        const symbolsParam = allSymbols.join(',')
+        const res = await fetch(`/api/stocks/earnings?symbols=${symbolsParam}`)
+
+        if (!res.ok) {
+          const errorText = await res.text().catch(() => 'Unknown error')
+          console.warn(
+            `Failed to fetch earnings data: Status ${res.status}, ${errorText}`
+          )
+          return
+        }
+
+        const data = await res.json()
+        const timestamp = Date.now()
+
+        // Update cache
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({
+            earnings: data.earnings,
+            timestamp,
+          })
+        )
+
+        // Update state
+        setStockData((prev) => {
+          const updated = { ...prev }
+          Object.keys(data.earnings).forEach((symbol) => {
+            updated[symbol] = {
+              ...updated[symbol],
+              symbol,
+              earnings: data.earnings[symbol],
+              earningsTimestamp: timestamp,
+            }
+          })
+          return updated
+        })
+      } catch (err) {
+        console.warn('Error fetching earnings data:', err)
+      }
+    },
+    [allSymbols.join(','), isCacheValid, trackApiCall]
+  )
+
+  // Initial load - quotes, historical data, financials, and earnings
   useEffect(() => {
     let isMounted = true
 
@@ -263,6 +433,8 @@ const StocksWatchClient = () => {
       setLoading(true)
       await fetchQuotes()
       await fetchHistorical()
+      await fetchFinancials()
+      await fetchEarnings()
       if (isMounted) {
         setLoading(false)
       }
@@ -273,7 +445,7 @@ const StocksWatchClient = () => {
     return () => {
       isMounted = false
     }
-  }, [fetchQuotes, fetchHistorical])
+  }, [fetchQuotes, fetchHistorical, fetchFinancials, fetchEarnings])
 
   // Auto-refresh quotes every 5 minutes
   useEffect(() => {
@@ -289,10 +461,14 @@ const StocksWatchClient = () => {
     // Clear client-side cache
     localStorage.removeItem('stocks_quotes')
     localStorage.removeItem('stocks_historical')
+    localStorage.removeItem('stocks_financials')
+    localStorage.removeItem('stocks_earnings')
 
     fetchQuotes(true)
     fetchHistorical(true)
-  }, [fetchQuotes, fetchHistorical])
+    fetchFinancials(true)
+    fetchEarnings(true)
+  }, [fetchQuotes, fetchHistorical, fetchFinancials, fetchEarnings])
 
   if (loading) {
     return (

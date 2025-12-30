@@ -4,13 +4,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Section } from '../../common'
 import StockCard from './StockCard'
-
-interface Stock {
-  symbol: string
-  name: string
-  exchange: string
-  market: string
-}
+import { Stock } from '../../../../../constants'
 
 interface StockCategory {
   id: string

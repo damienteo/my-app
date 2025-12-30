@@ -432,6 +432,36 @@
       "1week": "1 Week",
       "1month": "1 Month",
       "3months": "3 Months"
+    },
+    "descriptions": {
+      "NVDA": "Leader in AI chips and the \"Omniverse\" simulation platform. Provides high-performance GPUs and Jetson chips for autonomous machines and edge AI applications.",
+      "ARM": "Designs energy-efficient processor architectures. Arm-based chips are standard for mobile and low-power computing in robotics, enabling longer battery life and better performance.",
+      "AMBA": "Specializes in AI vision processors. Their CV3-AD chip combines perception and path planning on a single chip, making it essential for autonomous navigation.",
+      "OUST": "Leading provider of digital LiDAR sensors. Their sensors provide 3D vision for warehouse robots, autonomous vehicles, and industrial automation.",
+      "LAZR": "Develops advanced LiDAR technology for autonomous vehicles and robotics. Their sensors enable precise 3D mapping and obstacle detection.",
+      "TER": "Makes robots (Universal Robots) and semiconductor testing equipment. Every AI chip must be tested by Teradyne equipment before leaving the factory.",
+      "STM": "Produces microcontrollers with integrated Neural Processing Units (NPUs). Powers millions of smaller, cost-effective robots with on-device AI capabilities.",
+      "6324_T": "Dominates the market for \"strain wave gears\"—high-precision reducers that enable robotic joints to move smoothly and accurately with minimal backlash.",
+      "300433_SZ": "Formerly an Apple supplier, now pivoting to humanoid robot assembly and core components. Aims to be the \"Foxconn of Robotics\" for 2026.",
+      "ROK": "Provides software and hardware solutions for factories that build robots. Essential \"shovel\" company for industrial automation and manufacturing.",
+      "U": "Leading platform for \"Sim-to-Real\" training. AI models learn to walk and manipulate objects in Unity's virtual world before being deployed to physical robots.",
+      "MSFT": "Through Azure Robotics and specialized AI models, provides cloud infrastructure and \"common sense\" reasoning that helps robots understand human instructions."
+    },
+    "financials": {
+      "cash": "Est. Cash (Dec 2025)",
+      "peRatio": "P/E Ratio (Dec 2025)",
+      "riskLevel": "Risk Level",
+      "riskFactor": "Risk Factor",
+      "riskLevels": {
+        "A": "Level A: The \"Fortress\" Shovels (Safest)",
+        "B": "Level B: The \"Steady\" Shovels (Moderate Risk)",
+        "C": "Level C: The \"Speculative\" Shovels (High Risk)"
+      }
+    },
+    "earnings": {
+      "title": "Revenue vs. Earnings",
+      "revenue": "Revenue",
+      "earnings": "Earnings"
     }
   }
 }
