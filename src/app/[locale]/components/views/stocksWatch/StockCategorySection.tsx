@@ -32,7 +32,9 @@ interface StockQuote {
 interface StockData {
   symbol: string
   quote: StockQuote | null
+  historical: Array<{ date: string; price: number }> | null
   quoteTimestamp?: number
+  historicalTimestamp?: number
 }
 
 interface StockCategorySectionProps {

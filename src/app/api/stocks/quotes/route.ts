@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server'
+import YahooFinance from 'yahoo-finance2'
 
 // Route-level caching: cache the entire response for 60 seconds
 export const revalidate = 60
 
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY
 const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1'
+
+// Create Yahoo Finance instance (suppress survey notice)
+const yahooFinance = new YahooFinance({ suppressNotices: ['yahooSurvey'] })
+
+// Helper to check if a symbol is an international stock
+function isInternationalStock(symbol: string): boolean {
+  return symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+}
 
 interface StockQuote {
   c: number // Current price
@@ -21,6 +30,40 @@ interface StockQuote {
 
 // Note: Year high/low requires paid Finnhub subscription (403 error on free tier)
 // The UI will fall back to displaying daily high/low instead
+
+// Fetch quote from Yahoo Finance (fallback for international stocks)
+async function fetchQuoteFromYahoo(symbol: string): Promise<StockQuote | null> {
+  try {
+    console.log(`Fetching quote from Yahoo Finance for ${symbol}`)
+    
+    const quote = await yahooFinance.quote(symbol)
+    
+    if (!quote || !quote.regularMarketPrice) {
+      console.warn(`No data available from Yahoo Finance for ${symbol}`)
+      return null
+    }
+
+    // Convert Yahoo Finance format to Finnhub format
+    const result: StockQuote = {
+      c: quote.regularMarketPrice,
+      d: quote.regularMarketChange || 0,
+      dp: quote.regularMarketChangePercent || 0,
+      h: quote.regularMarketDayHigh || quote.regularMarketPrice,
+      l: quote.regularMarketDayLow || quote.regularMarketPrice,
+      o: quote.regularMarketOpen || quote.regularMarketPrice,
+      pc: quote.regularMarketPreviousClose || quote.regularMarketPrice,
+      t: quote.regularMarketTime ? Math.floor(new Date(quote.regularMarketTime).getTime() / 1000) : Math.floor(Date.now() / 1000),
+    }
+
+    console.log(
+      `Yahoo Finance quote fetched successfully for ${symbol}: price=${result.c}, change=${result.d} (${result.dp}%)`
+    )
+    return result
+  } catch (error) {
+    console.error(`Error fetching quote from Yahoo Finance for ${symbol}:`, error)
+    return null
+  }
+}
 
 async function fetchQuote(symbol: string): Promise<StockQuote | null> {
   if (!FINNHUB_API_KEY) {
@@ -48,6 +91,13 @@ async function fetchQuote(symbol: string): Promise<StockQuote | null> {
         console.warn(`Finnhub rate limit reached for ${symbol}`)
         return null
       }
+
+      // If 403 error and it's an international stock, try Yahoo Finance fallback
+      if (response.status === 403 && isInternationalStock(symbol)) {
+        console.log(`Finnhub returned 403 for international stock ${symbol}, trying Yahoo Finance fallback`)
+        return await fetchQuoteFromYahoo(symbol)
+      }
+
       return null
     }
 
@@ -59,6 +109,13 @@ async function fetchQuote(symbol: string): Promise<StockQuote | null> {
       console.warn(
         `No data available for ${symbol} - received all zeros: c=${data.c}, d=${data.d}, dp=${data.dp}`
       )
+      
+      // If Finnhub returns zeros for international stock, try Yahoo Finance fallback
+      if (isInternationalStock(symbol)) {
+        console.log(`Finnhub returned zeros for international stock ${symbol}, trying Yahoo Finance fallback`)
+        return await fetchQuoteFromYahoo(symbol)
+      }
+      
       return null
     }
 
@@ -76,15 +133,27 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const symbols = searchParams.get('symbols')?.split(',') || []
 
-  if (!FINNHUB_API_KEY) {
-    return NextResponse.json(
-      { error: 'FINNHUB_API_KEY is not configured' },
-      { status: 500 }
-    )
-  }
-
   if (symbols.length === 0) {
     return NextResponse.json({ error: 'No symbols provided' }, { status: 400 })
+  }
+
+  // If no Finnhub API key, try Yahoo Finance for all stocks
+  if (!FINNHUB_API_KEY) {
+    console.warn('FINNHUB_API_KEY not configured, using Yahoo Finance for all stocks')
+    const quotes: Record<string, StockQuote | null> = {}
+    
+    for (let i = 0; i < symbols.length; i++) {
+      const symbol = symbols[i]
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      }
+      quotes[symbol] = await fetchQuoteFromYahoo(symbol)
+    }
+    
+    return NextResponse.json({
+      quotes,
+      timestamp: new Date().toISOString(),
+    })
   }
 
   try {
