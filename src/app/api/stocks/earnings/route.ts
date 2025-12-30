@@ -36,7 +36,7 @@ async function fetchEarningsFromYahoo(
       return null
     }
 
-    // Map to our format and reverse to show most recent first
+    // Map to our format - keep chronological order (oldest to newest)
     const data: QuarterlyData[] = quarterly
       .map((q: any) => ({
         date: q.date || '',
@@ -44,7 +44,6 @@ async function fetchEarningsFromYahoo(
         earnings: q.earnings || null,
       }))
       .filter((q: QuarterlyData) => q.date) // Filter out entries without dates
-      .reverse() // Most recent first
 
     console.log(
       `Earnings data fetched successfully for ${symbol}: ${data.length} quarters`
