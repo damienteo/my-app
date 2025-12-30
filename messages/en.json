@@ -421,6 +421,13 @@
   "StocksWatchPage": {
     "title": "Stocks Watch",
     "loading": "Loading stock data...",
+    "loadingSteps": {
+      "quotes": "Fetching current stock quotes...",
+      "historical": "Loading historical price data...",
+      "financials": "Fetching financial information...",
+      "earnings": "Loading earnings data...",
+      "description": "This may take a moment as we fetch data for {count} stocks"
+    },
     "error": "Error loading stock data",
     "noData": "No data available",
     "noHistoricalData": "No historical data available",
@@ -428,6 +435,10 @@
     "clearCache": "Clear Cache",
     "lastUpdated": "Last updated",
     "rateLimitWarning": "⚠️ Approaching rate limit",
+    "sections": {
+      "aiRobotics": "AI & Robotics",
+      "magnificent7": "The Magnificent 7"
+    },
     "periods": {
       "1week": "1 Week",
       "1month": "1 Month",
@@ -445,7 +456,21 @@
       "300433_SZ": "Formerly an Apple supplier, now pivoting to humanoid robot assembly and core components. Aims to be the \"Foxconn of Robotics\" for 2026.",
       "ROK": "Provides software and hardware solutions for factories that build robots. Essential \"shovel\" company for industrial automation and manufacturing.",
       "U": "Leading platform for \"Sim-to-Real\" training. AI models learn to walk and manipulate objects in Unity's virtual world before being deployed to physical robots.",
-      "MSFT": "Through Azure Robotics and specialized AI models, provides cloud infrastructure and \"common sense\" reasoning that helps robots understand human instructions."
+      "MSFT": "Through Azure Robotics and specialized AI models, provides cloud infrastructure and \"common sense\" reasoning that helps robots understand human instructions.",
+      "INTC": "Develops AI processors and the OpenVINO toolkit for edge AI deployment. Major player in AI acceleration hardware and software solutions.",
+      "QCOM": "Leading provider of edge AI chips for mobile and robotics applications. Their Snapdragon processors power many autonomous systems and IoT devices.",
+      "AMD": "Produces AI accelerators and processors competing with NVIDIA. Their EPYC and Instinct series are used in AI training and inference workloads.",
+      "CGNX": "Leading manufacturer of machine vision systems for industrial automation. Their vision sensors enable robots to see, inspect, and guide manufacturing processes.",
+      "MBLY": "Pioneer in computer vision for autonomous vehicles. Their EyeQ chips process camera data to enable self-driving capabilities in millions of vehicles.",
+      "ABB": "Global leader in industrial robots and automation systems. Provides complete robotic solutions for manufacturing, logistics, and process industries.",
+      "6954_T": "World's largest manufacturer of industrial robots and CNC systems. Fanuc robots are used in automotive, electronics, and precision manufacturing worldwide.",
+      "6506_T": "Major producer of servo motors, motion controllers, and industrial robots. Yaskawa's precision motion control systems are essential for robotic accuracy.",
+      "PATH": "Leading provider of Robotic Process Automation (RPA) software. Enables businesses to automate repetitive tasks using AI-driven software robots.",
+      "AAPL": "Technology giant known for consumer electronics, software, and services. Leader in smartphones, tablets, and personal computers with a strong ecosystem.",
+      "GOOGL": "Parent company of Google, dominating search, advertising, cloud computing, and AI research. Major player in autonomous vehicles and quantum computing.",
+      "AMZN": "E-commerce and cloud computing behemoth. AWS is the leading cloud infrastructure provider, while Amazon dominates online retail and logistics.",
+      "META": "Social media and virtual reality company. Operates Facebook, Instagram, WhatsApp, and is investing heavily in the metaverse and AI infrastructure.",
+      "TSLA": "Electric vehicle and clean energy company. Leading manufacturer of EVs and energy storage solutions, with ambitions in autonomous driving and robotics."
     },
     "financials": {
       "cash": "Est. Cash (Dec 2025)",

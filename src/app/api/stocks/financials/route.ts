@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import YahooFinance from 'yahoo-finance2'
+import { getYahooSymbol } from '../symbolMapping'
 
 // Route-level caching: cache the entire response for 1 hour (financial data changes less frequently)
 export const revalidate = 3600
@@ -22,21 +23,31 @@ async function fetchFinancialsFromYahoo(
   symbol: string
 ): Promise<StockFinancials | null> {
   try {
-    console.log(`Fetching financial data from Yahoo Finance for ${symbol}`)
+    // Map symbol to Yahoo Finance symbol if needed
+    const yahooSymbol = getYahooSymbol(symbol)
+    console.log(
+      `Fetching financial data from Yahoo Finance for ${symbol} (${yahooSymbol})`
+    )
 
-    const quote = await yahooFinance.quote(symbol)
+    const quote = await yahooFinance.quote(yahooSymbol)
 
-    if (!quote) {
-      console.warn(`No data available from Yahoo Finance for ${symbol}`)
+    if (!quote || Array.isArray(quote)) {
+      console.warn(
+        `No data available from Yahoo Finance for ${symbol} (${yahooSymbol})`
+      )
       return null
     }
 
     // Log what fields are actually available
-    console.log(`Yahoo Finance quote fields for ${symbol}:`, Object.keys(quote))
+    const quoteAny = quote as any
+    console.log(
+      `Yahoo Finance quote fields for ${symbol} (${yahooSymbol}):`,
+      Object.keys(quote)
+    )
     console.log(`Cash-related fields:`, {
-      totalCash: quote.totalCash,
-      cash: quote.cash,
-      totalCashPerShare: quote.totalCashPerShare,
+      totalCash: quoteAny.totalCash,
+      cash: quoteAny.cash,
+      totalCashPerShare: quoteAny.totalCashPerShare,
     })
 
     // Try quoteSummary for more detailed financial data
@@ -44,7 +55,7 @@ async function fetchFinancialsFromYahoo(
     let freeCashFlow = null
 
     try {
-      const quoteSummary = await yahooFinance.quoteSummary(symbol, {
+      const quoteSummary = await yahooFinance.quoteSummary(yahooSymbol, {
         modules: ['financialData'],
       })
 
@@ -55,18 +66,21 @@ async function fetchFinancialsFromYahoo(
         freeCashFlow = financialData.freeCashflow || null
       }
     } catch (summaryError) {
-      console.warn(`Could not fetch quoteSummary for ${symbol}:`, summaryError)
+      console.warn(
+        `Could not fetch quoteSummary for ${symbol} (${yahooSymbol}):`,
+        summaryError
+      )
     }
 
     // Extract financial metrics from Yahoo Finance quote
     const financials: StockFinancials = {
-      peRatio: quote.trailingPE || quote.trailingPegRatio || null,
-      trailingPE: quote.trailingPE || null,
-      forwardPE: quote.forwardPE || null,
-      marketCap: quote.marketCap || null,
-      cash: cash || quote.totalCash || quote.cash || null,
-      totalCash: cash || quote.totalCash || quote.cash || null,
-      freeCashFlow: freeCashFlow || quote.freeCashflow || null,
+      peRatio: quoteAny.trailingPE || quoteAny.trailingPegRatio || null,
+      trailingPE: quoteAny.trailingPE || null,
+      forwardPE: quoteAny.forwardPE || null,
+      marketCap: quoteAny.marketCap || null,
+      cash: cash || quoteAny.totalCash || quoteAny.cash || null,
+      totalCash: cash || quoteAny.totalCash || quoteAny.cash || null,
+      freeCashFlow: freeCashFlow || quoteAny.freeCashflow || null,
     }
 
     console.log(

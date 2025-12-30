@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import YahooFinance from 'yahoo-finance2'
+import { getYahooSymbol } from '../symbolMapping'
 
 // Route-level caching: cache the entire response for 1 hour
 export const revalidate = 3600
@@ -13,16 +14,38 @@ interface QuarterlyData {
   earnings: number | null
 }
 
+// Helper to check if a symbol is an international stock
+function isInternationalStock(symbol: string): boolean {
+  return symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+}
+
 // Fetch earnings and revenue data from Yahoo Finance
 async function fetchEarningsFromYahoo(
   symbol: string
 ): Promise<QuarterlyData[] | null> {
   try {
-    console.log(`Fetching earnings data from Yahoo Finance for ${symbol}`)
+    // Map symbol to Yahoo Finance symbol if needed
+    const yahooSymbol = getYahooSymbol(symbol)
+    console.log(`Fetching earnings data from Yahoo Finance for ${symbol} (${yahooSymbol})`)
 
-    const quoteSummary = await yahooFinance.quoteSummary(symbol, {
+    const quoteSummary = await yahooFinance.quoteSummary(yahooSymbol, {
       modules: ['earnings'],
     })
+
+    // Check if there are validation errors (common for international stocks)
+    if ((quoteSummary as any).errors && (quoteSummary as any).errors.length > 0) {
+      console.warn(
+        `Yahoo Finance validation errors for ${symbol}:`,
+        (quoteSummary as any).errors
+      )
+      // For international stocks, earnings data may not be available
+      if (isInternationalStock(symbol)) {
+        console.log(
+          `Earnings data may not be available for international stock ${symbol}`
+        )
+        return null
+      }
+    }
 
     if (!quoteSummary?.earnings?.financialsChart) {
       console.warn(`No earnings data available from Yahoo Finance for ${symbol}`)
@@ -49,7 +72,20 @@ async function fetchEarningsFromYahoo(
       `Earnings data fetched successfully for ${symbol}: ${data.length} quarters`
     )
     return data
-  } catch (error) {
+  } catch (error: any) {
+    // Handle validation errors gracefully, especially for international stocks
+    if (error.name === 'FailedYahooValidationError' || error.message?.includes('validation')) {
+      console.warn(
+        `Yahoo Finance validation error for ${symbol} (may not support earnings data):`,
+        error.message
+      )
+      if (isInternationalStock(symbol)) {
+        console.log(
+          `International stock ${symbol} may not have earnings data available`
+        )
+      }
+      return null
+    }
     console.error(
       `Error fetching earnings data from Yahoo Finance for ${symbol}:`,
       error

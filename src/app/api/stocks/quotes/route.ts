@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import YahooFinance from 'yahoo-finance2'
+import { getYahooSymbol } from '../symbolMapping'
 
 // Route-level caching: cache the entire response for 60 seconds
 export const revalidate = 60
@@ -34,9 +35,11 @@ interface StockQuote {
 // Fetch quote from Yahoo Finance (fallback for international stocks)
 async function fetchQuoteFromYahoo(symbol: string): Promise<StockQuote | null> {
   try {
-    console.log(`Fetching quote from Yahoo Finance for ${symbol}`)
+    // Map symbol to Yahoo Finance symbol if needed
+    const yahooSymbol = getYahooSymbol(symbol)
+    console.log(`Fetching quote from Yahoo Finance for ${symbol} (${yahooSymbol})`)
     
-    const quote = await yahooFinance.quote(symbol)
+    const quote = await yahooFinance.quote(yahooSymbol)
     
     if (!quote || !quote.regularMarketPrice) {
       console.warn(`No data available from Yahoo Finance for ${symbol}`)
@@ -110,13 +113,9 @@ async function fetchQuote(symbol: string): Promise<StockQuote | null> {
         `No data available for ${symbol} - received all zeros: c=${data.c}, d=${data.d}, dp=${data.dp}`
       )
       
-      // If Finnhub returns zeros for international stock, try Yahoo Finance fallback
-      if (isInternationalStock(symbol)) {
-        console.log(`Finnhub returned zeros for international stock ${symbol}, trying Yahoo Finance fallback`)
-        return await fetchQuoteFromYahoo(symbol)
-      }
-      
-      return null
+      // If Finnhub returns zeros, try Yahoo Finance fallback (for both international and stocks like ABB)
+      console.log(`Finnhub returned zeros for ${symbol}, trying Yahoo Finance fallback`)
+      return await fetchQuoteFromYahoo(symbol)
     }
 
     console.log(

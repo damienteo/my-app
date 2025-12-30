@@ -125,6 +125,7 @@ export interface Stock {
   exchange: string
   market: 'US' | 'JP' | 'CN'
   financials?: StockFinancials
+  yahooSymbol?: string // Yahoo Finance symbol if different from display symbol
 }
 
 export interface StockCategory {
@@ -133,7 +134,8 @@ export interface StockCategory {
   stocks: Stock[]
 }
 
-export const stockCategories: StockCategory[] = [
+// AI & Robotics stocks
+export const aiRoboticsCategories: StockCategory[] = [
   {
     id: 'brains',
     title: 'The Brains: Processing & Edge AI',
@@ -149,6 +151,33 @@ export const stockCategories: StockCategory[] = [
       },
       { symbol: 'ARM', name: 'Arm Holdings', exchange: 'NASDAQ', market: 'US' },
       { symbol: 'AMBA', name: 'Ambarella', exchange: 'NASDAQ', market: 'US' },
+      {
+        symbol: 'INTC',
+        name: 'Intel',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'QCOM',
+        name: 'Qualcomm',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'AMD',
+        name: 'Advanced Micro Devices',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
     ],
   },
   {
@@ -178,6 +207,24 @@ export const stockCategories: StockCategory[] = [
         symbol: 'STM',
         name: 'STMicroelectronics',
         exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'CGNX',
+        name: 'Cognex',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'MBLY',
+        name: 'Mobileye',
+        exchange: 'NASDAQ',
         market: 'US',
         financials: {
           riskLevel: 'B',
@@ -216,6 +263,34 @@ export const stockCategories: StockCategory[] = [
           riskLevel: 'B',
         },
       },
+      {
+        symbol: 'ABB',
+        name: 'ABB',
+        exchange: 'NYSE',
+        market: 'US',
+        yahooSymbol: 'ABBN.SW', // ABB trades on Swiss exchange in Yahoo Finance
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: '6954.T',
+        name: 'Fanuc',
+        exchange: 'TSE',
+        market: 'JP',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: '6506.T',
+        name: 'Yaskawa Electric',
+        exchange: 'TSE',
+        market: 'JP',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
     ],
   },
   {
@@ -240,6 +315,94 @@ export const stockCategories: StockCategory[] = [
           riskLevel: 'A',
         },
       },
+      {
+        symbol: 'PATH',
+        name: 'UiPath',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'C',
+        },
+      },
     ],
   },
+]
+
+// Magnificent 7 stocks
+export const magnificent7Categories: StockCategory[] = [
+  {
+    id: 'magnificent7',
+    title: 'The Magnificent 7',
+    stocks: [
+      {
+        symbol: 'AAPL',
+        name: 'Apple',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'MSFT',
+        name: 'Microsoft',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'GOOGL',
+        name: 'Alphabet',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'AMZN',
+        name: 'Amazon',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'META',
+        name: 'Meta Platforms',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'TSLA',
+        name: 'Tesla',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'NVDA',
+        name: 'NVIDIA',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+    ],
+  },
+]
+
+// Combined for backward compatibility
+export const stockCategories: StockCategory[] = [
+  ...aiRoboticsCategories,
+  ...magnificent7Categories,
 ]

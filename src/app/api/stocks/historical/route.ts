@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import YahooFinance from 'yahoo-finance2'
+import { getYahooSymbol } from '../symbolMapping'
 
 // Route-level caching: cache the entire response for 1 hour
 export const revalidate = 3600
@@ -11,9 +12,12 @@ async function fetchHistoricalData(
   symbol: string,
   period: '1week' | '1month' | '3months' | '1year'
 ): Promise<Array<{ date: string; price: number }> | null> {
+  // Map symbol to Yahoo Finance symbol if needed
+  const yahooSymbol = getYahooSymbol(symbol)
+
   try {
     console.log(
-      `Fetching historical data from Yahoo Finance for ${symbol}, period: ${period}`
+      `Fetching historical data from Yahoo Finance for ${symbol} (${yahooSymbol}), period: ${period}`
     )
 
     // Calculate date range
@@ -31,7 +35,7 @@ async function fetchHistoricalData(
     }
 
     // Fetch historical data from Yahoo Finance
-    const historical: any = await yahooFinance.historical(symbol, {
+    const historical: any = await yahooFinance.historical(yahooSymbol, {
       period1: Math.floor(startDate.getTime() / 1000),
       period2: Math.floor(endDate.getTime() / 1000),
       interval: '1d', // Daily interval
@@ -39,7 +43,7 @@ async function fetchHistoricalData(
 
     if (!historical || !Array.isArray(historical) || historical.length === 0) {
       console.warn(
-        `No historical data available from Yahoo Finance for ${symbol}`
+        `No historical data available from Yahoo Finance for ${symbol} (${yahooSymbol})`
       )
       return null
     }
@@ -61,12 +65,22 @@ async function fetchHistoricalData(
       )
 
     console.log(
-      `Historical data fetched successfully for ${symbol}: ${result.length} data points`
+      `Historical data fetched successfully for ${symbol} (${yahooSymbol}): ${result.length} data points`
     )
     return result
-  } catch (error) {
+  } catch (error: any) {
+    // Handle "No data found" errors gracefully
+    if (
+      error.message?.includes('No data found') ||
+      error.message?.includes('delisted')
+    ) {
+      console.warn(
+        `No historical data available for ${symbol} (${yahooSymbol}): ${error.message}`
+      )
+      return null
+    }
     console.error(
-      `Error fetching historical data from Yahoo Finance for ${symbol}:`,
+      `Error fetching historical data from Yahoo Finance for ${symbol} (${yahooSymbol}):`,
       error
     )
     return null
