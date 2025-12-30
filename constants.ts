@@ -127,7 +127,13 @@ export interface Stock {
   financials?: StockFinancials
 }
 
-export const stockCategories = [
+export interface StockCategory {
+  id: string
+  title: string
+  stocks: Stock[]
+}
+
+export const stockCategories: StockCategory[] = [
   {
     id: 'brains',
     title: 'The Brains: Processing & Edge AI',

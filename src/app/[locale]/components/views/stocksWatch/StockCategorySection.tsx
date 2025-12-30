@@ -23,12 +23,32 @@ interface StockQuote {
   t: number
 }
 
+interface StockFinancials {
+  peRatio: number | null
+  marketCap: number | null
+  cash: number | null
+  totalCash: number | null
+  freeCashFlow: number | null
+  trailingPE?: number | null
+  forwardPE?: number | null
+}
+
+interface QuarterlyEarnings {
+  date: string
+  revenue: number | null
+  earnings: number | null
+}
+
 interface StockData {
   symbol: string
   quote: StockQuote | null
   historical: Array<{ date: string; price: number }> | null
+  financials: StockFinancials | null
+  earnings: QuarterlyEarnings[] | null
   quoteTimestamp?: number
   historicalTimestamp?: number
+  financialsTimestamp?: number
+  earningsTimestamp?: number
 }
 
 interface StockCategorySectionProps {
