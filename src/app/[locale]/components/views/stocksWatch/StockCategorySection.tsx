@@ -4,7 +4,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Section } from '../../common'
 import StockCard from './StockCard'
-import { Stock } from '../../../../../constants'
+import { Stock } from '../../../../../../constants'
 
 interface StockCategory {
   id: string
