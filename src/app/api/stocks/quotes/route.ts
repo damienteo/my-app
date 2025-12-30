@@ -13,7 +13,9 @@ const yahooFinance = new YahooFinance({ suppressNotices: ['yahooSurvey'] })
 
 // Helper to check if a symbol is an international stock
 function isInternationalStock(symbol: string): boolean {
-  return symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+  return (
+    symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+  )
 }
 
 interface StockQuote {
@@ -37,10 +39,12 @@ async function fetchQuoteFromYahoo(symbol: string): Promise<StockQuote | null> {
   try {
     // Map symbol to Yahoo Finance symbol if needed
     const yahooSymbol = getYahooSymbol(symbol)
-    console.log(`Fetching quote from Yahoo Finance for ${symbol} (${yahooSymbol})`)
-    
+    console.log(
+      `Fetching quote from Yahoo Finance for ${symbol} (${yahooSymbol})`
+    )
+
     const quote = await yahooFinance.quote(yahooSymbol)
-    
+
     if (!quote || !quote.regularMarketPrice) {
       console.warn(`No data available from Yahoo Finance for ${symbol}`)
       return null
@@ -55,7 +59,9 @@ async function fetchQuoteFromYahoo(symbol: string): Promise<StockQuote | null> {
       l: quote.regularMarketDayLow || quote.regularMarketPrice,
       o: quote.regularMarketOpen || quote.regularMarketPrice,
       pc: quote.regularMarketPreviousClose || quote.regularMarketPrice,
-      t: quote.regularMarketTime ? Math.floor(new Date(quote.regularMarketTime).getTime() / 1000) : Math.floor(Date.now() / 1000),
+      t: quote.regularMarketTime
+        ? Math.floor(new Date(quote.regularMarketTime).getTime() / 1000)
+        : Math.floor(Date.now() / 1000),
     }
 
     console.log(
@@ -63,7 +69,10 @@ async function fetchQuoteFromYahoo(symbol: string): Promise<StockQuote | null> {
     )
     return result
   } catch (error) {
-    console.error(`Error fetching quote from Yahoo Finance for ${symbol}:`, error)
+    console.error(
+      `Error fetching quote from Yahoo Finance for ${symbol}:`,
+      error
+    )
     return null
   }
 }
@@ -97,7 +106,9 @@ async function fetchQuote(symbol: string): Promise<StockQuote | null> {
 
       // If 403 error and it's an international stock, try Yahoo Finance fallback
       if (response.status === 403 && isInternationalStock(symbol)) {
-        console.log(`Finnhub returned 403 for international stock ${symbol}, trying Yahoo Finance fallback`)
+        console.log(
+          `Finnhub returned 403 for international stock ${symbol}, trying Yahoo Finance fallback`
+        )
         return await fetchQuoteFromYahoo(symbol)
       }
 
@@ -112,9 +123,11 @@ async function fetchQuote(symbol: string): Promise<StockQuote | null> {
       console.warn(
         `No data available for ${symbol} - received all zeros: c=${data.c}, d=${data.d}, dp=${data.dp}`
       )
-      
+
       // If Finnhub returns zeros, try Yahoo Finance fallback (for both international and stocks like ABB)
-      console.log(`Finnhub returned zeros for ${symbol}, trying Yahoo Finance fallback`)
+      console.log(
+        `Finnhub returned zeros for ${symbol}, trying Yahoo Finance fallback`
+      )
       return await fetchQuoteFromYahoo(symbol)
     }
 
@@ -138,9 +151,11 @@ export async function GET(request: Request) {
 
   // If no Finnhub API key, try Yahoo Finance for all stocks
   if (!FINNHUB_API_KEY) {
-    console.warn('FINNHUB_API_KEY not configured, using Yahoo Finance for all stocks')
+    console.warn(
+      'FINNHUB_API_KEY not configured, using Yahoo Finance for all stocks'
+    )
     const quotes: Record<string, StockQuote | null> = {}
-    
+
     for (let i = 0; i < symbols.length; i++) {
       const symbol = symbols[i]
       if (i > 0) {
@@ -148,7 +163,7 @@ export async function GET(request: Request) {
       }
       quotes[symbol] = await fetchQuoteFromYahoo(symbol)
     }
-    
+
     return NextResponse.json({
       quotes,
       timestamp: new Date().toISOString(),
@@ -163,20 +178,22 @@ export async function GET(request: Request) {
 
     for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
       const batch = symbols.slice(i, i + BATCH_SIZE)
-      
+
       // Process batch in parallel
       const batchResults = await Promise.all(
         batch.map((symbol) => fetchQuote(symbol))
       )
-      
+
       // Store results
       batch.forEach((symbol, index) => {
         quotes[symbol] = batchResults[index]
       })
-      
+
       // Add delay between batches (not after last batch)
       if (i + BATCH_SIZE < symbols.length) {
-        await new Promise((resolve) => setTimeout(resolve, DELAY_BETWEEN_BATCHES))
+        await new Promise((resolve) =>
+          setTimeout(resolve, DELAY_BETWEEN_BATCHES)
+        )
       }
     }
 
