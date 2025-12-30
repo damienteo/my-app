@@ -636,9 +636,6 @@ const StocksWatchClient = () => {
 
       {/* Magnificent 7 Section */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-200 mb-6">
-          {t('sections.magnificent7')}
-        </h2>
         {magnificent7Categories.map((category) => (
           <StockCategorySection
             key={category.id}
