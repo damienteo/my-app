@@ -7,6 +7,11 @@ import StockCategorySection from '../components/views/stocksWatch/StockCategoryS
 import {
   aiRoboticsCategories,
   magnificent7Categories,
+  powerHungryCategories,
+  longevityCategories,
+  hedgeCategories,
+  StockCategory,
+  Stock,
 } from '../../../../constants'
 
 interface StockQuote {
@@ -71,10 +76,13 @@ const StocksWatchClient = () => {
   const [rateLimitWarning, setRateLimitWarning] = useState(false)
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
 
-  // Get all symbols from both sections, removing duplicates (NVDA and MSFT appear in both)
+  // Get all symbols from all sections, removing duplicates
   const allSymbols = [
     ...aiRoboticsCategories,
     ...magnificent7Categories,
+    ...powerHungryCategories,
+    ...longevityCategories,
+    ...hedgeCategories,
   ].flatMap((category) => category.stocks.map((stock) => stock.symbol))
   const uniqueSymbols = Array.from(new Set(allSymbols))
 
@@ -626,6 +634,39 @@ const StocksWatchClient = () => {
           {t('sections.aiRobotics')}
         </h2>
         {aiRoboticsCategories.map((category) => (
+          <StockCategorySection
+            key={category.id}
+            category={category}
+            stockData={stockData}
+          />
+        ))}
+      </div>
+
+      {/* Power Hungry Section */}
+      <div className="mb-8">
+        {powerHungryCategories.map((category) => (
+          <StockCategorySection
+            key={category.id}
+            category={category}
+            stockData={stockData}
+          />
+        ))}
+      </div>
+
+      {/* Longevity Section */}
+      <div className="mb-8">
+        {longevityCategories.map((category) => (
+          <StockCategorySection
+            key={category.id}
+            category={category}
+            stockData={stockData}
+          />
+        ))}
+      </div>
+
+      {/* Hedge Section */}
+      <div className="mb-8">
+        {hedgeCategories.map((category) => (
           <StockCategorySection
             key={category.id}
             category={category}

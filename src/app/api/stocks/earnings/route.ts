@@ -103,16 +103,28 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Process in parallel batches to avoid timeout
     const earnings: Record<string, QuarterlyData[] | null> = {}
+    const BATCH_SIZE = 8
+    const DELAY_BETWEEN_BATCHES = 300
 
-    for (let i = 0; i < symbols.length; i++) {
-      const symbol = symbols[i]
-      // Add delay to avoid rate limiting
-      if (i > 0) {
-        await new Promise((resolve) => setTimeout(resolve, 500))
+    for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
+      const batch = symbols.slice(i, i + BATCH_SIZE)
+      
+      // Process batch in parallel
+      const batchResults = await Promise.all(
+        batch.map((symbol) => fetchEarningsFromYahoo(symbol))
+      )
+      
+      // Store results
+      batch.forEach((symbol, index) => {
+        earnings[symbol] = batchResults[index]
+      })
+      
+      // Add delay between batches (not after last batch)
+      if (i + BATCH_SIZE < symbols.length) {
+        await new Promise((resolve) => setTimeout(resolve, DELAY_BETWEEN_BATCHES))
       }
-
-      earnings[symbol] = await fetchEarningsFromYahoo(symbol)
     }
 
     return NextResponse.json({

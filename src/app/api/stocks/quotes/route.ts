@@ -156,17 +156,28 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Fetch quotes with delay to respect rate limits
+    // Process in parallel batches to avoid timeout
     const quotes: Record<string, StockQuote | null> = {}
+    const BATCH_SIZE = 10
+    const DELAY_BETWEEN_BATCHES = 200
 
-    for (let i = 0; i < symbols.length; i++) {
-      const symbol = symbols[i]
-      // Add 200ms delay between requests (60 calls/min = 1 call/second)
-      if (i > 0) {
-        await new Promise((resolve) => setTimeout(resolve, 200))
+    for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
+      const batch = symbols.slice(i, i + BATCH_SIZE)
+      
+      // Process batch in parallel
+      const batchResults = await Promise.all(
+        batch.map((symbol) => fetchQuote(symbol))
+      )
+      
+      // Store results
+      batch.forEach((symbol, index) => {
+        quotes[symbol] = batchResults[index]
+      })
+      
+      // Add delay between batches (not after last batch)
+      if (i + BATCH_SIZE < symbols.length) {
+        await new Promise((resolve) => setTimeout(resolve, DELAY_BETWEEN_BATCHES))
       }
-
-      quotes[symbol] = await fetchQuote(symbol)
     }
 
     return NextResponse.json({

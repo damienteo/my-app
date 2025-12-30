@@ -401,8 +401,221 @@ export const magnificent7Categories: StockCategory[] = [
   },
 ]
 
+// Power Hungry: Energy & Nuclear stocks
+export const powerHungryCategories: StockCategory[] = [
+  {
+    id: 'powerHungry',
+    title: 'Power Hungry: Energy & Nuclear',
+    stocks: [
+      {
+        symbol: 'CCJ',
+        name: 'Cameco',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'CEG',
+        name: 'Constellation Energy',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: '7011.T',
+        name: 'Mitsubishi Heavy Industries',
+        exchange: 'TSE',
+        market: 'JP',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'SMR',
+        name: 'NuScale Power',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'C',
+        },
+      },
+      {
+        symbol: 'LEU',
+        name: 'Centrus Energy',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'C',
+        },
+      },
+      {
+        symbol: 'GE',
+        name: 'General Electric',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'NRGV',
+        name: 'Energy Vault',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'C',
+        },
+      },
+    ],
+  },
+]
+
+// Longevity: GLP-1s and Biotech stocks
+export const longevityCategories: StockCategory[] = [
+  {
+    id: 'longevity',
+    title: 'Longevity: GLP-1s and Biotech',
+    stocks: [
+      {
+        symbol: 'LLY',
+        name: 'Eli Lilly',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'NVO',
+        name: 'Novo Nordisk',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'TMO',
+        name: 'Thermo Fisher Scientific',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'BDX',
+        name: 'Becton Dickinson',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'IQV',
+        name: 'IQVIA',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'CTLT',
+        name: 'Catalent',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'B',
+        },
+      },
+      {
+        symbol: 'AMGN',
+        name: 'Amgen',
+        exchange: 'NASDAQ',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+    ],
+  },
+]
+
+// Hedge: Real Assets & Defense stocks
+export const hedgeCategories: StockCategory[] = [
+  {
+    id: 'hedge',
+    title: 'Hedge: Real Assets & Defense',
+    stocks: [
+      {
+        symbol: 'LMT',
+        name: 'Lockheed Martin',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'GLD',
+        name: 'SPDR Gold Shares',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'RTX',
+        name: 'Raytheon Technologies',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'NOC',
+        name: 'Northrop Grumman',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'GD',
+        name: 'General Dynamics',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+      {
+        symbol: 'NEM',
+        name: 'Newmont Corporation',
+        exchange: 'NYSE',
+        market: 'US',
+        financials: {
+          riskLevel: 'A',
+        },
+      },
+    ],
+  },
+]
+
 // Combined for backward compatibility
 export const stockCategories: StockCategory[] = [
   ...aiRoboticsCategories,
   ...magnificent7Categories,
+  ...powerHungryCategories,
+  ...longevityCategories,
+  ...hedgeCategories,
 ]

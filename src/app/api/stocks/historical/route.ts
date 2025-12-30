@@ -105,19 +105,33 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Fetch historical data with delay to avoid rate limiting
+    // Process in parallel batches to avoid timeout
     const historical: Record<
       string,
       Array<{ date: string; price: number }> | null
     > = {}
+    const BATCH_SIZE = 5 // Smaller batches for historical data (more time-consuming)
+    const DELAY_BETWEEN_BATCHES = 300
 
-    for (let i = 0; i < symbols.length; i++) {
-      const symbol = symbols[i]
-      // Add delay between requests to avoid rate limiting
-      if (i > 0) {
-        await new Promise((resolve) => setTimeout(resolve, 500))
+    for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
+      const batch = symbols.slice(i, i + BATCH_SIZE)
+
+      // Process batch in parallel
+      const batchResults = await Promise.all(
+        batch.map((symbol) => fetchHistoricalData(symbol, period))
+      )
+
+      // Store results
+      batch.forEach((symbol, index) => {
+        historical[symbol] = batchResults[index]
+      })
+
+      // Add delay between batches (not after last batch)
+      if (i + BATCH_SIZE < symbols.length) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, DELAY_BETWEEN_BATCHES)
+        )
       }
-      historical[symbol] = await fetchHistoricalData(symbol, period)
     }
 
     const resultCount = Object.values(historical).filter(
