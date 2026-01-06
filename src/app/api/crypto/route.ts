@@ -170,7 +170,9 @@ async function fetchHistoricalFromCoinCap(
             value: parseFloat(item.priceUsd),
           }))
           .filter((d: HistoricalDataPoint) => !isNaN(d.value) && d.value > 0)
-          .sort((a, b) => a.date.localeCompare(b.date))
+          .sort((a: HistoricalDataPoint, b: HistoricalDataPoint) =>
+            a.date.localeCompare(b.date)
+          )
       }
     } else {
       const errorText = await res.text().catch(() => res.statusText)
