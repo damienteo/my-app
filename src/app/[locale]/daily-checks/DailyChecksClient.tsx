@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import WeatherSection from '../components/views/dailyChecks/WeatherSection'
 import ForexSection from '../components/views/dailyChecks/ForexSection'
 import SP500Section from '../components/views/dailyChecks/SP500Section'
+import GoldSection from '../components/views/dailyChecks/GoldSection'
 
 const DailyChecksClient = () => {
   const t = useTranslations('DailyChecksPage')
@@ -14,6 +15,7 @@ const DailyChecksClient = () => {
       <WeatherSection />
       <ForexSection />
       <SP500Section />
+      <GoldSection />
     </div>
   )
 }
