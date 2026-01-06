@@ -452,6 +452,42 @@
         "6months": "6 Months",
         "1year": "1 Year"
       }
+    },
+    "bitcoin": {
+      "title": "Bitcoin Price",
+      "loading": "Loading Bitcoin data...",
+      "error": "Error loading Bitcoin data",
+      "noHistoricalData": "Historical data not available",
+      "currentPrice": "Current Price",
+      "chartTitle": "Historical Price",
+      "dataSource": "Data source",
+      "rateLimitError": "⚠️ Rate limit exceeded",
+      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
+      "periods": {
+        "1week": "1 Week",
+        "1month": "1 Month",
+        "3months": "3 Months",
+        "6months": "6 Months",
+        "1year": "1 Year"
+      }
+    },
+    "ethereum": {
+      "title": "Ethereum Price",
+      "loading": "Loading Ethereum data...",
+      "error": "Error loading Ethereum data",
+      "noHistoricalData": "Historical data not available",
+      "currentPrice": "Current Price",
+      "chartTitle": "Historical Price",
+      "dataSource": "Data source",
+      "rateLimitError": "⚠️ Rate limit exceeded",
+      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
+      "periods": {
+        "1week": "1 Week",
+        "1month": "1 Month",
+        "3months": "3 Months",
+        "6months": "6 Months",
+        "1year": "1 Year"
+      }
     }
   },
   "StocksWatchPage": {

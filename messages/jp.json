@@ -451,6 +451,42 @@
         "6months": "6ヶ月",
         "1year": "1年"
       }
+    },
+    "bitcoin": {
+      "title": "ビットコイン価格",
+      "loading": "ビットコインデータを読み込み中...",
+      "error": "ビットコインデータの読み込みエラー",
+      "noHistoricalData": "履歴データは利用できません",
+      "currentPrice": "現在の価格",
+      "chartTitle": "履歴価格",
+      "dataSource": "データソース",
+      "rateLimitError": "⚠️ レート制限に達しました",
+      "rateLimitMessage": "データプロバイダーへのリクエストが多すぎます。数分後に再度お試しください。",
+      "periods": {
+        "1week": "1週間",
+        "1month": "1ヶ月",
+        "3months": "3ヶ月",
+        "6months": "6ヶ月",
+        "1year": "1年"
+      }
+    },
+    "ethereum": {
+      "title": "イーサリアム価格",
+      "loading": "イーサリアムデータを読み込み中...",
+      "error": "イーサリアムデータの読み込みエラー",
+      "noHistoricalData": "履歴データは利用できません",
+      "currentPrice": "現在の価格",
+      "chartTitle": "履歴価格",
+      "dataSource": "データソース",
+      "rateLimitError": "⚠️ レート制限に達しました",
+      "rateLimitMessage": "データプロバイダーへのリクエストが多すぎます。数分後に再度お試しください。",
+      "periods": {
+        "1week": "1週間",
+        "1month": "1ヶ月",
+        "3months": "3ヶ月",
+        "6months": "6ヶ月",
+        "1year": "1年"
+      }
     }
   },
   "StocksWatchPage": {

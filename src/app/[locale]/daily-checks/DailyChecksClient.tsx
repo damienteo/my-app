@@ -6,6 +6,8 @@ import WeatherSection from '../components/views/dailyChecks/WeatherSection'
 import ForexSection from '../components/views/dailyChecks/ForexSection'
 import SP500Section from '../components/views/dailyChecks/SP500Section'
 import GoldSection from '../components/views/dailyChecks/GoldSection'
+import BitcoinSection from '../components/views/dailyChecks/BitcoinSection'
+import EthereumSection from '../components/views/dailyChecks/EthereumSection'
 
 const DailyChecksClient = () => {
   const t = useTranslations('DailyChecksPage')
@@ -16,6 +18,8 @@ const DailyChecksClient = () => {
       <ForexSection />
       <SP500Section />
       <GoldSection />
+      <BitcoinSection />
+      <EthereumSection />
     </div>
   )
 }
