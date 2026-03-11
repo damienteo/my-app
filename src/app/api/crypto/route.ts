@@ -20,9 +20,7 @@ const COINCAP_ID_MAP: Record<CryptoId, CoinCapId> = {
 }
 
 // Fetch crypto price from CoinGecko (no API key required)
-async function fetchCryptoFromCoinGecko(
-  cryptoId: CryptoId
-): Promise<{
+async function fetchCryptoFromCoinGecko(cryptoId: CryptoId): Promise<{
   price: number
   change: number
   changePercent: number
@@ -56,9 +54,7 @@ async function fetchCryptoFromCoinGecko(
 }
 
 // Fallback: CoinCap API (no API key required)
-async function fetchCryptoFromCoinCap(
-  cryptoId: CryptoId
-): Promise<{
+async function fetchCryptoFromCoinCap(cryptoId: CryptoId): Promise<{
   price: number
   change: number
   changePercent: number
@@ -261,4 +257,3 @@ export async function GET(request: Request) {
     )
   }
 }
-

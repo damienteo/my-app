@@ -1,6 +1,7 @@
 import React from 'react'
 import { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
+import { notFound } from 'next/navigation'
 
 import { Header, Paragraph } from '../components/common'
 import { MacroLiquidityTracker } from '../components/views/markets'
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 }
 
 const Markets: React.FunctionComponent = () => {
+  notFound()
   const t = useTranslations('MarketsPage')
   return (
     <>

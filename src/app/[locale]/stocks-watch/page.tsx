@@ -1,5 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import StocksWatchClient from './StocksWatchClient'
 
 export const metadata: Metadata = {
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 const StocksWatch: React.FunctionComponent = () => {
+  notFound()
   return <StocksWatchClient />
 }
 
