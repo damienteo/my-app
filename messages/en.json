@@ -253,14 +253,44 @@
         "thankYou": "Thank you."
       }
     },
-    "lastChecked": "Rules on this page were checked in November 2026 against CPF Board and the Ministry of Manpower. Nothing you type is saved. MediSave is included so contributions stop at the Basic Healthcare Sum ($79,000 in 2026 for members under 65; fixed for life in the year you turn 65) and the overflow joins your Special Account, or your Retirement Account from 55. Bills paid from MediSave are not deducted.",
-    "frsAssumption": {
-      "text": "The Full Retirement Sum is the published amount for the year you turn 55: $213,000 (2025), $220,400 (2026) and $228,200 (2027). For later years this forecast increases the 2027 Basic Retirement Sum by 3.5% a year, rounds it to the nearest $100, and sets the Full Retirement Sum at twice that amount. CPF has not published those later sums.",
-      "retirementAmounts": {
-        "title": "Retirement Amounts",
-        "info": "Information on CRS retirement amounts can be found here:"
+    "rules": {
+      "intro": "Rules on this page were checked in November 2026 against CPF Board and the Ministry of Manpower. Nothing you type is saved.",
+      "mediSaveLabel": "MediSave",
+      "mediSave": "Contributions stop at the Basic Healthcare Sum: $79,000 in 2026 for members under 65, and fixed for life in the year you turn 65. The overflow joins your Special Account, or your Retirement Account from 55. Bills paid from MediSave are not deducted.",
+      "laterLabel": "How later years are estimated",
+      "later": "For later years this forecast increases the 2027 Basic Retirement Sum by 3.5% a year, rounds it to the nearest $100, and sets the Full Retirement Sum at twice that amount. CPF has not published those later sums.",
+      "retirementLabel": "Retirement sums",
+      "retirementLead": "The Full Retirement Sum is the published amount for the year you turn 55. CPF can change these sums. This forecast sets aside the Full Retirement Sum.",
+      "year": "Year",
+      "brs": "BRS",
+      "frs": "FRS",
+      "ers": "ERS",
+      "cohorts": {
+        "y2025": {
+          "year": "2025",
+          "brs": "$106,500",
+          "frs": "$213,000",
+          "ers": "4× BRS"
+        },
+        "y2026": {
+          "year": "2026",
+          "brs": "$110,200",
+          "frs": "$220,400",
+          "ers": "$440,800"
+        },
+        "y2027": {
+          "year": "2027",
+          "brs": "$114,100",
+          "frs": "$228,200",
+          "ers": "$456,400"
+        }
       },
-      "policyNote": "CPF can change these sums. From 2025 the Enhanced Retirement Sum is 4 times the Basic Retirement Sum ($440,800 in 2026, $456,400 in 2027). This forecast sets aside the Full Retirement Sum. It does not model a voluntary top-up to the Enhanced Retirement Sum, or a property pledge that lets you set aside only the Basic Retirement Sum."
+      "relationship": "From 2025 the Enhanced Retirement Sum is 4 times the Basic Retirement Sum ($440,800 in 2026, $456,400 in 2027). The Basic Retirement Sum is half the Full Retirement Sum.",
+      "notModelledLabel": "Not modelled",
+      "notModelledErs": "A voluntary top-up to the Enhanced Retirement Sum.",
+      "notModelledBrs": "A property pledge that lets you set aside only the Basic Retirement Sum.",
+      "sourceTitle": "Retirement Amounts",
+      "sourceInfo": "Information on CRS retirement amounts can be found here:"
     },
     "userInput": {
       "accountBalances": {
