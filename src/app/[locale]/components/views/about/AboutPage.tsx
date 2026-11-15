@@ -20,18 +20,18 @@ const STACK = [
 ] as const
 
 const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1761FF]'
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
 
 const AboutPage = () => {
   const t = useTranslations('AboutPage')
 
   return (
     <div className="w-full space-y-8 py-2 text-left md:py-6">
-      <section className="rounded-2xl bg-[#1F2937] p-6 ring-1 ring-white/10 sm:p-8">
-        <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+      <section className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8">
+        <h1 className="text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {t('name')}
         </h1>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-200 md:text-lg">
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink md:text-lg">
           {t('tagline')}
         </p>
         <div className="mt-5">
@@ -46,7 +46,7 @@ const AboutPage = () => {
       <section aria-labelledby="about-explore">
         <h2
           id="about-explore"
-          className="text-xl font-semibold text-white sm:text-2xl"
+          className="text-xl font-semibold text-ink sm:text-2xl"
         >
           {t('exploreTitle')}
         </h2>
@@ -74,15 +74,15 @@ const AboutPage = () => {
 
       <section
         aria-labelledby="about-stack"
-        className="rounded-2xl bg-[#1F2937] p-6 ring-1 ring-white/10 sm:p-8"
+        className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8"
       >
         <h2
           id="about-stack"
-          className="text-xl font-semibold text-white sm:text-2xl"
+          className="text-xl font-semibold text-ink sm:text-2xl"
         >
           {t('stackTitle')}
         </h2>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-gray-200 md:text-lg">
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink md:text-lg">
           {t('stackBody')}
         </p>
         <ul className="mt-5 flex flex-wrap gap-2">
@@ -100,15 +100,15 @@ const AboutPage = () => {
 
       <section
         aria-labelledby="about-learning"
-        className="rounded-2xl bg-[#1F2937] p-6 ring-1 ring-white/10 sm:p-8"
+        className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8"
       >
         <h2
           id="about-learning"
-          className="text-xl font-semibold text-white sm:text-2xl"
+          className="text-xl font-semibold text-ink sm:text-2xl"
         >
           {t('learningTitle')}
         </h2>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-gray-200 md:text-lg">
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink md:text-lg">
           {t.rich('learningBody', {
             solidity: (chunks) => (
               <TextLink href="https://docs.soliditylang.org/">
@@ -141,13 +141,13 @@ function PageCard({
   return (
     <Link
       href={href}
-      className={`group flex h-full flex-col rounded-2xl bg-[#1F2937] p-5 ring-1 ring-white/10 transition hover:bg-[#243044] hover:ring-[#1761FF] ${focusRing}`}
+      className={`group flex h-full flex-col rounded-2xl bg-surface p-5 ring-1 ring-raised transition hover:bg-raised hover:ring-accent ${focusRing}`}
     >
-      <h3 className="text-lg font-semibold text-white">{title}</h3>
-      <p className="mt-2 flex-1 text-base leading-relaxed text-gray-200">
+      <h3 className="text-lg font-semibold text-ink">{title}</h3>
+      <p className="mt-2 flex-1 text-base leading-relaxed text-ink">
         {description}
       </p>
-      <span className="mt-4 text-sm font-medium text-[#8eb0ff] group-hover:text-white">
+      <span className="mt-4 text-sm font-medium text-accent-text group-hover:text-ink">
         {view}
         <span aria-hidden="true"> →</span>
       </span>
@@ -169,7 +169,7 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-full bg-[#1761FF] px-4 py-2 text-base font-medium text-white transition hover:bg-[#3d7bff] ${focusRing}`}
+      className={`inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-base font-medium text-ink transition hover:bg-blue-500 ${focusRing}`}
     >
       {icon}
       {label}
@@ -186,11 +186,11 @@ function Chip({
   href?: string
   note?: string
 }) {
-  const className = `inline-flex items-center gap-2 rounded-full bg-[#364152] px-3 py-1.5 text-sm text-gray-100 ring-1 ring-white/10 transition hover:ring-[#1761FF] ${focusRing}`
+  const className = `inline-flex items-center gap-2 rounded-full bg-raised px-3 py-1.5 text-sm text-ink ring-1 ring-raised transition hover:ring-accent ${focusRing}`
   const content = (
     <>
       {label}
-      {note ? <span className="text-xs text-gray-300">{note}</span> : null}
+      {note ? <span className="text-xs text-muted">{note}</span> : null}
     </>
   )
 
@@ -222,7 +222,7 @@ function TextLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-[#8eb0ff] underline-offset-2 hover:underline ${focusRing}`}
+      className={`text-accent-text underline-offset-2 hover:underline ${focusRing}`}
     >
       {children}
     </a>

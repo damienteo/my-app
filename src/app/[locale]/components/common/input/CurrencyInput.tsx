@@ -30,7 +30,7 @@ const CurrencyInput: React.FunctionComponent<CurrencyInputProps> = (props) => {
           type="number"
           name="currency"
           id={`currency-input-${field}`}
-          className={`block w-full pl-7 pr-12 sm:text-sm rounded-md bg-gray-800 text-gray-200 border py-2 ${
+          className={`block w-full pl-7 pr-12 font-mono text-sm tabular-nums rounded-md bg-gray-800 text-gray-200 border py-2 ${
             error
               ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500'

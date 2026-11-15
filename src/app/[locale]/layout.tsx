@@ -2,7 +2,12 @@ import './globals.css'
 
 import React from 'react'
 import type { Viewport } from 'next'
-import localFont from 'next/font/local'
+import {
+  Geist,
+  Geist_Mono,
+  Noto_Sans_JP,
+  Space_Grotesk,
+} from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -11,17 +16,35 @@ import { routing } from '../../i18n/routing'
 
 import NavBar from './components/layout/Navbar'
 
-const poppins = localFont({
-  src: '../../../public/fonts/poppins.woff2',
-  // CSS `normal` is weight 400. Next 16 emits the weight keyword unquoted
-  // in the generated style object (`fontWeight: normal`), which throws at
-  // runtime. A numeric weight string is emitted as a number.
-  weight: '400',
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist-mono',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-grotesk',
+})
+
+const notoSansJp = Noto_Sans_JP({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  variable: '--font-noto',
+  preload: false,
 })
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#000000',
+  themeColor: '#0A0A0B',
 }
 
 export default async function RootLayout({
@@ -37,8 +60,11 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
-      <body className={poppins.className}>
+    <html
+      lang={locale}
+      className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${notoSansJp.variable}`}
+    >
+      <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale}>
           {/* Navbar */}
           <NavBar />

@@ -144,19 +144,19 @@ const ForexSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-gray-700 rounded-lg">
           <p className="text-sm text-gray-400 mb-1">{t('rates.usdToSgd')}</p>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.usdToSgd.toFixed(4)}
           </p>
         </div>
         <div className="p-4 bg-gray-700 rounded-lg">
           <p className="text-sm text-gray-400 mb-1">{t('rates.sgdToJpy')}</p>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.sgdToJpy.toFixed(2)}
           </p>
         </div>
         <div className="p-4 bg-gray-700 rounded-lg">
           <p className="text-sm text-gray-400 mb-1">{t('rates.usdToJpy')}</p>
-          <p className="text-2xl font-bold text-white">
+          <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.usdToJpy.toFixed(2)}
           </p>
         </div>
@@ -187,18 +187,21 @@ const ForexSection = () => {
           {forex.historical.usdToSgd.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={forex.historical.usdToSgd}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="var(--color-raised)"
+                />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDate}
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
                 <YAxis
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   tickFormatter={(value) => value.toFixed(4)}
                   domain={getYAxisDomain(forex.historical.usdToSgd)}
@@ -211,16 +214,16 @@ const ForexSection = () => {
                     formatDate(typeof label === 'string' ? label : '')
                   }
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-raised)',
                     borderRadius: '4px',
-                    color: '#F3F4F6',
+                    color: 'var(--color-ink)',
                   }}
                 />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#3B82F6"
+                  stroke="var(--color-accent)"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -240,18 +243,21 @@ const ForexSection = () => {
           {forex.historical.sgdToJpy.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={forex.historical.sgdToJpy}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="var(--color-raised)"
+                />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDate}
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
                 <YAxis
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   tickFormatter={(value) => value.toFixed(2)}
                   domain={getYAxisDomain(forex.historical.sgdToJpy)}
@@ -264,16 +270,16 @@ const ForexSection = () => {
                     formatDate(typeof label === 'string' ? label : '')
                   }
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-raised)',
                     borderRadius: '4px',
-                    color: '#F3F4F6',
+                    color: 'var(--color-ink)',
                   }}
                 />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#10B981"
+                  stroke="var(--color-accent)"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -293,18 +299,21 @@ const ForexSection = () => {
           {forex.historical.usdToJpy.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={forex.historical.usdToJpy}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="var(--color-raised)"
+                />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDate}
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
                 <YAxis
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '12px' }}
                   tickFormatter={(value) => value.toFixed(2)}
                   domain={getYAxisDomain(forex.historical.usdToJpy)}
@@ -317,16 +326,16 @@ const ForexSection = () => {
                     formatDate(typeof label === 'string' ? label : '')
                   }
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-raised)',
                     borderRadius: '4px',
-                    color: '#F3F4F6',
+                    color: 'var(--color-ink)',
                   }}
                 />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#F59E0B"
+                  stroke="var(--color-muted)"
                   strokeWidth={2}
                   dot={false}
                 />
