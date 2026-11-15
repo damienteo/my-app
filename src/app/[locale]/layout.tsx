@@ -1,6 +1,7 @@
 import './globals.css'
 
 import React from 'react'
+import type { Viewport } from 'next'
 import localFont from 'next/font/local'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
@@ -17,6 +18,11 @@ const poppins = localFont({
   // runtime. A numeric weight string is emitted as a number.
   weight: '400',
 })
+
+export const viewport: Viewport = {
+  colorScheme: 'dark',
+  themeColor: '#000000',
+}
 
 export default async function RootLayout({
   children,
