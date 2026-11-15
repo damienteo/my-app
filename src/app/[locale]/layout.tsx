@@ -12,7 +12,10 @@ import NavBar from './components/layout/Navbar'
 
 const poppins = localFont({
   src: '../../../public/fonts/poppins.woff2',
-  weight: 'normal',
+  // CSS `normal` is weight 400. Next 16 emits the weight keyword unquoted
+  // in the generated style object (`fontWeight: normal`), which throws at
+  // runtime. A numeric weight string is emitted as a number.
+  weight: '400',
 })
 
 export default async function RootLayout({

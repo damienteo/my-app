@@ -40,7 +40,7 @@ const GoldSection = () => {
 
   useEffect(() => {
     let isMounted = true
-    let abortController = new AbortController()
+    const abortController = new AbortController()
 
     const fetchGold = async () => {
       try {
@@ -200,10 +200,10 @@ const GoldSection = () => {
                 domain={getYAxisDomain(gold.historical)}
               />
               <Tooltip
-                formatter={(value: number | undefined) =>
-                  value !== undefined ? formatPrice(value) : 'N/A'
+                formatter={(value) =>
+                  typeof value === 'number' ? formatPrice(value) : 'N/A'
                 }
-                labelFormatter={(label) => formatDate(label)}
+                labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: '1px solid #374151',

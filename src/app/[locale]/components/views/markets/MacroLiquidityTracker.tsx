@@ -423,10 +423,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.netLiquidity)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -513,10 +513,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.fedBalanceSheet)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -569,10 +569,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.bankReserves)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -625,10 +625,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.rrp)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -681,10 +681,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.tga)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatCurrency(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -737,10 +737,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.treasury10Y)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? formatPercent(value) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? formatPercent(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -794,10 +794,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         domain={getYAxisDomain(data.historical.sofrIorbSpread)}
                       />
                       <Tooltip
-                        formatter={(value: number | undefined) =>
-                          value !== undefined ? formatBasisPoints(value) : 'N/A'
+                        formatter={(value) =>
+                          typeof value === 'number' ? formatBasisPoints(value) : 'N/A'
                         }
-                        labelFormatter={(label) => formatDate(label)}
+                        labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                         contentStyle={{
                           backgroundColor: '#1F2937',
                           border: '1px solid #374151',
@@ -853,10 +853,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         )}
                       />
                       <Tooltip
-                        formatter={(value: number | undefined) =>
-                          value !== undefined ? formatBasisPoints(value) : 'N/A'
+                        formatter={(value) =>
+                          typeof value === 'number' ? formatBasisPoints(value) : 'N/A'
                         }
-                        labelFormatter={(label) => formatDate(label)}
+                        labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                         contentStyle={{
                           backgroundColor: '#1F2937',
                           border: '1px solid #374151',
@@ -908,10 +908,10 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       domain={getYAxisDomain(data.historical.vix)}
                     />
                     <Tooltip
-                      formatter={(value: number | undefined) =>
-                        value !== undefined ? value.toFixed(2) : 'N/A'
+                      formatter={(value) =>
+                        typeof value === 'number' ? value.toFixed(2) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(label)}
+                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
