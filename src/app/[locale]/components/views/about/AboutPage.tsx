@@ -3,10 +3,6 @@ import { useTranslations } from 'next-intl'
 
 import { Link } from '@/src/i18n/navigation'
 
-// Drop a portrait in /public and set this to its path, for example
-// '/about/damien.jpg'. Until then the initials mark the slot.
-const AVATAR_SRC: string | null = null
-
 const STACK = [
   { label: 'React.js', href: 'https://reactjs.org/' },
   { label: 'Next.js', href: 'https://nextjs.org/' },
@@ -32,33 +28,18 @@ const AboutPage = () => {
   return (
     <div className="w-full space-y-8 py-2 text-left md:py-6">
       <section className="rounded-2xl bg-[#1F2937] p-6 ring-1 ring-white/10 sm:p-8">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-          <Avatar
-            label={t('avatarLabel')}
-            initials={t('avatarInitials')}
-            slot={t('photoSlot')}
+        <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          {t('name')}
+        </h1>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-200 md:text-lg">
+          {t('tagline')}
+        </p>
+        <div className="mt-5">
+          <SocialLink
+            href="https://github.com/damienteo"
+            label={t('github')}
+            icon={<GitHubIcon />}
           />
-          <div className="min-w-0">
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              {t('name')}
-            </h1>
-            <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-200 md:text-lg">
-              {t('tagline')}
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <SocialLink
-                href="https://www.linkedin.com/in/damien-teo/"
-                label={t('linkedin')}
-                icon={<LinkedInIcon />}
-                primary
-              />
-              <SocialLink
-                href="https://github.com/damienteo"
-                label={t('github')}
-                icon={<GitHubIcon />}
-              />
-            </div>
-          </div>
         </div>
       </section>
 
@@ -146,41 +127,6 @@ const AboutPage = () => {
   )
 }
 
-function Avatar({
-  label,
-  initials,
-  slot,
-}: {
-  label: string
-  initials: string
-  slot: string
-}) {
-  if (AVATAR_SRC) {
-    return (
-      <img
-        src={AVATAR_SRC}
-        alt={label}
-        className="h-28 w-28 shrink-0 rounded-2xl object-cover ring-1 ring-white/10 sm:h-32 sm:w-32"
-      />
-    )
-  }
-
-  return (
-    <figure className="shrink-0">
-      <div
-        role="img"
-        aria-label={label}
-        className="flex h-28 w-28 items-center justify-center rounded-2xl border-2 border-dashed border-white/40 bg-[#364152] text-3xl font-semibold tracking-wide text-white sm:h-32 sm:w-32"
-      >
-        {initials}
-      </div>
-      <figcaption className="mt-2 max-w-32 text-center text-sm text-gray-300">
-        {slot}
-      </figcaption>
-    </figure>
-  )
-}
-
 function PageCard({
   href,
   title,
@@ -213,23 +159,17 @@ function SocialLink({
   href,
   label,
   icon,
-  primary = false,
 }: {
   href: string
   label: string
   icon: React.ReactNode
-  primary?: boolean
 }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-base font-medium transition ${focusRing} ${
-        primary
-          ? 'bg-[#1761FF] text-white hover:bg-[#3d7bff]'
-          : 'bg-[#364152] text-white ring-1 ring-white/15 hover:ring-[#1761FF]'
-      }`}
+      className={`inline-flex items-center gap-2 rounded-full bg-[#1761FF] px-4 py-2 text-base font-medium text-white transition hover:bg-[#3d7bff] ${focusRing}`}
     >
       {icon}
       {label}
@@ -286,18 +226,6 @@ function TextLink({
     >
       {children}
     </a>
-  )
-}
-
-function LinkedInIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="h-4 w-4 fill-current"
-    >
-      <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V24h-4V8.5zM8.5 8.5h3.8v2.1h.05c.53-1 1.84-2.1 3.78-2.1 4.04 0 4.79 2.66 4.79 6.12V24h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V24h-4V8.5z" />
-    </svg>
   )
 }
 
