@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 import { ExternalLink, InfoPopup, Paragraph } from '../../../common'
@@ -60,10 +61,13 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
             />{' '}
             {t('extraInterest')}
           </Paragraph>
-          <img
+          <Image
             src="/TableC1_AllocationRates.png"
             alt={t('allocationTable')}
-            className="w-full h-auto"
+            width={1226}
+            height={645}
+            sizes="(min-width: 672px) 672px, 100vw"
+            className="h-auto w-full"
           />
           <Paragraph className="text-sm mb-6 text-gray-300">
             {t('allocationSource')}{' '}

@@ -12,7 +12,7 @@ import {
   hedgeCategories,
   StockCategory,
   Stock,
-} from '../../../../constants'
+} from '@/src/config/stocks'
 
 interface StockQuote {
   c: number

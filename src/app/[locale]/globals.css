@@ -35,11 +35,18 @@
   --color-blue-400: color-mix(in srgb, #1761ff 48%, white);
   --color-blue-200: color-mix(in srgb, #1761ff 35%, white);
 
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Noto is attached only on the Japanese locale, in the layout. An
+   undefined `--font-noto` would invalidate the whole font-family, so
+   English pages must not mention it. */
+html[lang='jp'] {
   --font-sans:
     var(--font-geist), var(--font-noto), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-grotesk), var(--font-noto), sans-serif;
-  --font-mono:
-    var(--font-geist-mono), var(--font-noto), ui-monospace, monospace;
 }
 
 :root {

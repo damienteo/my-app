@@ -1,5 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { ExternalLink, Header, Paragraph } from '../components/common'
 
@@ -28,10 +29,14 @@ const PortfolioPage: React.FunctionComponent = () => {
       {/* Payments Agreement Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4 mb-8 text-justify">
         <div className="text-center">
-          <img
+          <Image
             src="/payments-agreement.png"
             alt="Payments Agreement Site"
-            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
+            width={2850}
+            height={1536}
+            priority
+            sizes="(min-width: 640px) 480px, 92vw"
+            className="mx-auto mt-2 h-auto w-[95%] rounded-sm object-cover"
           />
         </div>
         <div className="px-2 sm:pl-5">
@@ -75,10 +80,13 @@ const PortfolioPage: React.FunctionComponent = () => {
       {/* ThunderDome Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
-          <img
+          <Image
             src="/thunderdome.png"
             alt="ThunderDome Chart"
-            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
+            width={2872}
+            height={1586}
+            sizes="(min-width: 640px) 480px, 92vw"
+            className="mx-auto mt-2 h-auto w-[95%] rounded-sm object-cover"
           />
         </div>
         <div className="px-2 sm:pl-5">
@@ -130,10 +138,13 @@ const PortfolioPage: React.FunctionComponent = () => {
       {/* Budget Planner Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
-          <img
+          <Image
             src="/budget-planner.png"
             alt="Budget Planner Chart"
-            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
+            width={1277}
+            height={826}
+            sizes="(min-width: 640px) 480px, 92vw"
+            className="mx-auto mt-2 h-auto w-[95%] rounded-sm object-cover"
           />
         </div>
         <div className="px-2 sm:pl-5">
@@ -164,10 +175,13 @@ const PortfolioPage: React.FunctionComponent = () => {
       {/* Fireman Game Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 text-justify">
         <div className="text-center">
-          <img
+          <Image
             src="/fireman-game.png"
             alt="Fireman Game Image"
-            className="w-[95%] object-cover mx-auto mt-2 rounded-sm"
+            width={1976}
+            height={1032}
+            sizes="(min-width: 640px) 480px, 92vw"
+            className="mx-auto mt-2 h-auto w-[95%] rounded-sm object-cover"
           />
         </div>
         <div className="px-2 sm:pl-5">

@@ -2,15 +2,11 @@ import './globals.css'
 
 import React from 'react'
 import type { Viewport } from 'next'
-import {
-  Geist,
-  Geist_Mono,
-  Noto_Sans_JP,
-  Space_Grotesk,
-} from 'next/font/google'
+import { Geist, Geist_Mono, Space_Grotesk } from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { routing } from '../../i18n/routing'
 
@@ -25,6 +21,9 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   display: 'swap',
+  // Used by charts, not body text. Skip the preload so pages without a
+  // chart do not download it during first paint.
+  preload: false,
   variable: '--font-geist-mono',
 })
 
@@ -34,17 +33,13 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-grotesk',
 })
 
-const notoSansJp = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-  variable: '--font-noto',
-  preload: false,
-})
-
 export const viewport: Viewport = {
   colorScheme: 'dark',
   themeColor: '#0A0A0B',
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
 }
 
 export default async function RootLayout({
@@ -59,10 +54,18 @@ export default async function RootLayout({
     notFound()
   }
 
+  // Noto Sans JP is a multi-megabyte family of unicode-range files.
+  // Load its CSS only for the Japanese locale. English pages keep Geist
+  // and Space Grotesk; the "日本語" label falls back to a system CJK font.
+  const notoVariable =
+    locale === 'jp'
+      ? (await import('./fonts/noto-sans-jp')).notoSansJp.variable
+      : ''
+
   return (
     <html
       lang={locale}
-      className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${notoSansJp.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${notoVariable}`}
     >
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale}>
@@ -75,6 +78,7 @@ export default async function RootLayout({
         </NextIntlClientProvider>
 
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TRACKING_ID || ''} />
+        <SpeedInsights />
       </body>
     </html>
   )
