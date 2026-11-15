@@ -35,7 +35,7 @@
     "stackBody": "このサイトは React.js、Next.js、Tailwind CSS（以前は Material UI）を組み合わせて作りました。基本的には Javascript（Typescript を含む）、HTML、CSS です。テストは Jest で行っています。",
     "previously": "以前",
     "learningTitle": "勉強していること",
-    "learningBody": "<solidity>Solidity</solidity>を勉強していて、進捗はこの<repo>GitHubリポジトリ</repo>に記録しています。今は日本語も勉強しています。2025年12月にJLPT N3を受験し、2026年7月にはN2を受験する予定です。"
+    "learningBody": "<solidity>Solidity</solidity>を勉強していて、進捗はこの<repo>GitHubリポジトリ</repo>に記録しています。今は日本語も勉強しています。2026年7月にJLPT N2を受験し、2026年12月にはN1を受験する予定です。"
   },
   "AnimalsPage": {
     "header": "動物たち",

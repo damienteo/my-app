@@ -35,7 +35,7 @@
     "stackBody": "This site was created with a mixture of React.js, Next.js, and Tailwind CSS (previously Material UI). Essentially, it's just Javascript (with Typescript), HTML, and CSS. Testing is done with Jest.",
     "previously": "previously",
     "learningTitle": "Learning",
-    "learningBody": "I was learning <solidity>Solidity</solidity> (documenting my progress in this <repo>GitHub repository</repo>), and now I am also learning Japanese. I took the JLPT N3 exam in December 2025, and will be taking the N2 exam in July 2026."
+    "learningBody": "I was learning <solidity>Solidity</solidity> (documenting my progress in this <repo>GitHub repository</repo>), and now I am also learning Japanese. I took the JLPT N2 exam in July 2026, and will be taking the N1 exam in December 2026."
   },
   "AnimalsPage": {
     "header": "Animals",
