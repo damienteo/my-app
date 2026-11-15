@@ -195,7 +195,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </InfoPopup>
           </span>
         </p>
-        <div className="max-w-md">
+        <div className="w-full min-w-0 max-w-md">
           <label className="block text-sm font-medium text-gray-300 mb-1">
             {t('dateOfBirth.label')}
           </label>
@@ -203,7 +203,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             type="date"
             value={selectedDate?.format('YYYY-MM-DD')}
             onChange={(e) => handleDateChange(dayjs(e.target.value))}
-            className="block w-full sm:text-sm rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3"
+            className="cpf-date box-border block w-full min-w-0 max-w-full appearance-none font-mono text-sm tabular-nums rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3"
           />
         </div>
       </Section>

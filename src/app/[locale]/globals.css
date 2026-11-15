@@ -60,6 +60,26 @@ h3 {
   font-family: var(--font-display);
 }
 
+/* iOS Safari gives date inputs an intrinsic min-width and native padding.
+   Reset that so the CPF date of birth field matches the other inputs. */
+input.cpf-date {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input.cpf-date::-webkit-date-and-time-value {
+  min-height: 0;
+  margin: 0;
+  text-align: left;
+}
+
+input.cpf-date::-webkit-datetime-edit,
+input.cpf-date::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+  margin: 0;
+  line-height: inherit;
+}
+
 .recharts-cartesian-axis text,
 .recharts-legend-item-text,
 .recharts-tooltip-wrapper,
