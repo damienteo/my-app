@@ -100,7 +100,7 @@ const WeatherSection = () => {
             className="w-20 h-20"
           />
           <div>
-            <p className="text-3xl font-bold text-white">
+            <p className="text-3xl font-mono tabular-nums font-bold text-ink">
               {Math.round(weather.current.temp)}°C
             </p>
             <p className="text-gray-300 capitalize">

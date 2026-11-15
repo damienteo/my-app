@@ -14,7 +14,7 @@ const ExternalLink: React.FunctionComponent<ExternalLinkProps> = ({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-blue-400 hover:text-blue-600 hover:underline transition-colors duration-200"
+      className="text-accent-text underline-offset-2 hover:text-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
     >
       {label}
     </a>

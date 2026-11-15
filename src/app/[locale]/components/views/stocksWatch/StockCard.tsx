@@ -166,10 +166,12 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
       {quote ? (
         <>
           <div className="mb-3">
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatPrice(quote.c)}
             </p>
-            <p className={`text-sm font-semibold ${changeColor}`}>
+            <p
+              className={`font-mono text-sm font-semibold tabular-nums ${changeColor}`}
+            >
               {formatPrice(quote.d)} ({formatPercent(quote.dp)})
             </p>
           </div>
@@ -205,18 +207,21 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
         <div className="h-32">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={historical}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="var(--color-raised)"
+              />
               <XAxis
                 dataKey="date"
                 tickFormatter={formatDate}
-                stroke="#9CA3AF"
+                stroke="var(--color-muted)"
                 style={{ fontSize: '10px' }}
                 angle={-45}
                 textAnchor="end"
                 height={40}
               />
               <YAxis
-                stroke="#9CA3AF"
+                stroke="var(--color-muted)"
                 style={{ fontSize: '10px' }}
                 domain={getYAxisDomain(historical)}
                 tickFormatter={(value) => `$${value.toFixed(0)}`}
@@ -229,16 +234,20 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                   formatDate(typeof label === 'string' ? label : '')
                 }
                 contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
+                  backgroundColor: 'var(--color-surface)',
+                  border: '1px solid var(--color-raised)',
                   borderRadius: '4px',
-                  color: '#F3F4F6',
+                  color: 'var(--color-ink)',
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="price"
-                stroke={quote && quote.dp >= 0 ? '#10B981' : '#EF4444'}
+                stroke={
+                  quote && quote.dp >= 0
+                    ? 'var(--color-up)'
+                    : 'var(--color-down)'
+                }
                 strokeWidth={2}
                 dot={false}
               />
@@ -287,17 +296,20 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                 }))}
                 margin={{ top: 5, right: 5, left: 5, bottom: 20 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="var(--color-raised)"
+                />
                 <XAxis
                   dataKey="date"
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '10px' }}
                   angle={-45}
                   textAnchor="end"
                   height={50}
                 />
                 <YAxis
-                  stroke="#9CA3AF"
+                  stroke="var(--color-muted)"
                   style={{ fontSize: '10px' }}
                   tickFormatter={(value) => `$${value}M`}
                 />
@@ -312,10 +324,10 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                   }}
                   labelFormatter={(label) => label}
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-raised)',
                     borderRadius: '4px',
-                    color: '#F3F4F6',
+                    color: 'var(--color-ink)',
                   }}
                 />
                 <Legend
@@ -328,13 +340,13 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                 />
                 <Bar
                   dataKey="revenue"
-                  fill="#3B82F6"
+                  fill="var(--color-accent)"
                   name="revenue"
                   radius={[2, 2, 0, 0]}
                 />
                 <Bar
                   dataKey="earnings"
-                  fill="#F97316"
+                  fill="var(--color-muted)"
                   name="earnings"
                   radius={[2, 2, 0, 0]}
                 />

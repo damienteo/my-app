@@ -172,7 +172,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-bold text-lg mb-2 text-gray-200">
               {t('netLiquidity.title')}
             </h3>
-            <p className="text-3xl font-bold text-white">
+            <p className="text-3xl font-mono tabular-nums font-bold text-ink">
               {formatCurrency(data.netLiquidity)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -198,7 +198,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatCurrency(data.rrp)}
             </p>
             <p className="text-xs text-gray-400 mt-1">{t('rrp.description')}</p>
@@ -234,7 +234,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatCurrency(data.bankReserves)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -259,7 +259,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('fedBalanceSheet.title')}
             </h3>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatCurrency(data.fedBalanceSheet)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -271,7 +271,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('tga.title')}
             </h3>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatCurrency(data.tga)}
             </p>
             <p className="text-xs text-gray-400 mt-1">{t('tga.description')}</p>
@@ -281,7 +281,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('treasury10Y.title')}
             </h3>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatPercent(data.treasury10Y)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -307,7 +307,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </span>
               )}
             </div>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatBasisPoints(data.sofrIorbSpread)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -332,7 +332,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('highYieldSpreads.title')}
             </h3>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {formatBasisPoints(data.highYieldSpreads)}
             </p>
             <p className="text-xs text-gray-400 mt-1">
@@ -344,7 +344,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
             <h3 className="font-semibold text-sm text-gray-300 mb-1">
               {t('vix.title')}
             </h3>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-mono tabular-nums font-bold text-ink">
               {data.vix !== null ? data.vix.toFixed(2) : 'N/A'}
             </p>
             <p className="text-xs text-gray-400 mt-1">{t('vix.description')}</p>
@@ -368,7 +368,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                   </span>
                 )}
               </div>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-mono tabular-nums font-bold text-ink">
                 {data.netLiquidityZScore.toFixed(2)}
               </p>
               <p className="text-xs text-gray-400 mt-1">
@@ -411,11 +411,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.netLiquidity}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -423,7 +426,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatChartValue(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.netLiquidity)}
                     />
@@ -437,16 +440,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#10B981"
+                      stroke="var(--color-accent)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -505,11 +508,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.fedBalanceSheet}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -517,7 +523,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatChartValue(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.fedBalanceSheet)}
                     />
@@ -531,16 +537,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#3B82F6"
+                      stroke="var(--color-accent)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -565,11 +571,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.bankReserves}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -577,7 +586,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatChartValue(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.bankReserves)}
                     />
@@ -591,16 +600,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#8B5CF6"
+                      stroke="var(--color-accent-text)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -625,11 +634,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.rrp}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -637,7 +649,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatChartValue(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.rrp)}
                     />
@@ -651,16 +663,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#F59E0B"
+                      stroke="var(--color-muted)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -685,11 +697,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.tga}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -697,7 +712,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatChartValue(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.tga)}
                     />
@@ -711,16 +726,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#EF4444"
+                      stroke="var(--color-down)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -745,11 +760,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.treasury10Y}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
@@ -757,7 +775,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <YAxis
                       tickFormatter={(value) => formatPercent(value)}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.treasury10Y)}
                     />
@@ -769,16 +787,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#06B6D4"
+                      stroke="var(--color-accent-text)"
                       strokeWidth={2}
                       dot={false}
                     />
@@ -804,11 +822,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                   </h4>
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={data.historical.sofrIorbSpread}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--color-raised)"
+                      />
                       <XAxis
                         dataKey="date"
                         tickFormatter={formatDate}
-                        stroke="#9CA3AF"
+                        stroke="var(--color-muted)"
                         style={{ fontSize: '12px' }}
                         angle={-45}
                         textAnchor="end"
@@ -816,7 +837,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       />
                       <YAxis
                         tickFormatter={(value) => `${value.toFixed(0)} bps`}
-                        stroke="#9CA3AF"
+                        stroke="var(--color-muted)"
                         style={{ fontSize: '12px' }}
                         domain={getYAxisDomain(data.historical.sofrIorbSpread)}
                       />
@@ -830,16 +851,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                           formatDate(typeof label === 'string' ? label : '')
                         }
                         contentStyle={{
-                          backgroundColor: '#1F2937',
-                          border: '1px solid #374151',
+                          backgroundColor: 'var(--color-surface)',
+                          border: '1px solid var(--color-raised)',
                           borderRadius: '4px',
-                          color: '#F3F4F6',
+                          color: 'var(--color-ink)',
                         }}
                       />
                       <Line
                         type="monotone"
                         dataKey="value"
-                        stroke="#F59E0B"
+                        stroke="var(--color-muted)"
                         strokeWidth={2}
                         dot={false}
                       />
@@ -865,11 +886,14 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                   </h4>
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={data.historical.highYieldSpreads}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--color-raised)"
+                      />
                       <XAxis
                         dataKey="date"
                         tickFormatter={formatDate}
-                        stroke="#9CA3AF"
+                        stroke="var(--color-muted)"
                         style={{ fontSize: '12px' }}
                         angle={-45}
                         textAnchor="end"
@@ -877,7 +901,7 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       />
                       <YAxis
                         tickFormatter={(value) => `${value.toFixed(0)} bps`}
-                        stroke="#9CA3AF"
+                        stroke="var(--color-muted)"
                         style={{ fontSize: '12px' }}
                         domain={getYAxisDomain(
                           data.historical.highYieldSpreads
@@ -893,16 +917,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                           formatDate(typeof label === 'string' ? label : '')
                         }
                         contentStyle={{
-                          backgroundColor: '#1F2937',
-                          border: '1px solid #374151',
+                          backgroundColor: 'var(--color-surface)',
+                          border: '1px solid var(--color-raised)',
                           borderRadius: '4px',
-                          color: '#F3F4F6',
+                          color: 'var(--color-ink)',
                         }}
                       />
                       <Line
                         type="monotone"
                         dataKey="value"
-                        stroke="#EC4899"
+                        stroke="var(--color-ink)"
                         strokeWidth={2}
                         dot={false}
                       />
@@ -927,18 +951,21 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 </h4>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.historical.vix}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--color-raised)"
+                    />
                     <XAxis
                       dataKey="date"
                       tickFormatter={formatDate}
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       angle={-45}
                       textAnchor="end"
                       height={80}
                     />
                     <YAxis
-                      stroke="#9CA3AF"
+                      stroke="var(--color-muted)"
                       style={{ fontSize: '12px' }}
                       domain={getYAxisDomain(data.historical.vix)}
                     />
@@ -950,16 +977,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                         formatDate(typeof label === 'string' ? label : '')
                       }
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: 'var(--color-surface)',
+                        border: '1px solid var(--color-raised)',
                         borderRadius: '4px',
-                        color: '#F3F4F6',
+                        color: 'var(--color-ink)',
                       }}
                     />
                     <Line
                       type="monotone"
                       dataKey="value"
-                      stroke="#10B981"
+                      stroke="var(--color-accent)"
                       strokeWidth={2}
                       dot={false}
                     />

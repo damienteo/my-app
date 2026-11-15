@@ -164,7 +164,7 @@ const GoldSection = () => {
           )}
         </div>
         <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-3">
-          <p className="text-2xl sm:text-3xl font-bold text-white">
+          <p className="text-2xl font-mono tabular-nums sm:text-3xl font-bold text-ink">
             {formatPrice(gold.current.price)}
           </p>
           <div
@@ -186,18 +186,21 @@ const GoldSection = () => {
         {gold.historical.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={gold.historical}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="var(--color-raised)"
+              />
               <XAxis
                 dataKey="date"
                 tickFormatter={formatDate}
-                stroke="#9CA3AF"
+                stroke="var(--color-muted)"
                 style={{ fontSize: '12px' }}
                 angle={-45}
                 textAnchor="end"
                 height={80}
               />
               <YAxis
-                stroke="#9CA3AF"
+                stroke="var(--color-muted)"
                 style={{ fontSize: '12px' }}
                 tickFormatter={(value) => formatPrice(value)}
                 domain={getYAxisDomain(gold.historical)}
@@ -210,16 +213,16 @@ const GoldSection = () => {
                   formatDate(typeof label === 'string' ? label : '')
                 }
                 contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
+                  backgroundColor: 'var(--color-surface)',
+                  border: '1px solid var(--color-raised)',
                   borderRadius: '4px',
-                  color: '#F3F4F6',
+                  color: 'var(--color-ink)',
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="value"
-                stroke="#FBBF24"
+                stroke="var(--color-accent)"
                 strokeWidth={2}
                 dot={false}
               />
