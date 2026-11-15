@@ -29,7 +29,7 @@ const CPFForecastPageClient = () => {
   })
 
   return (
-    <div className="flex flex-col max-w-4xl px-4 sm:px-6 mx-auto py-8">
+    <div className="flex flex-col py-8">
       <div className="mb-6">
         <Intro />
       </div>

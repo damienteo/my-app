@@ -257,8 +257,8 @@
       "intro": "Rules on this page were checked in November 2026 against CPF Board and the Ministry of Manpower. Nothing you type is saved.",
       "mediSaveLabel": "MediSave",
       "mediSave": "Contributions stop at the Basic Healthcare Sum: $79,000 in 2026 for members under 65, and fixed for life in the year you turn 65. The overflow joins your Special Account, or your Retirement Account from 55. Bills paid from MediSave are not deducted.",
-      "laterLabel": "How later years are estimated",
-      "later": "For later years this forecast increases the 2027 Basic Retirement Sum by 3.5% a year, rounds it to the nearest $100, and sets the Full Retirement Sum at twice that amount. CPF has not published those later sums.",
+      "laterLabel": "How later Full Retirement Sums (FRS) are estimated",
+      "later": "For years after 2027, CPF has not published the Full Retirement Sum (FRS). This forecast projects it by growing the 2027 Basic Retirement Sum by 3.5% a year, rounding to the nearest $100, and doubling it. That follows recent increases, and the actual figure may differ.",
       "retirementLabel": "Retirement sums",
       "retirementLead": "The Full Retirement Sum is the published amount for the year you turn 55. CPF can change these sums. This forecast sets aside the Full Retirement Sum.",
       "year": "Year",
@@ -411,7 +411,7 @@
           "above": "You'd be {amount} above the FRS.",
           "short": "{amount} short of the FRS.",
           "meter": "{available} from your Special and Ordinary Accounts can go into the Retirement Account, against a Full Retirement Sum of {frs}.",
-          "footnote": "Projected from the 2027 Basic Retirement Sum, increased by about 3.5% a year and rounded to the nearest $100. The Full Retirement Sum is twice that amount. This follows recent increases. CPF has not published it, and the actual figure may differ."
+          "footnote": "For years after 2027, CPF has not published the Full Retirement Sum. This forecast projects it by growing the 2027 Basic Retirement Sum by 3.5% a year, rounding to the nearest $100, and doubling it. That follows recent increases, and the actual figure may differ."
         },
         "comparison": {
           "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
