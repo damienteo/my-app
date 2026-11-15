@@ -53,6 +53,7 @@ const Animals: React.FunctionComponent = () => {
           <AnimalClip
             key={clip.name}
             src={`/animals/${clip.name}.mp4`}
+            poster={`/animals/${clip.name}.jpg`}
             width={clip.width}
             height={clip.height}
             label={clip.name}

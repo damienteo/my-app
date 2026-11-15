@@ -246,9 +246,38 @@ ffmpeg -i clip.gif -movflags +faststart -pix_fmt yuv420p -an \
   -c:v libx264 -crf 28 -preset fast clip.mp4
 ```
 
-191 MB of GIF became 21 MB of MP4. The page renders `<video muted loop playsInline>` at the same 384 px width (`w-96`) as the old `width={384}` images, with the real aspect ratio so the box does not start as a square and then jump (that jump was the old CLS of about 0.1). The first clip loads immediately. The rest use `preload="none"` until they are near the viewport. `prefers-reduced-motion: reduce` leaves them paused.
+191 MB of GIF became 21 MB of MP4. The page renders `<video muted loop playsInline>` at the same 384 px width (`w-96`) as the old `width={384}` images, with the real aspect ratio so the box does not start as a square and then jump (that jump was the old CLS of about 0.1). There is no `autoPlay` attribute. A client effect calls `play()` after it knows motion is allowed. The first clip starts immediately. The rest stay at `preload="none"` until they are near the viewport.
 
 Lighthouse still scrolls and fetched the first three clips (about 1.4 MB of video) instead of eight GIFs. LCP went from 144 s to 3.1 s. The filmstrip in the Lighthouse report is the same goats and the same snowy tree. The codec changed; the frames did not get a new crop or a new order.
+
+### Posters and reduced motion
+
+A video with `preload="none"` is an empty box until the file arrives. Each clip now has a JPEG of its first frame, committed next to the MP4. ffmpeg's JPEG quality scale runs from 2 (large) to 31 (small). The command starts at 6 and steps up until the file is at most 40 KB:
+
+```bash
+ffmpeg -y -i public/animals/adult-goats.mp4 \
+  -frames:v 1 -q:v 6 \
+  public/animals/adult-goats.jpg
+```
+
+The poster keeps the video's width and height. A small frame such as the nara deer is under 20 KB at `-q:v 6`, because there are not enough pixels to fill 40 KB. The 24 posters together are about 550 KB on disk.
+
+`AnimalClip` receives that poster for every clip. The first `<video>` has `poster` in the HTML, so the goats are visible before the MP4. The other clips render a `loading="lazy"` image of the same file, and the video's `poster` attribute is set when the clip nears the viewport. Putting `poster` on all 24 videos at once made the browser download every JPEG before the first frame (about 550 KB, and LCP moved from 3.1 s back toward 4 s). The lazy image is what keeps the off-screen stills from competing with that frame. There is still a picture in the box, not a blank rectangle.
+
+`prefers-reduced-motion: reduce` must not autoplay, including the first clip. The page cannot know the preference during server render. `reduceMotion` starts as `null`, so the server HTML and the first client render both omit the control. After mount, an effect reads `matchMedia` and subscribes to changes. When the preference is reduce, autoplay stays off and a real `<button>` is drawn on the still. Its accessible name is `Play <label>` (the test in `tests/app/animalClip.test.ts` locks that string), it uses the accent fill and a visible focus ring, and clicking it sets `preload` to `auto`, plays, and switches the name to `Pause <label>`. Everyone else gets the lazy autoplay and no button.
+
+To see it: open `/en/animals`, DevTools, More tools, Rendering, then set **Emulate CSS media feature prefers-reduced-motion** to **reduce**, and reload.
+
+The same mobile Lighthouse command, after the posters, one run:
+
+| Page | Score | LCP | CLS | TBT | FCP | Transfer |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `/en/animals` before posters | 94 | 3.1 s | 0 | 72 ms | 1.2 s | 1.7 MiB |
+| `/en/animals` with posters | 91 | 3.5 s | 0 | 44 ms | 1.2 s | 1.9 MiB |
+| `/jp/animals` before posters | 92 | 3.3 s | 0 | 66 ms | 1.2 s | 1.9 MiB |
+| `/jp/animals` with posters | 85 | 4.4 s | 0 | 62 ms | 1.2 s | 2.0 MiB |
+
+English picked up about 160 KB of the stills that were actually near the viewport (8 of the 24). LCP moved by a few tenths of a second, which is the poster cost on a simulated slow phone, not a return to the GIF problem. The Japanese run moved more (3.3 s to 4.4 s). That page is already downloading Noto slices, so the extra stills compete with a heavier first load. CLS stayed 0. A single run is noisy at this scale; the thing to watch in the network table is that poster count stays near the clips on screen, not 24.
 
 ### Charts
 
