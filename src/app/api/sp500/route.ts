@@ -170,7 +170,7 @@ async function fetchSP500HistoricalFromFRED(
 
 async function fetchHistoricalData(
   period: '1week' | '1month' | '3months' | '6months' | '1year',
-  useFREDFallback: boolean = false
+  useFREDFallback = false
 ): Promise<HistoricalDataPoint[]> {
   // If FRED fallback is requested, try FRED first
   if (useFREDFallback) {
@@ -292,11 +292,7 @@ async function fetchHistoricalData(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const period = (searchParams.get('period') || '1month') as
-    | '1week'
-    | '1month'
-    | '3months'
-    | '6months'
-    | '1year'
+    '1week' | '1month' | '3months' | '6months' | '1year'
 
   try {
     // Fetch current price with retry logic for rate limits

@@ -33,7 +33,10 @@ const DialogButton = (props: DialogButtonProps) => {
 const DialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props
   return (
-    <div className="relative m-0 p-4 text-gray-200 border-b border-gray-700" {...other}>
+    <div
+      className="relative m-0 p-4 text-gray-200 border-b border-gray-700"
+      {...other}
+    >
       <h3 className="text-lg font-semibold text-gray-200">{children}</h3>
       {onClose ? (
         <button
@@ -76,11 +79,11 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
     <>
       <DialogButton handleClickOpen={handleClickOpen} {...props} />
       {open && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
           onClick={handleClose}
         >
-          <div 
+          <div
             className="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-700"
             onClick={(e) => e.stopPropagation()}
           >

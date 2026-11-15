@@ -16,7 +16,9 @@ interface QuarterlyData {
 
 // Helper to check if a symbol is an international stock
 function isInternationalStock(symbol: string): boolean {
-  return symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+  return (
+    symbol.includes('.T') || symbol.includes('.SZ') || symbol.includes('.SS')
+  )
 }
 
 // Fetch earnings and revenue data from Yahoo Finance
@@ -26,14 +28,19 @@ async function fetchEarningsFromYahoo(
   try {
     // Map symbol to Yahoo Finance symbol if needed
     const yahooSymbol = getYahooSymbol(symbol)
-    console.log(`Fetching earnings data from Yahoo Finance for ${symbol} (${yahooSymbol})`)
+    console.log(
+      `Fetching earnings data from Yahoo Finance for ${symbol} (${yahooSymbol})`
+    )
 
     const quoteSummary = await yahooFinance.quoteSummary(yahooSymbol, {
       modules: ['earnings'],
     })
 
     // Check if there are validation errors (common for international stocks)
-    if ((quoteSummary as any).errors && (quoteSummary as any).errors.length > 0) {
+    if (
+      (quoteSummary as any).errors &&
+      (quoteSummary as any).errors.length > 0
+    ) {
       console.warn(
         `Yahoo Finance validation errors for ${symbol}:`,
         (quoteSummary as any).errors
@@ -48,7 +55,9 @@ async function fetchEarningsFromYahoo(
     }
 
     if (!quoteSummary?.earnings?.financialsChart) {
-      console.warn(`No earnings data available from Yahoo Finance for ${symbol}`)
+      console.warn(
+        `No earnings data available from Yahoo Finance for ${symbol}`
+      )
       return null
     }
 
@@ -74,7 +83,10 @@ async function fetchEarningsFromYahoo(
     return data
   } catch (error: any) {
     // Handle validation errors gracefully, especially for international stocks
-    if (error.name === 'FailedYahooValidationError' || error.message?.includes('validation')) {
+    if (
+      error.name === 'FailedYahooValidationError' ||
+      error.message?.includes('validation')
+    ) {
       console.warn(
         `Yahoo Finance validation error for ${symbol} (may not support earnings data):`,
         error.message
@@ -110,20 +122,22 @@ export async function GET(request: Request) {
 
     for (let i = 0; i < symbols.length; i += BATCH_SIZE) {
       const batch = symbols.slice(i, i + BATCH_SIZE)
-      
+
       // Process batch in parallel
       const batchResults = await Promise.all(
         batch.map((symbol) => fetchEarningsFromYahoo(symbol))
       )
-      
+
       // Store results
       batch.forEach((symbol, index) => {
         earnings[symbol] = batchResults[index]
       })
-      
+
       // Add delay between batches (not after last batch)
       if (i + BATCH_SIZE < symbols.length) {
-        await new Promise((resolve) => setTimeout(resolve, DELAY_BETWEEN_BATCHES))
+        await new Promise((resolve) =>
+          setTimeout(resolve, DELAY_BETWEEN_BATCHES)
+        )
       }
     }
 
@@ -139,4 +153,3 @@ export async function GET(request: Request) {
     )
   }
 }
-

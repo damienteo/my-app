@@ -4,7 +4,7 @@ import React from 'react'
 const calculateProximity = (
   current: number | null,
   threshold: number,
-  isLowerBetter: boolean = false
+  isLowerBetter = false
 ): { proximity: number | null; isAboveThreshold: boolean } => {
   if (current === null) return { proximity: null, isAboveThreshold: false }
 
@@ -101,4 +101,3 @@ const ProximityIndicator: React.FC<ProximityIndicatorProps> = ({
 }
 
 export default ProximityIndicator
-

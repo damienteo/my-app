@@ -62,7 +62,12 @@ const WeatherSection = () => {
 
     fetchWeather()
     // Refresh every 10 minutes
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000)
+    const interval = setInterval(
+      () => {
+        void fetchWeather()
+      },
+      10 * 60 * 1000
+    )
     return () => clearInterval(interval)
   }, [])
 

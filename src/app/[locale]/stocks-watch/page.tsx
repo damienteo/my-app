@@ -14,4 +14,3 @@ const StocksWatch: React.FunctionComponent = () => {
 }
 
 export default StocksWatch
-

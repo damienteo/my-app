@@ -141,8 +141,8 @@ async function fetchGoldHistoricalFromAPI(
     period === '1week' || period === '1month'
       ? 'day'
       : period === '3months'
-      ? 'week'
-      : 'month'
+        ? 'week'
+        : 'month'
 
   // Gold API (gold-api.com) - Free tier: 10 historical requests/hour
   // Endpoint: GET /history
@@ -284,11 +284,7 @@ async function fetchHistoricalData(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const period = (searchParams.get('period') || '1month') as
-    | '1week'
-    | '1month'
-    | '3months'
-    | '6months'
-    | '1year'
+    '1week' | '1month' | '3months' | '6months' | '1year'
 
   try {
     // Use free gold APIs (Gold API or Freegoldprice.org) instead of Yahoo Finance

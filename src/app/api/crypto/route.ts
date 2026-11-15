@@ -101,12 +101,12 @@ async function fetchHistoricalFromCoinGecko(
       period === '1week'
         ? 7
         : period === '1month'
-        ? 30
-        : period === '3months'
-        ? 90
-        : period === '6months'
-        ? 180
-        : 365
+          ? 30
+          : period === '3months'
+            ? 90
+            : period === '6months'
+              ? 180
+              : 365
 
     const url = `${COINGECKO_BASE}/coins/${cryptoId}/market_chart?vs_currency=usd&days=${days}&interval=daily`
     const res = await fetch(url, {
@@ -186,11 +186,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const crypto = (searchParams.get('crypto') || 'bitcoin') as CryptoId
   const period = (searchParams.get('period') || '1month') as
-    | '1week'
-    | '1month'
-    | '3months'
-    | '6months'
-    | '1year'
+    '1week' | '1month' | '3months' | '6months' | '1year'
 
   // Validate crypto parameter
   if (crypto !== 'bitcoin' && crypto !== 'ethereum') {

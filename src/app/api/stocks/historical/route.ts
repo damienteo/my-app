@@ -91,10 +91,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const symbols = searchParams.get('symbols')?.split(',') || []
   const period = (searchParams.get('period') || '1year') as
-    | '1week'
-    | '1month'
-    | '3months'
-    | '1year'
+    '1week' | '1month' | '3months' | '1year'
 
   console.log(
     `Historical data API called: symbols=${symbols.join(',')}, period=${period}`

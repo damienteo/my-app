@@ -101,7 +101,12 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
 
     fetchData()
     // Refresh every 5 minutes
-    const interval = setInterval(fetchData, 5 * 60 * 1000)
+    const interval = setInterval(
+      () => {
+        void fetchData()
+      },
+      5 * 60 * 1000
+    )
 
     return () => clearInterval(interval)
   }, [])
@@ -151,16 +156,16 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                 trafficLightColor === 'red'
                   ? 'bg-red-500'
                   : trafficLightColor === 'yellow'
-                  ? 'bg-yellow-500'
-                  : 'bg-green-500'
+                    ? 'bg-yellow-500'
+                    : 'bg-green-500'
               }`}
             />
             <span className="mt-2 text-sm font-semibold text-gray-200">
               {trafficLightColor === 'red'
                 ? t('status.critical')
                 : trafficLightColor === 'yellow'
-                ? t('status.warning')
-                : t('status.healthy')}
+                  ? t('status.warning')
+                  : t('status.healthy')}
             </span>
           </div>
           <div className="flex-1">
@@ -424,9 +429,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <Tooltip
                       formatter={(value) =>
-                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
+                        typeof value === 'number'
+                          ? formatCurrency(value)
+                          : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -514,9 +523,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <Tooltip
                       formatter={(value) =>
-                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
+                        typeof value === 'number'
+                          ? formatCurrency(value)
+                          : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -570,9 +583,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <Tooltip
                       formatter={(value) =>
-                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
+                        typeof value === 'number'
+                          ? formatCurrency(value)
+                          : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -626,9 +643,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <Tooltip
                       formatter={(value) =>
-                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
+                        typeof value === 'number'
+                          ? formatCurrency(value)
+                          : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -682,9 +703,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                     />
                     <Tooltip
                       formatter={(value) =>
-                        typeof value === 'number' ? formatCurrency(value) : 'N/A'
+                        typeof value === 'number'
+                          ? formatCurrency(value)
+                          : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -740,7 +765,9 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       formatter={(value) =>
                         typeof value === 'number' ? formatPercent(value) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
@@ -795,9 +822,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       />
                       <Tooltip
                         formatter={(value) =>
-                          typeof value === 'number' ? formatBasisPoints(value) : 'N/A'
+                          typeof value === 'number'
+                            ? formatBasisPoints(value)
+                            : 'N/A'
                         }
-                        labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                        labelFormatter={(label) =>
+                          formatDate(typeof label === 'string' ? label : '')
+                        }
                         contentStyle={{
                           backgroundColor: '#1F2937',
                           border: '1px solid #374151',
@@ -854,9 +885,13 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       />
                       <Tooltip
                         formatter={(value) =>
-                          typeof value === 'number' ? formatBasisPoints(value) : 'N/A'
+                          typeof value === 'number'
+                            ? formatBasisPoints(value)
+                            : 'N/A'
                         }
-                        labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                        labelFormatter={(label) =>
+                          formatDate(typeof label === 'string' ? label : '')
+                        }
                         contentStyle={{
                           backgroundColor: '#1F2937',
                           border: '1px solid #374151',
@@ -911,7 +946,9 @@ const MacroLiquidityTracker: React.FunctionComponent = () => {
                       formatter={(value) =>
                         typeof value === 'number' ? value.toFixed(2) : 'N/A'
                       }
-                      labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                      labelFormatter={(label) =>
+                        formatDate(typeof label === 'string' ? label : '')
+                      }
                       contentStyle={{
                         backgroundColor: '#1F2937',
                         border: '1px solid #374151',
