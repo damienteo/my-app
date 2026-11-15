@@ -23,7 +23,7 @@ const LocaleToggle: React.FunctionComponent<{
           checked={locale === 'jp'}
           onChange={toggleLocale}
         />
-        <div className="w-10 h-5 rounded-full peer dark:bg-white peer-checked:bg-white"></div>
+        <div className="w-10 h-5 rounded-full peer bg-white peer-checked:bg-white"></div>
         <div className="absolute left-1 top-1 w-3 h-3 bg-blue-900 rounded-full transition-transform peer-checked:translate-x-5"></div>
       </label>
       <span>日本語</span>
