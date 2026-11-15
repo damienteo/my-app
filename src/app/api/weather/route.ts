@@ -22,8 +22,8 @@ export async function GET() {
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${SHINJUKU_LAT}&lon=${SHINJUKU_LON}&appid=${OPENWEATHER_API_KEY}&units=metric`
 
     const [currentRes, forecastRes] = await Promise.all([
-      fetch(currentUrl),
-      fetch(forecastUrl),
+      fetch(currentUrl, { next: { revalidate: 600 } }),
+      fetch(forecastUrl, { next: { revalidate: 600 } }),
     ])
 
     if (!currentRes.ok || !forecastRes.ok) {

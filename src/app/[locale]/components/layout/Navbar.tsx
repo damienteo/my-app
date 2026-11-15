@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter, usePathname } from '@/src/i18n/navigation'
 import { useLocale } from 'next-intl'
 
-import { navLinks } from '../../../../../constants'
+import { navLinks } from '@/src/config/navLinks'
 
 const focusRing =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'

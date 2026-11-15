@@ -76,7 +76,7 @@ async function fetchHistoricalRates(
   for (const date of sampledDates) {
     try {
       const url = `https://api.currencyapi.com/v3/historical?apikey=${apiKey}&base_currency=USD&date=${date}&currencies=SGD,JPY`
-      const response = await fetch(url)
+      const response = await fetch(url, { next: { revalidate: 3600 } })
 
       if (response.ok) {
         const data = await response.json()
@@ -151,7 +151,9 @@ export async function GET(request: Request) {
   try {
     // Current rates - ExchangeRate-API (free, no key needed)
     const currentUrl = 'https://api.exchangerate-api.com/v4/latest/USD'
-    const currentRes = await fetch(currentUrl)
+    const currentRes = await fetch(currentUrl, {
+      next: { revalidate: 3600 },
+    })
 
     if (!currentRes.ok) {
       throw new Error('Failed to fetch current rates')

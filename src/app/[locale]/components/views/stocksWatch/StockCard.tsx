@@ -14,7 +14,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
-import { Stock } from '../../../../../../constants'
+import { Stock } from '@/src/config/stocks'
 
 interface StockQuote {
   c: number

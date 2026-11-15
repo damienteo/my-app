@@ -3,15 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Section } from '../../common'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts'
+import dynamic from 'next/dynamic'
+
+const PriceLineChart = dynamic(() => import('./PriceLineChart'), {
+  ssr: false,
+  loading: () => <div className="h-[300px]" />,
+})
 
 type Period = '1week' | '1month' | '3months' | '6months' | '1year'
 
@@ -94,7 +91,7 @@ const EthereumSection = () => {
 
   if (loading && !ethereum) {
     return (
-      <Section>
+      <Section className="min-h-[36rem]">
         <p className="text-gray-300">{t('loading')}</p>
       </Section>
     )
@@ -193,50 +190,12 @@ const EthereumSection = () => {
           {t('chartTitle')}
         </h3>
         {ethereum.historical.length > 0 ? (
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={ethereum.historical}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="var(--color-raised)"
-              />
-              <XAxis
-                dataKey="date"
-                tickFormatter={formatDate}
-                stroke="var(--color-muted)"
-                style={{ fontSize: '12px' }}
-                angle={-45}
-                textAnchor="end"
-                height={80}
-              />
-              <YAxis
-                stroke="var(--color-muted)"
-                style={{ fontSize: '12px' }}
-                tickFormatter={(value) => `$${formatPrice(value)}`}
-                domain={getYAxisDomain(ethereum.historical)}
-              />
-              <Tooltip
-                formatter={(value) =>
-                  typeof value === 'number' ? `$${formatPrice(value)}` : 'N/A'
-                }
-                labelFormatter={(label) =>
-                  formatDate(typeof label === 'string' ? label : '')
-                }
-                contentStyle={{
-                  backgroundColor: 'var(--color-surface)',
-                  border: '1px solid var(--color-raised)',
-                  borderRadius: '4px',
-                  color: 'var(--color-ink)',
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="var(--color-accent)" // Ethereum brand color
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <PriceLineChart
+            data={ethereum.historical}
+            formatDate={formatDate}
+            formatValue={(value) => `$${formatPrice(value)}`}
+            domain={getYAxisDomain(ethereum.historical)}
+          />
         ) : (
           <p className="text-gray-400 text-center py-8">
             {t('noHistoricalData')}
