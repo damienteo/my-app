@@ -222,10 +222,10 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                 tickFormatter={(value) => `$${value.toFixed(0)}`}
               />
               <Tooltip
-                formatter={(value: number | undefined) =>
-                  value !== undefined ? formatPrice(value) : 'N/A'
+                formatter={(value) =>
+                  typeof value === 'number' ? formatPrice(value) : 'N/A'
                 }
-                labelFormatter={(label) => formatDate(label)}
+                labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: '1px solid #374151',
@@ -300,11 +300,8 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                   tickFormatter={(value) => `$${value}M`}
                 />
                 <Tooltip
-                  formatter={(
-                    value: number | undefined,
-                    name: string | undefined
-                  ) => {
-                    if (value === undefined) return 'N/A'
+                  formatter={(value, name) => {
+                    if (typeof value !== 'number') return 'N/A'
                     const label =
                       name === 'revenue'
                         ? t('earnings.revenue')

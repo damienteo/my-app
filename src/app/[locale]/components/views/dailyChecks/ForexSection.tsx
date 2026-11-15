@@ -42,7 +42,7 @@ const ForexSection = () => {
 
   useEffect(() => {
     let isMounted = true
-    let abortController = new AbortController()
+    const abortController = new AbortController()
 
     const fetchForex = async () => {
       try {
@@ -204,10 +204,10 @@ const ForexSection = () => {
                   domain={getYAxisDomain(forex.historical.usdToSgd)}
                 />
                 <Tooltip
-                  formatter={(value: number | undefined) =>
-                    value !== undefined ? value.toFixed(4) : 'N/A'
+                  formatter={(value) =>
+                    typeof value === 'number' ? value.toFixed(4) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(label)}
+                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',
@@ -255,10 +255,10 @@ const ForexSection = () => {
                   domain={getYAxisDomain(forex.historical.sgdToJpy)}
                 />
                 <Tooltip
-                  formatter={(value: number | undefined) =>
-                    value !== undefined ? value.toFixed(2) : 'N/A'
+                  formatter={(value) =>
+                    typeof value === 'number' ? value.toFixed(2) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(label)}
+                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',
@@ -306,10 +306,10 @@ const ForexSection = () => {
                   domain={getYAxisDomain(forex.historical.usdToJpy)}
                 />
                 <Tooltip
-                  formatter={(value: number | undefined) =>
-                    value !== undefined ? value.toFixed(2) : 'N/A'
+                  formatter={(value) =>
+                    typeof value === 'number' ? value.toFixed(2) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(label)}
+                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',

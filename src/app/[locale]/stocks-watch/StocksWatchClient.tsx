@@ -85,6 +85,7 @@ const StocksWatchClient = () => {
     ...hedgeCategories,
   ].flatMap((category) => category.stocks.map((stock) => stock.symbol))
   const uniqueSymbols = Array.from(new Set(allSymbols))
+  const symbolsKey = uniqueSymbols.join(',')
 
   // Track API calls for rate limiting
   const trackApiCall = useCallback(() => {
@@ -144,7 +145,7 @@ const StocksWatchClient = () => {
         }
 
         trackApiCall()
-        const symbolsParam = uniqueSymbols.join(',')
+        const symbolsParam = symbolsKey
         // Route-side caching handles this (60s cache on server via revalidate)
         const res = await fetch(`/api/stocks/quotes?symbols=${symbolsParam}`)
 
@@ -184,7 +185,7 @@ const StocksWatchClient = () => {
         }
       }
     },
-    [uniqueSymbols.join(','), isCacheValid, trackApiCall]
+    [symbolsKey, isCacheValid, trackApiCall]
   )
 
   // Fetch historical data
@@ -238,7 +239,7 @@ const StocksWatchClient = () => {
         }
 
         trackApiCall()
-        const symbolsParam = uniqueSymbols.join(',')
+        const symbolsParam = symbolsKey
         console.log(
           `Fetching historical data for symbols: ${symbolsParam}, period: ${period}`
         )
@@ -292,7 +293,7 @@ const StocksWatchClient = () => {
         setLoadingHistorical(false)
       }
     },
-    [uniqueSymbols.join(','), period, isCacheValid, trackApiCall]
+    [symbolsKey, period, isCacheValid, trackApiCall]
   )
 
   // Fetch financial data
@@ -325,7 +326,7 @@ const StocksWatchClient = () => {
         }
 
         trackApiCall()
-        const symbolsParam = uniqueSymbols.join(',')
+        const symbolsParam = symbolsKey
         const res = await fetch(
           `/api/stocks/financials?symbols=${symbolsParam}`
         )
@@ -367,7 +368,7 @@ const StocksWatchClient = () => {
         console.warn('Error fetching financial data:', err)
       }
     },
-    [uniqueSymbols.join(','), isCacheValid, trackApiCall]
+    [symbolsKey, isCacheValid, trackApiCall]
   )
 
   // Fetch earnings data
@@ -401,7 +402,7 @@ const StocksWatchClient = () => {
         }
 
         trackApiCall()
-        const symbolsParam = uniqueSymbols.join(',')
+        const symbolsParam = symbolsKey
         const res = await fetch(`/api/stocks/earnings?symbols=${symbolsParam}`)
 
         if (!res.ok) {
@@ -441,7 +442,7 @@ const StocksWatchClient = () => {
         console.warn('Error fetching earnings data:', err)
       }
     },
-    [uniqueSymbols.join(','), isCacheValid, trackApiCall]
+    [symbolsKey, isCacheValid, trackApiCall]
   )
 
   // Initial load - quotes, historical data, financials, and earnings

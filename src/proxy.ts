@@ -11,7 +11,7 @@ function isSameOriginApiRequest(request: NextRequest) {
   return secFetchSite === 'same-origin' || secFetchSite === 'same-site'
 }
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (pathname.startsWith('/api/')) {
