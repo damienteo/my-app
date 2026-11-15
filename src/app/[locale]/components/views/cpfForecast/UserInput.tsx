@@ -142,7 +142,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   return (
     <>
       <Section>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
           {t('accountBalances.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('accountBalances.infoPopup.title')}>
@@ -173,7 +173,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </div>
       </Section>
       <Section>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
           {t('dateOfBirth.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('dateOfBirth.withdrawalInfo.title')}>
@@ -201,7 +201,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </div>
       </Section>
       <Section>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
           {t('salary.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('salary.contributionInfo.title')}>

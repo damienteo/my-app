@@ -34,9 +34,11 @@ const CPFForecastPageClient = () => {
         <Intro />
       </div>
 
-      <Paragraph className="mb-4">{t('lastChecked')}</Paragraph>
+      <Paragraph className="mb-4 text-justify hyphens-auto">
+        {t('lastChecked')}
+      </Paragraph>
 
-      <Paragraph className="mb-6">
+      <Paragraph className="mb-6 text-justify hyphens-auto">
         {t('frsAssumption.text')}{' '}
         <span className="inline-flex items-center">
           <InfoPopup title={t('frsAssumption.retirementAmounts.title')}>

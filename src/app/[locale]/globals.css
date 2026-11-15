@@ -43,7 +43,7 @@
 /* Noto is attached only on the Japanese locale, in the layout. An
    undefined `--font-noto` would invalidate the whole font-family, so
    English pages must not mention it. */
-html[lang='jp'] {
+html[lang='ja'] {
   --font-sans:
     var(--font-geist), var(--font-noto), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-grotesk), var(--font-noto), sans-serif;

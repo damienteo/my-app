@@ -62,9 +62,13 @@ export default async function RootLayout({
       ? (await import('./fonts/noto-sans-jp')).notoSansJp.variable
       : ''
 
+  // The URL locale is "jp", which is not a BCP 47 language tag. Hyphenation
+  // and justification follow the html lang: English is "en", Japanese is "ja".
+  const htmlLang = locale === 'jp' ? 'ja' : locale
+
   return (
     <html
-      lang={locale}
+      lang={htmlLang}
       className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${notoVariable}`}
     >
       <body className="font-sans antialiased">
