@@ -173,6 +173,9 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
               <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                 {t('specialAccount')}
               </th>
+              <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
+                {t('mediSaveAccount')}
+              </th>
               {data[1]?.retirementAccount !== undefined && (
                 <th className="px-6 py-3 border-b border-gray-700 text-gray-200 text-right">
                   {t('retirementAccount')}
@@ -194,6 +197,9 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
                 </td>
                 <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
                   {formatCurrency(row.specialAccount)}
+                </td>
+                <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">
+                  {formatCurrency(row.mediSaveAccount ?? 0)}
                 </td>
                 {row.retirementAccount !== undefined && (
                   <td className="px-6 py-4 border-b border-gray-700 text-gray-300 text-right">

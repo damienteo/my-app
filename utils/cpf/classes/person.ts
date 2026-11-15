@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
-import { getAge } from '../cpfForecast'
 import { withdrawalAge } from '../../../constants'
+import { cpfEffectiveAge, monthsUntilBirthdayMonth } from '../parameters'
 
 export type PersonValues = {
   selectedDate: Dayjs
@@ -9,12 +9,13 @@ export type PersonValues = {
   housingMonthlyPayment: string
   housingLoanTenure: string
   housingLoanDate: Dayjs
+  /** Date the projection starts. Defaults to today. */
+  asOf?: Dayjs
 }
 
 export class Person {
-  #age: number
   #birthDate: Dayjs
-  #date = dayjs()
+  #date: Dayjs
   #monthsTillWithdrawal: number
   #reachedWithdrawalAge = false
 
@@ -33,14 +34,18 @@ export class Person {
       housingMonthlyPayment,
       housingLoanTenure,
       housingLoanDate,
+      asOf,
     } = personValues
 
     this.#birthDate = dayjs(selectedDate)
-    this.#age = getAge(selectedDate, 'years')
-
-    const currentAgeInMonths = getAge(selectedDate, 'months')
-    const monthsTillWithdrawal = withdrawalAge * 12 - currentAgeInMonths
-    this.#monthsTillWithdrawal = monthsTillWithdrawal
+    this.#date = asOf ? dayjs(asOf) : dayjs()
+    // Frozen at the start so the results page can still say how long it was
+    // until 55 after the projection has run forward.
+    this.#monthsTillWithdrawal = monthsUntilBirthdayMonth(
+      this.#birthDate,
+      this.#date,
+      withdrawalAge
+    )
 
     this.#housingLumpSum = parseFloat(housingLumpSum)
     this.#housingLumpSumDate = dayjs(housingLumpSumDate).format('MMM YYYY')
@@ -51,13 +56,7 @@ export class Person {
   }
 
   updateTimePeriod() {
-    // Track progression of time
     this.#date = this.#date.add(1, 'month')
-
-    // Update Age if month of current date is same as month of birthdate
-    if (this.birthDate.month() === this.#date.month()) {
-      this.#age++
-    }
   }
 
   decrementLoanTenure() {
@@ -80,8 +79,17 @@ export class Person {
     return this.#date
   }
 
+  /** Completed years on the simulation date. Used for display. */
   get age() {
-    return this.#age
+    return this.#date.diff(this.#birthDate, 'year')
+  }
+
+  /**
+   * Age that selects the contribution band: completed years on the last day
+   * of the previous month, so the band changes the month after the birthday.
+   */
+  get contributionAge() {
+    return cpfEffectiveAge(this.#birthDate, this.#date)
   }
 
   get monthsTillWithdrawal() {

@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { CPFAccount } from './classes'
-import { cpfAllocation, withdrawalAge, payoutAge } from '../../constants'
 import { AccountValues, ComparisonValues } from './types'
+import { contributionBand } from './parameters'
 
 export const roundTo2Dec = (value: string) => {
   const isLeadingWithZero = value[0] === '0' && value[1] === '.'
@@ -21,100 +21,52 @@ export const roundTo2Dec = (value: string) => {
   return nextValue
 }
 
-export const getAge = (selectedDate: Dayjs, timePeriod: 'years' | 'months') => {
-  const current = dayjs()
-  const birthday = dayjs(selectedDate)
-  const duration = current.diff(birthday, timePeriod)
-  return duration
+export const getAge = (
+  selectedDate: Dayjs,
+  timePeriod: 'years' | 'months',
+  asOf: Dayjs = dayjs()
+) => {
+  return asOf.diff(dayjs(selectedDate), timePeriod)
 }
 
-export const getMonthsTillEOY = (date = dayjs()) => {
-  const endOfYear = dayjs().endOf('year')
-  const monthsTillInterest = endOfYear.diff(date, 'months')
-
-  return monthsTillInterest
+/**
+ * `effectiveAge` is completed years on the last day of the previous month.
+ * The band therefore changes in the month after the birthday, not during it.
+ */
+export const getCPFAllocation = (
+  effectiveAge: number,
+  onDate: Dayjs = dayjs()
+) => {
+  return contributionBand(onDate, effectiveAge)
 }
 
-export const getCPFAllocation = (age: number) => {
-  if (age <= 35) return cpfAllocation['35AndBelow']
-
-  if (age >= 36 && age <= 45) return cpfAllocation['36to45']
-
-  if (age >= 46 && age <= 50) return cpfAllocation['46to50']
-
-  if (age >= 51 && age <= 55) return cpfAllocation['51to55']
-
-  if (age >= 56 && age <= 60) return cpfAllocation['56to60']
-
-  if (age >= 61 && age <= 65) return cpfAllocation['61to65']
-
-  return cpfAllocation['66andAbove']
+const projectAccount = (values: AccountValues) => {
+  const account = new CPFAccount(values)
+  const monthsBeforeWithdrawal = account.monthsUntilWithdrawalMonth()
+  if (monthsBeforeWithdrawal > 0) {
+    account.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
+  }
+  account.updateAccountsAtWithdrawalAge()
+  const monthsUntilPayout = account.monthsUntilPayoutMonth()
+  if (monthsUntilPayout > 0) {
+    account.addSalaryAndInterestOverTime(monthsUntilPayout, true)
+  }
+  return account
 }
 
 export const calculateFutureValues = (values: AccountValues) => {
-  const newAccount = new CPFAccount(values)
-
-  // CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually. CPF interest earned in 2019 will be credited to members’ CPF accounts by the end of 1 January 2020(https://www.cpf.gov.sg/members/FAQ/schemes/other-matters/others/FAQDetails?category=other+matters&group=Others&ajfaqid=2192131&folderid=13726).
-
-  // Add simple interest based on months, and add interest to sum annually every 1st Jan
-
-  // Calculate salary contributions and interest until the end of the year
-  // FIXME: Should not get months till EOY if subject is already 55 years old
-  const monthsTillEOY = getMonthsTillEOY()
-  newAccount.addSalaryAndInterestOverTime(monthsTillEOY)
-
-  // Calculate number of years left in which salary contributions and interest is added to account at end of the year
-  const monthsOfInterestAfterThisYear =
-    newAccount.monthsTillWithdrawal - monthsTillEOY
-  const remainingMonths = monthsOfInterestAfterThisYear % 12
-  const monthsOfFullYears = monthsOfInterestAfterThisYear - remainingMonths
-  // Calculate salary contributions and interests for the remaining full years
-  newAccount.addSalaryAndInterestOverTime(monthsOfFullYears)
-
-  // Calculate salary contributions and interest for the remaining months until 55
-  newAccount.addSalaryAndInterestOverTime(remainingMonths)
-
-  newAccount.updateAccountsAtWithdrawalAge()
-
-  // Calculate number of months from withdrawal age (currently 55) till payoutAge (currently 65), which is when CPF LIFE starts
-  // Update balance till EOY of withdrawal year
-  const { selectedDate } = values
-  const monthsTillEndOfWithdrawalYear = getMonthsTillEOY(selectedDate) % 12
-  newAccount.addSalaryAndInterestOverTime(monthsTillEndOfWithdrawalYear)
-
-  // Update balance for remaining full years
-  const periodTillPayout = (payoutAge - withdrawalAge) * 12
-  const monthsAfterWithdrawalYear =
-    periodTillPayout - monthsTillEndOfWithdrawalYear
-  const remainingMonthsOfWithDrawalPeriod = monthsAfterWithdrawalYear % 12
-  const monthsOfFullYearsAfterWithdrawalYear =
-    monthsAfterWithdrawalYear - remainingMonthsOfWithDrawalPeriod
-
-  newAccount.addSalaryAndInterestOverTime(monthsOfFullYearsAfterWithdrawalYear)
-
-  // Update balance for remaining months
-  newAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
+  const account = projectAccount(values)
 
   let comparisonValues: ComparisonValues = undefined
   if (values.specialAccountOnly) {
-    const nextValues = { ...values, specialAccountOnly: false }
-    const nextAccount = new CPFAccount(nextValues)
-    nextAccount.addSalaryAndInterestOverTime(monthsTillEOY)
-    nextAccount.addSalaryAndInterestOverTime(monthsOfFullYears)
-    nextAccount.addSalaryAndInterestOverTime(remainingMonths)
-    nextAccount.updateAccountsAtWithdrawalAge()
-    nextAccount.addSalaryAndInterestOverTime(monthsTillEndOfWithdrawalYear)
-    nextAccount.addSalaryAndInterestOverTime(
-      monthsOfFullYearsAfterWithdrawalYear
-    )
-    nextAccount.addSalaryAndInterestOverTime(remainingMonthsOfWithDrawalPeriod)
+    const comparison = projectAccount({ ...values, specialAccountOnly: false })
     const {
       ordinaryAccount,
       specialAccount,
       retirementAccount,
       ordinaryAccountAtWithdrawalAge,
       specialAccountAtWithdrawalAge,
-    } = nextAccount.accountValues
+    } = comparison.accountValues
     comparisonValues = {
       ordinaryAccount,
       specialAccount,
@@ -124,8 +76,5 @@ export const calculateFutureValues = (values: AccountValues) => {
     }
   }
 
-  const prevValues = newAccount.accountValues
-  const nextValues = { ...prevValues, comparisonValues }
-
-  return nextValues
+  return { ...account.accountValues, comparisonValues }
 }

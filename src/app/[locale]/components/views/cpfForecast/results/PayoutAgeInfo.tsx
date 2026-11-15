@@ -40,22 +40,18 @@ const PayoutAgeInfo: React.FunctionComponent<PayoutAgeInfoProps> = (props) => {
           ordinaryAmount: formatCurrency(futureValues.ordinaryAccount),
           specialAmount: formatCurrency(futureValues.specialAccount),
           retirementAmount: formatCurrency(futureValues.retirementAccount),
+          mediSaveAmount: formatCurrency(futureValues.mediSaveAccount),
         })}
         <InfoPopup title={t('title')}>
           <Paragraph className="text-sm my-6 text-gray-300">
-            {t('retirementAccount')}{' '}
-            <ExternalLink
-              url="https://www.cpf.gov.sg/members/FAQ/schemes/retirement/retirement-sum-scheme/FAQDetails?category=retirement&group=Retirement+Sum+Scheme&ajfaqid=2190582&folderid=18088"
-              label={t('retirementAccount')}
-            />{' '}
             {t('retirementAccountText')}{' '}
             <ExternalLink
-              url="https://www.areyouready.sg/YourInfoHub/Pages/News-3-questions-about-CPF-withdrawals-from-age-55.aspx"
-              label={t('transferred')}
-            />{' '}
-            {t('payouts')}{' '}
+              url="https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-55"
+              label={t('retirementAccount')}
+            />
+            . {t('payouts')}{' '}
             <ExternalLink
-              url="https://www.cpf.gov.sg/Members/Schemes/schemes/retirement/cpf-life"
+              url="https://www.cpf.gov.sg/member/retirement-income/monthly-payouts/cpf-life"
               label={t('monthlyPayouts')}
             />{' '}
             {t('fromAge65')}

@@ -1,38 +1,59 @@
-import { cpfInterestRates, cpfValues } from '../../../constants'
 import { normalRound } from '../../utils'
+import {
+  AccountBalances,
+  ContributionSplit,
+  monthlyInterest,
+} from '../parameters'
 
-const { bonusAmtCap, extraBonusAmtCap } = cpfValues
+export interface CreditOptions {
+  redirectOrdinaryToSpecial: boolean
+  basicHealthcareSum: number
+  retirementAccountOpen: boolean
+}
 
-const {
-  ordinaryInterestRate,
-  specialInterestRate,
-  retirementInterestRate,
-  bonusOrdinaryInterestRate,
-  bonusSpecialInterestRate,
-  bonusRetirementInterestRate,
-  extraBonusOrdinaryInterestRate,
-  extraBonusSpecialInterestRate,
-  extraBonusRetirementInterestRate,
-} = cpfInterestRates
+export interface InterestCreditOptions {
+  basicHealthcareSum?: number
+  retirementAccountOpen?: boolean
+}
 
+/**
+ * Ordinary, Special, MediSave and Retirement balances.
+ *
+ * From 2025 the Special Account closes at 55. Savings go to the Retirement
+ * Account up to the cohort Full Retirement Sum, and whatever is left in the
+ * Special Account moves to the Ordinary Account. If the Retirement Account
+ * is still short of the Full Retirement Sum, Ordinary Account savings make
+ * up the difference.
+ * https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-55
+ *
+ * MediSave above the Basic Healthcare Sum flows to the Special Account
+ * before 55, or to the Retirement Account from 55. Once the Full Retirement
+ * Sum is set aside, that overflow goes to the Ordinary Account.
+ * https://www.cpf.gov.sg/member/infohub/educational-resources/2-things-you-should-know-about-your-medisave-savings-once-it-reaches-the-basic-healthcare-sum
+ */
 export class Accounts {
   #ordinaryAccount: number
   #specialAccount: number
+  #mediSaveAccount: number
   #retirementAccount = 0
+  #cohortFullRetirementSum = 0
   #ordinaryAccountAtWithdrawalAge = 0
   #specialAccountAtWithdrawalAge = 0
+  #mediSaveAccountAtWithdrawalAge = 0
 
   #accruedOrdinaryInterest = 0
   #accruedSpecialInterest = 0
+  #accruedMediSaveInterest = 0
   #accruedRetirementInterest = 0
 
   constructor(
     ordinaryAccount: number,
     specialAccount: number,
-    specialAccountOnly: boolean
+    specialAccountOnly: boolean,
+    mediSaveAccount = 0
   ) {
+    this.#mediSaveAccount = mediSaveAccount
     if (specialAccountOnly) {
-      // Transfer funds from Ordinary Account to Special Account
       this.#ordinaryAccount = 0
       this.#specialAccount = specialAccount + ordinaryAccount
     } else {
@@ -42,224 +63,177 @@ export class Accounts {
   }
 
   updateAccountsAtWithdrawalAge(fullRetirementSum: number) {
-    // Set snapshot of OA and SA amounts at Withdrawal Age
+    this.#cohortFullRetirementSum = fullRetirementSum
     this.#ordinaryAccountAtWithdrawalAge = this.#ordinaryAccount
     this.#specialAccountAtWithdrawalAge = this.#specialAccount
+    this.#mediSaveAccountAtWithdrawalAge = this.#mediSaveAccount
 
-    // FRS takes money from Special Account (SA) before Ordinary Account (OA)
-    const isSpecialEnoughForRetirement =
-      this.#specialAccount > fullRetirementSum
+    const specialToRetirement = Math.min(
+      this.#specialAccount,
+      fullRetirementSum
+    )
+    this.#specialAccount = normalRound(
+      this.#specialAccount - specialToRetirement
+    )
+    this.#retirementAccount = normalRound(
+      this.#retirementAccount + specialToRetirement
+    )
 
-    // Calculate amounts to be transferred from SA to RA
-    const specialToRetirementAmount = isSpecialEnoughForRetirement
-      ? fullRetirementSum
-      : this.#specialAccount
+    // The Special Account is closed. Any savings above the Full Retirement
+    // Sum move to the Ordinary Account instead of staying in the SA.
+    this.#ordinaryAccount = normalRound(
+      this.#ordinaryAccount + this.#specialAccount
+    )
+    this.#specialAccount = 0
 
-    // Calculate amounts to be transferred from OA to RA
-    const retirementSumShortfall = fullRetirementSum - specialToRetirementAmount
-    const ordinaryToRetirementAmount =
-      this.#ordinaryAccount > retirementSumShortfall
-        ? retirementSumShortfall
-        : this.#ordinaryAccount
+    // The Special Account is closed. Interest already earned on it this year
+    // has not been credited yet, so it follows the savings into the RA.
+    this.#accruedRetirementInterest = normalRound(
+      this.#accruedRetirementInterest + this.#accruedSpecialInterest
+    )
+    this.#accruedSpecialInterest = 0
 
-    //  Remove SA and OA Amounts to be transferred to RA
-    this.#specialAccount -= specialToRetirementAmount
-    this.#ordinaryAccount -= ordinaryToRetirementAmount
-
-    this.#retirementAccount =
-      specialToRetirementAmount + ordinaryToRetirementAmount
+    const shortfall = fullRetirementSum - this.#retirementAccount
+    if (shortfall > 0) {
+      const ordinaryToRetirement = Math.min(this.#ordinaryAccount, shortfall)
+      this.#ordinaryAccount = normalRound(
+        this.#ordinaryAccount - ordinaryToRetirement
+      )
+      this.#retirementAccount = normalRound(
+        this.#retirementAccount + ordinaryToRetirement
+      )
+    }
   }
 
-  accrueRAInterest() {
-    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
-
-    // Take note of Retirement Account eligible for Extra Bonus Rate, by taking out extraEligibleRetirementAmount from  this.#accounts.retirementAccount
-    const extraEligibleRetirementAmount =
-      this.#retirementAccount > extraBonusAmtCap
-        ? extraBonusAmtCap
-        : this.#retirementAccount
-
-    //Calculate Extra-Bonus Interest for Retirement Account
-    const extraBonusRetirementInterest = normalRound(
-      extraEligibleRetirementAmount * extraBonusRetirementInterestRate
+  /**
+   * Credit one month's contribution after MediSave and Retirement Account caps.
+   * Returns the amount that landed in each account.
+   */
+  creditContribution(
+    split: ContributionSplit,
+    options: CreditOptions
+  ): ContributionSplit {
+    let ordinary = split.ordinary
+    let special = split.special
+    const retirement = split.retirement
+    const mediSaveRoom = Math.max(
+      0,
+      options.basicHealthcareSum - this.#mediSaveAccount
+    )
+    const mediSaveCredited = Math.min(split.mediSave, mediSaveRoom)
+    const mediSaveOverflow = normalRound(split.mediSave - mediSaveCredited)
+    this.#mediSaveAccount = normalRound(
+      this.#mediSaveAccount + mediSaveCredited
     )
 
-    // Take note of Retirement Account eligible for normal Bonus Rate, by taking out eligibleRetirementAmount from  this.#retirementAccount
-    const nonExtraBonusCap = bonusAmtCap - extraBonusAmtCap
-    const excessRetirementAmount =
-      this.#retirementAccount - extraEligibleRetirementAmount
-
-    // Take note of Retirement Account eligible for only the normal Bonus Rate,
-
-    const eligibleRetirementAmount =
-      excessRetirementAmount >= nonExtraBonusCap
-        ? nonExtraBonusCap
-        : excessRetirementAmount
-
-    //Calculate Normal Bonus Interest for Retirement Account
-    const bonusRetirementInterest = normalRound(
-      eligibleRetirementAmount * bonusRetirementInterestRate
-    )
-
-    // Take note of Amount in Special Account NOT eligible for Bonus Interest
-    const nonBonusRetirementAmount =
-      excessRetirementAmount - eligibleRetirementAmount
-
-    //Calculate Normal Interest for Retirement Account
-    const nonBonusRetirementInterest = normalRound(
-      nonBonusRetirementAmount * retirementInterestRate
-    )
-
-    // Accrue RA interest
-    this.#accruedRetirementInterest += normalRound(
-      extraBonusRetirementInterest +
-        bonusRetirementInterest +
-        nonBonusRetirementInterest
-    )
-  }
-
-  accrueBonusOAInterest(eligibleOrdinaryAmount: number) {
-    // Not yet reached 55
-    const bonusInterest = normalRound(
-      eligibleOrdinaryAmount * bonusOrdinaryInterestRate
-    )
-
-    // Accrue SA interest from OA Bonus Interest
-    this.#accruedSpecialInterest = this.#accruedSpecialInterest + bonusInterest
-  }
-
-  accrueBonusOAInterestAfterWithdrawalAge(eligibleOrdinaryAmount: number) {
-    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
-    // extraBonusAmtCap is the cap for extra bonus
-    // nextBonusAmtCap is the amount that can still be applied for bonus interest (need to take RA into account)
-    const nextExtraBonusAmountCap =
-      this.#retirementAccount > extraBonusAmtCap
-        ? 0
-        : extraBonusAmtCap - this.#retirementAccount
-
-    // Check if nextOrdinaryAmountCap falls within the Extra Bonus Amount
-    // Calculate OA eligible for extra bonus interest
-    const extraBonusOrdinaryAmount =
-      eligibleOrdinaryAmount > nextExtraBonusAmountCap
-        ? nextExtraBonusAmountCap
-        : 0
-
-    // Calculate extra bonus interest
-    const extraBonusInterest = normalRound(
-      extraBonusOrdinaryAmount * extraBonusOrdinaryInterestRate
-    )
-
-    //Calculate OA eligible for normal bonus interest
-    const bonusOrdinaryAmount =
-      eligibleOrdinaryAmount - extraBonusOrdinaryAmount
-
-    // Calculate normal bonus interest
-    const bonusInterest = normalRound(
-      bonusOrdinaryAmount * bonusOrdinaryInterestRate
-    )
-
-    // Accrue RA interest from OA Bonus interest
-    // Bonus Interest from the Ordinary Account iRetirement Account (if 55 and above)
-    this.#accruedRetirementInterest += extraBonusInterest + bonusInterest
-  }
-
-  accrueSAInterest(eligibleSpecialAmountCap: number) {
-    // Take note of Amount in Special Account eligible for Normal Bonus Interest
-    const eligibleSpecialAmount =
-      this.#specialAccount >= eligibleSpecialAmountCap
-        ? eligibleSpecialAmountCap
-        : this.#specialAccount
-
-    // Take note of Amount in Special Account NOT eligible for Bonus Interest
-    const nonBonusSpecialAmount = this.#specialAccount - eligibleSpecialAmount
-
-    // Settle Interest for Special Account
-    const bonusSpecialInterest = normalRound(
-      eligibleSpecialAmount * bonusSpecialInterestRate
-    )
-    const nonBonusSpecialInterest = normalRound(
-      nonBonusSpecialAmount * specialInterestRate
-    )
-
-    // Accrue SA interest
-    this.#accruedSpecialInterest += normalRound(
-      bonusSpecialInterest + nonBonusSpecialInterest
-    )
-  }
-
-  accrueSAInterestAfterWithdrawalAge(eligibleSpecialAmountCap: number) {
-    // Bonus Interest is different for the first $30,000 of the bonus cap (if 55 and above)
-    // Take note of Cap for Extra Bonus Interest
-    const totalRAandOA = this.#ordinaryAccount + this.#retirementAccount
-    const specialAccountExtraBonusAmountCap =
-      totalRAandOA > extraBonusAmtCap ? 0 : extraBonusAmtCap - totalRAandOA
-
-    // Take note of Amount in Special Account eligible for Extra Bonus Interest
-    const extraBonusSpecialAmount =
-      this.#specialAccount >= specialAccountExtraBonusAmountCap
-        ? specialAccountExtraBonusAmountCap
-        : this.#specialAccount
-
-    // Take note of Special Amount after removing amount to calculate extra bonus. The lowest value here is 0
-    const specialAmountWithoutExtraBonus =
-      this.#specialAccount - extraBonusSpecialAmount
-
-    // Take note of Amount in Special Account eligible for Normal Bonus Interest
-    const nextEligibleSpecialAmountCap =
-      eligibleSpecialAmountCap - specialAccountExtraBonusAmountCap
-
-    // Both specialAmountWithoutExtraBonus and nextEligibleSpecialAmountCap may be 0 if bonus cap was cleared by OA and RA
-    // If the special amount, after removing the extra bonus is more than or equal to the amount cap for calculating normal bonus interest, the eligible amount is the amount cap.
-    const eligibleSpecialAmount =
-      specialAmountWithoutExtraBonus >= nextEligibleSpecialAmountCap
-        ? nextEligibleSpecialAmountCap
-        : specialAmountWithoutExtraBonus
-
-    // Take note of Amount in Special Account NOT eligible for Bonus Interest
-    const nonBonusSpecialAmount =
-      specialAmountWithoutExtraBonus - eligibleSpecialAmount
-
-    // Settle Interest for Special Account
-    const extraBonusInterest = normalRound(
-      extraBonusSpecialAmount * extraBonusSpecialInterestRate
-    )
-    const bonusSpecialInterest = normalRound(
-      eligibleSpecialAmount * bonusSpecialInterestRate
-    )
-    const nonBonusSpecialInterest = normalRound(
-      nonBonusSpecialAmount * specialInterestRate
-    )
-
-    // Accrue SA interest
-    this.#accruedSpecialInterest += normalRound(
-      extraBonusInterest + bonusSpecialInterest + nonBonusSpecialInterest
-    )
-  }
-
-  accrueOAInterest() {
-    this.#accruedOrdinaryInterest += normalRound(
-      this.#ordinaryAccount * ordinaryInterestRate
-    )
-  }
-
-  addInterestToAccounts() {
-    const accruedInterestPresent =
-      this.#accruedOrdinaryInterest > 0 ||
-      this.#accruedSpecialInterest > 0 ||
-      this.#accruedRetirementInterest > 0
-
-    // Update history  and accrued amounts only if there is an addition of interest to the balance
-    if (accruedInterestPresent) {
-      // Add interest to accounts
-      this.#ordinaryAccount += normalRound(this.#accruedOrdinaryInterest)
-      this.#specialAccount += normalRound(this.#accruedSpecialInterest)
-      this.#retirementAccount += normalRound(this.#accruedRetirementInterest)
+    if (options.redirectOrdinaryToSpecial && !options.retirementAccountOpen) {
+      special = normalRound(special + ordinary)
+      ordinary = 0
     }
 
-    // Reset accrued interest back to 0 for the new year
+    if (!options.retirementAccountOpen) {
+      special = normalRound(special + mediSaveOverflow)
+      this.#ordinaryAccount = normalRound(this.#ordinaryAccount + ordinary)
+      this.#specialAccount = normalRound(this.#specialAccount + special)
+      return {
+        ordinary,
+        special,
+        retirement: 0,
+        mediSave: mediSaveCredited,
+        total: split.total,
+      }
+    }
+
+    const savings = normalRound(retirement + mediSaveOverflow)
+    const retirementRoom = Math.max(
+      0,
+      this.#cohortFullRetirementSum - this.#retirementAccount
+    )
+    const retirementCredited = Math.min(savings, retirementRoom)
+    const retirementOverflow = normalRound(savings - retirementCredited)
+    this.#retirementAccount = normalRound(
+      this.#retirementAccount + retirementCredited
+    )
+    ordinary = normalRound(ordinary + retirementOverflow)
+    this.#ordinaryAccount = normalRound(this.#ordinaryAccount + ordinary)
+
+    return {
+      ordinary,
+      special: 0,
+      retirement: retirementCredited,
+      mediSave: mediSaveCredited,
+      total: split.total,
+    }
+  }
+
+  accrueMonthlyInterest(aged55OrAbove: boolean) {
+    const interest = monthlyInterest(this.balances, aged55OrAbove)
+    this.#accruedOrdinaryInterest = normalRound(
+      this.#accruedOrdinaryInterest + interest.ordinary
+    )
+    this.#accruedSpecialInterest = normalRound(
+      this.#accruedSpecialInterest + interest.special
+    )
+    this.#accruedMediSaveInterest = normalRound(
+      this.#accruedMediSaveInterest + interest.mediSave
+    )
+    this.#accruedRetirementInterest = normalRound(
+      this.#accruedRetirementInterest + interest.retirement
+    )
+  }
+
+  addInterestToAccounts(options: InterestCreditOptions = {}) {
+    this.#ordinaryAccount = normalRound(
+      this.#ordinaryAccount + this.#accruedOrdinaryInterest
+    )
+    this.#specialAccount = normalRound(
+      this.#specialAccount + this.#accruedSpecialInterest
+    )
+    this.#retirementAccount = normalRound(
+      this.#retirementAccount + this.#accruedRetirementInterest
+    )
+    this.#mediSaveAccount = normalRound(
+      this.#mediSaveAccount + this.#accruedMediSaveInterest
+    )
+
+    const bhs = options.basicHealthcareSum
+    if (bhs !== undefined && this.#mediSaveAccount > bhs) {
+      const overflow = normalRound(this.#mediSaveAccount - bhs)
+      this.#mediSaveAccount = bhs
+      this.#redirectOverflow(overflow, Boolean(options.retirementAccountOpen))
+    }
+
     this.#accruedOrdinaryInterest = 0
     this.#accruedSpecialInterest = 0
+    this.#accruedMediSaveInterest = 0
     this.#accruedRetirementInterest = 0
+  }
+
+  #redirectOverflow(overflow: number, retirementAccountOpen: boolean) {
+    if (!retirementAccountOpen) {
+      this.#specialAccount = normalRound(this.#specialAccount + overflow)
+      return
+    }
+    const room = Math.max(
+      0,
+      this.#cohortFullRetirementSum - this.#retirementAccount
+    )
+    const toRetirement = Math.min(overflow, room)
+    this.#retirementAccount = normalRound(
+      this.#retirementAccount + toRetirement
+    )
+    this.#ordinaryAccount = normalRound(
+      this.#ordinaryAccount + (overflow - toRetirement)
+    )
+  }
+
+  private get balances(): AccountBalances {
+    return {
+      ordinary: this.#ordinaryAccount,
+      special: this.#specialAccount,
+      mediSave: this.#mediSaveAccount,
+      retirement: this.#retirementAccount,
+    }
   }
 
   set ordinaryAccount(value: number) {
@@ -310,6 +284,26 @@ export class Accounts {
     return this.#accruedSpecialInterest
   }
 
+  set mediSaveAccount(value: number) {
+    this.#mediSaveAccount = value
+  }
+
+  get mediSaveAccount() {
+    return this.#mediSaveAccount
+  }
+
+  get mediSaveAccountAtWithdrawalAge() {
+    return this.#mediSaveAccountAtWithdrawalAge
+  }
+
+  set accruedMediSaveInterest(value: number) {
+    this.#accruedMediSaveInterest = value
+  }
+
+  get accruedMediSaveInterest() {
+    return this.#accruedMediSaveInterest
+  }
+
   set retirementAccount(value: number) {
     this.#retirementAccount = value
   }
@@ -324,5 +318,9 @@ export class Accounts {
 
   get accruedRetirementInterest() {
     return this.#accruedRetirementInterest
+  }
+
+  get cohortFullRetirementSum() {
+    return this.#cohortFullRetirementSum
   }
 }

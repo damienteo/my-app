@@ -72,6 +72,18 @@ describe('Accounts', () => {
     expect(newAccounts.specialAccountAtWithdrawalAge).toBe(10000)
   })
 
+  test('Closes the Special Account when it is above the Full Retirement Sum', () => {
+    const accounts = new Accounts(50000, 300000, false)
+    accounts.updateAccountsAtWithdrawalAge(220400)
+
+    // SA 300000 fills the 2026 FRS of 220400. The remaining 79600 moves to OA.
+    expect(accounts.retirementAccount).toBe(220400)
+    expect(accounts.specialAccount).toBe(0)
+    expect(accounts.ordinaryAccount).toBe(129600)
+    expect(accounts.specialAccountAtWithdrawalAge).toBe(300000)
+    expect(accounts.ordinaryAccountAtWithdrawalAge).toBe(50000)
+  })
+
   test('Adds Accrued Interest to Respective Accounts', () => {
     newAccounts.ordinaryAccount = 3000
     newAccounts.specialAccount = 4000

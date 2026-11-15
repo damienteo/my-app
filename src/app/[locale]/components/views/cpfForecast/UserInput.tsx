@@ -18,11 +18,7 @@ import {
   AccountValues,
   FutureValues,
 } from '../../../../../../utils/cpf/types'
-import {
-  cpfAccounts,
-  momentMonths,
-  withdrawalAge,
-} from '../../../../../../constants'
+import { cpfAccounts, withdrawalAge } from '../../../../../../constants'
 import * as gtag from '../../../../../../lib/gtag'
 
 interface UserInputProps {
@@ -40,6 +36,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   const [values, setValues] = useState<Values>({
     ordinaryAccount: '0',
     specialAccount: '0',
+    mediSaveAccount: '0',
     monthlySalary: '0',
     monthsOfBonus: '0',
     bonusMonth: '0',
@@ -165,11 +162,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             <div key={account.field}>
               <CurrencyInput
                 value={values[account.field]}
-                label={
-                  account.field === 'ordinaryAccount'
-                    ? t('accountBalances.ordinaryAccount')
-                    : t('accountBalances.specialAccount')
-                }
+                label={t(`accountBalances.${account.field}`)}
                 field={account.field}
                 error={Boolean(errors[account.field])}
                 helperText={errors[account.field]}
@@ -213,20 +206,19 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           <span className="inline-flex items-center">
             <InfoPopup title={t('salary.contributionInfo.title')}>
               <p className="text-gray-300">
-                {t('salary.contributionInfo.when55')}{' '}
                 <ExternalLink
                   url="https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay"
                   label={t('salary.contributionInfo.when55')}
                 />
                 {t('salary.contributionInfo.employerContribution')}
               </p>
-              <p className="text-gray-300">
-                {t('salary.contributionInfo.owCeiling')}{' '}
+              <p className="text-gray-300 mt-3">
+                {t('salary.contributionInfo.owCeilingText')}{' '}
                 <ExternalLink
-                  url="https://www.cpf.gov.sg/employer/employer-obligations/what-payments-attract-cpf-contributions#section-header-1659668379"
+                  url="https://www.cpf.gov.sg/member/infohub/news/cpf-related-announcements/budget-highlights-2023"
                   label={t('salary.contributionInfo.owCeiling')}
-                />{' '}
-                {t('salary.contributionInfo.owCeilingText')}
+                />
+                .
               </p>
             </InfoPopup>
           </span>

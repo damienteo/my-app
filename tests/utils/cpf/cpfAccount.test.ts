@@ -231,16 +231,18 @@ describe('CPFAccount should have relevant entries in histories if there is at le
   })
 })
 
-describe('CPFAccount should not have contributions in history after withdrawal age if updateAccountsAtWithdrawalAge method not called', () => {
+describe('CPFAccount opens the Retirement Account once the above-55 band applies, even if the caller has not asked yet', () => {
   beforeAll(() => {
     instance = new CPFAccount(normalValues)
     instance.addSalaryAndInterestOverTime(monthsBeforeWithdrawal)
     instance.addSalaryAndInterestOverTime(monthsAfterWithdrawal)
   })
 
-  it('historyAfterWithdrawalAge should not have any entries', async () => {
+  it('historyAfterWithdrawalAge records the Special Account closure', async () => {
     const accountValues = instance.accountValues
-    expect(accountValues.historyAfterWithdrawalAge.length).toEqual(0)
+    expect(accountValues.historyAfterWithdrawalAge.length).toBeGreaterThan(0)
+    expect(accountValues.historyAfterWithdrawalAge[0].category).toBe('Transfer')
+    expect(accountValues.specialAccount).toBe(0)
   })
 })
 
@@ -345,7 +347,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     const { history } = instance.accountValues
 
-    expect(history[0]).toEqual(housingHistoryEntry)
+    expect(history[0]).toEqual(expect.objectContaining(housingHistoryEntry))
   })
 
   it('History will have a Housing Entry with correct Date and Amount deducted', async () => {
@@ -375,7 +377,9 @@ describe('CPFAccount should have entries in history which show deduction of hous
         entry.date === nextDateIn2years && entry.category === 'Housing Lump Sum'
     )
 
-    expect(housingEntry).toEqual(nextHousingHistoryEntry)
+    expect(housingEntry).toEqual(
+      expect.objectContaining(nextHousingHistoryEntry)
+    )
   })
 
   it('Housing Entry will be in HistoryAfterWithdrawalAge, not History, with correct Date and Amount deducted if the Housing Loan Date is after withdrawal age', async () => {
@@ -417,7 +421,7 @@ describe('CPFAccount should have entries in history which show deduction of hous
       )
 
     expect(housingEntryInHistoryAfterWithdrawalAge).toEqual(
-      nextHousingHistoryEntry
+      expect.objectContaining(nextHousingHistoryEntry)
     )
   })
 
@@ -509,7 +513,9 @@ describe('CPFAccount should have entries in history which show deduction of hous
 
     expect(history[0].ordinaryAccount).toEqual(0)
 
-    expect(historyAfterWithdrawalAge[0].ordinaryAccount).toEqual(0)
+    const transfer = historyAfterWithdrawalAge[0]
+    expect(transfer.category).toBe('Transfer')
+    expect(transfer.specialAccount).toEqual(0)
   })
 
   // TODO: Write tests for housing loan
