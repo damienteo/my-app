@@ -19,6 +19,8 @@ const CPFForecastPageClient = () => {
     ordinaryAccountAtWithdrawalAge: 0,
     specialAccountAtWithdrawalAge: 0,
     mediSaveAccountAtWithdrawalAge: 0,
+    cohortYear: 0,
+    fullRetirementSum: 0,
     history: [],
     historyAfterWithdrawalAge: [],
     monthlySalary: 0,

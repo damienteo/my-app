@@ -359,6 +359,11 @@ const publishedRetirementSums: Record<number, RetirementSums> = {
 
 const lastPublishedCohort = 2027
 
+/** Cohorts after the last published year use the 3.5% projection. */
+export const isProjectedRetirementCohort = (yearTurning55: number) => {
+  return yearTurning55 > lastPublishedCohort
+}
+
 /**
  * After 2027, grow the 2027 Basic Retirement Sum by 3.5% a year and round to
  * the nearest $100. FRS stays at 2 times BRS and ERS at 4 times BRS.

@@ -23,6 +23,8 @@ export class CPFAccount {
   #errors: ErrorValues = {}
   #specialAccountOnly: boolean
   #retirementAccountOpened = false
+  #cohortYear = 0
+  #fullRetirementSum = 0
 
   constructor(values: AccountValues) {
     const {
@@ -108,6 +110,8 @@ export class CPFAccount {
 
     const cohortYear = this.#person.birthDate.year() + withdrawalAge
     const { frs } = retirementSumsForCohort(cohortYear)
+    this.#cohortYear = cohortYear
+    this.#fullRetirementSum = frs
     this.#accounts.updateAccountsAtWithdrawalAge(frs)
     this.#person.setReachedWithdrawalAge()
     this.#retirementAccountOpened = true
@@ -362,6 +366,8 @@ export class CPFAccount {
         this.#accounts.specialAccountAtWithdrawalAge,
       mediSaveAccountAtWithdrawalAge:
         this.#accounts.mediSaveAccountAtWithdrawalAge,
+      cohortYear: this.#cohortYear,
+      fullRetirementSum: this.#fullRetirementSum,
       monthsTillWithdrawal: this.#person.monthsTillWithdrawal,
       monthlySalary: this.#salary.amount,
       salaryHistory: this.#salary.history,

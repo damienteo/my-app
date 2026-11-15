@@ -10,6 +10,7 @@ import {
 import { withdrawalAge } from '../../../../../../../constants'
 import {
   allocationBandsForYear,
+  isProjectedRetirementCohort,
   wagePercent,
 } from '../../../../../../../utils/cpf/parameters'
 
@@ -24,6 +25,22 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
   const { futureValues } = props
   const { comparisonValues } = futureValues
   const bands = allocationBandsForYear(2026)
+  const availableForRetirement =
+    futureValues.ordinaryAccountAtWithdrawalAge +
+    futureValues.specialAccountAtWithdrawalAge
+  const fullRetirementSum = futureValues.fullRetirementSum
+  const retirementGap = availableForRetirement - fullRetirementSum
+  const retirementProjected = isProjectedRetirementCohort(
+    futureValues.cohortYear
+  )
+  const retirementFill =
+    fullRetirementSum > 0
+      ? Math.min(availableForRetirement / fullRetirementSum, 1)
+      : 0
+  const retirementCue =
+    retirementGap >= 0 ? 'text-emerald-300' : 'text-amber-300'
+  const retirementBar =
+    retirementGap >= 0 ? 'bg-emerald-400/80' : 'bg-amber-300/80'
 
   const comparisonSum = comparisonValues
     ? comparisonValues.ordinaryAccountAtWithdrawalAge +
@@ -124,6 +141,56 @@ const WithdrawalAgeInfo: React.FunctionComponent<WithdrawalAgeInfoProps> = (
           </Paragraph>
         </InfoPopup>
       </Paragraph>
+      {fullRetirementSum > 0 && (
+        <div className="mb-6 rounded-xl bg-canvas p-4 text-left ring-1 ring-raised">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted">
+            {retirementProjected
+              ? t('frsCompare.projectedLabel')
+              : t('frsCompare.label')}
+            {retirementProjected && <sup className="ml-0.5 text-accent">*</sup>}
+          </p>
+          <p className="mt-1 font-mono text-lg tabular-nums text-ink">
+            {formatCurrency(fullRetirementSum)}
+            <span className="ml-2 font-sans text-sm text-gray-300">
+              {futureValues.cohortYear}
+            </span>
+          </p>
+          <p className="mt-1 text-sm text-gray-300">
+            {retirementProjected
+              ? t('frsCompare.projectedNote')
+              : t('frsCompare.publishedNote', {
+                  year: futureValues.cohortYear,
+                })}
+          </p>
+          <div
+            className="mt-3 h-2 overflow-hidden rounded-full bg-raised"
+            role="img"
+            aria-label={t('frsCompare.meter', {
+              available: formatCurrency(availableForRetirement),
+              frs: formatCurrency(fullRetirementSum),
+            })}
+          >
+            <div
+              className={`h-full ${retirementBar}`}
+              style={{ width: `${retirementFill * 100}%` }}
+            />
+          </div>
+          <p className={`mt-2 font-mono text-sm tabular-nums ${retirementCue}`}>
+            {retirementGap >= 0
+              ? t('frsCompare.above', {
+                  amount: formatCurrency(retirementGap),
+                })
+              : t('frsCompare.short', {
+                  amount: formatCurrency(Math.abs(retirementGap)),
+                })}
+          </p>
+          {retirementProjected && (
+            <p className="mt-2 text-xs leading-relaxed text-muted">
+              <sup className="text-accent">*</sup> {t('frsCompare.footnote')}
+            </p>
+          )}
+        </div>
+      )}
       {comparisonValues && (
         <Paragraph className="mb-6 text-gray-300">
           {t('comparison.withoutHousing')}{' '}

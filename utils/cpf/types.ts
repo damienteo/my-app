@@ -68,6 +68,8 @@ export interface FutureValues {
   ordinaryAccountAtWithdrawalAge: number
   specialAccountAtWithdrawalAge: number
   mediSaveAccountAtWithdrawalAge: number
+  cohortYear: number
+  fullRetirementSum: number
   history: Entry[]
   historyAfterWithdrawalAge: Entry[]
   monthlySalary: number
