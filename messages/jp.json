@@ -11,40 +11,35 @@
     "animals": "動物たち"
   },
   "AboutPage": {
-    "header": "アバウト",
-    "starter": "私は、知的な機械と働くのが好きな平民です。以前は警察官でした。今はテック業界で働いています。",
-    "library": {
-      "start": "このサイトは、",
-      "mid": "",
-      "previously": "以前は",
-      "end": "を使って作成しました。"
-    },
-    "programmingLanguage": {
-      "start": "基本的には、Javascript (",
-      "connector": "",
-      "end": "でできています。"
-    },
-    "testing": {
-      "start": "テストは",
-      "end": "で行っています。"
-    },
-    "learning": {
-      "solidity": {
-        "start": "",
-        "end": "を勉強していました。"
+    "navlink": "アバウト",
+    "name": "ダミアン・テオ",
+    "tagline": "知的な機械と働くのが好きな平民です。以前は警察官で、今はテック業界で働いています。",
+    "avatarInitials": "DT",
+    "avatarLabel": "ダミアン・テオ",
+    "photoSlot": "写真はここに",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "exploreTitle": "このサイトで",
+    "view": "見る",
+    "cards": {
+      "portfolio": {
+        "title": "ポートフォリオ",
+        "description": "ハッカソンの作品、Solidityのサイドプロジェクト、家計簿、そして小さなゲーム。"
       },
-      "github": {
-        "start": "この",
-        "repo": "リポジトリ",
-        "end": "で記録しています"
+      "dailyChecks": {
+        "title": "日次チェック",
+        "description": "新宿の天気、為替、金、そしてよく見る指数。"
       },
-      "japanese": "。今は日本語も勉強しています。2025年12月にJLPT N3を受験し、2026年7月にはN2を受験する予定です。"
+      "cpf": {
+        "title": "CPF予測",
+        "description": "数年先のCPF普通口座と特別口座を計算します。"
+      }
     },
-    "contact": {
-      "start": "",
-      "connector": "と",
-      "end": "で連絡できます。"
-    }
+    "stackTitle": "このサイトの作り方",
+    "stackBody": "このサイトは React.js、Next.js、Tailwind CSS（以前は Material UI）を組み合わせて作りました。基本的には Javascript（Typescript を含む）、HTML、CSS です。テストは Jest で行っています。",
+    "previously": "以前",
+    "learningTitle": "勉強していること",
+    "learningBody": "<solidity>Solidity</solidity>を勉強していて、進捗はこの<repo>GitHubリポジトリ</repo>に記録しています。今は日本語も勉強しています。2025年12月にJLPT N3を受験し、2026年7月にはN2を受験する予定です。"
   },
   "AnimalsPage": {
     "header": "動物たち",
