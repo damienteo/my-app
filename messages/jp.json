@@ -329,7 +329,39 @@
       "success": "成功！",
       "errors": {
         "negativeValue": "0以上の値を入力してください",
-        "specialAccountOnly": "すべてのお金を特別口座に移すと、住宅購入に使用する普通口座に資金がなくなります。"
+        "specialAccountOnly": "すべてのお金を特別口座に移すと、住宅購入に使用する普通口座に資金がなくなります。",
+        "dateRequired": "この支払いの月を入力してください。",
+        "dateInPast": "今月以降の月を選んでください。それより前の月は計算しません。",
+        "tenureRequired": "毎月の支払いがある場合は、0より大きい返済期間を入力してください。"
+      },
+      "optional": {
+        "summary": "任意（賞与、住宅など）",
+        "bonusTitle": "予想賞与からのCPF拠出",
+        "bonusInfoTitle": "CPF拠出の対象になる賞与",
+        "bonusInfoBefore": "",
+        "bonusInfoLink": "追加賃金（AW）の上限",
+        "bonusInfoAfter": "は、年間給与上限の$102,000から、その年にCPF拠出の対象になる普通賃金を引いた額です。2026年1月1日から普通賃金の上限は$8,000なので、年間を通してそれ以上の給与なら、追加賃金のうち$6,000が拠出対象です。",
+        "monthsOfBonus": "年間賞与の見込み（月数、任意）",
+        "monthsSuffix": "ヶ月",
+        "bonusMonth": "賞与が支払われる月（任意）",
+        "lumpSumTitle": "CPFで住宅を支払う（一括）",
+        "housingInfoTitle": "CPFで住宅を買う",
+        "housingLumpInfo": "普通口座の資金で、次の制度により住宅を買えます：",
+        "housingScheme": "住宅制度",
+        "lumpSum": "住宅のためのCPF一括額（任意）",
+        "lumpSumDate": "一括支払いの月（任意）",
+        "loanTitle": "CPFで住宅ローンを支払う",
+        "housingLoanInfo": "普通口座の資金で、次の制度により住宅ローンを支払えます：",
+        "monthlyPayment": "毎月の支払い（任意）",
+        "tenure": "返済期間（年、任意）",
+        "yearsSuffix": "年",
+        "loanDate": "最初の毎月の支払いの月（任意）",
+        "saTitle": "普通口座の貯蓄と今後の拠出を特別口座へ移す（任意）",
+        "saInfoTitle": "特別口座の高い金利",
+        "saInfoBefore": "55歳まで、普通口座から特別口座へ資金を",
+        "saInfoLink": "移せます",
+        "saInfoAfter": "。55歳で特別口座は閉じ、その貯蓄は完全退職額まで退職口座へ移り、残りは普通口座へ戻ります。",
+        "saLabel": "特別口座の高い金利（現在4%）と、普通口座の金利（現在2.5%）の違いを比べます。"
       }
     },
     "results": {
@@ -371,6 +403,16 @@
           "above70": "70歳超"
         },
         "here": "こちら",
+        "frsCompare": {
+          "label": "完全退職額",
+          "projectedLabel": "見込みのFRS",
+          "publishedNote": "{year}年、55歳になる年の公表されたFRSです。",
+          "projectedNote": "55歳になる年の見込みのFRSです。",
+          "above": "FRSを{amount}上回ります。",
+          "short": "FRSまで{amount}足りません。",
+          "meter": "特別口座と普通口座から退職口座に移せるのは{available}で、完全退職額は{frs}です。",
+          "footnote": "2027年の基本退職額を年およそ3.5%増やし、100ドル単位に丸めた見込みです。完全退職額はその2倍です。近年の増加に合わせた仮定で、CPFは未公表であり、実際の額は異なることがあります。"
+        },
         "comparison": {
           "withoutHousing": "* 住宅ローンやOAからSAへの移転がない場合、",
           "inOrdinaryAccount": "が普通口座に、",

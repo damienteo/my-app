@@ -329,7 +329,39 @@
       "success": "Success!",
       "errors": {
         "negativeValue": "Please enter a value which is 0 or larger",
-        "specialAccountOnly": "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
+        "specialAccountOnly": "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account.",
+        "dateRequired": "Enter the month of this payment.",
+        "dateInPast": "Choose this month or a later month. Earlier months are not simulated.",
+        "tenureRequired": "Enter a tenure greater than 0 when there is a monthly payment."
+      },
+      "optional": {
+        "summary": "Optional (Bonuses, Housing, etc)",
+        "bonusTitle": "CPF contribution from an expected bonus",
+        "bonusInfoTitle": "Bonuses subject to CPF contribution",
+        "bonusInfoBefore": "The",
+        "bonusInfoLink": "Additional Wage (AW) ceiling",
+        "bonusInfoAfter": "is the annual salary ceiling of $102,000 minus the ordinary wages that attract CPF for the year. From 1 January 2026 the Ordinary Wage ceiling is $8,000, so someone paid at least that all year has $6,000 of additional wages that attract CPF.",
+        "monthsOfBonus": "Estimated yearly bonus in months (optional)",
+        "monthsSuffix": "months",
+        "bonusMonth": "Month in which the bonus is paid (optional)",
+        "lumpSumTitle": "Use CPF to pay for housing (lump sum)",
+        "housingInfoTitle": "Using CPF to buy housing",
+        "housingLumpInfo": "You may use funds in your CPF Ordinary Account to buy housing under the",
+        "housingScheme": "Housing Scheme",
+        "lumpSum": "Lump sum for housing from CPF (optional)",
+        "lumpSumDate": "Month of the lump sum payment (optional)",
+        "loanTitle": "Use CPF to pay for a housing loan",
+        "housingLoanInfo": "You may use funds in your CPF Ordinary Account to pay for the housing loan under the",
+        "monthlyPayment": "Monthly payment (optional)",
+        "tenure": "Loan tenure in years (optional)",
+        "yearsSuffix": "years",
+        "loanDate": "Month of the first monthly payment (optional)",
+        "saTitle": "Move Ordinary Account savings and future contributions to the Special Account (optional)",
+        "saInfoTitle": "Higher interest in the Special Account",
+        "saInfoBefore": "You may",
+        "saInfoLink": "transfer",
+        "saInfoAfter": "funds from your Ordinary Account to your Special Account up till the age of 55. From 55 the Special Account closes: those savings go to the Retirement Account up to the Full Retirement Sum, and anything left returns to the Ordinary Account.",
+        "saLabel": "This compares the Special Account's higher interest rate (currently 4%) with the Ordinary Account's rate (currently 2.5%)."
       }
     },
     "results": {
@@ -371,6 +403,16 @@
           "above70": "Above 70"
         },
         "here": "here",
+        "frsCompare": {
+          "label": "Full Retirement Sum",
+          "projectedLabel": "Projected FRS",
+          "publishedNote": "Published FRS for {year}, the year you turn 55.",
+          "projectedNote": "Projected FRS for the year you turn 55.",
+          "above": "You'd be {amount} above the FRS.",
+          "short": "{amount} short of the FRS.",
+          "meter": "{available} from your Special and Ordinary Accounts can go into the Retirement Account, against a Full Retirement Sum of {frs}.",
+          "footnote": "Projected from the 2027 Basic Retirement Sum, increased by about 3.5% a year and rounded to the nearest $100. The Full Retirement Sum is twice that amount. This follows recent increases. CPF has not published it, and the actual figure may differ."
+        },
         "comparison": {
           "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
           "inOrdinaryAccount": "in your Ordinary Account, and",
