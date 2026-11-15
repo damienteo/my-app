@@ -62,10 +62,7 @@ export const formatDate = (dateStr: string): string => {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
 }
 
-export const formatChartValue = (
-  value: number,
-  isPercent: boolean = false
-): string => {
+export const formatChartValue = (value: number, isPercent = false): string => {
   if (isPercent) return `${value.toFixed(2)}%`
   if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`

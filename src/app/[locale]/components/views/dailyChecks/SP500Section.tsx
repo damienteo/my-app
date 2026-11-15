@@ -166,12 +166,12 @@ const SP500Section = () => {
               {p === '1week'
                 ? t('periods.1week')
                 : p === '1month'
-                ? t('periods.1month')
-                : p === '3months'
-                ? t('periods.3months')
-                : p === '6months'
-                ? t('periods.6months')
-                : t('periods.1year')}
+                  ? t('periods.1month')
+                  : p === '3months'
+                    ? t('periods.3months')
+                    : p === '6months'
+                      ? t('periods.6months')
+                      : t('periods.1year')}
             </button>
           )
         )}
@@ -231,7 +231,9 @@ const SP500Section = () => {
                 formatter={(value) =>
                   typeof value === 'number' ? formatPrice(value) : 'N/A'
                 }
-                labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                labelFormatter={(label) =>
+                  formatDate(typeof label === 'string' ? label : '')
+                }
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: '1px solid #374151',

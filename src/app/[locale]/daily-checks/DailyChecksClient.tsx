@@ -25,4 +25,3 @@ const DailyChecksClient = () => {
 }
 
 export default DailyChecksClient
-

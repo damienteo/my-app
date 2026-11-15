@@ -134,8 +134,8 @@ const ForexSection = () => {
             {p === '1week'
               ? t('periods.1week')
               : p === '1month'
-              ? t('periods.1month')
-              : t('periods.3months')}
+                ? t('periods.1month')
+                : t('periods.3months')}
           </button>
         ))}
       </div>
@@ -207,7 +207,9 @@ const ForexSection = () => {
                   formatter={(value) =>
                     typeof value === 'number' ? value.toFixed(4) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                  labelFormatter={(label) =>
+                    formatDate(typeof label === 'string' ? label : '')
+                  }
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',
@@ -258,7 +260,9 @@ const ForexSection = () => {
                   formatter={(value) =>
                     typeof value === 'number' ? value.toFixed(2) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                  labelFormatter={(label) =>
+                    formatDate(typeof label === 'string' ? label : '')
+                  }
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',
@@ -309,7 +313,9 @@ const ForexSection = () => {
                   formatter={(value) =>
                     typeof value === 'number' ? value.toFixed(2) : 'N/A'
                   }
-                  labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                  labelFormatter={(label) =>
+                    formatDate(typeof label === 'string' ? label : '')
+                  }
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: '1px solid #374151',

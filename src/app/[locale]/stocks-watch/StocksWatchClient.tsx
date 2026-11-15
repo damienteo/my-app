@@ -483,9 +483,12 @@ const StocksWatchClient = () => {
 
   // Auto-refresh quotes every 5 minutes
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchQuotes()
-    }, 5 * 60 * 1000) // 5 minutes
+    const interval = setInterval(
+      () => {
+        fetchQuotes()
+      },
+      5 * 60 * 1000
+    ) // 5 minutes
 
     return () => clearInterval(interval)
   }, [fetchQuotes])
@@ -544,8 +547,8 @@ const StocksWatchClient = () => {
                       isCompleted
                         ? 'bg-green-900/20 border border-green-700/50'
                         : isCurrent
-                        ? 'bg-blue-900/20 border border-blue-700/50'
-                        : 'bg-gray-800/20 border border-gray-700/50'
+                          ? 'bg-blue-900/20 border border-blue-700/50'
+                          : 'bg-gray-800/20 border border-gray-700/50'
                     }`}
                   >
                     {/* Checkmark or spinner */}
@@ -575,8 +578,8 @@ const StocksWatchClient = () => {
                         isCompleted
                           ? 'text-green-400'
                           : isCurrent
-                          ? 'text-blue-400'
-                          : 'text-gray-500'
+                            ? 'text-blue-400'
+                            : 'text-gray-500'
                       }`}
                     >
                       {getStepLabel(step)}

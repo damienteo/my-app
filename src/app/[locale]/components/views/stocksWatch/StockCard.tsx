@@ -225,7 +225,9 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
                 formatter={(value) =>
                   typeof value === 'number' ? formatPrice(value) : 'N/A'
                 }
-                labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                labelFormatter={(label) =>
+                  formatDate(typeof label === 'string' ? label : '')
+                }
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: '1px solid #374151',

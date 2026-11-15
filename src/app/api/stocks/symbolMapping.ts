@@ -8,4 +8,3 @@ export const yahooSymbolMap: Record<string, string> = {
 export function getYahooSymbol(symbol: string): string {
   return yahooSymbolMap[symbol] || symbol
 }
-

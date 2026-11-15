@@ -11,8 +11,8 @@ const AboutPage = () => {
       <Paragraph>{t('starter')}</Paragraph>
       <Paragraph>
         {t('library.start')}{' '}
-        <ExternalLink url="https://reactjs.org/" label="React.js" />
-        , <ExternalLink url="https://nextjs.org/" label="Next.js" />,{' '}
+        <ExternalLink url="https://reactjs.org/" label="React.js" />,{' '}
+        <ExternalLink url="https://nextjs.org/" label="Next.js" />,{' '}
         {t('library.mid')}{' '}
         <ExternalLink url="https://tailwindcss.com/" label="Tailwind CSS" /> (
         {t('library.previously')}{' '}

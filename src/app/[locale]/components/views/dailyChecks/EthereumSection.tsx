@@ -46,9 +46,12 @@ const EthereumSection = () => {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch(`/api/crypto?crypto=ethereum&period=${period}`, {
-          signal: abortController.signal,
-        })
+        const res = await fetch(
+          `/api/crypto?crypto=ethereum&period=${period}`,
+          {
+            signal: abortController.signal,
+          }
+        )
         if (!res.ok) throw new Error('Failed to fetch Ethereum data')
         const data = await res.json()
         if (isMounted) setEthereum(data)
@@ -149,12 +152,12 @@ const EthereumSection = () => {
               {p === '1week'
                 ? t('periods.1week')
                 : p === '1month'
-                ? t('periods.1month')
-                : p === '3months'
-                ? t('periods.3months')
-                : p === '6months'
-                ? t('periods.6months')
-                : t('periods.1year')}
+                  ? t('periods.1month')
+                  : p === '3months'
+                    ? t('periods.3months')
+                    : p === '6months'
+                      ? t('periods.6months')
+                      : t('periods.1year')}
             </button>
           )
         )}
@@ -178,8 +181,8 @@ const EthereumSection = () => {
               isPositive ? 'text-green-400' : 'text-red-400'
             }`}
           >
+            {isPositive ? '+' : ''}${formatPrice(ethereum.current.change)} (
             {isPositive ? '+' : ''}
-            ${formatPrice(ethereum.current.change)} ({isPositive ? '+' : ''}
             {ethereum.current.changePercent.toFixed(2)}%)
           </div>
         </div>
@@ -212,7 +215,9 @@ const EthereumSection = () => {
                 formatter={(value) =>
                   typeof value === 'number' ? `$${formatPrice(value)}` : 'N/A'
                 }
-                labelFormatter={(label) => formatDate(typeof label === 'string' ? label : '')}
+                labelFormatter={(label) =>
+                  formatDate(typeof label === 'string' ? label : '')
+                }
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: '1px solid #374151',
@@ -240,4 +245,3 @@ const EthereumSection = () => {
 }
 
 export default EthereumSection
-

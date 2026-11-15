@@ -12,4 +12,3 @@ const DailyChecks: React.FunctionComponent = () => {
 }
 
 export default DailyChecks
-

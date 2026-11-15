@@ -49,12 +49,10 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
     housingLoanTenure: '0',
   })
   const [selectedDate, handleDateChange] = useState<Dayjs | null>(maxDate)
-  const [housingLumpSumDate, handleHousingLumpSumDateChange] = useState<Dayjs>(
-    dayjs()
-  )
-  const [housingLoanDate, handleHousingLoanDateChange] = useState<Dayjs>(
-    dayjs()
-  )
+  const [housingLumpSumDate, handleHousingLumpSumDateChange] =
+    useState<Dayjs>(dayjs())
+  const [housingLoanDate, handleHousingLoanDateChange] =
+    useState<Dayjs>(dayjs())
   const [specialAccountOnly, setSpecialAccountOnly] = useState<boolean>(false)
   const [errors, setErrors] = useState<ErrorValues>({})
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
