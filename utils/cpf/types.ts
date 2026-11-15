@@ -5,6 +5,7 @@ export interface Entry {
   category: string
   ordinaryAccount: number
   specialAccount: number
+  mediSaveAccount?: number
   retirementAccount?: number
 }
 
@@ -22,6 +23,7 @@ export interface SalaryRecord {
 export interface AccountsType {
   ordinaryAccount?: number
   specialAccount?: number
+  mediSaveAccount?: number
   retirementAccount?: number
 }
 
@@ -41,6 +43,7 @@ export interface Values {
 export interface AccountValues {
   ordinaryAccount: string
   specialAccount: string
+  mediSaveAccount?: string
   monthlySalary: string
   salaryIncreaseRate: string
   monthsOfBonus: string
@@ -52,15 +55,21 @@ export interface AccountValues {
   housingLoanTenure: string
   housingLoanDate: Dayjs
   specialAccountOnly: boolean
+  /** Date the projection starts. Defaults to today. Tests pin this. */
+  asOf?: Dayjs
 }
 
 export interface FutureValues {
   monthsTillWithdrawal: number
   ordinaryAccount: number
   specialAccount: number
+  mediSaveAccount: number
   retirementAccount: number
   ordinaryAccountAtWithdrawalAge: number
   specialAccountAtWithdrawalAge: number
+  mediSaveAccountAtWithdrawalAge: number
+  cohortYear: number
+  fullRetirementSum: number
   history: Entry[]
   historyAfterWithdrawalAge: Entry[]
   monthlySalary: number

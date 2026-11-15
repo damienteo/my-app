@@ -253,20 +253,51 @@
         "thankYou": "Thank you."
       }
     },
-    "lastChecked": "Interest Rates, etc, were last checked in December 2025. This page does not save any data, and calculates values based on your input. Medisave values are not included as this page mainly deals with usage of CPF for retirement and potentially housing.",
-    "frsAssumption": {
-      "text": "For calculation of Full Retirement Sums in the future, I am assuming a 3.5% increase per year from the current year (2025, where the FRS is $213,000).",
-      "retirementAmounts": {
-        "title": "Retirement Amounts",
-        "info": "Information on CRS retirement amounts can be found here:"
+    "rules": {
+      "intro": "Rules on this page were checked in November 2026 against CPF Board and the Ministry of Manpower. Nothing you type is saved.",
+      "mediSaveLabel": "MediSave",
+      "mediSave": "Contributions stop at the Basic Healthcare Sum: $79,000 in 2026 for members under 65, and fixed for life in the year you turn 65. The overflow joins your Special Account, or your Retirement Account from 55. Bills paid from MediSave are not deducted.",
+      "laterLabel": "How later Full Retirement Sums (FRS) are estimated",
+      "later": "For years after 2027, CPF has not published the Full Retirement Sum (FRS). This forecast projects it by growing the 2027 Basic Retirement Sum by 3.5% a year, rounding to the nearest $100, and doubling it. That follows recent increases, and the actual figure may differ.",
+      "retirementLabel": "Retirement sums",
+      "retirementLead": "The Full Retirement Sum is the published amount for the year you turn 55. CPF can change these sums. This forecast sets aside the Full Retirement Sum.",
+      "year": "Year",
+      "brs": "BRS",
+      "frs": "FRS",
+      "ers": "ERS",
+      "cohorts": {
+        "y2025": {
+          "year": "2025",
+          "brs": "$106,500",
+          "frs": "$213,000",
+          "ers": "4× BRS"
+        },
+        "y2026": {
+          "year": "2026",
+          "brs": "$110,200",
+          "frs": "$220,400",
+          "ers": "$440,800"
+        },
+        "y2027": {
+          "year": "2027",
+          "brs": "$114,100",
+          "frs": "$228,200",
+          "ers": "$456,400"
+        }
       },
-      "policyNote": "The increase in FRS per year may change in the future according to government policy."
+      "relationship": "From 2025 the Enhanced Retirement Sum is 4 times the Basic Retirement Sum ($440,800 in 2026, $456,400 in 2027). The Basic Retirement Sum is half the Full Retirement Sum.",
+      "notModelledLabel": "Not modelled",
+      "notModelledErs": "A voluntary top-up to the Enhanced Retirement Sum.",
+      "notModelledBrs": "A property pledge that lets you set aside only the Basic Retirement Sum.",
+      "sourceTitle": "Retirement Amounts",
+      "sourceInfo": "Information on CRS retirement amounts can be found here:"
     },
     "userInput": {
       "accountBalances": {
-        "instruction": "First, type in the current amounts in your CPF Ordinary and Special Accounts.",
+        "instruction": "First, type in the current amounts in your Ordinary, Special and MediSave Accounts. The Special Account closes at 55, so enter 0 there if yours is already closed.",
         "ordinaryAccount": "Ordinary Account",
         "specialAccount": "Special Account",
+        "mediSaveAccount": "MediSave Account",
         "infoPopup": {
           "title": "Info on CPF OA and SA",
           "text": "Information on what CPF is about can be found here:"
@@ -288,17 +319,49 @@
         "salaryIncreasePlaceholder": "Enter percentage",
         "contributionInfo": {
           "title": "Info on Employer / Employee CPF Contribution",
-          "when55": "When",
-          "employerContribution": ", the employer contributes 17% of the monthly salary, while the employee contributes 20%.",
-          "owCeiling": "Do also take note that the",
-          "owCeilingText": "sets the maximum amount of OWs on which CPF contributions are payable per month. The prevailing OW Ceiling is $6,000 per month."
+          "when55": "CPF contribution rates",
+          "employerContribution": " from 1 January 2026, for monthly wages above $750: age 55 and below, employer 17% and employee 20% (37% total). Above 55 to 60: 16% and 18% (34%). Above 60 to 65: 12.5% and 12.5% (25%). Above 65 to 70: 9% and 7.5% (16.5%). Above 70: 7.5% and 5% (12.5%). From 1 January 2027 the totals for above 55 to 60 and above 60 to 65 rise to 35.5% and 26%, and that increase goes to the Retirement Account.",
+          "owCeiling": "Ordinary Wage ceiling",
+          "owCeilingText": "is the maximum ordinary wage that attracts CPF in a month. It is $8,000 from 1 January 2026. It was $7,400 throughout 2025 and $6,800 from 1 January 2024 (not from September 2025). The annual salary ceiling remains $102,000, so additional wages such as bonuses attract CPF only up to $102,000 minus the year's ordinary wages. No Ordinary Wage ceiling above $8,000 has been published, so later years stay at $8,000."
         }
       },
       "submit": "Forecast my CPF!",
       "success": "Success!",
       "errors": {
         "negativeValue": "Please enter a value which is 0 or larger",
-        "specialAccountOnly": "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account."
+        "specialAccountOnly": "You won't have money in your Ordinary Account to use for housing if you shift all your money to your special account.",
+        "dateRequired": "Enter the month of this payment.",
+        "dateInPast": "Choose this month or a later month. Earlier months are not simulated.",
+        "tenureRequired": "Enter a tenure greater than 0 when there is a monthly payment."
+      },
+      "optional": {
+        "summary": "Optional (Bonuses, Housing, etc)",
+        "bonusTitle": "CPF contribution from an expected bonus",
+        "bonusInfoTitle": "Bonuses subject to CPF contribution",
+        "bonusInfoBefore": "The",
+        "bonusInfoLink": "Additional Wage (AW) ceiling",
+        "bonusInfoAfter": "is the annual salary ceiling of $102,000 minus the ordinary wages that attract CPF for the year. From 1 January 2026 the Ordinary Wage ceiling is $8,000, so someone paid at least that all year has $6,000 of additional wages that attract CPF.",
+        "monthsOfBonus": "Estimated yearly bonus in months (optional)",
+        "monthsSuffix": "months",
+        "bonusMonth": "Month in which the bonus is paid (optional)",
+        "lumpSumTitle": "Use CPF to pay for housing (lump sum)",
+        "housingInfoTitle": "Using CPF to buy housing",
+        "housingLumpInfo": "You may use funds in your CPF Ordinary Account to buy housing under the",
+        "housingScheme": "Housing Scheme",
+        "lumpSum": "Lump sum for housing from CPF (optional)",
+        "lumpSumDate": "Month of the lump sum payment (optional)",
+        "loanTitle": "Use CPF to pay for a housing loan",
+        "housingLoanInfo": "You may use funds in your CPF Ordinary Account to pay for the housing loan under the",
+        "monthlyPayment": "Monthly payment (optional)",
+        "tenure": "Loan tenure in years (optional)",
+        "yearsSuffix": "years",
+        "loanDate": "Month of the first monthly payment (optional)",
+        "saTitle": "Move Ordinary Account savings and future contributions to the Special Account (optional)",
+        "saInfoTitle": "Higher interest in the Special Account",
+        "saInfoBefore": "You may",
+        "saInfoLink": "transfer",
+        "saInfoAfter": "funds from your Ordinary Account to your Special Account up till the age of 55. From 55 the Special Account closes: those savings go to the Retirement Account up to the Full Retirement Sum, and anything left returns to the Ordinary Account.",
+        "saLabel": "This compares the Special Account's higher interest rate (currently 4%) with the Ordinary Account's rate (currently 2.5%)."
       }
     },
     "results": {
@@ -308,7 +371,7 @@
       "hideCalculationsAfter55": "Hide Calculations After 55!",
       "withdrawalAge": {
         "title": "How calculations are made",
-        "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, and {specialAmount} in your Special Account.",
+        "inTime": "In {time}, when you are {age} years old and your Retirement Account is about to be opened, you will have {ordinaryAmount} in your Ordinary Account, {specialAmount} in your Special Account and {mediSaveAmount} in your MediSave Account. The Special Account is then closed.",
         "time": {
           "year": "year",
           "years": "years",
@@ -317,13 +380,39 @@
           "and": "and"
         },
         "interest": "interest",
-        "interestText": ", CPF interest is computed monthly. It is then credited to your respective accounts and compounded annually.",
-        "interestRates": "Central Provident Fund (CPF) members currently earn interest rates of up to 3.5% per annum on their Ordinary Account (OA) monies, and up to 5% per annum on their Special and MediSave Account (SMA) monies. Retirement Account (RA) monies currently earn up to 5% per annum. The above",
+        "interestText": ". CPF interest is computed every month on the lowest balance in that month, credited at the end of the year, and compounded yearly after that.",
+        "interestRates": "From 1 October 2026 to 31 December 2026, Ordinary Account savings earn 2.5% a year and Special, MediSave and Retirement Account savings earn 4% a year. The 4% floor currently runs until 31 December 2027. This forecast keeps those floor rates after 2027, because later quarterly rates are not known. Below 55, savings can earn up to 3.5% in the Ordinary Account and up to 5% in the Special and MediSave Accounts. From 55, the first $30,000 can earn up to 6%. The",
         "interestRatesLink": "interest rates",
-        "extraInterest": "include an extra 1% interest paid on the first $60,000 of a member's combined balances (with up to $20,000 from the OA).",
-        "allocationTable": "CPF Allocation Table",
-        "allocationSource": "The image above for CPF Allocation rates was sourced from",
+        "extraInterest": "include an extra 1% a year on the first $60,000 of combined balances, with at most $20,000 counted from the Ordinary Account. From 55 the extra interest is 2% on the first $30,000 and 1% on the next $30,000. Extra interest earned on Ordinary Account savings is credited to the Special Account before 55, and to the Retirement Account from 55. The forecast counts balances in this order: Retirement Account, Ordinary Account (up to $20,000), Special Account, then MediSave.",
+        "allocationTable": "CPF allocation rates from 1 January 2026",
+        "allocationAge": "Age",
+        "allocationTotal": "Total",
+        "allocationOrdinary": "OA",
+        "allocationSavings": "SA or RA",
+        "allocationMediSave": "MA",
+        "allocationNote": "Percent of wages above $750. The savings column is the Special Account before 55 and the Retirement Account from 55, up to the cohort Full Retirement Sum. From 1 January 2027, Above 55 to 60 becomes 35.5% (OA 12, RA 13, MA 10.5) and Above 60 to 65 becomes 26% (OA 3.5, RA 12, MA 10.5). Later years keep the 2027 rates: the remaining increase toward the ~2030 target for ages above 55 to 60 has not been published year by year.",
+        "allocationSource": "Allocation and contribution tables:",
+        "bands": {
+          "35AndBelow": "35 and below",
+          "above35to45": "Above 35 to 45",
+          "above45to50": "Above 45 to 50",
+          "above50to55": "Above 50 to 55",
+          "above55to60": "Above 55 to 60",
+          "above60to65": "Above 60 to 65",
+          "above65to70": "Above 65 to 70",
+          "above70": "Above 70"
+        },
         "here": "here",
+        "frsCompare": {
+          "label": "Full Retirement Sum",
+          "projectedLabel": "Projected FRS",
+          "publishedNote": "Published FRS for {year}, the year you turn 55.",
+          "projectedNote": "Projected FRS for the year you turn 55.",
+          "above": "You'd be {amount} above the FRS.",
+          "short": "{amount} short of the FRS.",
+          "meter": "{available} from your Special and Ordinary Accounts can go into the Retirement Account, against a Full Retirement Sum of {frs}.",
+          "footnote": "For years after 2027, CPF has not published the Full Retirement Sum. This forecast projects it by growing the 2027 Basic Retirement Sum by 3.5% a year, rounding to the nearest $100, and doubling it. That follows recent increases, and the actual figure may differ."
+        },
         "comparison": {
           "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
           "inOrdinaryAccount": "in your Ordinary Account, and",
@@ -335,7 +424,7 @@
       },
       "payoutAge": {
         "title": "What is a Retirement Account?",
-        "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, {specialAmount} in your Special Account, and {retirementAmount} in your Retirement Account.",
+        "inTime": "In {time}, when you are {age} years old, you will have {ordinaryAmount} in your Ordinary Account, {retirementAmount} in your Retirement Account and {mediSaveAmount} in your MediSave Account. The Special Account has been closed since 55, so it holds {specialAmount}.",
         "time": {
           "year": "year",
           "years": "years",
@@ -343,15 +432,15 @@
           "months": "months",
           "and": "and"
         },
-        "retirementAccount": "On your 55th birthday, CPF will create a",
-        "retirementAccountText": "(RA) for you. Savings from your Special Account and Ordinary Account, up to the Full Retirement Sum (FRS), will be",
+        "retirementAccount": "Reaching age 55",
+        "retirementAccountText": "CPF opens a Retirement Account on your 55th birthday and closes the Special Account. Savings move from the Special Account first, then the Ordinary Account, until the Retirement Account reaches the Full Retirement Sum. Anything left in the Special Account goes to the Ordinary Account. See",
         "transferred": "transferred",
-        "payouts": "to your RA to form your retirement sum which will provide you with",
-        "monthlyPayouts": "monthly payouts",
-        "fromAge65": "from the age of 65.",
+        "payouts": "That sum can provide",
+        "monthlyPayouts": "CPF LIFE payouts",
+        "fromAge65": "from age 65. The start can be deferred up to age 70. This forecast does not estimate the payout.",
         "frsAssumption": "* We have also made an assumption for the Full Retirement Sum based on",
         "historicalTrends": "historical trends",
-        "frsNote": ". The FRS has increased over the years, and we have adjusted the FRS accordingly for when you turn 55 based on a 3.5% annual increase from the 2025 FRS of $213,000. Please note that, this is purely an assumption made by me, who do not represent the government or CPF in any shape or form. It is just a forecast.",
+        "frsNote": ". Published Full Retirement Sums are $213,000 (2025), $220,400 (2026) and $228,200 (2027). Later cohorts use a 3.5% yearly increase in the Basic Retirement Sum, rounded to the nearest $100. Those later sums are not published. Payouts shown by CPF start at 65 and can be deferred to 70; this page stops at the balances when you turn 65 and does not estimate the CPF LIFE payout. Withdrawal from 55 is optional and is not applied here.",
         "comparison": {
           "withoutHousing": "* Without housing loans, or transferring from OA to SA, you would have",
           "inOrdinaryAccount": "in your Ordinary Account ,",
@@ -367,6 +456,7 @@
         "category": "Category",
         "ordinaryAccount": "Ordinary Account",
         "specialAccount": "Special Account",
+        "mediSaveAccount": "MediSave Account",
         "retirementAccount": "Retirement Account",
         "salaryInfo": "In the year {year}, your salary is {amount} (age: {age})."
       }

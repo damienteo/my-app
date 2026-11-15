@@ -84,7 +84,7 @@ const InfoPopup: React.FunctionComponent<InfoPopupProps> = (props) => {
           onClick={handleClose}
         >
           <div
-            className="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-700"
+            className="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-700 text-left hyphens-manual"
             onClick={(e) => e.stopPropagation()}
           >
             <DialogTitle onClose={handleClose}>{title}</DialogTitle>
