@@ -9,6 +9,9 @@ export const focusRingInset =
 /** Rounded surface used by the About cards and the CPF notes. */
 export const surfaceCard = 'rounded-2xl bg-surface ring-1 ring-raised'
 
+/** Small labelled control used on About chips and Portfolio links. */
+export const chip = `inline-flex items-center gap-2 rounded-full bg-raised px-3 py-1.5 text-sm text-ink ring-1 ring-raised transition hover:ring-accent ${focusRing}`
+
 /** Filled blue control. Size and shape stay with the caller. */
 export const blueButton = 'bg-blue-600 text-white hover:bg-blue-500'
 

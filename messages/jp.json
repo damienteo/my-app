@@ -225,53 +225,84 @@
       "start": "履歴書については、私の",
       "end": "プロフィールをご参照ください。"
     },
-    "hackathon": {
-      "start": "最近、blockchain.hack() に参加し、",
-      "won": "優勝し",
-      "end": "ました。課題は「ブロックチェーンは銀行のB2B取引にどのように役立つか？」というものでした。"
+    "timeline": "プロジェクト",
+    "sections": {
+      "problem": "課題",
+      "approach": "アプローチ",
+      "result": "結果"
     },
-    "projectOverview": {
-      "start": "私の",
-      "project": "プロジェクト",
-      "end": "は、Merkle証明を用いて支払いの詳細を当初は秘匿しつつ、透明かつ不変のルールで支払い結果を確実に実行することを目的としています。さらに、ファクトリー・クローン契約により、各支払い契約のデプロイコストを約70％削減しています。"
+    "linkTypes": {
+      "live": "公開サイト",
+      "code": "コード",
+      "contracts": "スマートコントラクト",
+      "api": "API"
     },
-    "projectComponents": {
-      "factory": "契約を複製するためのファクトリーコントラクト",
-      "initializer": "契約ロジックを含むイニシャライザーコントラクト",
-      "proxy": "イニシャライザーコントラクトのロジックを使用するミニマルプロキシコントラクト（クローン"
-    },
-    "thunderdomeIntro": {
-      "start": "現在のサイドプロジェクトは",
-      "thunderdome": "ThunderDome",
-      "end": "です（2022年10月時点）。"
-    },
-    "thunderdomeDetails": "現在Solidityを学習中であり、その一環としてEthereum Goerliテストネット上でこのプロジェクトを実行するのが面白いと考えました。ユーザーはNFTを購入できるようになり、最終的には購入したNFTをローカルマーケットプレイスで販売したり、ロイヤルティポイントのために預け入れたり、さらには抽選にも参加できるようになる予定です。",
-    "thunderdomeLinks": {
-      "fe": "フロントエンドリポジトリ",
-      "be-link": "バックエンドリンク",
-      "be": "バックエンドリポジトリ",
-      "sc": "スマートコントラクトリポジトリ",
-      "token": "トークンセールコントラクト",
-      "nft": "NFTコントラクト"
-    },
-    "budgetPlanner": {
-      "start": "主要なサイドプロジェクトの一つが",
-      "name": "Budget Planner",
-      "end": "です（2019年3月）。",
-      "fe": "フロントエンドリポジトリ",
-      "and": "と",
-      "be": "バックエンドリポジトリ"
-    },
-    "budgetPlannerDetails": "これは、General AssemblyのWeb Development Immersive（現在のSoftware Engineering Immersive）に参加した際のキャップストーンプロジェクトです。",
-    "firemanGame": {
-      "start": "ゲーム",
-      "name": "The Fireman",
-      "end": "を作成しました。"
-    },
-    "firemanDetails": {
-      "start": "これは、バニラのHTML、JavaScript、およびCSSを使用して作成されました。詳しくは",
-      "github": "GitHubリポジトリ",
-      "end": "をご覧ください。"
+    "archivedTestnet": "アーカイブ済みテストネット",
+    "hackathonWinner": "ハッカソン優勝",
+    "projects": {
+      "mashikoPottery": {
+        "title": "Mashiko Pottery",
+        "imageAlt": "Mashiko Pottery のホーム画面",
+        "problem": "益子焼の陶芸家の手仕事を、多言語のオンラインショーケースとして見せる必要がありました。",
+        "approach": "Next.js 15 の App Router、React 19、Tailwind CSS 4、next-intl（既定は日本語、加えて英語と中国語）、Redux Toolkit、Prisma と PostgreSQL、Supabase のメールマジックリンク認証、Cloudinary を使い、Vercel にデプロイしています。ロケール対応のルーティングで、商品と陶芸家の閲覧、検索、フィルター、ギャラリー、詳細ページを用意し、管理画面で商品と陶芸家の作成・編集・削除ができます。",
+        "result": "管理画面付きの公開カタログです。制作中で、カートとチェックアウトは次のステップとして予定しています。",
+        "links": {
+          "live": "公開サイト",
+          "code": "コード"
+        }
+      },
+      "paymentsAgreement": {
+        "title": "Payments Agreement",
+        "imageAlt": "Payments Agreement のサイト",
+        "problem": "blockchain.hack() に参加し、課題は「ブロックチェーンは銀行のB2B取引にどのように役立つか？」でした。",
+        "approach": "Merkle証明を用いて支払いの詳細を当初は秘匿しつつ、透明かつ不変のルールで支払い結果を確実に実行します。ファクトリー・クローン契約で各支払い契約をデプロイします。",
+        "result": "メイン賞を受賞しました。ファクトリー・クローン契約により、各支払い契約のデプロイコストも約70％削減しています。",
+        "links": {
+          "live": "公開サイト",
+          "factory": "契約を複製するためのファクトリーコントラクト",
+          "initializer": "契約ロジックを含むイニシャライザーコントラクト",
+          "proxy": "イニシャライザーコントラクトのロジックを使うミニマルプロキシコントラクト（クローン）"
+        }
+      },
+      "thunderdome": {
+        "title": "ThunderDome",
+        "imageAlt": "ThunderDome の画面",
+        "problem": "Solidityを学習中であり、Ethereum Goerliテストネット上で動かすのが面白いと考えました（2022年10月時点）。",
+        "approach": "ユーザーは出品されたNFTを購入できます。その後の予定として、購入したNFTをローカルマーケットプレイスで販売したり、ロイヤルティポイントのために預け入れたり、抽選に参加したりすることを考えていました。",
+        "result": "フロントエンド、バックエンドAPI、スマートコントラクトリポジトリ、トークンセールコントラクト、Goerli上のNFTコントラクトを含む構成です。",
+        "links": {
+          "live": "公開サイト",
+          "frontend": "フロントエンドリポジトリ",
+          "backend": "バックエンドリポジトリ",
+          "api": "API",
+          "repo": "スマートコントラクトリポジトリ",
+          "token": "トークンセールコントラクト",
+          "nft": "NFTコントラクト"
+        }
+      },
+      "budgetPlanner": {
+        "title": "Budget Planner",
+        "imageAlt": "Budget Planner の画面",
+        "problem": "General AssemblyのWeb Development Immersive（現在のSoftware Engineering Immersive）に参加した際のキャップストーンプロジェクトです。",
+        "approach": "フロントエンドとバックエンドからなる Budget Planner です。",
+        "result": "2019年3月の主要なサイドプロジェクトとして公開しました。",
+        "links": {
+          "live": "公開サイト",
+          "frontend": "フロントエンドリポジトリ",
+          "backend": "バックエンドリポジトリ"
+        }
+      },
+      "fireman": {
+        "title": "The Fireman",
+        "imageAlt": "The Fireman のゲーム画面",
+        "problem": "ブラウザで遊べるゲームを作ることでした。",
+        "approach": "バニラのHTML、JavaScript、CSSで作成しました。",
+        "result": "The Fireman はブラウザで遊べるゲームです。",
+        "links": {
+          "live": "公開サイト",
+          "code": "コード"
+        }
+      }
     }
   },
   "CPFForecastPage": {
