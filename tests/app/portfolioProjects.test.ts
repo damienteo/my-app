@@ -5,6 +5,7 @@ import en from '../../messages/en.json'
 import jp from '../../messages/jp.json'
 import {
   archivedTestnetLinks,
+  groupHasArchivedTestnet,
   groupPortfolioLinks,
   LINK_TYPES,
   portfolioProjects,
@@ -143,7 +144,47 @@ describe('portfolio translations', () => {
       expect(Object.keys(en.PortfolioPage.projects[id].links)).toEqual(
         Object.keys(jp.PortfolioPage.projects[id].links)
       )
+      const enDescriptions =
+        'linkDescriptions' in en.PortfolioPage.projects[id]
+          ? en.PortfolioPage.projects[id].linkDescriptions
+          : undefined
+      const jpDescriptions =
+        'linkDescriptions' in jp.PortfolioPage.projects[id]
+          ? jp.PortfolioPage.projects[id].linkDescriptions
+          : undefined
+      expect(enDescriptions && Object.keys(enDescriptions)).toEqual(
+        jpDescriptions && Object.keys(jpDescriptions)
+      )
     }
+  })
+
+  it('keeps contract chip labels short and stores the long names as descriptions', () => {
+    expect(en.PortfolioPage.projects.paymentsAgreement.links).toMatchObject({
+      factory: 'Factory',
+      initializer: 'Initializer',
+      proxy: 'Proxy (clone)',
+    })
+    expect(
+      en.PortfolioPage.projects.paymentsAgreement.linkDescriptions
+    ).toMatchObject({
+      factory: 'Factory contract for cloning agreements',
+      initializer: 'Initializer contract with agreement logic',
+      proxy:
+        'Minimal proxy contract (clone) which uses logic from the initializer contract',
+    })
+    expect(en.PortfolioPage.projects.thunderdome.links).toMatchObject({
+      token: 'Token',
+      nft: 'NFT',
+    })
+    expect(jp.PortfolioPage.projects.paymentsAgreement.links).toMatchObject({
+      factory: 'ファクトリー',
+      initializer: 'イニシャライザー',
+      proxy: 'プロキシ（クローン）',
+    })
+    expect(jp.PortfolioPage.projects.thunderdome.links).toMatchObject({
+      token: 'トークン',
+      nft: 'NFT',
+    })
   })
 
   it('does not describe Mashiko Pottery as a finished marketplace', () => {
@@ -189,5 +230,12 @@ describe('archived testnet link helpers', () => {
     expect(archivedTestnetLinks([{ ...portfolioProjects[0], links }])).toEqual(
       []
     )
+    expect(groupHasArchivedTestnet({ type: 'live', links })).toBe(false)
+    expect(
+      groupHasArchivedTestnet({
+        type: 'contracts',
+        links: [{ ...links[0], type: 'contracts', archivedTestnet: true }],
+      })
+    ).toBe(true)
   })
 })

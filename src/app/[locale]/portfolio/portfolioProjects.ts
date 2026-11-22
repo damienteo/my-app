@@ -211,6 +211,10 @@ export function groupPortfolioLinks(
   })).filter((group) => group.links.length > 0)
 }
 
+export function groupHasArchivedTestnet(group: PortfolioLinkGroup): boolean {
+  return group.links.some((link) => link.archivedTestnet)
+}
+
 export function archivedTestnetLinks(
   projects: readonly PortfolioProject[] = portfolioProjects
 ): readonly PortfolioLink[] {

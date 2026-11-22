@@ -8,6 +8,8 @@ type ExternalLinkProps = {
   className?: string
   icon?: React.ReactNode
   note?: string
+  title?: string
+  ariaLabel?: string
 }
 
 const textLinkClass = `text-accent-text underline-offset-2 hover:text-ink hover:underline ${focusRing}`
@@ -18,6 +20,8 @@ const ExternalLink: React.FunctionComponent<ExternalLinkProps> = ({
   className,
   icon,
   note,
+  title,
+  ariaLabel,
 }) => {
   return (
     <a
@@ -25,6 +29,8 @@ const ExternalLink: React.FunctionComponent<ExternalLinkProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       className={className ?? textLinkClass}
+      title={title}
+      aria-label={ariaLabel}
     >
       {icon}
       {label}

@@ -12,13 +12,19 @@ import {
 } from '../components/common/classes'
 import PageContainer from '../components/layout/PageContainer'
 import {
+  groupHasArchivedTestnet,
   groupPortfolioLinks,
   portfolioProjects,
+  type PortfolioLink,
+  type PortfolioLinkGroup,
   type PortfolioLinkType,
   type PortfolioProject,
+  type PortfolioProjectId,
 } from './portfolioProjects'
 
 const CASE_SECTIONS = ['problem', 'approach', 'result'] as const
+
+const chipClass = `${chip} w-fit max-w-full shrink-0 whitespace-nowrap`
 
 export const metadata: Metadata = {
   title: 'Portfolio',
@@ -40,10 +46,7 @@ const PortfolioPage: React.FunctionComponent = () => {
         {t('resume.end')}
       </Paragraph>
 
-      <ol
-        className="relative ms-1 border-s border-raised ps-6 sm:ps-8"
-        aria-label={t('timeline')}
-      >
+      <ol className="list-none space-y-8 p-0" aria-label={t('timeline')}>
         {portfolioProjects.map((project, index) => (
           <PortfolioEntry
             key={project.id}
@@ -68,14 +71,10 @@ function PortfolioEntry({
   const linkGroups = groupPortfolioLinks(project.links)
 
   return (
-    <li className="relative pb-10 last:pb-0">
-      <span
-        className="absolute top-2 -start-[calc(0.375rem+1px)] h-3 w-3 rounded-full bg-accent ring-4 ring-canvas"
-        aria-hidden="true"
-      />
+    <li>
       <article className={`${surfaceCard} p-4 sm:p-6`}>
         <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-2 md:gap-6">
-          <div>
+          <div className="md:sticky md:top-20">
             <Image
               src={project.image.src}
               alt={t(`projects.${project.id}.imageAlt`)}
@@ -85,6 +84,9 @@ function PortfolioEntry({
               sizes={project.image.sizes}
               className="h-auto w-full rounded-lg object-cover"
             />
+            <div className="mt-4 hidden md:block">
+              <ProjectLinks projectId={project.id} groups={linkGroups} />
+            </div>
           </div>
           <div>
             <header className="mb-4">
@@ -120,40 +122,96 @@ function PortfolioEntry({
                 </div>
               ))}
             </dl>
-
-            <div className="mt-5 space-y-3">
-              {linkGroups.map((group) => (
-                <div key={group.type}>
-                  <h3 className="text-xs font-semibold tracking-wide text-muted uppercase">
-                    {t(`linkTypes.${group.type}`)}
-                  </h3>
-                  <ul className="mt-2 flex flex-wrap gap-2">
-                    {group.links.map((link) => (
-                      <li key={link.url}>
-                        <ExternalLink
-                          url={link.url}
-                          label={t(
-                            `projects.${project.id}.links.${link.labelKey}`
-                          )}
-                          className={chip}
-                          icon={<LinkTypeIcon type={group.type} />}
-                          note={
-                            link.archivedTestnet
-                              ? t('archivedTestnet')
-                              : undefined
-                          }
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+          </div>
+          <div className="md:hidden">
+            <ProjectLinks projectId={project.id} groups={linkGroups} />
           </div>
         </div>
       </article>
     </li>
   )
+}
+
+function ProjectLinks({
+  projectId,
+  groups,
+}: {
+  projectId: PortfolioProjectId
+  groups: PortfolioLinkGroup[]
+}) {
+  const t = useTranslations('PortfolioPage')
+
+  return (
+    <div className="space-y-2">
+      {groups.map((group) => {
+        const archived = groupHasArchivedTestnet(group)
+        return (
+          <div
+            key={group.type}
+            className="flex flex-wrap items-center gap-x-2 gap-y-1.5"
+          >
+            <h3 className="text-xs font-semibold tracking-wide text-muted uppercase">
+              {t(`linkTypes.${group.type}`)}
+              {archived ? (
+                <span className="ms-2 font-normal normal-case">
+                  {t('archivedTestnet')}
+                </span>
+              ) : null}
+            </h3>
+            <ul className="flex min-w-0 flex-wrap gap-2">
+              {group.links.map((link) => (
+                <li key={link.url} className="w-fit max-w-full">
+                  <ProjectChip
+                    projectId={projectId}
+                    groupType={group.type}
+                    link={link}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function ProjectChip({
+  projectId,
+  groupType,
+  link,
+}: {
+  projectId: PortfolioProjectId
+  groupType: PortfolioLinkType
+  link: PortfolioLink
+}) {
+  const t = useTranslations('PortfolioPage')
+  const label = t(`projects.${projectId}.links.${link.labelKey}`)
+  const description = linkDescription(t, projectId, link.labelKey, label)
+  const accessibleName = link.archivedTestnet
+    ? `${description} (${t('archivedTestnet')})`
+    : description
+
+  return (
+    <ExternalLink
+      url={link.url}
+      label={label}
+      className={chipClass}
+      icon={<LinkTypeIcon type={groupType} />}
+      title={accessibleName}
+      ariaLabel={accessibleName}
+    />
+  )
+}
+
+function linkDescription(
+  t: ReturnType<typeof useTranslations>,
+  projectId: PortfolioProjectId,
+  labelKey: string,
+  fallback: string
+): string {
+  const key = `projects.${projectId}.linkDescriptions.${labelKey}`
+  return t.has(key) ? t(key) : fallback
 }
 
 function LinkTypeIcon({ type }: { type: PortfolioLinkType }) {

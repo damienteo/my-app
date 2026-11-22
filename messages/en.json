@@ -259,6 +259,11 @@
         "result": "Won the main prize. Factory-clone contracts also cut down the cost of deploying each payment agreement by ~70%.",
         "links": {
           "live": "Live site",
+          "factory": "Factory",
+          "initializer": "Initializer",
+          "proxy": "Proxy (clone)"
+        },
+        "linkDescriptions": {
           "factory": "Factory contract for cloning agreements",
           "initializer": "Initializer contract with agreement logic",
           "proxy": "Minimal proxy contract (clone) which uses logic from the initializer contract"
@@ -272,9 +277,16 @@
         "result": "The build includes a frontend, a backend API, a smart contracts repo, a token sale contract, and an NFT contract on Goerli.",
         "links": {
           "live": "Live site",
+          "frontend": "Frontend",
+          "backend": "Backend",
+          "api": "API",
+          "repo": "Repo",
+          "token": "Token",
+          "nft": "NFT"
+        },
+        "linkDescriptions": {
           "frontend": "Frontend repo",
           "backend": "Backend repo",
-          "api": "API",
           "repo": "Smart contracts repo",
           "token": "Token sale contract",
           "nft": "NFT contract"
@@ -288,6 +300,10 @@
         "result": "Shipped as a major side-project in March 2019.",
         "links": {
           "live": "Live site",
+          "frontend": "Frontend",
+          "backend": "Backend"
+        },
+        "linkDescriptions": {
           "frontend": "Frontend repo",
           "backend": "Backend repo"
         }
