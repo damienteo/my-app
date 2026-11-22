@@ -100,3 +100,80 @@ input.cpf-date::-webkit-datetime-edit-fields-wrapper {
     text-wrap: balance;
   }
 }
+
+/* The browser's dialog rules sit outside any CSS layer. Tailwind utilities
+   live in a layer, so they lose to those built-in rules (the white dialog
+   background, the auto margin, the border). This reset stays unlayered
+   on purpose, which is also why it beats `bg-*` and `m-*` utilities. */
+dialog.animal-lightbox {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* The dialog element itself is the scrim. A transparent dialog plus a
+     styled ::backdrop still lets the grid ghost through in some captures,
+     and the backdrop is easy to miss. The page canvas is the same black. */
+  background: #0a0a0b;
+  /* Spell the color out. A dialog in the top layer can fall back to
+     CanvasText, which is black when the dialog's color-scheme is light,
+     and black text on this background cannot be read. */
+  color: #fafafa;
+  color-scheme: dark;
+  overflow: hidden;
+}
+
+dialog.animal-lightbox::backdrop {
+  background: #0a0a0b;
+}
+
+/* Touch screens keep the name visible, at a soft gradient rather than a
+   solid bar. A fine pointer hides it until hover or keyboard focus so the
+   still stays clear. The same query does the hover lift: a phone has no
+   hover, and a stuck :hover after a tap would leave every tile raised. */
+.animal-caption {
+  opacity: 0.95;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .animal-caption {
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+
+  .animal-tile:hover .animal-caption,
+  .animal-tile:focus-within .animal-caption {
+    opacity: 1;
+  }
+
+  .animal-tile {
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .animal-tile:hover,
+  .animal-tile:focus-within {
+    transform: translateY(-4px);
+    border-color: #52525b;
+    box-shadow: 0 12px 28px rgb(0 0 0 / 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animal-caption,
+  .animal-tile {
+    transition: none;
+  }
+
+  .animal-tile:hover,
+  .animal-tile:focus-within {
+    transform: none;
+  }
+}
