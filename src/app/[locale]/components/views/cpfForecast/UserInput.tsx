@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import dayjs, { Dayjs } from 'dayjs'
 import { CurrencyInput, ExternalLink, InfoPopup, Section } from '../../common'
+import { blueButton, surfaceCard } from '../../common/classes'
 import {
   calculateFutureValues,
   roundTo2Dec,
@@ -23,8 +24,14 @@ interface UserInputProps {
 const minDate = dayjs().subtract(withdrawalAge, 'y')
 const maxDate = dayjs().subtract(16, 'y')
 
-const inputClass =
-  'block w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 font-mono text-sm tabular-nums text-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
+const fieldLabel = 'mb-1 block text-sm font-medium text-gray-300'
+
+const instructionClass = 'mb-4 text-justify text-gray-300 hyphens-auto'
+
+const fieldClass =
+  'block w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
+
+const inputClass = `${fieldClass} font-mono text-sm tabular-nums`
 
 const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   const t = useTranslations('CPFForecastPage.userInput')
@@ -166,7 +173,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
   return (
     <>
       <Section>
-        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
+        <p className={instructionClass}>
           {t('accountBalances.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('accountBalances.infoPopup.title')}>
@@ -197,7 +204,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
         </div>
       </Section>
       <Section>
-        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
+        <p className={instructionClass}>
           {t('dateOfBirth.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('dateOfBirth.withdrawalInfo.title')}>
@@ -213,19 +220,17 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
           </span>
         </p>
         <div className="w-full min-w-0 max-w-md">
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            {t('dateOfBirth.label')}
-          </label>
+          <label className={fieldLabel}>{t('dateOfBirth.label')}</label>
           <input
             type="date"
             value={selectedDate?.format('YYYY-MM-DD')}
             onChange={(e) => handleDateChange(dayjs(e.target.value))}
-            className="cpf-date box-border block w-full min-w-0 max-w-full appearance-none font-mono text-sm tabular-nums rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3"
+            className={`cpf-date box-border min-w-0 max-w-full appearance-none ${inputClass}`}
           />
         </div>
       </Section>
       <Section>
-        <p className="text-gray-300 mb-4 text-justify hyphens-auto">
+        <p className={instructionClass}>
           {t('salary.instruction')}{' '}
           <span className="inline-flex items-center">
             <InfoPopup title={t('salary.contributionInfo.title')}>
@@ -259,21 +264,19 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              {t('salary.salaryIncrease')}
-            </label>
+            <label className={fieldLabel}>{t('salary.salaryIncrease')}</label>
             <input
               type="number"
               value={values.salaryIncreaseRate}
               onChange={handleChange('salaryIncreaseRate')}
-              className="block w-full sm:text-sm rounded-md bg-gray-800 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-2 py-2 px-3 placeholder-gray-500"
+              className={`${fieldClass} placeholder-gray-500 sm:text-sm`}
               placeholder={t('salary.salaryIncreasePlaceholder')}
             />
           </div>
         </div>
       </Section>
 
-      <details className="group mb-6 rounded-2xl bg-surface text-gray-300 ring-1 ring-raised">
+      <details className={`group mb-6 text-gray-300 ${surfaceCard}`}>
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 text-sm font-medium text-ink sm:px-6 [&::-webkit-details-marker]:hidden">
           <span>{t('optional.summary')}</span>
           <svg
@@ -307,10 +310,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
             </p>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label
-                  htmlFor="months-of-bonus"
-                  className="mb-1 block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="months-of-bonus" className={fieldLabel}>
                   {t('optional.monthsOfBonus')}
                 </label>
                 <div className="relative">
@@ -333,10 +333,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 )}
               </div>
               <div>
-                <label
-                  htmlFor="bonus-month"
-                  className="mb-1 block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="bonus-month" className={fieldLabel}>
                   {t('optional.bonusMonth')}
                 </label>
                 <select
@@ -379,10 +376,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 handleChange={handleChange}
               />
               <div>
-                <label
-                  htmlFor="lump-sum-date"
-                  className="mb-1 block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="lump-sum-date" className={fieldLabel}>
                   {t('optional.lumpSumDate')}
                 </label>
                 <input
@@ -434,10 +428,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 handleChange={handleChange}
               />
               <div>
-                <label
-                  htmlFor="loan-tenure"
-                  className="mb-1 block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="loan-tenure" className={fieldLabel}>
                   {t('optional.tenure')}
                 </label>
                 <div className="relative">
@@ -460,10 +451,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
                 )}
               </div>
               <div>
-                <label
-                  htmlFor="loan-date"
-                  className="mb-1 block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="loan-date" className={fieldLabel}>
                   {t('optional.loanDate')}
                 </label>
                 <input
@@ -526,7 +514,7 @@ const UserInput: React.FunctionComponent<UserInputProps> = (props) => {
 
       <div className="mt-4 mb-6">
         <button
-          className="bg-blue-600 hover:bg-blue-500 text-white py-3 px-8 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+          className={`${blueButton} transform rounded-full px-8 py-3 font-medium shadow-lg transition-all hover:scale-105 hover:shadow-xl`}
           onClick={handleSubmit}
         >
           {t('submit')}

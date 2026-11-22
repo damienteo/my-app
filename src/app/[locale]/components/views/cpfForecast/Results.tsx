@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 import { Section } from '../../common'
+import { primaryPill } from '../../common/classes'
 import HistoryTable from './results/HistoryTable'
 import WithdrawalAgeInfo from './results/WithdrawalAgeInfo'
 import PayoutAgeInfo from './results/PayoutAgeInfo'
@@ -10,6 +11,26 @@ import { FutureValues } from '@/utils/cpf/types'
 
 interface ResultsProps {
   futureValues: FutureValues
+}
+
+function HistoryToggle({
+  open,
+  showLabel,
+  hideLabel,
+  onToggle,
+}: {
+  open: boolean
+  showLabel: string
+  hideLabel: string
+  onToggle: () => void
+}) {
+  return (
+    <div className="my-6 text-center">
+      <button type="button" className={primaryPill} onClick={onToggle}>
+        {open ? hideLabel : showLabel}
+      </button>
+    </div>
+  )
 }
 
 const Results: React.FunctionComponent<ResultsProps> = (props) => {
@@ -35,16 +56,12 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions up to 55 years old */}
         {history.length > 0 && (
-          <div className="text-center my-6">
-            <button
-              className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
-              onClick={() => setHistoryOpen(!historyOpen)}
-            >
-              {historyOpen
-                ? t('hideCalculationsTill55')
-                : t('showCalculationsTill55')}
-            </button>
-          </div>
+          <HistoryToggle
+            open={historyOpen}
+            showLabel={t('showCalculationsTill55')}
+            hideLabel={t('hideCalculationsTill55')}
+            onToggle={() => setHistoryOpen(!historyOpen)}
+          />
         )}
         {historyOpen && (
           <>
@@ -53,14 +70,12 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistory}
             />
-            <div className="text-center my-6">
-              <button
-                className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
-                onClick={() => setHistoryOpen(!historyOpen)}
-              >
-                {historyOpen ? 'Hide' : 'Show'} Calculations Till 55!
-              </button>
-            </div>
+            <HistoryToggle
+              open={historyOpen}
+              showLabel={t('showCalculationsTill55')}
+              hideLabel={t('hideCalculationsTill55')}
+              onToggle={() => setHistoryOpen(!historyOpen)}
+            />
           </>
         )}
       </Section>
@@ -71,18 +86,14 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
 
         {/* History Table for Transactions from 55 to 65 years old */}
         {historyAfterWithdrawalAge.length > 0 && (
-          <div className="text-center my-6">
-            <button
-              className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
-              onClick={() =>
-                setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
-              }
-            >
-              {historyAfterWithdrawalAgeOpen
-                ? t('hideCalculationsAfter55')
-                : t('showCalculationsAfter55')}
-            </button>
-          </div>
+          <HistoryToggle
+            open={historyAfterWithdrawalAgeOpen}
+            showLabel={t('showCalculationsAfter55')}
+            hideLabel={t('hideCalculationsAfter55')}
+            onToggle={() =>
+              setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
+            }
+          />
         )}
         {historyAfterWithdrawalAgeOpen && (
           <>
@@ -91,19 +102,14 @@ const Results: React.FunctionComponent<ResultsProps> = (props) => {
               groupByYear={monthlySalary > 0}
               salaryData={salaryHistoryAfterWithdrawalAge}
             />
-            <div className="text-center my-6">
-              <button
-                className="bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-6 rounded-full transition-all font-medium shadow-md hover:shadow-lg"
-                onClick={() =>
-                  setHistoryAfterWithdrawalAgeOpen(
-                    !historyAfterWithdrawalAgeOpen
-                  )
-                }
-              >
-                {historyAfterWithdrawalAgeOpen ? 'Hide' : 'Show'} Calculations
-                After 55!
-              </button>
-            </div>
+            <HistoryToggle
+              open={historyAfterWithdrawalAgeOpen}
+              showLabel={t('showCalculationsAfter55')}
+              hideLabel={t('hideCalculationsAfter55')}
+              onToggle={() =>
+                setHistoryAfterWithdrawalAgeOpen(!historyAfterWithdrawalAgeOpen)
+              }
+            />
           </>
         )}
       </Section>

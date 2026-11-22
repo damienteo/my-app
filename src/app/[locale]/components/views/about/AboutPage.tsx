@@ -2,6 +2,8 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 
 import { Link } from '@/src/i18n/navigation'
+import PageContainer from '../../layout/PageContainer'
+import { focusRing, surfaceCard } from '../../common/classes'
 
 const STACK = [
   { label: 'React.js', href: 'https://reactjs.org/' },
@@ -19,15 +21,12 @@ const STACK = [
   },
 ] as const
 
-const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-
 const AboutPage = () => {
   const t = useTranslations('AboutPage')
 
   return (
-    <div className="w-full space-y-8 py-2 text-left md:py-6">
-      <section className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8">
+    <PageContainer className="space-y-8 text-left">
+      <section className={`${surfaceCard} p-6 sm:p-8`}>
         <h1 className="text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {t('name')}
         </h1>
@@ -74,7 +73,7 @@ const AboutPage = () => {
 
       <section
         aria-labelledby="about-stack"
-        className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8"
+        className={`${surfaceCard} p-6 sm:p-8`}
       >
         <h2
           id="about-stack"
@@ -100,7 +99,7 @@ const AboutPage = () => {
 
       <section
         aria-labelledby="about-learning"
-        className="rounded-2xl bg-surface p-6 ring-1 ring-raised sm:p-8"
+        className={`${surfaceCard} p-6 sm:p-8`}
       >
         <h2
           id="about-learning"
@@ -123,7 +122,7 @@ const AboutPage = () => {
           })}
         </p>
       </section>
-    </div>
+    </PageContainer>
   )
 }
 
@@ -141,7 +140,7 @@ function PageCard({
   return (
     <Link
       href={href}
-      className={`group flex h-full flex-col rounded-2xl bg-surface p-5 ring-1 ring-raised transition hover:bg-raised hover:ring-accent ${focusRing}`}
+      className={`group flex h-full flex-col ${surfaceCard} p-5 transition hover:bg-raised hover:ring-accent ${focusRing}`}
     >
       <h3 className="text-lg font-semibold text-ink">{title}</h3>
       <p className="mt-2 flex-1 text-base leading-relaxed text-ink">
