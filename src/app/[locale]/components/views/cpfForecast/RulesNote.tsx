@@ -31,16 +31,22 @@ const RulesNote: React.FunctionComponent = () => {
 
   return (
     <section className="mb-6 rounded-2xl bg-surface p-4 text-left text-gray-300 ring-1 ring-raised sm:p-5">
-      <p className="text-sm leading-relaxed text-ink">{t('intro')}</p>
+      <p className="text-sm leading-relaxed text-justify text-ink">
+        {t('intro')}
+      </p>
 
       <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <h2 className={labelClass}>{t('mediSaveLabel')}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed">{t('mediSave')}</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-justify">
+            {t('mediSave')}
+          </p>
         </div>
         <div>
           <h2 className={labelClass}>{t('laterLabel')}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed">{t('later')}</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-justify">
+            {t('later')}
+          </p>
         </div>
       </div>
 
@@ -58,7 +64,9 @@ const RulesNote: React.FunctionComponent = () => {
             </p>
           </InfoPopup>
         </div>
-        <p className="mt-1.5 text-sm leading-relaxed">{t('retirementLead')}</p>
+        <p className="mt-1.5 text-sm leading-relaxed text-justify">
+          {t('retirementLead')}
+        </p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full min-w-[18rem] border-collapse text-left text-sm">
             <thead>
@@ -94,7 +102,7 @@ const RulesNote: React.FunctionComponent = () => {
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-muted">
+        <p className="mt-2 text-xs leading-relaxed text-justify text-muted">
           {t('relationship')}
         </p>
       </div>
