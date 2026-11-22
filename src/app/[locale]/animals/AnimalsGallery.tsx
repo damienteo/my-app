@@ -160,7 +160,7 @@ const AnimalsGallery: React.FunctionComponent = () => {
     <>
       <ul
         aria-label={t('gallery')}
-        className="m-0 mt-4 list-none columns-2 gap-3 p-0 md:columns-3 lg:columns-4"
+        className="m-0 mt-4 list-none columns-1 gap-3 p-0 md:columns-3 lg:columns-4"
       >
         {animalClips.map((clip, index) => (
           // inline-block keeps the tops of the columns aligned. A plain
