@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import YahooFinance from 'yahoo-finance2'
+import { mapYahooChartQuotesToHistorical } from '@/utils/yahoo/toIsoDay'
 
 // Route-level caching: cache the entire response for 5 minutes
 // S&P 500 data doesn't need to update every minute
@@ -225,20 +226,7 @@ async function fetchHistoricalData(
       return []
     }
 
-    // Convert to our format
-    const result = chart.quotes
-      .map((quote: any) => {
-        if (!quote.date || !quote.close) return null
-        return {
-          date: new Date(quote.date * 1000).toISOString().split('T')[0],
-          value: quote.close,
-        }
-      })
-      .filter(
-        (item: HistoricalDataPoint | null): item is HistoricalDataPoint =>
-          item !== null && item.value > 0
-      )
-      .sort((a, b) => a.date.localeCompare(b.date))
+    const result = mapYahooChartQuotesToHistorical(chart.quotes)
 
     console.log(
       `S&P 500 historical data fetched successfully: ${result.length} data points`
