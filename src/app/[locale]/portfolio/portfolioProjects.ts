@@ -38,7 +38,7 @@ export type PortfolioLinkGroup = {
 }
 
 /** Same sizes the original portfolio screenshots used. */
-export const PORTFOLIO_IMAGE_SIZES = '(min-width: 640px) 480px, 92vw'
+const PORTFOLIO_IMAGE_SIZES = '(min-width: 640px) 480px, 92vw'
 
 export const portfolioProjects: readonly PortfolioProject[] = [
   {

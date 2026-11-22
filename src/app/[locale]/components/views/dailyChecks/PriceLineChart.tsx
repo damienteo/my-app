@@ -11,7 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 
-export type PricePoint = {
+type PricePoint = {
   date: string
   value: number
 }
