@@ -18,7 +18,7 @@ import { normalRound } from '../utils'
  * from 1 October 2026 to 31 December 2026 is the floor.
  * https://www.cpf.gov.sg/member/growing-your-savings/earning-higher-returns/earning-attractive-interest
  */
-export const ordinaryAccountAnnualRate = 0.025
+const ordinaryAccountAnnualRate = 0.025
 
 /**
  * Special, MediSave and Retirement Account floor. The pegged rate is below
@@ -28,20 +28,20 @@ export const ordinaryAccountAnnualRate = 0.025
  * After 2027 this forecast keeps 4%. That is an assumption: quarterly rates
  * after the published floor are not known.
  */
-export const smraAnnualRate = 0.04
+const smraAnnualRate = 0.04
 
 /** Extra 1% a year on combined balances that fall inside the $60,000 cap. */
-export const extraInterestAnnualRate = 0.01
+const extraInterestAnnualRate = 0.01
 
 /**
  * From age 55 the first $30,000 of the extra-interest cap earns 2% extra
  * instead of 1%. The next $30,000 still earns 1%.
  */
-export const extraInterestHighAnnualRate = 0.02
+const extraInterestHighAnnualRate = 0.02
 
-export const extraInterestCombinedCap = 60000
-export const extraInterestOrdinaryCap = 20000
-export const extraInterestHighTier = 30000
+const extraInterestCombinedCap = 60000
+const extraInterestOrdinaryCap = 20000
+const extraInterestHighTier = 30000
 
 /**
  * Annual salary ceiling. Ordinary wages plus additional wages that attract
@@ -50,7 +50,7 @@ export const extraInterestHighTier = 30000
  * https://www.cpf.gov.sg/member/infohub/news/cpf-related-announcements/budget-highlights-2023
  * https://www.cpf.gov.sg/member/infohub/news/news-releases/cpf-related-changes-taking-place-in-2026-what-you-need-to-know
  */
-export const annualSalaryCeiling = 102000
+const annualSalaryCeiling = 102000
 
 /**
  * Ordinary Wage ceiling for a calendar month.

@@ -1,7 +1,7 @@
 export const SITE_URL = 'https://www.damienteo.com'
 
-export const locales = ['en', 'jp'] as const
-export type AppLocale = (typeof locales)[number]
+const locales = ['en', 'jp'] as const
+type AppLocale = (typeof locales)[number]
 
 export const PAGE_PATHS = {
   home: '/',
@@ -14,8 +14,8 @@ export const PAGE_PATHS = {
 
 export type PageKey = keyof typeof PAGE_PATHS
 
-/** Live, indexable routes. Markets and stocks-watch call notFound(). */
-export const SITEMAP_PATHS = [
+/** Live, indexable routes. */
+const SITEMAP_PATHS = [
   PAGE_PATHS.home,
   PAGE_PATHS.about,
   PAGE_PATHS.portfolio,
@@ -23,10 +23,6 @@ export const SITEMAP_PATHS = [
   PAGE_PATHS.cpfForecast,
   PAGE_PATHS.animals,
 ] as const
-
-export function isAppLocale(value: string): value is AppLocale {
-  return value === 'en' || value === 'jp'
-}
 
 export function htmlLang(locale: string): 'en' | 'ja' {
   return locale === 'jp' ? 'ja' : 'en'

@@ -13,7 +13,7 @@ export type ChartPoint = {
   value: number
 }
 
-export type PriceSeriesId = 'sp500' | 'gold' | 'bitcoin' | 'ethereum'
+type PriceSeriesId = 'sp500' | 'gold' | 'bitcoin' | 'ethereum'
 
 export type PriceSeriesConfig = {
   id: PriceSeriesId
