@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { focusRing } from '../classes'
+
 type ExternalLinkProps = {
   url: string
   label: string
@@ -14,7 +16,7 @@ const ExternalLink: React.FunctionComponent<ExternalLinkProps> = ({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-accent-text underline-offset-2 hover:text-ink hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className={`text-accent-text underline-offset-2 hover:text-ink hover:underline ${focusRing}`}
     >
       {label}
     </a>

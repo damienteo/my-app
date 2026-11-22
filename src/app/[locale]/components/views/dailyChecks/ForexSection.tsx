@@ -3,19 +3,19 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Section } from '../../common'
+import { raisedPanel } from '../../common/classes'
 import dynamic from 'next/dynamic'
+import PeriodToggle from './PeriodToggle'
+import { chartDomain, formatChartDate, type ChartPoint } from './priceSeries'
 
 const PriceLineChart = dynamic(() => import('./PriceLineChart'), {
   ssr: false,
   loading: () => <div className="h-[300px]" />,
 })
 
-type Period = '1week' | '1month' | '3months'
+const FOREX_PERIODS = ['1week', '1month', '3months'] as const
 
-interface HistoricalDataPoint {
-  date: string
-  value: number
-}
+type Period = (typeof FOREX_PERIODS)[number]
 
 interface ForexData {
   current: {
@@ -24,14 +24,16 @@ interface ForexData {
     usdToJpy: number
   }
   historical: {
-    usdToSgd: HistoricalDataPoint[]
-    sgdToJpy: HistoricalDataPoint[]
-    usdToJpy: HistoricalDataPoint[]
+    usdToSgd: ChartPoint[]
+    sgdToJpy: ChartPoint[]
+    usdToJpy: ChartPoint[]
   }
 }
 
 const ForexSection = () => {
   const t = useTranslations('DailyChecksPage.forex')
+  const periods = useTranslations('DailyChecksPage.periods')
+  const price = useTranslations('DailyChecksPage.price')
   const [period, setPeriod] = useState<Period>('1month')
   const [forex, setForex] = useState<ForexData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -76,22 +78,6 @@ const ForexSection = () => {
     }
   }, [period])
 
-  const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  }
-
-  // Calculate Y-axis domain based on data range
-  const getYAxisDomain = (data: HistoricalDataPoint[]): [number, number] => {
-    if (data.length === 0) return [0, 100]
-    const values = data.map((d) => d.value)
-    const min = Math.min(...values)
-    const max = Math.max(...values)
-    const range = max - min
-    const padding = range * 0.1 // 10% padding on each side
-    return [min - padding, max + padding]
-  }
-
   if (loading) {
     return (
       <Section className="min-h-[36rem]">
@@ -112,46 +98,28 @@ const ForexSection = () => {
     <Section>
       <h2 className="text-2xl font-bold text-gray-200 mb-4">{t('title')}</h2>
 
-      {/* Period Selector */}
-      <div className="mb-6 flex gap-2 flex-wrap">
-        {(['1week', '1month', '3months'] as Period[]).map((p) => (
-          <button
-            key={p}
-            onClick={() => {
-              if (period !== p) {
-                setPeriod(p)
-              }
-            }}
-            className={`px-4 py-2 rounded-full transition-colors font-medium ${
-              period === p
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-          >
-            {p === '1week'
-              ? t('periods.1week')
-              : p === '1month'
-                ? t('periods.1month')
-                : t('periods.3months')}
-          </button>
-        ))}
-      </div>
+      <PeriodToggle
+        periods={FOREX_PERIODS}
+        value={period}
+        onChange={setPeriod}
+        label={(item) => periods(item)}
+      />
 
       {/* Current Rates */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="p-4 bg-gray-700 rounded-lg">
+        <div className={raisedPanel}>
           <p className="text-sm text-gray-400 mb-1">{t('rates.usdToSgd')}</p>
           <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.usdToSgd.toFixed(4)}
           </p>
         </div>
-        <div className="p-4 bg-gray-700 rounded-lg">
+        <div className={raisedPanel}>
           <p className="text-sm text-gray-400 mb-1">{t('rates.sgdToJpy')}</p>
           <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.sgdToJpy.toFixed(2)}
           </p>
         </div>
-        <div className="p-4 bg-gray-700 rounded-lg">
+        <div className={raisedPanel}>
           <p className="text-sm text-gray-400 mb-1">{t('rates.usdToJpy')}</p>
           <p className="text-2xl font-mono tabular-nums font-bold text-ink">
             {forex.current.usdToJpy.toFixed(2)}
@@ -165,8 +133,8 @@ const ForexSection = () => {
           <p className="text-xs text-gray-400">
             {t('dataAvailability', {
               count: forex.historical.usdToSgd.length,
-              startDate: formatDate(forex.historical.usdToSgd[0].date),
-              endDate: formatDate(
+              startDate: formatChartDate(forex.historical.usdToSgd[0].date),
+              endDate: formatChartDate(
                 forex.historical.usdToSgd[forex.historical.usdToSgd.length - 1]
                   .date
               ),
@@ -184,13 +152,13 @@ const ForexSection = () => {
           {forex.historical.usdToSgd.length > 0 ? (
             <PriceLineChart
               data={forex.historical.usdToSgd}
-              formatDate={formatDate}
+              formatDate={formatChartDate}
               formatValue={(value) => value.toFixed(4)}
-              domain={getYAxisDomain(forex.historical.usdToSgd)}
+              domain={chartDomain(forex.historical.usdToSgd)}
             />
           ) : (
             <p className="text-gray-400 text-center py-8">
-              {t('noHistoricalData')}
+              {price('noHistoricalData')}
             </p>
           )}
         </div>
@@ -202,13 +170,13 @@ const ForexSection = () => {
           {forex.historical.sgdToJpy.length > 0 ? (
             <PriceLineChart
               data={forex.historical.sgdToJpy}
-              formatDate={formatDate}
+              formatDate={formatChartDate}
               formatValue={(value) => value.toFixed(2)}
-              domain={getYAxisDomain(forex.historical.sgdToJpy)}
+              domain={chartDomain(forex.historical.sgdToJpy)}
             />
           ) : (
             <p className="text-gray-400 text-center py-8">
-              {t('noHistoricalData')}
+              {price('noHistoricalData')}
             </p>
           )}
         </div>
@@ -220,14 +188,14 @@ const ForexSection = () => {
           {forex.historical.usdToJpy.length > 0 ? (
             <PriceLineChart
               data={forex.historical.usdToJpy}
-              formatDate={formatDate}
+              formatDate={formatChartDate}
               formatValue={(value) => value.toFixed(2)}
-              domain={getYAxisDomain(forex.historical.usdToJpy)}
+              domain={chartDomain(forex.historical.usdToJpy)}
               stroke="var(--color-muted)"
             />
           ) : (
             <p className="text-gray-400 text-center py-8">
-              {t('noHistoricalData')}
+              {price('noHistoricalData')}
             </p>
           )}
         </div>

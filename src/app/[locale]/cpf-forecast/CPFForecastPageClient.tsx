@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import PageContainer from '../components/layout/PageContainer'
 import UserInput from '../components/views/cpfForecast/UserInput'
 import Intro from '../components/views/cpfForecast/Intro'
 import Results from '../components/views/cpfForecast/Results'
@@ -29,7 +30,7 @@ const CPFForecastPageClient = () => {
   })
 
   return (
-    <div className="flex flex-col py-8">
+    <PageContainer>
       <div className="mb-6">
         <Intro />
       </div>
@@ -42,7 +43,7 @@ const CPFForecastPageClient = () => {
       />
 
       {isCalculating && <Results futureValues={futureValues} />}
-    </div>
+    </PageContainer>
   )
 }
 

@@ -3,6 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
+import {
+  accentCircleButton,
+  focusRing,
+  focusRingInset,
+} from '../components/common/classes'
 import { animalPoster, animalSrc } from './clips'
 import { clipControlLabel, fillClipName } from './clipLogic'
 import { PauseIcon, PlayIcon } from './icons'
@@ -19,10 +24,7 @@ function isNearViewport(el: HTMLElement): boolean {
   )
 }
 
-const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-
-const playButtonClass = `absolute top-1/2 left-1/2 z-20 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-white shadow-lg ${focusRing}`
+const playButtonClass = `absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 ${accentCircleButton} ${focusRing}`
 
 type AnimalClipProps = {
   name: string
@@ -195,7 +197,7 @@ const AnimalClip: React.FunctionComponent<AnimalClipProps> = ({
         onClick={onOpen}
         aria-haspopup="dialog"
         aria-label={fillClipName(String(t.raw('openClip')), label)}
-        className="absolute inset-0 z-10 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-accent"
+        className={`absolute inset-0 z-10 rounded-lg ${focusRingInset}`}
       />
       <span
         aria-hidden="true"

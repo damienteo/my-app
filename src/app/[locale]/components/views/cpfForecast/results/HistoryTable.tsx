@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
+
+import { blueButton } from '../../../common/classes'
 import { formatCurrency } from '../../../../../../../utils/utils'
 import {
   Entry,
@@ -72,7 +74,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
             page === 0
               ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-500 text-white'
+              : blueButton
           }`}
           aria-label="Previous page"
         >
@@ -97,7 +99,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
           className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
             page === history.length - 1
               ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-500 text-white'
+              : blueButton
           }`}
           aria-label="Next page"
         >
@@ -129,7 +131,7 @@ const HistoryTable: React.FunctionComponent<HistoryTableProps> = (props) => {
             onClick={() => setPage(index)}
             className={`px-4 py-2 text-white rounded-full transition-all font-medium ${
               page === index
-                ? 'bg-blue-600 hover:bg-blue-500 shadow-lg'
+                ? `${blueButton} shadow-lg`
                 : 'bg-gray-700 hover:bg-gray-600'
             }`}
           >
