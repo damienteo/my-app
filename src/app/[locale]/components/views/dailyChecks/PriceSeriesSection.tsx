@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 
@@ -52,10 +52,11 @@ const PriceSeriesSection = ({ series }: { series: PriceSeriesConfig }) => {
   const [data, setData] = useState<SeriesData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const fetchGenerationRef = useRef(0)
 
   useEffect(() => {
-    let isMounted = true
     const abortController = new AbortController()
+    const generation = ++fetchGenerationRef.current
 
     const load = async () => {
       try {
@@ -68,20 +69,34 @@ const PriceSeriesSection = ({ series }: { series: PriceSeriesConfig }) => {
           throw new Error(series.fetchError)
         }
         const body = (await res.json()) as SeriesData
-        if (isMounted) setData(body)
+        if (
+          !abortController.signal.aborted &&
+          generation === fetchGenerationRef.current
+        ) {
+          setData(body)
+        }
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError' && isMounted) {
-          setError(err.message)
+        if (err instanceof Error && err.name !== 'AbortError') {
+          if (
+            !abortController.signal.aborted &&
+            generation === fetchGenerationRef.current
+          ) {
+            setError(err.message)
+          }
         }
       } finally {
-        if (isMounted) setLoading(false)
+        if (
+          !abortController.signal.aborted &&
+          generation === fetchGenerationRef.current
+        ) {
+          setLoading(false)
+        }
       }
     }
 
     void load()
 
     return () => {
-      isMounted = false
       abortController.abort()
     }
   }, [period, series])
