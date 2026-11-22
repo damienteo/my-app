@@ -1,12 +1,14 @@
 import React from 'react'
-import { Metadata } from 'next'
 
+import { generatePageMetadata } from '../../lib/pageMetadata'
 import AboutPage from './components/views/about/AboutPage'
 
-export const metadata: Metadata = {
-  title: 'Damien Teo',
-  description:
-    'Damien Teo is a peasant who enjoys working with intelligent machines. Previously, he was a police officer. Now, he work in the tech industry.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'home' })
 }
 
 const Index = () => {

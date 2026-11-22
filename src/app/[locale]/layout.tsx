@@ -1,14 +1,16 @@
 import './globals.css'
 
 import React from 'react'
-import type { Viewport } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Space_Grotesk } from 'next/font/google'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { routing } from '../../i18n/routing'
+import { SITE_URL, ogLocale, otherLocale } from '../../lib/seo'
 
 import NavBar from './components/layout/Navbar'
 
@@ -40,6 +42,32 @@ export const viewport: Viewport = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: t('defaultTitle'),
+      template: t('titleTemplate'),
+    },
+    openGraph: {
+      siteName: t('siteName'),
+      type: 'website',
+      locale: ogLocale(locale),
+      alternateLocale: [ogLocale(otherLocale(locale))],
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
+  }
 }
 
 export default async function RootLayout({

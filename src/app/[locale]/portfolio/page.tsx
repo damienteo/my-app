@@ -1,8 +1,8 @@
 import React from 'react'
-import { Metadata } from 'next'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
+import { generatePageMetadata } from '../../../lib/pageMetadata'
 import { ExternalLink, Paragraph } from '../components/common'
 import {
   blueButton,
@@ -26,10 +26,12 @@ const CASE_SECTIONS = ['problem', 'approach', 'result'] as const
 
 const chipClass = `${chip} w-fit max-w-full shrink-0 whitespace-nowrap`
 
-export const metadata: Metadata = {
-  title: 'Portfolio',
-  description:
-    'Here are some small side projects which Damien Teo has previously done.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'portfolio' })
 }
 
 const PortfolioPage: React.FunctionComponent = () => {

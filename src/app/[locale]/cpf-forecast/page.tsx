@@ -1,12 +1,14 @@
 import React from 'react'
-import { Metadata } from 'next'
 
+import { generatePageMetadata } from '../../../lib/pageMetadata'
 import CPFForecastPageClient from './CPFForecastPageClient'
 
-export const metadata: Metadata = {
-  title: 'CPF Forecast',
-  description:
-    'CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'cpfForecast' })
 }
 
 const CPFForecast: React.FunctionComponent = () => {

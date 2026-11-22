@@ -1,14 +1,17 @@
 import React from 'react'
-import { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
 
+import { generatePageMetadata } from '../../../lib/pageMetadata'
 import { Paragraph } from '../components/common'
 import PageContainer from '../components/layout/PageContainer'
 import AnimalsGallery from './AnimalsGallery'
 
-export const metadata: Metadata = {
-  title: 'Animals',
-  description: 'Spotted while traveling',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'animals' })
 }
 
 const Animals: React.FunctionComponent = () => {
