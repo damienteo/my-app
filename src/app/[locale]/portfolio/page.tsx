@@ -2,7 +2,8 @@ import React from 'react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { ExternalLink, Header, Paragraph } from '../components/common'
+import { ExternalLink, Paragraph } from '../components/common'
+import PageContainer from '../components/layout/PageContainer'
 
 export const metadata: Metadata = {
   title: 'Portfolio',
@@ -13,18 +14,15 @@ export const metadata: Metadata = {
 const PortfolioPage: React.FunctionComponent = () => {
   const t = useTranslations('PortfolioPage')
   return (
-    <>
-      <div className="px-2 sm:px-4">
-        <Header text={t('header')} />
-        <Paragraph className="sm:mb-4">
-          {t('resume.start')}
-          <ExternalLink
-            url="https://www.linkedin.com/in/damien-teo/"
-            label="LinkedIn"
-          />
-          {t('resume.end')}
-        </Paragraph>
-      </div>
+    <PageContainer title={t('header')}>
+      <Paragraph className="sm:mb-4">
+        {t('resume.start')}
+        <ExternalLink
+          url="https://www.linkedin.com/in/damien-teo/"
+          label="LinkedIn"
+        />
+        {t('resume.end')}
+      </Paragraph>
 
       {/* Payments Agreement Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4 mb-8 text-justify">
@@ -203,7 +201,7 @@ const PortfolioPage: React.FunctionComponent = () => {
           </Paragraph>
         </div>
       </div>
-    </>
+    </PageContainer>
   )
 }
 

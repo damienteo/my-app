@@ -2,7 +2,8 @@ import React from 'react'
 import { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
 
-import { Header, Paragraph } from '../components/common'
+import { Paragraph } from '../components/common'
+import PageContainer from '../components/layout/PageContainer'
 import AnimalsGallery from './AnimalsGallery'
 
 export const metadata: Metadata = {
@@ -13,11 +14,10 @@ export const metadata: Metadata = {
 const Animals: React.FunctionComponent = () => {
   const t = useTranslations('AnimalsPage')
   return (
-    <>
-      <Header text={t('header')} />
+    <PageContainer title={t('header')}>
       <Paragraph className="max-w-2xl">{t('description')}</Paragraph>
       <AnimalsGallery />
-    </>
+    </PageContainer>
   )
 }
 

@@ -499,6 +499,21 @@
   },
   "DailyChecksPage": {
     "title": "Daily Checks",
+    "periods": {
+      "1week": "1 Week",
+      "1month": "1 Month",
+      "3months": "3 Months",
+      "6months": "6 Months",
+      "1year": "1 Year"
+    },
+    "price": {
+      "noHistoricalData": "Historical data not available",
+      "currentPrice": "Current Price",
+      "chartTitle": "Historical Price",
+      "dataSource": "Data source",
+      "rateLimitError": "⚠️ Rate limit exceeded",
+      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes."
+    },
     "weather": {
       "title": "Shinjuku Weather",
       "loading": "Loading weather data...",
@@ -519,12 +534,6 @@
       "title": "Forex Rates",
       "loading": "Loading forex data...",
       "error": "Error loading forex data",
-      "noHistoricalData": "Historical data not available",
-      "periods": {
-        "1week": "1 Week",
-        "1month": "1 Month",
-        "3months": "3 Months"
-      },
       "rates": {
         "usdToSgd": "USD to SGD",
         "sgdToJpy": "SGD to JPY",
@@ -535,74 +544,22 @@
     "sp500": {
       "title": "S&P 500 Index",
       "loading": "Loading S&P 500 data...",
-      "error": "Error loading S&P 500 data",
-      "noHistoricalData": "Historical data not available",
-      "currentPrice": "Current Price",
-      "chartTitle": "Historical Price",
-      "dataSource": "Data source",
-      "rateLimitError": "⚠️ Rate limit exceeded",
-      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
-      "periods": {
-        "1week": "1 Week",
-        "1month": "1 Month",
-        "3months": "3 Months",
-        "6months": "6 Months",
-        "1year": "1 Year"
-      }
+      "error": "Error loading S&P 500 data"
     },
     "gold": {
       "title": "Gold Price",
       "loading": "Loading gold data...",
-      "error": "Error loading gold data",
-      "noHistoricalData": "Historical data not available",
-      "currentPrice": "Current Price",
-      "chartTitle": "Historical Price",
-      "dataSource": "Data source",
-      "rateLimitError": "⚠️ Rate limit exceeded",
-      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
-      "periods": {
-        "1week": "1 Week",
-        "1month": "1 Month",
-        "3months": "3 Months",
-        "6months": "6 Months",
-        "1year": "1 Year"
-      }
+      "error": "Error loading gold data"
     },
     "bitcoin": {
       "title": "Bitcoin Price",
       "loading": "Loading Bitcoin data...",
-      "error": "Error loading Bitcoin data",
-      "noHistoricalData": "Historical data not available",
-      "currentPrice": "Current Price",
-      "chartTitle": "Historical Price",
-      "dataSource": "Data source",
-      "rateLimitError": "⚠️ Rate limit exceeded",
-      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
-      "periods": {
-        "1week": "1 Week",
-        "1month": "1 Month",
-        "3months": "3 Months",
-        "6months": "6 Months",
-        "1year": "1 Year"
-      }
+      "error": "Error loading Bitcoin data"
     },
     "ethereum": {
       "title": "Ethereum Price",
       "loading": "Loading Ethereum data...",
-      "error": "Error loading Ethereum data",
-      "noHistoricalData": "Historical data not available",
-      "currentPrice": "Current Price",
-      "chartTitle": "Historical Price",
-      "dataSource": "Data source",
-      "rateLimitError": "⚠️ Rate limit exceeded",
-      "rateLimitMessage": "Too many requests to the data provider. Please try again in a few minutes.",
-      "periods": {
-        "1week": "1 Week",
-        "1month": "1 Month",
-        "3months": "3 Months",
-        "6months": "6 Months",
-        "1year": "1 Year"
-      }
+      "error": "Error loading Ethereum data"
     }
   },
   "StocksWatchPage": {

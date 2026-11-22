@@ -2,6 +2,8 @@
 
 import React from 'react'
 import { useTranslations } from 'next-intl'
+
+import { raisedPanel } from '../../common/classes'
 import {
   LineChart,
   Line,
@@ -155,7 +157,7 @@ const StockCard: React.FC<StockCardProps> = ({ stock, data }) => {
   }, [historical])
 
   return (
-    <div className="p-4 bg-gray-700 rounded-lg border border-gray-600">
+    <div className={`${raisedPanel} border border-gray-600`}>
       <div className="mb-3">
         <h3 className="text-lg font-bold text-white">{stock.name}</h3>
         <p className="text-sm text-gray-400">

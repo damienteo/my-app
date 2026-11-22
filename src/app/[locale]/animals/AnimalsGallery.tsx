@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
+import { accentCircleButton, focusRing } from '../components/common/classes'
 import AnimalClip from './AnimalClip'
 import {
   animalClips,
@@ -19,9 +20,6 @@ import {
   PlayIcon,
 } from './icons'
 import { usePrefersReducedMotion } from './usePrefersReducedMotion'
-
-const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
 
 const roundButton = `flex h-11 w-11 items-center justify-center rounded-full border border-zinc-600 bg-zinc-900/85 text-ink shadow-lg hover:border-zinc-400 hover:bg-zinc-800 ${focusRing}`
 
@@ -335,7 +333,7 @@ const LightboxVideo: React.FunctionComponent<{
           type="button"
           onClick={togglePlayback}
           aria-label={clipControlLabel(label, playing, playMessages)}
-          className={`absolute top-1/2 left-1/2 z-10 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-white shadow-lg ${focusRing}`}
+          className={`absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 ${accentCircleButton} ${focusRing}`}
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>

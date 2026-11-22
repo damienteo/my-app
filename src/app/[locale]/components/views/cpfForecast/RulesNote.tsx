@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 
 import { ExternalLink, InfoPopup } from '../../common'
+import { surfaceCard } from '../../common/classes'
 
 const labelClass = 'text-[11px] font-medium uppercase tracking-wider text-muted'
 
@@ -30,7 +31,9 @@ const RulesNote: React.FunctionComponent = () => {
   ]
 
   return (
-    <section className="mb-6 rounded-2xl bg-surface p-4 text-left text-gray-300 ring-1 ring-raised sm:p-5">
+    <section
+      className={`mb-6 p-4 text-left text-gray-300 sm:p-5 ${surfaceCard}`}
+    >
       <p className="text-sm leading-relaxed text-justify text-ink">
         {t('intro')}
       </p>
