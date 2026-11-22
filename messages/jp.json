@@ -1,4 +1,40 @@
 {
+  "Metadata": {
+    "siteName": "ダミアン・テオ",
+    "titleTemplate": "%s | ダミアン・テオ",
+    "defaultTitle": "ダミアン・テオ",
+    "ogImageAlt": "ダミアン・テオ",
+    "home": {
+      "title": "ダミアン・テオ",
+      "description": "ダミアン・テオは、知的な機械と働くのが好きな平民です。以前は警察官で、現在はテック業界で働いています。"
+    },
+    "about": {
+      "title": "アバウト",
+      "description": "ダミアン・テオは、知的な機械と働くのが好きな平民です。以前は警察官で、現在はテック業界で働いています。"
+    },
+    "portfolio": {
+      "title": "ポートフォリオ",
+      "description": "2018年から2025年までのダミアン・テオの事例紹介です。益子焼、ハッカソン、サイドプロジェクトを含みます。"
+    },
+    "dailyChecks": {
+      "title": "日次チェック",
+      "description": "新宿の天気、為替、金、S&P 500、ビットコイン、イーサリアム。"
+    },
+    "cpfForecast": {
+      "title": "CPF予測",
+      "description": "CPF予測は、ユーザーが将来の拠出金に基づいてCPF OAとSAを計算するのに役立ちます"
+    },
+    "animals": {
+      "title": "動物たち",
+      "description": "旅行中に見かけました。"
+    },
+    "notFound": {
+      "title": "ページが見つかりません",
+      "description": "このページは存在しません。",
+      "body": "お探しのページは見つかりませんでした。",
+      "home": "ホームへ戻る"
+    }
+  },
   "NavLinks": {
     "menu": "メニュー",
     "title": "ダミアン・テオのサイト",

@@ -1,10 +1,14 @@
 import React from 'react'
-import { Metadata } from 'next'
+
+import { generatePageMetadata } from '../../../lib/pageMetadata'
 import DailyChecksClient from './DailyChecksClient'
 
-export const metadata: Metadata = {
-  title: 'Daily Checks',
-  description: 'Weather and forex information for daily checks',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'dailyChecks' })
 }
 
 const DailyChecks: React.FunctionComponent = () => {

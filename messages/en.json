@@ -1,4 +1,40 @@
 {
+  "Metadata": {
+    "siteName": "Damien Teo",
+    "titleTemplate": "%s | Damien Teo",
+    "defaultTitle": "Damien Teo",
+    "ogImageAlt": "Damien Teo",
+    "home": {
+      "title": "Damien Teo",
+      "description": "Damien Teo is a peasant who enjoys working with intelligent machines. Previously, he was a police officer. Now, he works in the tech industry."
+    },
+    "about": {
+      "title": "About",
+      "description": "Damien Teo is a peasant who enjoys working with intelligent machines. Previously, he was a police officer. Now, he works in the tech industry."
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "description": "A 2018–2025 case-study timeline of Damien Teo's work, including Mashiko Pottery, hackathons, and side projects."
+    },
+    "dailyChecks": {
+      "title": "Daily Checks",
+      "description": "Shinjuku weather, forex, gold, S&P 500, Bitcoin, and Ethereum."
+    },
+    "cpfForecast": {
+      "title": "CPF Forecast",
+      "description": "CPF Forecast helps users to calculate CPF OA and SA years down the road, based on their projected contributions"
+    },
+    "animals": {
+      "title": "Animals",
+      "description": "I saw them while I was travelling."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "This page does not exist.",
+      "body": "The page you requested could not be found.",
+      "home": "Back to home"
+    }
+  },
   "NavLinks": {
     "menu": "menu",
     "title": "Damien Teo's Site",

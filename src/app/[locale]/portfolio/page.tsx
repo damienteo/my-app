@@ -1,14 +1,17 @@
 import React from 'react'
-import { Metadata } from 'next'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+
+import { generatePageMetadata } from '../../../lib/pageMetadata'
 import { ExternalLink, Paragraph } from '../components/common'
 import PageContainer from '../components/layout/PageContainer'
 
-export const metadata: Metadata = {
-  title: 'Portfolio',
-  description:
-    'Here are some small side projects which Damien Teo has previously done.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  return generatePageMetadata({ params, page: 'portfolio' })
 }
 
 const PortfolioPage: React.FunctionComponent = () => {
