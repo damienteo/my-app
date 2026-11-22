@@ -76,7 +76,7 @@ export default async function RootLayout({
           {/* Navbar */}
           <NavBar />
           {/* Main Content */}
-          <div className="mx-auto min-h-screen max-w-screen-lg px-4 pt-20 pb-8 sm:pt-24">
+          <div className="mx-auto min-h-screen max-w-screen-lg px-4 pt-14 pb-8">
             {children}
           </div>
         </NextIntlClientProvider>
