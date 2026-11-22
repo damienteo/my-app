@@ -24,7 +24,7 @@ const widthClass: Record<PageWidth, string> = {
 /**
  * Vertical rhythm and the page heading.
  * The layout clears the fixed nav (`pt-14`, the same 56px as `h-14`).
- * This container is the gap under that bar: 32px on a phone, 40px from `md`.
+ * This container is the gap under that bar: 20px on a phone, 24px from `md`.
  * Horizontal width and padding stay on the layout, next to the nav.
  */
 const PageContainer: React.FunctionComponent<PageContainerProps> = ({
@@ -34,7 +34,7 @@ const PageContainer: React.FunctionComponent<PageContainerProps> = ({
   width = 'full',
 }) => {
   return (
-    <div className={`w-full pt-8 md:pt-10 ${widthClass[width]} ${className}`}>
+    <div className={`w-full pt-5 md:pt-6 ${widthClass[width]} ${className}`}>
       {title ? <Header text={title} className="mb-6" /> : null}
       {children}
     </div>
