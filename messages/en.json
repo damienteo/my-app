@@ -261,53 +261,100 @@
       "start": "For my resume, you may refer to my ",
       "end": " profile."
     },
-    "hackathon": {
-      "start": "I recently participated in blockchain.hack(). I ",
-      "won": "won",
-      "end": " the main prize for the problem statement: \"How can blockchain help B2B transactions for banking?\""
+    "timeline": "Projects",
+    "sections": {
+      "problem": "Problem",
+      "approach": "Approach",
+      "result": "Result"
     },
-    "projectOverview": {
-      "start": "My ",
-      "project": "project",
-      "end": " deals with the usage of Merkle proofs to initially obscure payment details, yet enforce payment outcomes with transparent and immutable rules. Factory-clone contracts also cut down the cost of deploying each payment agreement by ~70%."
+    "linkTypes": {
+      "live": "Live site",
+      "code": "Code",
+      "contracts": "Smart contracts",
+      "api": "API"
     },
-    "projectComponents": {
-      "factory": "Factory Contract for cloning agreements",
-      "initializer": "Initializer contract with agreement logic",
-      "proxy": "Minimal proxy contract (clone) which uses logic from the Initializer contract"
-    },
-    "thunderdomeIntro": {
-      "start": "Current side project is ",
-      "thunderdome": "ThunderDome",
-      "end": " (as of Oct 2022)."
-    },
-    "thunderdomeDetails": "I am currently learning Solidity, so I thought it would be a fun project to run on the Ethereum Goerli testnet. Users will be able to buy NFTs offered. Eventually, they should be able to sell bought NFTs on the local marketplace, deposit NFTs for loyalty points, and even a lucky draw.",
-    "thunderdomeLinks": {
-      "fe": "Frontend Repo",
-      "be-link": "Backend Link",
-      "be": "Backend Repo",
-      "sc": "Smart Contracts Repo",
-      "token": "Token Sale Contract",
-      "nft": "NFT Contract"
-    },
-    "budgetPlanner": {
-      "start": "One of my major side-projects is the ",
-      "name": "Budget Planner",
-      "end": " (March 2019).",
-      "fe": "Frontend Repo",
-      "and": " and ",
-      "be": "Backend Repo"
-    },
-    "budgetPlannerDetails": "This was my Capstone Project during my participation in General Assembly's Web Development Immersive, now known as the Software Engineering Immersive.",
-    "firemanGame": {
-      "start": "Created a game ",
-      "name": "The Fireman",
-      "end": ""
-    },
-    "firemanDetails": {
-      "start": "This was made with vanilla HTML, JavaScript, and CSS ",
-      "github": "GitHub Repo",
-      "end": "."
+    "archivedTestnet": "Archived testnet",
+    "hackathonWinner": "Hackathon winner",
+    "projects": {
+      "mashikoPottery": {
+        "title": "Mashiko Pottery",
+        "imageAlt": "Mashiko Pottery home page",
+        "problem": "Handmade Mashiko pottery needed a multilingual online showcase for the potters' work.",
+        "approach": "A Next.js 15 App Router catalog with React 19, Tailwind CSS 4, next-intl (Japanese default, plus English and Chinese), Redux Toolkit, Prisma and PostgreSQL, Supabase email magic-link sign-in, and Cloudinary, deployed on Vercel. Locale-aware routing covers product and potter browsing, search, filters, galleries, and detail pages, with an admin CMS to create, edit, and delete products and potters.",
+        "result": "A live, work-in-progress catalog with an admin panel. Cart and checkout are planned as next steps.",
+        "links": {
+          "live": "Live site",
+          "code": "Code"
+        }
+      },
+      "paymentsAgreement": {
+        "title": "Payments Agreement",
+        "imageAlt": "Payments Agreement site",
+        "problem": "I took part in blockchain.hack(), whose problem statement was: \"How can blockchain help B2B transactions for banking?\"",
+        "approach": "The project uses Merkle proofs to initially obscure payment details, yet enforce payment outcomes with transparent and immutable rules. Factory-clone contracts deploy each payment agreement.",
+        "result": "Won the main prize. Factory-clone contracts also cut down the cost of deploying each payment agreement by ~70%.",
+        "links": {
+          "live": "Live site",
+          "factory": "Factory",
+          "initializer": "Initializer",
+          "proxy": "Proxy (clone)"
+        },
+        "linkDescriptions": {
+          "factory": "Factory contract for cloning agreements",
+          "initializer": "Initializer contract with agreement logic",
+          "proxy": "Minimal proxy contract (clone) which uses logic from the initializer contract"
+        }
+      },
+      "thunderdome": {
+        "title": "ThunderDome",
+        "imageAlt": "ThunderDome chart",
+        "problem": "I was learning Solidity, so I thought it would be a fun project to run on the Ethereum Goerli testnet (as of October 2022).",
+        "approach": "Users can buy NFTs that are offered. Later plans were selling bought NFTs on a local marketplace, depositing NFTs for loyalty points, and a lucky draw.",
+        "result": "The build includes a frontend, a backend API, a smart contracts repo, a token sale contract, and an NFT contract on Goerli.",
+        "links": {
+          "live": "Live site",
+          "frontend": "Frontend",
+          "backend": "Backend",
+          "api": "API",
+          "repo": "Repo",
+          "token": "Token",
+          "nft": "NFT"
+        },
+        "linkDescriptions": {
+          "frontend": "Frontend repo",
+          "backend": "Backend repo",
+          "repo": "Smart contracts repo",
+          "token": "Token sale contract",
+          "nft": "NFT contract"
+        }
+      },
+      "budgetPlanner": {
+        "title": "Budget Planner",
+        "imageAlt": "Budget Planner chart",
+        "problem": "This was my capstone project during General Assembly's Web Development Immersive, now known as the Software Engineering Immersive.",
+        "approach": "A Budget Planner with a frontend and a backend.",
+        "result": "Shipped as a major side-project in March 2019.",
+        "links": {
+          "live": "Live site",
+          "frontend": "Frontend",
+          "backend": "Backend"
+        },
+        "linkDescriptions": {
+          "frontend": "Frontend repo",
+          "backend": "Backend repo"
+        }
+      },
+      "fireman": {
+        "title": "The Fireman",
+        "imageAlt": "The Fireman game",
+        "problem": "Create a game that runs in the browser.",
+        "approach": "Vanilla HTML, JavaScript, and CSS.",
+        "result": "The Fireman is a playable browser game.",
+        "links": {
+          "live": "Live site",
+          "code": "Code"
+        }
+      }
     }
   },
   "CPFForecastPage": {
